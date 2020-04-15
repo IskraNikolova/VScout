@@ -29,3 +29,15 @@ export function deepMerge (...objects) {
     return undefined
   }
 }
+
+/**
+* Get difference between two timestamps in seconds
+*
+* @param {Number} first - timestamp
+* @param {Number} second - timestamp
+* @returns { Number } seconds
+*/
+export function secBetweenTwoTime (first, second) {
+  const res = Math.abs(new Date(first) - new Date(second))
+  return res % 60
+}

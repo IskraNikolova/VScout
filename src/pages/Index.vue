@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-xl">
     <div class="flex flex-center q-pb-xl">
-      <q-img src="~assets/ava.png" style="width: 200px;"/>
+      <q-img src="~assets/ava.png" id="b-logo" />
     </div>
     <div class="flex flex-right">
       <q-select
@@ -17,7 +17,7 @@
     <table-item v-bind:validators="validators" />
     <faqs />
     <div class="flex flex-center q-mt-xl">
-      <img src="~assets/ava-white.png"  style="width:30vw;max-width:50px;"/>
+      <img src="~assets/ava-white.png" id="logo"/>
     </div>
     <div class="flex flex-center q-mt-xl">
       Made with ❤️ for builders everywhere.
@@ -26,8 +26,11 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-// const { network } = require('./../modules/config').default
+
+import {
+  mapGetters,
+  mapActions
+} from 'vuex'
 
 import Faqs from './../components/faqs'
 import StakItem from './../components/stak-item'
@@ -86,3 +89,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+ #logo {
+  width:30vw;
+  max-width:50px;
+ }
+ #b-logo {
+  width: 200px!important;
+ }
+</style>

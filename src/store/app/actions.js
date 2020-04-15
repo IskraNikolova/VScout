@@ -14,7 +14,7 @@ import {
   _getValidators
 } from './../../modules/network'
 
-async function initApp ({ commit, dispatch, getters }) {
+async function initApp ({ dispatch, getters }) {
   await dispatch(GET_LAST_BLOCK)
   setInterval(async () => {
     await dispatch(GET_LAST_BLOCK)

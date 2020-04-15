@@ -100,9 +100,9 @@ module.exports = function (ctx) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'Stat',
-        short_name: 'Stat',
-        description: 'Ava statistic app',
+        name: 'AVA Subnet\'s Explorer',
+        short_name: 'AVA Subnet\'s Explorer',
+        description: 'Subnet\'s validators explorer',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -140,7 +140,7 @@ module.exports = function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
     cordova: {
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
-      id: 'io.ava.stat.app'
+      id: 'io.ava.explorer.app'
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-capacitor-apps/configuring-capacitor
@@ -168,7 +168,7 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'stat-ava'
+        appId: 'ex-subnets'
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
