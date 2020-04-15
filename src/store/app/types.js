@@ -1,0 +1,12 @@
+export const INIT_APP = 'INIT_APP'
+
+export const GET_VALIDATORS = 'GET_VALIDATORS'
+export const SET_VALIDATORS = 'SET_VALIDATORS'
+
+export const GET_BLOCKCHAINS = 'GET_BLOCKCHAINS'
+export const SET_BLOCKCHAINS = 'SET_BLOCKCHAINS'
+
+export const GET_LAST_BLOCK = 'GET_LAST_BLOCK'
+export const SET_BLOCK = 'SET_BLOCK'
+
+export const SET_SUBNETID = 'SET_SUBNETID'
