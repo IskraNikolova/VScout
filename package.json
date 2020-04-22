@@ -20,6 +20,7 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.19.2",
+    "bignumber.js": "^9.0.0",
     "chart.js": "^2.9.3",
     "quasar": "^1.0.0",
     "slopes": "^1.4.2",

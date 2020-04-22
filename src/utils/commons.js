@@ -38,6 +38,7 @@ export function deepMerge (...objects) {
 * @returns { Number } seconds
 */
 export function secBetweenTwoTime (first, second) {
-  const res = Math.abs(new Date(first) - new Date(second))
+  const res = Math.abs(new Date(Number(first)) - new Date(Number(second))) / 10
+
   return res % 60
 }

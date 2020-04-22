@@ -17,3 +17,8 @@ export function blockTime (state) {
 export function subnetID (state) {
   return state.subnetID
 }
+
+export function avarageBlockTime (state) {
+  const sum = state.lastBlockTime.reduce((a, b) => a + b, 0)
+  return (sum / state.lastBlockTime.length) || 0
+}

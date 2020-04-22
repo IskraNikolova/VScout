@@ -9,4 +9,9 @@ export const SET_BLOCKCHAINS = 'SET_BLOCKCHAINS'
 export const GET_LAST_BLOCK = 'GET_LAST_BLOCK'
 export const SET_BLOCK = 'SET_BLOCK'
 
+export const GET_BLOCK_TIME = 'GET_BLOCK_TIME'
+export const SET_BLOCK_TIME = 'SET_BLOCK_TIME'
+
+export const SET_LAST_BLOCK_TIME = 'SET_LAST_BLOCK_TIME'
+
 export const SET_SUBNETID = 'SET_SUBNETID'

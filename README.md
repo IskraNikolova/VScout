@@ -1,6 +1,6 @@
-# Stat (stat-ava)
+# AVA Subnet's Explorer
 
-Ava statistic app
+Ava Subnet's validators explorer
 
 ## Install the dependencies
 ```bash

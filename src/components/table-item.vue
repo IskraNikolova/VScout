@@ -26,7 +26,7 @@
               <div @click="props.expand = !props.expand" class="column q-pl-xl">{{ col.value }}</div>
             </div>
             <div v-else-if="col.name === 'stake'">
-              {{ col.value.toLocaleString() }}
+              {{ col.value }} <small style="color: grey;"> ({{ props.row.stakenAva }} nAva)</small>
               <br />
               <small style="color: grey;">{{ props.row.precent }} %</small>
             </div>
@@ -34,9 +34,6 @@
               v-else-if="col.name === 'precent'"
               :style="getStyle(cumulativeStake(props.row.rank), props.row.precent)">
               {{ cumulativeStake(props.row.rank) }} %
-            </div>
-            <div v-else-if="col.name === 'lastVote'">
-              {{ lastBlock.timestamp }}
             </div>
             <div v-else>{{ col.value }}</div>
           </q-td>
@@ -55,6 +52,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+const BigNumber = require('bignumber.js')
 
 export default {
   name: 'TableItem',
@@ -84,7 +82,7 @@ export default {
           style: 'width: 50px'
         },
         { name: 'validator', align: 'left', label: 'VALIDATOR', field: 'validator' },
-        { name: 'stake', align: 'left', label: 'STAKE (AVA)', field: 'stake' },
+        { name: 'stake', align: 'left', label: 'STAKE (AVA / nAva)', field: 'stake', sortable: true },
         { name: 'precent', align: 'left', label: 'CUMULATIVE STAKE (%)', field: 'cumulativeStake' },
         { name: 'lastVote', align: 'left', label: 'LAST VOTE', field: 'lastVote' }
       ],
@@ -103,8 +101,11 @@ export default {
         const validator = `${val.id.substr(0, 9)}...`
         const precent = this.getPrecent(val.stakeAmount)
         const identity = val.id
-        const stake = Number(val.stakeAmount) / 10 ** 9
-        const lastVote = 7644685475487
+        const stakenAva = Number(val.stakeAmount).toLocaleString()
+        const stakeAva = this.getAvaFromnAva(val.stakeAmount)
+        const stake = stakeAva > 1 ? stakeAva.toLocaleString() : stakeAva
+        // todo last vote
+        const lastVote = this.lastBlock.timestamp
         const img = '?'
         return {
           rank,
@@ -112,6 +113,7 @@ export default {
           precent,
           identity,
           stake,
+          stakenAva,
           lastVote,
           img
         }
@@ -119,18 +121,30 @@ export default {
       this.data = vals
     },
     getPrecent (v) {
-      const result = ((Number(v) / 10 ** 9) / 360000000) * 100
-      const multiplier = Math.pow(1000, 1 || 0)
-      return Math.round(result * multiplier) / multiplier
+      v = new BigNumber(this.getAvaFromnAva(v))
+      const allStake = new BigNumber(360000000)
+      const y = new BigNumber(100)
+      const res = v.multipliedBy(y)
+
+      const result = res.dividedBy(allStake)
+      return this.round(result)
     },
     cumulativeStake (index) {
       return this.data.reduce((result, item) => {
         if (item.rank <= index) {
           result += item.precent
         }
-        const multiplier = Math.pow(1000, 1 || 0)
-        return Math.round(result * multiplier) / multiplier
+
+        return this.round(result)
       }, 0)
+    },
+    round (result) {
+      const multiplier = Math.pow(1000, 1 || 0)
+      const res = Math.round(result * multiplier) / multiplier
+      return res
+    },
+    getAvaFromnAva (v) {
+      return Number(v) / 10 ** 9
     },
     getStyle (cumulativeStake, precent) {
       return 'background-color: rgb(84, 93, 95);width: ' + (cumulativeStake * 500) + 'px;border-right:' + (precent * 500) + 'px solid #87C5D6;height: 50px;margin: -17px;text-align: right!important;'

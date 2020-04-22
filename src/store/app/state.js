@@ -5,6 +5,7 @@ export default function () {
     validators: [],
     lastBlock: {},
     blockTime: 0,
+    lastBlockTime: [],
     blockchains: [],
     subnetID: network.defaultSubnetID
   }

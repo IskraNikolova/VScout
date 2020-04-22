@@ -2,7 +2,9 @@ import {
   SET_BLOCK,
   SET_VALIDATORS,
   SET_BLOCKCHAINS,
-  SET_SUBNETID
+  SET_SUBNETID,
+  SET_BLOCK_TIME,
+  SET_LAST_BLOCK_TIME
 } from './types'
 
 const mutations = {
@@ -17,6 +19,12 @@ const mutations = {
   },
   [SET_SUBNETID]: (state, { subnetID }) => {
     state.subnetID = subnetID
+  },
+  [SET_BLOCK_TIME]: (state, { blockTime }) => {
+    state.blockTime = blockTime
+  },
+  [SET_LAST_BLOCK_TIME]: (state, { blockTime }) => {
+    state.lastBlockTime.push(blockTime)
   }
 }
 

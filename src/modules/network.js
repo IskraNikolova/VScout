@@ -10,9 +10,9 @@ const getBlock = 'timestamp.getBlock'
 const getBlockchains = 'platform.getBlockchains'
 const getCurrentValidators = 'platform.getCurrentValidators'
 
+let id = 1
 const jsonrpc = '2.0'
 axios.defaults.headers['content-type'] = 'application/json'
-let id = 1
 
 const body = (method, params = {}) => {
   return {
@@ -28,8 +28,8 @@ export const request = async (endpoint, body) => {
   return response.data.result
 }
 
-export const _getBlock = async () => {
-  return request(network.endpointUrl + timestamp, body(getBlock))
+export const _getBlock = async (params = {}) => {
+  return request(network.endpointUrl + timestamp, body(getBlock, params))
 }
 
 export const _getBlockchains = async () => {
