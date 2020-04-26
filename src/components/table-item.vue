@@ -3,8 +3,9 @@
     <q-btn size="xs" color="white" flat icon="apps" @click="isGrid=true"/>
     <q-btn size="xs" color="white" flat icon="reorder" @click="isGrid=false"/>
     <!--todo grid with v-for and card -->
+    <span style="color: white;">{{ validators.length }}</span>
     <q-table
-      :data="data"
+      :data="validators"
       :columns="columns"
       row-key="rank"
       :separator="separator"
@@ -42,6 +43,13 @@
           <q-td colspan="100%">
             <div class="text-left">
               Validator Identity: <span id="identity">{{ props.row.identity }}</span>
+              {{ new Date(Number(props.row.startTime) * 1000).toISOString() }}
+              {{ new Date(Number(props.row.endTime) * 1000).toISOString() }}
+              <q-linear-progress dark stripe rounded size="20px" :value="progress(props.row.startTime, props.row.endTime)" color="red" :buffer="progress(props.row.startTime, props.row.endTime)" class="q-mt-sm" >
+                <div class="absolute-full flex flex-center">
+                  <q-badge color="white" text-color="accent" :label="progress(props.row.startTime, props.row.endTime) * 100" />
+                </div>
+              </q-linear-progress>
             </div>
           </q-td>
         </q-tr>
@@ -52,7 +60,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-const BigNumber = require('bignumber.js')
 
 export default {
   name: 'TableItem',
@@ -85,52 +92,26 @@ export default {
         { name: 'stake', align: 'left', label: 'STAKE (AVA / nAva)', field: 'stake', sortable: true },
         { name: 'precent', align: 'left', label: 'CUMULATIVE STAKE (%)', field: 'cumulativeStake' },
         { name: 'lastVote', align: 'left', label: 'LAST VOTE', field: 'lastVote' }
-      ],
-      data: []
+      ]
     }
   },
-  created () {
-    this.getData()
-  },
   methods: {
-    // todo move to store
-    getData () {
-      let index = 1
-      const vals = this.validators.map(val => {
-        const rank = index++
-        const validator = `${val.id.substr(0, 9)}...`
-        const precent = this.getPrecent(val.stakeAmount)
-        const identity = val.id
-        const stakenAva = Number(val.stakeAmount).toLocaleString()
-        const stakeAva = this.getAvaFromnAva(val.stakeAmount)
-        const stake = stakeAva > 1 ? stakeAva.toLocaleString() : stakeAva
-        // todo last vote
-        const lastVote = this.lastBlock.timestamp
-        const img = '?'
-        return {
-          rank,
-          validator,
-          precent,
-          identity,
-          stake,
-          stakenAva,
-          lastVote,
-          img
-        }
-      })
-      this.data = vals
-    },
-    getPrecent (v) {
-      v = new BigNumber(this.getAvaFromnAva(v))
-      const allStake = new BigNumber(360000000)
-      const y = new BigNumber(100)
-      const res = v.multipliedBy(y)
-
-      const result = res.dividedBy(allStake)
+    progress (startTime, endTime) {
+      const allMinutes = this.getMinutesBetweenDates(startTime, endTime)
+      const nowMinutes = this.getMinutesBetweenDates(startTime, this.getUnixTime())
+      const result = (Number(nowMinutes) / Number(allMinutes))
+      console.log(result)
       return this.round(result)
     },
+    getUnixTime () { return Date.now() / 1000 | 0 },
+    getMinutesBetweenDates (startDate, endDate) {
+      startDate = new Date(Number(startDate) * 1000)
+      endDate = new Date(Number(endDate) * 1000)
+      var diff = endDate.getTime() - startDate.getTime()
+      return Math.round(diff / 60000.0)
+    },
     cumulativeStake (index) {
-      return this.data.reduce((result, item) => {
+      return this.validators.reduce((result, item) => {
         if (item.rank <= index) {
           result += item.precent
         }
@@ -142,9 +123,6 @@ export default {
       const multiplier = Math.pow(1000, 1 || 0)
       const res = Math.round(result * multiplier) / multiplier
       return res
-    },
-    getAvaFromnAva (v) {
-      return Number(v) / 10 ** 9
     },
     getStyle (cumulativeStake, precent) {
       return 'background-color: rgb(84, 93, 95);width: ' + (cumulativeStake * 500) + 'px;border-right:' + (precent * 500) + 'px solid #87C5D6;height: 50px;margin: -17px;text-align: right!important;'

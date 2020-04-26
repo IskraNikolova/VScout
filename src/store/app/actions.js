@@ -17,11 +17,17 @@ import {
 } from './../../modules/network'
 
 import { secBetweenTwoTime } from './../../utils/commons'
+const BigNumber = require('bignumber.js')
 
 async function initApp ({ dispatch, getters }) {
   await dispatch(GET_LAST_BLOCK)
   setInterval(() => {
-    Promise.all([dispatch(GET_LAST_BLOCK), dispatch(GET_BLOCK_TIME), dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })])
+    Promise.all(
+      [
+        dispatch(GET_LAST_BLOCK),
+        dispatch(GET_BLOCK_TIME),
+        dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
+      ])
   }, 4000)
 
   await dispatch(GET_BLOCKCHAINS)
@@ -56,23 +62,77 @@ async function getBlockchains ({ commit }) {
   }
 }
 
-async function getValidators ({ commit }, { subnetID }) {
+async function getValidators ({ commit, getters }, { subnetID }) {
   try {
     const { validators } = await _getValidators({ subnetID })
     validators.sort(compare)
-    commit(SET_VALIDATORS, { validators })
+    const val = map(validators, getters.lastBlock)
+    commit(SET_VALIDATORS, { validators: val })
   } catch (err) {
     console.log(err)
   }
 }
 
+function map (validators, lastBlock) {
+  let index = 1
+  const vals = validators.map(val => {
+    const rank = index++
+    const validator = `${val.id.substr(0, 9)}...`
+    const precent = getPrecent(val.stakeAmount)
+    const identity = val.id
+    const stakenAva = Number(val.stakeAmount).toLocaleString()
+    const stakeAva = getAvaFromnAva(val.stakeAmount)
+    const stake = stakeAva > 1 ? stakeAva.toLocaleString() : stakeAva
+    // todo last vote
+    const lastVote = lastBlock.timestamp
+    const startTime = val.startTime
+    const endTime = val.endTime
+    const img = '?'
+    return {
+      rank,
+      validator,
+      precent,
+      identity,
+      stake,
+      stakenAva,
+      lastVote,
+      startTime,
+      endTime,
+      img
+    }
+  })
+
+  return vals
+}
+
+function getPrecent (v) {
+  v = new BigNumber(getAvaFromnAva(v))
+  const allStake = new BigNumber(360000000)
+  const y = new BigNumber(100)
+  const res = v.multipliedBy(y)
+
+  const result = res.dividedBy(allStake)
+  return round(result)
+}
+
+function getAvaFromnAva (v) {
+  return Number(v) / 10 ** 9
+}
+
+function round (result) {
+  const multiplier = Math.pow(1000, 1 || 0)
+  const res = Math.round(result * multiplier) / multiplier
+  return res
+}
+
 function compare (a, b) {
-  if (b.stakeAmount < a.stakeAmount) {
+  if (Number(b.stakeAmount) < Number(a.stakeAmount)) {
     return -1
-  } else if (b.stakeAmount > a.stakeAmount) {
+  } else if (Number(b.stakeAmount) > Number(a.stakeAmount)) {
     return 1
   }
-  return Number(a.startTime) - Number(b.startTime)
+
+  return 0
 }
 
 export default {
