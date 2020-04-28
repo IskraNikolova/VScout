@@ -1,18 +1,28 @@
 <template>
  <div class="q-mt-md">
-    <q-btn size="xs" color="white" flat icon="apps" @click="isGrid=true"/>
-    <q-btn size="xs" color="white" flat icon="reorder" @click="isGrid=false"/>
-    <!--todo grid with v-for and card -->
-    <span style="color: white;">{{ validators.length }}</span>
+   <q-responsive :ratio="16/9">
     <q-table
       :data="validators"
       :columns="columns"
       row-key="rank"
       :separator="separator"
+      :filter="filter"
       dark
+      :pagination.sync="pagination"
       :grid="isGrid"
       id="custom-table"
     >
+      <template slot="top-left">
+        <q-btn size="xs" color="white" flat icon="apps" @click="isGrid=true"/>
+        <q-btn size="xs" color="white" flat icon="reorder" @click="isGrid=false"/>
+      </template>
+      <template slot="top-right">
+        <q-input dark hide-underline clearable v-model="filter">
+          <template v-slot:append>
+            <q-icon name="search" color="accent" />
+          </template>
+        </q-input>
+      </template>
       <template v-slot:body="props">
         <q-tr :props="props" auto-width>
           <q-td
@@ -36,6 +46,9 @@
               :style="getStyle(cumulativeStake(props.row.rank), props.row.precent)">
               {{ cumulativeStake(props.row.rank) }} %
             </div>
+            <div v-else-if="col.name === 'startTime'">
+              {{ date(col.value) }}
+            </div>
             <div v-else>{{ col.value }}</div>
           </q-td>
         </q-tr>
@@ -43,26 +56,26 @@
           <q-td colspan="100%">
             <div class="text-left">
               Validator Identity: <span id="identity">{{ props.row.identity }}</span>
-              {{ new Date(Number(props.row.startTime) * 1000).toISOString() }}
-              {{ new Date(Number(props.row.endTime) * 1000).toISOString() }}
-              <q-linear-progress dark stripe rounded size="20px" :value="progress(props.row.startTime, props.row.endTime)" color="red" :buffer="progress(props.row.startTime, props.row.endTime)" class="q-mt-sm" >
-                <div class="absolute-full flex flex-center">
-                  <q-badge color="white" text-color="accent" :label="progress(props.row.startTime, props.row.endTime) * 100" />
-                </div>
-              </q-linear-progress>
+              <progress-bar-validate-session v-bind:startTime="props.row.startTime" v-bind:endTime="props.row.endTime"/>
             </div>
           </q-td>
         </q-tr>
       </template>
     </q-table>
+   </q-responsive>
  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import moment from 'moment'
+import ProgressBarValidateSession from './progress-bar-validatе-session'
 
 export default {
   name: 'TableItem',
+  components: {
+    ProgressBarValidateSession
+  },
   props: {
     validators: {
       type: Array,
@@ -77,12 +90,17 @@ export default {
   data () {
     return {
       isGrid: false,
+      filter: '',
+      pagination: {
+        rowsPerPage: 20 // current rows per page being displayed
+      },
+
       border: '#87C5D6',
       separator: 'cell',
       columns: [
         {
           name: 'rank',
-          label: 'RANK',
+          label: '#',
           align: 'center',
           field: row => row.rank,
           sortable: true,
@@ -91,24 +109,14 @@ export default {
         { name: 'validator', align: 'left', label: 'VALIDATOR', field: 'validator' },
         { name: 'stake', align: 'left', label: 'STAKE (AVA / nAva)', field: 'stake', sortable: true },
         { name: 'precent', align: 'left', label: 'CUMULATIVE STAKE (%)', field: 'cumulativeStake' },
+        { name: 'startTime', align: 'left', label: 'Start Time', field: 'startTime', sortable: true },
         { name: 'lastVote', align: 'left', label: 'LAST VOTE', field: 'lastVote' }
       ]
     }
   },
   methods: {
-    progress (startTime, endTime) {
-      const allMinutes = this.getMinutesBetweenDates(startTime, endTime)
-      const nowMinutes = this.getMinutesBetweenDates(startTime, this.getUnixTime())
-      const result = (Number(nowMinutes) / Number(allMinutes))
-      console.log(result)
-      return this.round(result)
-    },
-    getUnixTime () { return Date.now() / 1000 | 0 },
-    getMinutesBetweenDates (startDate, endDate) {
-      startDate = new Date(Number(startDate) * 1000)
-      endDate = new Date(Number(endDate) * 1000)
-      var diff = endDate.getTime() - startDate.getTime()
-      return Math.round(diff / 60000.0)
+    date (time) {
+      return moment(Number(time) * 1000).format('llll')
     },
     cumulativeStake (index) {
       return this.validators.reduce((result, item) => {
