@@ -31,7 +31,7 @@
           >
             <div v-if="col.name === 'validator'" class="row">
               <div :style="'border: solid 2px ' + border + ';border-radius: 50px;'">
-                <q-avatar size="24px" color="grey" class="column-2"><img :src="props.row.img2" /></q-avatar>
+                <q-avatar size="24px" color="grey" class="column-2"><img :src="props.row.img" /></q-avatar>
               </div>
               <div
                 style="cursor: pointer;"
@@ -51,8 +51,11 @@
               :style="getStyle(cumulativeStake(props.row.rank), props.row.precent)">
               {{ cumulativeStake(props.row.rank) }} %
             </div>
-            <div v-else-if="col.name === 'startTime'">
-              {{ date(col.value) }}
+            <div v-else-if="col.name === 'progress'">
+              <progress-bar-validate-session
+                v-bind:startTime="props.row.startTime"
+                v-bind:endTime="props.row.endTime"
+              />
             </div>
             <div v-else>{{ col.value }}</div>
           </q-td>
@@ -60,8 +63,12 @@
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
             <div class="text-left">
-              <q-avatar size="12px" color="grey" class="column-2"><img :src="props.row.img2" /></q-avatar>: <span id="identity">{{ props.row.identity }}</span>
-              <progress-bar-validate-session v-bind:startTime="props.row.startTime" v-bind:endTime="props.row.endTime"/>
+              <details-item
+                v-bind:img="props.row.img"
+                v-bind:identity="props.row.identity"
+                v-bind:startTime="props.row.startTime"
+                v-bind:endTime="props.row.endTime"
+              />
             </div>
           </q-td>
         </q-tr>
@@ -72,13 +79,15 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import moment from 'moment'
+
 import ProgressBarValidateSession from './progress-bar-validatе-session'
+import DetailsItem from './details-item'
 
 export default {
   name: 'TableItem',
   components: {
-    ProgressBarValidateSession
+    ProgressBarValidateSession,
+    DetailsItem
   },
   props: {
     validators: {
@@ -110,7 +119,12 @@ export default {
           sortable: true,
           style: 'width: 50px'
         },
-        { name: 'validator', align: 'left', label: 'VALIDATOR', field: 'validator' },
+        {
+          name: 'validator',
+          align: 'left',
+          label: 'VALIDATOR',
+          field: 'validator'
+        },
         {
           name: 'stake',
           align: 'left',
@@ -119,15 +133,12 @@ export default {
           sortable: true
         },
         { name: 'precent', align: 'left', label: 'CUMULATIVE STAKE (%)', field: 'cumulativeStake' },
-        { name: 'startTime', align: 'left', label: 'Start Time', field: 'startTime', sortable: true },
+        { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress' },
         { name: 'lastVote', align: 'left', label: 'LAST VOTE', field: 'lastVote' }
       ]
     }
   },
   methods: {
-    date (time) {
-      return moment(Number(time) * 1000).format('llll')
-    },
     cumulativeStake (index) {
       return this.validators.reduce((result, item) => {
         if (item.rank <= index) {
@@ -143,7 +154,7 @@ export default {
       return res
     },
     getStyle (cumulativeStake, precent) {
-      return 'background-color: rgb(84, 93, 95);width: ' + (cumulativeStake * 500) + 'px;border-right:' + (precent * 500) + 'px solid #87C5D6;height: 50px;margin: -17px;text-align: right!important;'
+      return 'background-color: rgb(84, 93, 95);width: ' + (cumulativeStake * 500) + 'px;border-right:' + (precent * 500) + 'px solid #87C5D6;height: 62px;margin: -17px;text-align: right!important;'
     }
   }
 }
@@ -154,9 +165,5 @@ export default {
    border-right: 2px solid #87C5D6;
    background: radial-gradient(circle, #344245 0%, #000709 70%);
    opacity:0.9;
- }
- #identity {
-   color: #87C5D6;
-   font-size: 10px;
  }
 </style>
