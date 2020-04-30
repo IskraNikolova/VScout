@@ -13,7 +13,7 @@
     </div>
     <block-item />
     <stak-item />
-    <transactions-item />
+    <!--<transactions-item />-->
     <table-item v-bind:validators="validators" />
     <faqs />
     <div class="flex flex-center q-mt-xl">
@@ -36,7 +36,7 @@ import Faqs from './../components/faqs'
 import StakItem from './../components/stak-item'
 import BlockItem from './../components/block-item'
 import TableItem from './../components/table-item'
-import TransactionsItem from './../components/transactions-item'
+// import TransactionsItem from './../components/transactions-item'
 
 import {
   SET_SUBNETID,
@@ -49,8 +49,8 @@ export default {
     Faqs,
     StakItem,
     BlockItem,
-    TableItem,
-    TransactionsItem
+    TableItem
+    // TransactionsItem
   },
   data () {
     return {

@@ -25,7 +25,7 @@ async function initApp ({ dispatch, getters }) {
     Promise.all(
       [
         dispatch(GET_LAST_BLOCK),
-        dispatch(GET_BLOCK_TIME),
+        // dispatch(GET_BLOCK_TIME),
         dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
       ])
   }, 4000)
@@ -64,7 +64,8 @@ async function getBlockchains ({ commit }) {
 
 async function getValidators ({ commit, getters }, { subnetID }) {
   try {
-    const { validators } = await _getValidators({ subnetID })
+    var { validators } = await _getValidators({ subnetID })
+    validators = validators.filter(i => i.endTime >= Date.now() / 1000)
     validators.sort(compare)
     const val = map(validators, getters.lastBlock)
     commit(SET_VALIDATORS, { validators: val })
@@ -80,9 +81,9 @@ function map (validators, lastBlock) {
     const validator = `${val.id.substr(0, 9)}...`
     const precent = getPrecent(val.stakeAmount)
     const identity = val.id
-    const stakenAva = Number(val.stakeAmount).toLocaleString()
+    const stakenAva = Math.floor(val.stakeAmount)
     const stakeAva = getAvaFromnAva(val.stakeAmount)
-    const stake = stakeAva > 1 ? stakeAva.toLocaleString() : stakeAva
+    const stake = stakeAva
     // todo last vote
     const lastVote = lastBlock.timestamp
     const startTime = val.startTime

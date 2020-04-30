@@ -1,6 +1,5 @@
 <template>
  <div class="q-mt-md">
-   <q-responsive :ratio="16/9">
     <q-table
       :data="validators"
       :columns="columns"
@@ -34,10 +33,16 @@
               <div :style="'border: solid 2px ' + border + ';border-radius: 50px;'">
                 <q-avatar size="24px" color="grey" class="column-2">{{ props.row.img }}</q-avatar>
               </div>
-              <div @click="props.expand = !props.expand" class="column q-pl-xl">{{ col.value }}</div>
+              <div
+                style="cursor: pointer;"
+                class="column q-pl-xl"
+                @mouseover="props.expand = true"
+                @mouseleave="props.expand = false">
+                {{ col.value }}
+              </div>
             </div>
             <div v-else-if="col.name === 'stake'">
-              {{ col.value }} <small style="color: grey;"> ({{ props.row.stakenAva }} nAva)</small>
+              {{ col.value }} <small style="color: grey;"> ({{ props.row.stakenAva.toLocaleString() }} nAva)</small>
               <br />
               <small style="color: grey;">{{ props.row.precent }} %</small>
             </div>
@@ -62,7 +67,6 @@
         </q-tr>
       </template>
     </q-table>
-   </q-responsive>
  </div>
 </template>
 
@@ -107,7 +111,13 @@ export default {
           style: 'width: 50px'
         },
         { name: 'validator', align: 'left', label: 'VALIDATOR', field: 'validator' },
-        { name: 'stake', align: 'left', label: 'STAKE (AVA / nAva)', field: 'stake', sortable: true },
+        {
+          name: 'stake',
+          align: 'left',
+          label: 'STAKE (AVA / nAva)',
+          field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
+          sortable: true
+        },
         { name: 'precent', align: 'left', label: 'CUMULATIVE STAKE (%)', field: 'cumulativeStake' },
         { name: 'startTime', align: 'left', label: 'Start Time', field: 'startTime', sortable: true },
         { name: 'lastVote', align: 'left', label: 'LAST VOTE', field: 'lastVote' }

@@ -1,8 +1,9 @@
 <template>
-  <div>
+<div class="row">
+  <div class="col">
     <label for="file" class="row">
       <div class="col">Start <span class="text-accent">{{ date(startTime) }} </span><small>({{ fromNow(startTime) }})</small></div>
-      <div class="col-3 q-pl-xl">End <span class="text-accent">{{ date(endTime) }}</span></div>
+      <div class="col-3">End <span class="text-accent">{{ date(endTime) }}</span></div>
     </label>
     <q-linear-progress id="file" dark stripe rounded size="20px" :value="progress(startTime, endTime)" color="accent" class="q-mt-sm" >
     <div class="absolute-full flex flex-center">
@@ -10,6 +11,7 @@
     </div>
     </q-linear-progress>
   </div>
+</div>
 </template>
 
 <script>
