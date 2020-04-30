@@ -31,7 +31,7 @@
           >
             <div v-if="col.name === 'validator'" class="row">
               <div :style="'border: solid 2px ' + border + ';border-radius: 50px;'">
-                <q-avatar size="24px" color="grey" class="column-2">{{ props.row.img }}</q-avatar>
+                <q-avatar size="24px" color="grey" class="column-2"><img :src="props.row.img2" /></q-avatar>
               </div>
               <div
                 style="cursor: pointer;"
@@ -60,7 +60,7 @@
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
             <div class="text-left">
-              Validator Identity: <span id="identity">{{ props.row.identity }}</span>
+              <q-avatar size="12px" color="grey" class="column-2"><img :src="props.row.img2" /></q-avatar>: <span id="identity">{{ props.row.identity }}</span>
               <progress-bar-validate-session v-bind:startTime="props.row.startTime" v-bind:endTime="props.row.endTime"/>
             </div>
           </q-td>

@@ -16,7 +16,7 @@ import {
   _getValidators
 } from './../../modules/network'
 
-import { secBetweenTwoTime } from './../../utils/commons'
+import { secBetweenTwoTime, makeMD5 } from './../../utils/commons'
 const BigNumber = require('bignumber.js')
 
 async function initApp ({ dispatch, getters }) {
@@ -88,7 +88,11 @@ function map (validators, lastBlock) {
     const lastVote = lastBlock.timestamp
     const startTime = val.startTime
     const endTime = val.endTime
-    const img = '?'
+    const MD5 = makeMD5()
+    const seed = val.id
+    const hash = MD5.hex(seed)
+    const img = 'http://www.gravatar.com/avatar/' + hash + '?d=identicon&s=150'
+    const img2 = 'http://www.gravatar.com/avatar/' + hash + '?d=monsterid&s=150'
     return {
       rank,
       validator,
@@ -99,7 +103,8 @@ function map (validators, lastBlock) {
       lastVote,
       startTime,
       endTime,
-      img
+      img,
+      img2
     }
   })
 
