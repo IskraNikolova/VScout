@@ -1,8 +1,8 @@
 {
-  "name": "ex-subnets",
+  "name": "p-chain-ex",
   "version": "0.0.1",
-  "description": "Subnet's validators explorer",
-  "productName": "AVA Subnet's Explorer",
+  "description": "Ava P-Chain explorer, display validators.",
+  "productName": "AVA P-Chain Explorer",
   "cordovaId": "io.ava.explorer.app",
   "capacitorId": "",
   "author": "Iskra Nikolova airiskra@gmail.com",

@@ -100,9 +100,9 @@ module.exports = function (ctx) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'AVA Subnet\'s Explorer',
-        short_name: 'AVA Subnet\'s Explorer',
-        description: 'Subnet\'s validators explorer',
+        name: 'Ava P-Chain explorer',
+        short_name: 'AVAPChainEx',
+        description: 'Ava P-Chain explorer, display validators.',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -168,7 +168,7 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'ex-subnets'
+        appId: 'p-chain-ex'
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
