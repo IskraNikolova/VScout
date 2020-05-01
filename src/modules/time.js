@@ -1,12 +1,10 @@
 import moment from 'moment'
 
 export const getDuration = (s, e) => {
-  s = new Date(Number(s) * 1000)
-  e = new Date(Number(e) * 1000)
-  const date1 = moment(s)
-  const date2 = moment(e)
-  const duration = moment.duration(date2.diff(date1))
-  return duration
+  const start = moment(new Date(Number(s) * 1000))
+  const end = moment(new Date(Number(e) * 1000))
+
+  return moment.duration(end.diff(start))
 }
 
 export const timeago = (t) => {
