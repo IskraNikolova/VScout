@@ -3,24 +3,14 @@ import moment from 'moment'
 export const getDuration = (s, e) => {
   s = new Date(Number(s) * 1000)
   e = new Date(Number(e) * 1000)
-  const date1 = moment(s, 'MM/DD/YYYY')
-  const date2 = moment(e, 'MM/DD/YYYY')
+  const date1 = moment(s)
+  const date2 = moment(e)
   const duration = moment.duration(date2.diff(date1))
   return duration
 }
 
 export const timeago = (t) => {
-  const dur = Math.round(moment.duration(t).asSeconds())
-  if (dur < 60 && dur > 0) {
-    return `${dur} sec left`
-  } else if (dur < 3600 && dur > 0) {
-    return `${Math.round(moment.duration(t).asMinutes())} min left`
-  } else if (dur > 3600 && dur < 86400) {
-    return `${Math.round(moment.duration(t).asHours())} hours left`
-  } else if (dur > 3600) {
-    return `${Math.round(moment.duration(t).asDays())} days left`
-  }
-  return 'completed'
+  return moment.duration(t).humanize(true)
 }
 
 export const date = (time) => {

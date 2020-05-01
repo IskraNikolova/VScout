@@ -30,6 +30,11 @@ export function deepMerge (...objects) {
   }
 }
 
+export function round (num, prec) {
+  const multiplier = Math.pow(prec, 1 || 0)
+  return Math.round(num * multiplier) / multiplier
+}
+
 /**
 * Get difference between two timestamps in seconds
 *

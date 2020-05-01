@@ -154,7 +154,7 @@ export default {
       return res
     },
     getStyle (cumulativeStake, precent) {
-      return 'background-color: rgb(84, 93, 95);width: ' + (cumulativeStake * 500) + 'px;border-right:' + (precent * 500) + 'px solid #87C5D6;height: 62px;margin: -17px;text-align: right!important;'
+      return 'background-color: rgb(84, 93, 95);width: ' + (cumulativeStake * 500) + 'px;border-right:' + (precent * 500) + 'px solid #87C5D6;height: 52px;margin: -17px;text-align: right!important;'
     }
   }
 }

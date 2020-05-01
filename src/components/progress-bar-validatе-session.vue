@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div style="margin-top: -5px;">
     <label for="file" class="row">
-      <div class="col-3"><small>{{ leftTime(startTime, endTime) }}</small></div>
+      <div class="col-3"><small>{{ timeago}}</small></div>
     </label>
-    <q-linear-progress id="file" dark stripe rounded size="30px" :value="progress(startTime, endTime)" color="white">
+    <q-linear-progress id="file" dark stripe rounded size="18px" :value="progress" color="accent">
     <div class="absolute-full flex flex-center">
-      <q-badge color="white" text-color="accent" :label="round(progress(startTime, endTime) * 100) + '% '" />
+      <q-badge color="black" text-color="accent" :label="progressBadge + '% '" />
     </div>
     </q-linear-progress>
   </div>
@@ -13,6 +13,7 @@
 
 <script>
 import { getDuration, timeago } from './../modules/time'
+import { round } from './../utils/commons'
 
 export default {
   name: 'ProgressBarValidateSession',
@@ -26,25 +27,38 @@ export default {
       required: true
     }
   },
+  data () {
+    return {
+      progress: 0,
+      timeago: ''
+    }
+  },
+  created () {
+    this.progress = this.progressM()
+    this.timeago = this.timeagoM()
+    setInterval(() => {
+      this.progress = this.progressM()
+      this.timeago = this.timeagoM()
+    }, 60000)
+  },
+  computed: {
+    progressBadge: function () {
+      return round(this.progress * 100, 1000)
+    }
+  },
   methods: {
-    progress (startTime, endTime) {
-      const allMinutes = getDuration(startTime, endTime)
-      const nowMinutes = getDuration(startTime, this.getUnixTime())
-      if (nowMinutes > allMinutes) return 1
-      const result = Math.floor(nowMinutes) / Math.floor(allMinutes)
-      return this.round(result)
+    dur () {
+      return getDuration(this.startTime, this.endTime)
     },
-    leftTime (s, e) {
-      const all = getDuration(s, e)
-      const last = getDuration(s, this.getUnixTime())
-      const res = timeago(all - last)
-      return res
+    lastDur () {
+      return getDuration(this.startTime, Date.now() / 1000 | 0)
     },
-    getUnixTime () { return Date.now() / 1000 | 0 },
-    round (result) {
-      const multiplier = Math.pow(1000, 1 || 0)
-      const res = Math.round(result * multiplier) / multiplier
-      return res
+    timeagoM () {
+      return timeago(this.dur() - this.lastDur())
+    },
+    progressM () {
+      const result = Math.floor(this.lastDur()) / Math.floor(this.dur())
+      return round(result, 1000)
     }
   }
 }

@@ -65,7 +65,7 @@ async function getBlockchains ({ commit }) {
 async function getValidators ({ commit, getters }, { subnetID }) {
   try {
     var { validators } = await _getValidators({ subnetID })
-    validators = validators.filter(i => i.endTime >= Date.now() / 1000)
+    // validators = validators.filter(i => i.endTime >= Date.now() / 1000)
     validators.sort(compare)
     const val = map(validators, getters.lastBlock)
     commit(SET_VALIDATORS, { validators: val })
