@@ -25,7 +25,7 @@ async function initApp ({ dispatch, getters }) {
     Promise.all(
       [
         dispatch(GET_LAST_BLOCK),
-        // dispatch(GET_BLOCK_TIME),
+        dispatch(GET_BLOCK_TIME),
         dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
       ])
   }, 4000)
@@ -131,14 +131,22 @@ function round (result) {
   return res
 }
 
+// todo opt
 function compare (a, b) {
+  const get = (a, b) => { return b - a }
   if (Number(b.stakeAmount) < Number(a.stakeAmount)) {
     return -1
   } else if (Number(b.stakeAmount) > Number(a.stakeAmount)) {
     return 1
-  }
+  } else {
+    if (get(a.startTime, a.endTime) > get(b.startTime, b.endTime)) {
+      return -1
+    } else if (get(a.startTime, a.endTime) < get(b.startTime, b.endTime)) {
+      return 1
+    }
 
-  return 0
+    return 0
+  }
 }
 
 export default {

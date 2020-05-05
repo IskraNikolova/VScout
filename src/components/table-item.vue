@@ -113,7 +113,7 @@ export default {
       columns: [
         {
           name: 'rank',
-          label: '#',
+          label: 'RANK',
           align: 'center',
           field: row => row.rank,
           sortable: true,

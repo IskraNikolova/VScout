@@ -14,7 +14,13 @@
     <block-item />
     <stak-item />
     <!--<transactions-item />-->
+        <transition
+      appear
+      enter-active-class="animated bounceInLeft"
+      leave-active-class="animated bounceInUp"
+    >
     <table-item v-bind:validators="validators" />
+        </transition>
     <faqs />
     <div class="flex flex-center q-mt-xl">
       <img src="~assets/ava-white.png" id="logo"/>

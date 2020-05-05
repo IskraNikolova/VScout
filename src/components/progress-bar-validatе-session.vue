@@ -4,9 +4,9 @@
       <div class="col-3"><small>{{ timeago}}</small></div>
     </label>
     <q-linear-progress id="file" dark stripe rounded size="18px" :value="progress" color="accent">
-    <div class="absolute-full flex flex-center">
-      <q-badge color="black" text-color="accent" :label="progressBadge + '% '" />
-    </div>
+      <div class="absolute-full flex flex-center">
+        <q-badge color="black" text-color="accent" :label="progressBadge + '% '" />
+      </div>
     </q-linear-progress>
   </div>
 </template>
