@@ -82,6 +82,7 @@ import { mapGetters } from 'vuex'
 
 import ProgressBarValidateSession from './progress-bar-validatе-session'
 import DetailsItem from './details-item'
+import { round } from './../utils/commons'
 
 export default {
   name: 'TableItem',
@@ -142,16 +143,11 @@ export default {
     cumulativeStake (index) {
       return this.validators.reduce((result, item) => {
         if (item.rank <= index) {
-          result += item.precent
+          result += parseFloat(item.precent)
         }
 
-        return this.round(result)
+        return round(result, 1000)
       }, 0)
-    },
-    round (result) {
-      const multiplier = Math.pow(1000, 1 || 0)
-      const res = Math.round(result * multiplier) / multiplier
-      return res
     },
     getStyle (cumulativeStake, precent) {
       // todo see table quasar doc for styling

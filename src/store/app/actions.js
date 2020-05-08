@@ -20,12 +20,12 @@ import { secBetweenTwoTime, makeMD5 } from './../../utils/commons'
 const BigNumber = require('bignumber.js')
 
 async function initApp ({ dispatch, getters }) {
-  await dispatch(GET_LAST_BLOCK)
+  // await dispatch(GET_LAST_BLOCK)
   setInterval(() => {
     Promise.all(
       [
-        dispatch(GET_LAST_BLOCK),
-        dispatch(GET_BLOCK_TIME),
+        // dispatch(GET_LAST_BLOCK),
+        // dispatch(GET_BLOCK_TIME),
         dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
       ])
   }, 4000)
@@ -82,7 +82,7 @@ function map (validators, lastBlock) {
     const validator = `${val.id.substr(0, 9)}...`
     const precent = getPrecent(val.stakeAmount, s)
     const identity = val.id
-    const stakenAva = Math.floor(val.stakeAmount)
+    const stakenAva = parseFloat(val.stakeAmount)
     const stakeAva = getAvaFromnAva(val.stakeAmount)
     const stake = stakeAva
     // todo last vote
@@ -119,24 +119,18 @@ function getPrecent (v, s) {
   const res = v.multipliedBy(y)
 
   const result = res.dividedBy(allStake)
-  return round(result)
+  return result.toFixed(8)
 }
 
 function stake (validators) {
   return validators.reduce((a, b) => {
     if (!b.stakeAmount) return
-    return a + (Math.floor(b.stakeAmount) / 10 ** 9)
+    return a + (parseFloat(b.stakeAmount) / 10 ** 9)
   }, 0.0)
 }
 
 function getAvaFromnAva (v) {
   return Number(v) / 10 ** 9
-}
-
-function round (result) {
-  const multiplier = Math.pow(1000, 1 || 0)
-  const res = Math.round(result * multiplier) / multiplier
-  return res
 }
 
 // todo opt

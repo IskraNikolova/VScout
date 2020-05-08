@@ -49,7 +49,7 @@ export default {
     stake () {
       return this.validators.reduce((a, b) => {
         if (!b.stakenAva) return
-        return a + (Math.floor(b.stakenAva) / 10 ** 9)
+        return a + (parseFloat(b.stakenAva) / 10 ** 9)
       }, 0.0)
     }
   }
