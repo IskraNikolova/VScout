@@ -154,7 +154,8 @@ export default {
       return res
     },
     getStyle (cumulativeStake, precent) {
-      return 'background-color: rgb(84, 93, 95);width: ' + (cumulativeStake * 500) + 'px;border-right:' + (precent * 500) + 'px solid #87C5D6;height: 52px;margin: -17px;text-align: right!important;'
+      // todo see table quasar doc for styling
+      return 'background-color: rgb(84, 93, 95);width: ' + (cumulativeStake * 1.17) + '%;border-right:' + (precent * 2.17) + 'px solid #87C5D6;text-align: right!important;height: 52px;margin:-9%;'
     }
   }
 }

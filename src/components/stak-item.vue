@@ -15,7 +15,7 @@
         <div style="font-size: 11px;" class="q-pb-md">STAKED AVA</div>
         <div class="text-h5 q-pb-md">
           <b>
-            <span class="text-secondary"><small>{{stake()}}</small> </span>
+            <span class="text-secondary"><small>{{stake().toLocaleString()}}</small> </span>
             <span style="font-size: 13px;">/360M</span>
           </b>
         </div>
@@ -48,8 +48,8 @@ export default {
   methods: {
     stake () {
       return this.validators.reduce((a, b) => {
-        if (!b.stake) return
-        return a + Math.floor(b.stake)
+        if (!b.stakenAva) return
+        return a + (Math.floor(b.stakenAva) / 10 ** 9)
       }, 0.0)
     }
   }

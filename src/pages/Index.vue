@@ -11,7 +11,7 @@
         :options="options"
       />
     </div>
-    <block-item />
+    <!--<block-item />-->
     <stak-item />
     <!--<transactions-item />-->
         <transition
@@ -40,7 +40,7 @@ import {
 
 import Faqs from './../components/faqs'
 import StakItem from './../components/stak-item'
-import BlockItem from './../components/block-item'
+// import BlockItem from './../components/block-item'
 import TableItem from './../components/table-item'
 // import TransactionsItem from './../components/transactions-item'
 
@@ -54,7 +54,7 @@ export default {
   components: {
     Faqs,
     StakItem,
-    BlockItem,
+    // BlockItem,
     TableItem
     // TransactionsItem
   },

@@ -65,7 +65,7 @@ async function getBlockchains ({ commit }) {
 async function getValidators ({ commit, getters }, { subnetID }) {
   try {
     var { validators } = await _getValidators({ subnetID })
-    // validators = validators.filter(i => i.endTime >= Date.now() / 1000)
+    validators = validators.filter(i => i.endTime >= Date.now() / 1000)
     validators.sort(compare)
     const val = map(validators, getters.lastBlock)
     commit(SET_VALIDATORS, { validators: val })
@@ -76,10 +76,11 @@ async function getValidators ({ commit, getters }, { subnetID }) {
 
 function map (validators, lastBlock) {
   let index = 1
+  const s = stake(validators)
   const vals = validators.map(val => {
     const rank = index++
     const validator = `${val.id.substr(0, 9)}...`
-    const precent = getPrecent(val.stakeAmount)
+    const precent = getPrecent(val.stakeAmount, s)
     const identity = val.id
     const stakenAva = Math.floor(val.stakeAmount)
     const stakeAva = getAvaFromnAva(val.stakeAmount)
@@ -111,14 +112,21 @@ function map (validators, lastBlock) {
   return vals
 }
 
-function getPrecent (v) {
+function getPrecent (v, s) {
   v = new BigNumber(getAvaFromnAva(v))
-  const allStake = new BigNumber(360000000)
+  const allStake = new BigNumber(s)
   const y = new BigNumber(100)
   const res = v.multipliedBy(y)
 
   const result = res.dividedBy(allStake)
   return round(result)
+}
+
+function stake (validators) {
+  return validators.reduce((a, b) => {
+    if (!b.stakeAmount) return
+    return a + (Math.floor(b.stakeAmount) / 10 ** 9)
+  }, 0.0)
 }
 
 function getAvaFromnAva (v) {
