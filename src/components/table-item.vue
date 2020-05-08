@@ -64,7 +64,7 @@
           <q-td colspan="100%">
             <div class="text-left">
               <details-item
-                v-bind:img="props.row.img"
+                v-bind:img="props.row.img2"
                 v-bind:identity="props.row.identity"
                 v-bind:startTime="props.row.startTime"
                 v-bind:endTime="props.row.endTime"

@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="q-mt-md q-pa-md q-pl-xl"
+    class="q-pa-md q-pl-xl"
     dark flat id="custom-card" >
     <div class="row">
       <div class="col-md-2 col-xs-10">

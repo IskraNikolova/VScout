@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-xl">
-    <div class="flex flex-center q-pb-xl">
-      <q-img src="~assets/ava.png" id="b-logo" />
+    <div class="flex flex-center">
+      <q-img src="~assets/ava-black.png" id="b-logo" />
     </div>
     <div class="flex flex-right">
       <q-select
@@ -13,17 +13,11 @@
     </div>
     <!--<block-item />-->
     <stak-item />
-    <!--<transactions-item />-->
-        <transition
-      appear
-      enter-active-class="animated bounceInLeft"
-      leave-active-class="animated bounceInUp"
-    >
+    <transactions-item />
     <table-item v-bind:validators="validators" />
-        </transition>
     <faqs />
     <div class="flex flex-center q-mt-xl">
-      <img src="~assets/ava-white.png" id="logo"/>
+      <img src="~assets/ava-black.png" id="logo"/>
     </div>
     <div class="flex flex-center q-mt-xl">
       Made with ❤️ for builders everywhere.
@@ -42,7 +36,7 @@ import Faqs from './../components/faqs'
 import StakItem from './../components/stak-item'
 // import BlockItem from './../components/block-item'
 import TableItem from './../components/table-item'
-// import TransactionsItem from './../components/transactions-item'
+import TransactionsItem from './../components/transactions-item'
 
 import {
   SET_SUBNETID,
@@ -55,8 +49,8 @@ export default {
     Faqs,
     StakItem,
     // BlockItem,
-    TableItem
-    // TransactionsItem
+    TableItem,
+    TransactionsItem
   },
   data () {
     return {

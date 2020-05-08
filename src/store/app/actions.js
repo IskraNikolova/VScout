@@ -26,7 +26,7 @@ async function initApp ({ dispatch, getters }) {
       [
         // dispatch(GET_LAST_BLOCK),
         // dispatch(GET_BLOCK_TIME),
-        dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
+        // dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
       ])
   }, 4000)
 

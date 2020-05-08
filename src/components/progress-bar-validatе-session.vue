@@ -27,23 +27,15 @@ export default {
       required: true
     }
   },
-  data () {
-    return {
-      progress: 0,
-      timeago: ''
-    }
-  },
-  created () {
-    this.progress = this.progressM()
-    this.timeago = this.timeagoM()
-    setInterval(() => {
-      this.progress = this.progressM()
-      this.timeago = this.timeagoM()
-    }, 60000)
-  },
   computed: {
     progressBadge: function () {
-      return round(this.progress * 100, 1000)
+      return round(this.progressM() * 100, 1000)
+    },
+    progress: function () {
+      return this.progressM()
+    },
+    timeago: function () {
+      return this.timeagoM()
     }
   },
   methods: {

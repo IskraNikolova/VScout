@@ -1,9 +1,13 @@
 <template>
-  <div>
-    <q-avatar size="12px" color="grey" class="column-2"><img :src="img" /></q-avatar>
-    <div>Validator Id: <span id="identity">{{ identity }}</span></div>
-    <div>Start <span class="text-accent">{{ startDate }} </span><small>({{ fromNowGet }})</small></div>
-    <div>End <span class="text-accent">{{ endDate }}</span></div>
+  <div class="row">
+    <div class="col">
+      <div>Validator Id: <span id="identity">{{ identity }}</span></div>
+      <div>Start <span class="text-accent">{{ startDate }} </span><small>({{ fromNowGet }})</small></div>
+      <div>End <span class="text-accent">{{ endDate }}</span></div>
+    </div>
+    <div class="col">
+      <q-avatar size="52px" color="grey" class="column-2"><img :src="img" /></q-avatar>
+    </div>
   </div>
 </template>
 

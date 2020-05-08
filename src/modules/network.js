@@ -23,6 +23,16 @@ const body = (method, params = {}) => {
   }
 }
 
+export const _getTxs = async () => {
+  const req = await axios.get(network.explorerTxUrl)
+  return req.data
+}
+
+export const _getAgregates = async (s, e) => {
+  const req = await axios.get(network.explorerTxUrl + `/aggregates?startTime=${s}&endTime=${e}`)
+  return req.data.aggregates
+}
+
 export const request = async (endpoint, body) => {
   const response = await axios.post(endpoint, body)
   return response.data.result

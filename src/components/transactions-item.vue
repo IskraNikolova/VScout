@@ -6,9 +6,9 @@
     <div class="row">
       <div class="col-md-3 col-xs-12">
         <div style="font-size: 11px;" class="q-pb-md">CURRENT TPS</div>
-        <div class="text-h5 text-positive q-pb-xl"><b>131</b></div>
+        <div class="text-h5 text-positive q-pb-xl"><b>{{ tps.toFixed(2) }}</b></div>
         <div style="font-size: 12px;" class="q-pb-md">TOTAL TRANSACTIONS</div>
-        <div class="text-h5"><b><span class="text-positive">219,606,845</span></b></div>
+        <div class="text-h5"><b><span class="text-positive">{{ totalTxs }}</span></b></div>
       </div>
       <div class="col-md-9 col-xs-12">
         <!--todo calc and vuew -->
@@ -25,57 +25,91 @@
 
 <script>
 import Chart from 'chart.js'
+import moment from 'moment'
+
+import { _getTxs, _getAgregates } from './../modules/network'
+const lab = {
+  1: '1 MIN',
+  3: '3 MIN',
+  15: '15 SECONDS'
+}
 
 export default {
   name: 'TransactionsItem',
-  mounted () {
+  async mounted () {
+    this.arr = await this.getDataForSixHours()
+    const txs = await _getTxs()
+    this.totalTxs = txs.count
+    setInterval(() => {
+      _getTxs()
+        .then((res) => {
+          this.totalTxs = res.count
+        })
+    }, 100000)
     this.getChart()
-    // setInterval(() => {
-    this.arr.push(Math.floor((Math.random() * 60) + 23))
-    this.arr.push(Math.floor((Math.random() * 60) + 23))
-    this.arr.push(Math.floor((Math.random() * 60) + 23))
-    this.arr.shift()
-    this.arr.shift()
-    this.arr.shift()
     this.myChart.update()
-    // }, 6000)
   },
   data () {
     return {
+      totalTxs: 0,
+      tps: 0.00,
       arr: [],
       myChart: {},
-      label: '15 SECONDS'
+      label: 15
     }
   },
   methods: {
-    onTreeMin () {
-      this.label = '15 SECONDS'
+    async onTreeMin () {
+      this.label = 15
+      this.arr = await this.getDataForMin()
       this.getChart()
     },
-    onTwoHours () {
-      this.label = '1 MIN'
+    async onTwoHours () {
+      this.label = 1
+      this.arr = await this.getDataForTwoHours()
       this.getChart()
     },
-    onSixHours () {
-      this.label = '3 MIN'
+    async onSixHours () {
+      this.label = 3
+      this.arr = await this.getDataForSixHours()
       this.getChart()
+    },
+    async getDataForMin () {
+      const txs = []
+      const minAgo = moment().subtract(30, 'minutes')
+      while (minAgo < moment()) {
+        const aggregates = await _getAgregates(minAgo.toISOString(), minAgo.add(15, 'seconds').toISOString())
+        txs.push({ count: aggregates.transactionCount, label: 'test' })
+      }
+      return txs
+    },
+    async getDataForTwoHours () {
+      const txs = []
+      const minAgo = moment().subtract(2, 'hours')
+      while (minAgo < moment()) {
+        const aggregates = await _getAgregates(minAgo.toISOString(), minAgo.add(1, 'minutes').toISOString())
+        txs.push({ count: aggregates.transactionCount, label: 'test' })
+      }
+      return txs
+    },
+    async getDataForSixHours () {
+      const txs = []
+      const minAgo = moment().subtract(6, 'hours')
+      while (minAgo < moment()) {
+        const aggregates = await _getAgregates(minAgo.toISOString(), minAgo.add(3, 'minutes').toISOString())
+        txs.push({ count: aggregates.transactionCount, label: 'test' })
+      }
+      return txs
     },
     getChart () {
-      this.arr = [
-        11, 34, 45, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23,
-        11, 34, 45, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23,
-        11, 34, 45, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23,
-        11, 34, 45, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23,
-        11, 34, 45, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23,
-        11, 34, 45, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23, 5, 55, 44, 56, 45, 23, 12, 45, 56, 35, 23]
       const ctx = window.document.getElementById('myChart').getContext('2d')
       this.myChart = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: new Array(133).fill(''),
           datasets: [{
-            label: `TPS HISTORY - ${this.label} Ø`,
-            data: this.arr,
+            label: `TPS HISTORY - ${lab[this.label]} Ø`,
+            data: this.arr.map(a => a.count),
             backgroundColor: 'rgba(146, 255, 96)',
             borderColor: 'rgba(146, 255, 96, 0.4)',
             borderWidth: 1

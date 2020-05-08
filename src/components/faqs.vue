@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="flex flex-center text-h2 text-white q-pt-xl">FAQs</div>
-    <div class="flex flex-center text-h7 text-white q-pt-xl q-mb-xl">
+    <div class="flex flex-center text-h2 q-pt-xl">FAQs</div>
+    <div class="flex flex-center text-h7 q-pt-xl q-mb-xl">
       Let's answer some questions you may have.
-      <q-btn no-caps flat v-if="!visible" @click="visible=!visible" color="white" icon="expand_more"/>
-      <q-btn no-caps flat v-else @click="visible=!visible" color="white" icon="expand_less"/>
+      <q-btn no-caps flat v-if="!visible" @click="visible=!visible" icon="expand_more"/>
+      <q-btn no-caps flat v-else @click="visible=!visible" icon="expand_less"/>
     </div>
     <q-slide-transition>
       <div v-show="visible">
