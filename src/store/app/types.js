@@ -18,6 +18,11 @@ export const SET_TX_FOR_24_HOURS = 'SET_TX_FOR_24_HOURS'
 export const GET_TOTAL_TXS = 'GET_TOTAL_TXS'
 export const SET_TOTAL_TXS = 'SET_TOTAL_TXS'
 
+export const GET_TXS_HISTORY = 'GET_TXS_HISTORY'
+export const SET_TXS_HISTORY = 'SET_TXS_HISTORY'
+
+export const SET_KEY_TXH = 'SET_KEY_TXH'
+
 export const SET_LAST_BLOCK_TIME = 'SET_LAST_BLOCK_TIME'
 
 export const SET_SUBNETID = 'SET_SUBNETID'

@@ -30,3 +30,11 @@ export function txsFor24H (state) {
 export function totalTxsCount (state) {
   return state.totalTxsCount
 }
+
+export function txsHistory (state) {
+  return key => state.txsHistory[key]
+}
+
+export function txHKey (state) {
+  return state.txHKey
+}

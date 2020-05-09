@@ -14,7 +14,9 @@ import {
   SET_BLOCK_TIME,
   GET_BLOCK_TIME,
   GET_TX_FOR_24_HOURS,
-  SET_TX_FOR_24_HOURS
+  SET_TX_FOR_24_HOURS,
+  GET_TXS_HISTORY,
+  SET_TXS_HISTORY
 } from './types'
 
 import {
@@ -29,13 +31,15 @@ import { secBetweenTwoTime, makeMD5 } from './../../utils/commons'
 
 async function initApp ({ dispatch, getters }) {
   // await dispatch(GET_LAST_BLOCK)
-  dispatch(GET_TX_FOR_24_HOURS)
-  dispatch(GET_TOTAL_TXS)
+  await dispatch(GET_TX_FOR_24_HOURS)
+  await dispatch(GET_TOTAL_TXS)
+  await dispatch(GET_TXS_HISTORY)
   setInterval(() => {
     Promise.all(
       [
         dispatch(GET_TX_FOR_24_HOURS),
         dispatch(GET_TOTAL_TXS),
+        // dispatch(GET_TXS_HISTORY),
         // await dispatch(GET_LAST_BLOCK)
         // dispatch(GET_BLOCK_TIME),
         dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
@@ -89,6 +93,52 @@ async function getTotalTXs ({ commit }) {
     const txs = await _getTxs()
     const totalTxsCount = txs.count
     commit(SET_TOTAL_TXS, { totalTxsCount })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const temp = {
+  min30: {
+    sub: { value: 30, label: 'minutes' },
+    add: { value: 15, label: 'seconds' }
+  },
+  hour2: {
+    sub: { value: 2, label: 'hours' },
+    add: { value: 1, label: 'minutes' }
+  },
+  hour6: {
+    sub: { value: 6, label: 'hours' },
+    add: { value: 3, label: 'minutes' }
+  },
+  day: {
+    sub: { value: 1, label: 'day' },
+    add: { value: 1, label: 'hours' }
+  },
+  week: {
+    sub: { value: 7, label: 'days' },
+    add: { value: 6, label: 'hours' }
+  },
+  month: {
+    sub: { value: 1, label: 'months' },
+    add: { value: 1, label: 'days' }
+  },
+  year: {
+    sub: { value: 1, label: 'years' },
+    add: { value: 1, label: 'months' }
+  }
+}
+
+async function getTxsHistory ({ commit, getters }) {
+  try {
+    const { sub, add } = temp[getters.txHKey]
+    const txsHistory = []
+    const minAgo = moment().subtract(sub.value, sub.label)
+    while (minAgo < moment()) {
+      const aggregates = await _getAgregates(minAgo.toISOString(), minAgo.add(add.value, add.label).toISOString())
+      txsHistory.push(aggregates)
+    }
+    commit(SET_TXS_HISTORY, { key: getters.txHKey, txsHistory })
   } catch (err) {
     console.log(err)
   }
@@ -190,5 +240,6 @@ export default {
   [GET_BLOCKCHAINS]: getBlockchains,
   [GET_BLOCK_TIME]: getBlockTime,
   [GET_TX_FOR_24_HOURS]: getTxsFor24H,
-  [GET_TOTAL_TXS]: getTotalTXs
+  [GET_TOTAL_TXS]: getTotalTXs,
+  [GET_TXS_HISTORY]: getTxsHistory
 }

@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 import {
   SET_BLOCK,
   SET_VALIDATORS,
@@ -6,7 +8,9 @@ import {
   SET_TOTAL_TXS,
   SET_BLOCK_TIME,
   SET_LAST_BLOCK_TIME,
-  SET_TX_FOR_24_HOURS
+  SET_TX_FOR_24_HOURS,
+  SET_KEY_TXH,
+  SET_TXS_HISTORY
 } from './types'
 
 const mutations = {
@@ -33,6 +37,13 @@ const mutations = {
   },
   [SET_TOTAL_TXS]: (state, { totalTxsCount }) => {
     state.totalTxsCount = totalTxsCount
+  },
+  [SET_KEY_TXH]: (state, { txHKey }) => {
+    state.txHKey = txHKey
+  },
+  [SET_TXS_HISTORY]: (state, { key, txsHistory }) => {
+    if (!state.txsHistory[key]) Vue.set(state.txsHistory, key, [])
+    state.txsHistory[key] = txsHistory
   }
 }
 

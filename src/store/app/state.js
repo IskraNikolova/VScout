@@ -9,6 +9,8 @@ export default function () {
     blockchains: [],
     subnetID: network.defaultSubnetID,
     txsFor24H: 0,
-    totalTxsCount: 0
+    totalTxsCount: 0,
+    txsHistory: [],
+    txHKey: 'min30'
   }
 }
