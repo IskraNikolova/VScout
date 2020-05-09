@@ -7,6 +7,8 @@ export default function () {
     blockTime: 0,
     lastBlockTime: [],
     blockchains: [],
-    subnetID: network.defaultSubnetID
+    subnetID: network.defaultSubnetID,
+    txsFor24H: 0,
+    totalTxsCount: 0
   }
 }

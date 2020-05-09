@@ -3,8 +3,10 @@ import {
   SET_VALIDATORS,
   SET_BLOCKCHAINS,
   SET_SUBNETID,
+  SET_TOTAL_TXS,
   SET_BLOCK_TIME,
-  SET_LAST_BLOCK_TIME
+  SET_LAST_BLOCK_TIME,
+  SET_TX_FOR_24_HOURS
 } from './types'
 
 const mutations = {
@@ -25,6 +27,12 @@ const mutations = {
   },
   [SET_LAST_BLOCK_TIME]: (state, { blockTime }) => {
     state.lastBlockTime.push(blockTime)
+  },
+  [SET_TX_FOR_24_HOURS]: (state, { txsFor24H }) => {
+    state.txsFor24H = txsFor24H
+  },
+  [SET_TOTAL_TXS]: (state, { totalTxsCount }) => {
+    state.totalTxsCount = totalTxsCount
   }
 }
 

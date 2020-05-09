@@ -1,32 +1,44 @@
+import moment from 'moment'
+const BigNumber = require('bignumber.js')
+
 import {
   INIT_APP,
   GET_LAST_BLOCK,
   SET_BLOCK,
+  GET_TOTAL_TXS,
+  SET_TOTAL_TXS,
   GET_VALIDATORS,
   SET_VALIDATORS,
   GET_BLOCKCHAINS,
   SET_BLOCKCHAINS,
   SET_BLOCK_TIME,
-  GET_BLOCK_TIME
+  GET_BLOCK_TIME,
+  GET_TX_FOR_24_HOURS,
+  SET_TX_FOR_24_HOURS
 } from './types'
 
 import {
   _getBlock,
   _getBlockchains,
-  _getValidators
+  _getValidators,
+  _getAgregates,
+  _getTxs
 } from './../../modules/network'
 
 import { secBetweenTwoTime, makeMD5 } from './../../utils/commons'
-const BigNumber = require('bignumber.js')
 
 async function initApp ({ dispatch, getters }) {
   // await dispatch(GET_LAST_BLOCK)
+  dispatch(GET_TX_FOR_24_HOURS)
+  dispatch(GET_TOTAL_TXS)
   setInterval(() => {
     Promise.all(
       [
-        // dispatch(GET_LAST_BLOCK),
+        dispatch(GET_TX_FOR_24_HOURS),
+        dispatch(GET_TOTAL_TXS),
+        // await dispatch(GET_LAST_BLOCK)
         // dispatch(GET_BLOCK_TIME),
-        // dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
+        dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
       ])
   }, 4000)
 
@@ -57,6 +69,26 @@ async function getBlockchains ({ commit }) {
   try {
     const { blockchains } = await _getBlockchains()
     commit(SET_BLOCKCHAINS, { blockchains })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+async function getTxsFor24H ({ commit }) {
+  try {
+    const minAgo = moment().subtract(24, 'hours')
+    const txsFor24H = await _getAgregates(minAgo.toISOString(), moment().toISOString())
+    commit(SET_TX_FOR_24_HOURS, { txsFor24H: txsFor24H.transactionCount })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+async function getTotalTXs ({ commit }) {
+  try {
+    const txs = await _getTxs()
+    const totalTxsCount = txs.count
+    commit(SET_TOTAL_TXS, { totalTxsCount })
   } catch (err) {
     console.log(err)
   }
@@ -156,5 +188,7 @@ export default {
   [GET_LAST_BLOCK]: getLastBlock,
   [GET_VALIDATORS]: getValidators,
   [GET_BLOCKCHAINS]: getBlockchains,
-  [GET_BLOCK_TIME]: getBlockTime
+  [GET_BLOCK_TIME]: getBlockTime,
+  [GET_TX_FOR_24_HOURS]: getTxsFor24H,
+  [GET_TOTAL_TXS]: getTotalTXs
 }

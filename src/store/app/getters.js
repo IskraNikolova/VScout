@@ -22,3 +22,11 @@ export function avarageBlockTime (state) {
   const sum = state.lastBlockTime.reduce((a, b) => a + b, 0)
   return (sum / state.lastBlockTime.length) || 0
 }
+
+export function txsFor24H (state) {
+  return state.txsFor24H
+}
+
+export function totalTxsCount (state) {
+  return state.totalTxsCount
+}

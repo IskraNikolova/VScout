@@ -5,17 +5,21 @@
   >
     <div class="row">
       <div class="col-md-3 col-xs-12">
-        <div style="font-size: 11px;" class="q-pb-md">CURRENT TPS</div>
-        <div class="text-h5 text-positive q-pb-xl"><b>{{ tps.toFixed(2) }}</b></div>
+        <div style="font-size: 11px;" class="q-pb-md">TRANSACTIONS (24Hr)</div>
+        <div class="text-h5 text-positive q-pb-xl"><b>{{ txsFor24H }} <small>(0.00 TPS)</small></b></div>
         <div style="font-size: 12px;" class="q-pb-md">TOTAL TRANSACTIONS</div>
-        <div class="text-h5"><b><span class="text-positive">{{ totalTxs }}</span></b></div>
+        <div class="text-h5"><b><span class="text-positive">{{ totalTxsCount.toLocaleString() }}</span></b></div>
       </div>
       <div class="col-md-9 col-xs-12">
         <!--todo calc and vuew -->
         <div>
-          <q-btn no-caps size="xs" @click="onTreeMin()" outline color="positive" class="q-mr-xs" label="30m"/>
+          <q-btn no-caps size="xs" @click="onYear()" outline color="positive" class="q-mr-xs" label="Yr"/>
+          <q-btn no-caps size="xs" @click="onMonth()" outline color="positive" class="q-mr-xs" label="Mo"/>
+          <q-btn no-caps size="xs" @click="onWeek()" outline color="positive" class="q-mr-xs" label="Wk"/>
+          <q-btn no-caps size="xs" @click="onDay()" outline color="positive" class="q-mr-xs" label="D"/>
+          <q-btn no-caps size="xs" @click="onSixHours()" outline color="positive" class="q-mr-xs" label="6h"/>
           <q-btn no-caps size="xs" @click="onTwoHours()" outline color="positive" class="q-mr-xs" label="2h"/>
-          <q-btn no-caps size="xs" @click="onSixHours" outline color="positive" label="6h"/>
+          <q-btn no-caps size="xs" @click="onTreeMin()" outline color="positive" label="30m"/>
         </div>
         <canvas id="myChart" height="70%"></canvas>
       </div>
@@ -24,10 +28,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import Chart from 'chart.js'
 import moment from 'moment'
 
-import { _getTxs, _getAgregates } from './../modules/network'
+import { _getAgregates } from './../modules/network'
 const lab = {
   1: '1 MIN',
   3: '3 MIN',
@@ -36,23 +42,20 @@ const lab = {
 
 export default {
   name: 'TransactionsItem',
+  computed: {
+    ...mapGetters([
+      'txsFor24H',
+      'totalTxsCount'
+    ])
+  },
   async mounted () {
     this.arr = await this.getDataForSixHours()
-    const txs = await _getTxs()
-    this.totalTxs = txs.count
-    setInterval(() => {
-      _getTxs()
-        .then((res) => {
-          this.totalTxs = res.count
-        })
-    }, 100000)
     this.getChart()
     this.myChart.update()
   },
   data () {
     return {
       totalTxs: 0,
-      tps: 0.00,
       arr: [],
       myChart: {},
       label: 15
@@ -79,7 +82,7 @@ export default {
       const minAgo = moment().subtract(30, 'minutes')
       while (minAgo < moment()) {
         const aggregates = await _getAgregates(minAgo.toISOString(), minAgo.add(15, 'seconds').toISOString())
-        txs.push({ count: aggregates.transactionCount, label: 'test' })
+        txs.push(aggregates)
       }
       return txs
     },
@@ -88,7 +91,7 @@ export default {
       const minAgo = moment().subtract(2, 'hours')
       while (minAgo < moment()) {
         const aggregates = await _getAgregates(minAgo.toISOString(), minAgo.add(1, 'minutes').toISOString())
-        txs.push({ count: aggregates.transactionCount, label: 'test' })
+        txs.push(aggregates)
       }
       return txs
     },
@@ -97,7 +100,8 @@ export default {
       const minAgo = moment().subtract(6, 'hours')
       while (minAgo < moment()) {
         const aggregates = await _getAgregates(minAgo.toISOString(), minAgo.add(3, 'minutes').toISOString())
-        txs.push({ count: aggregates.transactionCount, label: 'test' })
+        console.log(aggregates)
+        txs.push(aggregates)
       }
       return txs
     },
@@ -108,8 +112,8 @@ export default {
         data: {
           labels: new Array(133).fill(''),
           datasets: [{
-            label: `TPS HISTORY - ${lab[this.label]} Ø`,
-            data: this.arr.map(a => a.count),
+            label: `Transaction History - ${lab[this.label]}`,
+            data: this.arr.map(a => a.transactionCount),
             backgroundColor: 'rgba(146, 255, 96)',
             borderColor: 'rgba(146, 255, 96, 0.4)',
             borderWidth: 1
