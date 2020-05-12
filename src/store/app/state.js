@@ -11,6 +11,6 @@ export default function () {
     txsFor24H: 0,
     totalTxsCount: 0,
     txsHistory: [],
-    txHKey: 'min30'
+    txHKey: 'minute'
   }
 }

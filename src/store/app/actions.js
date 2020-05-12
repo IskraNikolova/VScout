@@ -23,7 +23,8 @@ import {
   _getBlock,
   _getBlockchains,
   _getValidators,
-  _getAgregates,
+  _getAggregates,
+  _getAggregatesWithI,
   _getTxs
 } from './../../modules/network'
 
@@ -39,7 +40,6 @@ async function initApp ({ dispatch, getters }) {
       [
         dispatch(GET_TX_FOR_24_HOURS),
         dispatch(GET_TOTAL_TXS),
-        // dispatch(GET_TXS_HISTORY),
         // await dispatch(GET_LAST_BLOCK)
         // dispatch(GET_BLOCK_TIME),
         dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
@@ -81,7 +81,7 @@ async function getBlockchains ({ commit }) {
 async function getTxsFor24H ({ commit }) {
   try {
     const minAgo = moment().subtract(24, 'hours')
-    const txsFor24H = await _getAgregates(minAgo.toISOString(), moment().toISOString())
+    const txsFor24H = await _getAggregates(minAgo.toISOString(), moment().toISOString())
     commit(SET_TX_FOR_24_HOURS, { txsFor24H: txsFor24H.transactionCount })
   } catch (err) {
     console.log(err)
@@ -99,46 +99,39 @@ async function getTotalTXs ({ commit }) {
 }
 
 const temp = {
-  min30: {
-    sub: { value: 30, label: 'minutes' },
-    add: { value: 15, label: 'seconds' }
+  minute: {
+    sub: { value: 1, label: 'minute' },
+    interval: { value: 1, label: 's' }
   },
-  hour2: {
-    sub: { value: 2, label: 'hours' },
-    add: { value: 1, label: 'minutes' }
-  },
-  hour6: {
-    sub: { value: 6, label: 'hours' },
-    add: { value: 3, label: 'minutes' }
+  hour: {
+    sub: { value: 1, label: 'hour' },
+    interval: { value: 5, label: 'm' }
   },
   day: {
     sub: { value: 1, label: 'day' },
-    add: { value: 1, label: 'hours' }
+    interval: { value: '', label: 'hour' }
   },
   week: {
     sub: { value: 7, label: 'days' },
-    add: { value: 6, label: 'hours' }
+    interval: { value: '12', label: 'h' }
   },
   month: {
     sub: { value: 1, label: 'months' },
-    add: { value: 1, label: 'days' }
+    interval: { value: '', label: 'day' }
   },
   year: {
     sub: { value: 1, label: 'years' },
-    add: { value: 1, label: 'months' }
+    interval: { value: '', label: 'month' }
   }
 }
 
 async function getTxsHistory ({ commit, getters }) {
   try {
-    const { sub, add } = temp[getters.txHKey]
-    const txsHistory = []
+    const { sub, interval } = temp[getters.txHKey]
     const minAgo = moment().subtract(sub.value, sub.label)
-    while (minAgo < moment()) {
-      const aggregates = await _getAgregates(minAgo.toISOString(), minAgo.add(add.value, add.label).toISOString())
-      txsHistory.push(aggregates)
-    }
-    commit(SET_TXS_HISTORY, { key: getters.txHKey, txsHistory })
+    const aggregates = await _getAggregatesWithI(minAgo.toISOString(), moment().toISOString(), `${interval.value}${interval.label}`)
+    console.log(aggregates)
+    commit(SET_TXS_HISTORY, { key: getters.txHKey, txsHistory: aggregates })
   } catch (err) {
     console.log(err)
   }

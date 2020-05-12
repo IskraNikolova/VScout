@@ -17,9 +17,9 @@
           <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="Mo"/>
           <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="Wk"/>
           <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="D"/>
-          <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="6h"/>
-          <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="2h"/>
-          <q-btn no-caps size="xs" @click="onGetData" outline color="positive" label="30m"/>
+          <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="Hr"/>
+          <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="Min"/>
+          <!--<q-btn no-caps size="xs" @click="onGetData" outline color="positive" label="30m"/>-->
         </div>
         <canvas id="myChart" height="70%"></canvas>
       </div>
@@ -38,9 +38,8 @@ const temp = {
   Mo: 'month',
   Wk: 'week',
   D: 'day',
-  '30m': 'min30',
-  '2h': 'hour2',
-  '6h': 'hour6'
+  Hr: 'hour',
+  Min: 'minute'
 }
 
 export default {
@@ -73,20 +72,20 @@ export default {
     async onGetData (e) {
       const txHKey = temp[e.target.innerText]
       this.$store.commit(SET_KEY_TXH, { txHKey })
+      await this.getTxHistory()
       this.arr = this.txsHistory(this.txHKey)
       this.getChart()
       this.myChart.update()
-      await this.getTxHistory()
     },
     getChart () {
       const ctx = window.document.getElementById('myChart').getContext('2d')
       this.myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: new Array(this.arr.length).fill(''),
+          labels: new Array(this.arr ? this.arr.intervals.length : 0).fill(''),
           datasets: [{
-            label: 'Transaction Volume',
-            data: this.arr.map(a => a.transactionVolume),
+            label: 'Tx Volume',
+            data: this.arr ? this.arr.intervals.map(a => a.transactionVolume / 10 ** 9) : [],
             backgroundColor: 'rgba(146, 255, 96)',
             borderColor: 'rgba(146, 255, 96, 0.4)',
             borderWidth: 1

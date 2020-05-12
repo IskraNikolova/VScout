@@ -28,9 +28,14 @@ export const _getTxs = async () => {
   return req.data
 }
 
-export const _getAgregates = async (s, e) => {
+export const _getAggregates = async (s, e) => {
   const req = await axios.get(network.explorerTxUrl + `/aggregates?startTime=${s}&endTime=${e}`)
   return req.data.aggregates
+}
+
+export const _getAggregatesWithI = async (s, e, intervalSize = 'hour') => {
+  const req = await axios.get(network.explorerTxUrl + `/aggregates?startTime=${s}&endTime=${e}&intervalSize=${intervalSize}`)
+  return req.data
 }
 
 export const request = async (endpoint, body) => {
