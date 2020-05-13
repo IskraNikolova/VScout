@@ -29,23 +29,17 @@ import {
 } from './../../modules/network'
 
 import { secBetweenTwoTime, makeMD5 } from './../../utils/commons'
-
+const promises = (dispatch, getters) => [
+  dispatch(GET_TOTAL_TXS),
+  dispatch(GET_TX_FOR_24_HOURS),
+  dispatch(GET_TXS_HISTORY),
+  dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
+]
 async function initApp ({ dispatch, getters }) {
-  await Promise.all([
-    dispatch(GET_TOTAL_TXS),
-    dispatch(GET_TXS_HISTORY),
-    dispatch(GET_TX_FOR_24_HOURS),
-    dispatch(GET_VALIDATORS, { subnetID: getters.subnetID }),
-    dispatch(GET_BLOCKCHAINS)
-  ])
+  await dispatch(GET_BLOCKCHAINS)
+  await Promise.all(promises(dispatch, getters))
   setInterval(async () => {
-    await Promise.all(
-      [
-        dispatch(GET_TOTAL_TXS),
-        dispatch(GET_TX_FOR_24_HOURS),
-        dispatch(GET_TXS_HISTORY),
-        dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
-      ])
+    await Promise.all(promises(dispatch, getters))
   }, 4000)
 }
 

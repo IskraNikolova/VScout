@@ -53,7 +53,7 @@ export default {
     ])
   },
   async mounted () {
-    this.arr = []
+    await this.getTxHistory()
     this.arr = await this.txsHistory(this.txHKey)
     this.getChart()
     this.myChart.update()
