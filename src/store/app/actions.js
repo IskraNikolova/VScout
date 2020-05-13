@@ -25,31 +25,28 @@ import {
   _getValidators,
   _getAggregates,
   _getAggregatesWithI,
-  _getTxs
+  _getLastTx
 } from './../../modules/network'
 
 import { secBetweenTwoTime, makeMD5 } from './../../utils/commons'
 
 async function initApp ({ dispatch, getters }) {
-  // await dispatch(GET_LAST_BLOCK)
-  await dispatch(GET_TXS_HISTORY)
-  await dispatch(GET_TX_FOR_24_HOURS)
+  await Promise.all([
+    dispatch(GET_TOTAL_TXS),
+    dispatch(GET_TXS_HISTORY),
+    dispatch(GET_TX_FOR_24_HOURS),
+    dispatch(GET_VALIDATORS, { subnetID: getters.subnetID }),
+    dispatch(GET_BLOCKCHAINS)
+  ])
   setInterval(async () => {
-    const hasChanges = await dispatch(GET_TOTAL_TXS)
-    if (hasChanges) {
-      Promise.all(
-        [
-          dispatch(GET_TX_FOR_24_HOURS),
-          dispatch(GET_TXS_HISTORY),
-          // await dispatch(GET_LAST_BLOCK)
-          // dispatch(GET_BLOCK_TIME),
-          dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
-        ])
-    }
+    await Promise.all(
+      [
+        dispatch(GET_TOTAL_TXS),
+        dispatch(GET_TX_FOR_24_HOURS),
+        dispatch(GET_TXS_HISTORY),
+        dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
+      ])
   }, 4000)
-
-  await dispatch(GET_BLOCKCHAINS)
-  await dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
 }
 
 async function getLastBlock ({ commit }) {
@@ -90,13 +87,14 @@ async function getTxsFor24H ({ commit }) {
   }
 }
 
-async function getTotalTXs ({ commit, getters }) {
+async function getTotalTXs ({ commit }) {
   try {
-    const txs = await _getTxs()
-    const isChange = getters.totalTxsCount < txs.count
-    const totalTxsCount = txs.count
-    commit(SET_TOTAL_TXS, { totalTxsCount })
-    return isChange
+    const response = await _getLastTx()
+    console.log(response)
+    if (response.count) {
+      const totalTxsCount = response.count
+      commit(SET_TOTAL_TXS, { totalTxsCount })
+    }
   } catch (err) {
     console.log(err)
   }
@@ -134,7 +132,6 @@ async function getTxsHistory ({ commit, getters }) {
     const { sub, interval } = temp[getters.txHKey]
     const minAgo = moment().subtract(sub.value, sub.label)
     const aggregates = await _getAggregatesWithI(minAgo.toISOString(), moment().toISOString(), `${interval.value}${interval.label}`)
-    console.log(aggregates)
     commit(SET_TXS_HISTORY, { key: getters.txHKey, txsHistory: aggregates })
   } catch (err) {
     console.log(err)

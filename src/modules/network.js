@@ -2,6 +2,7 @@ import axios from 'axios'
 const { network } = require('./config').default
 
 // enpoints
+const tx = 'x/transactions'
 const timestamp = 'ext/bc/timestamp'
 const platform = 'ext/P'
 
@@ -23,18 +24,18 @@ const body = (method, params = {}) => {
   }
 }
 
-export const _getTxs = async () => {
-  const req = await axios.get(network.explorerTxUrl)
+export const _getLastTx = async () => {
+  const req = await axios.get(network.explorerBaseUrl + tx + '?sort=timestamp-desc&limit=1')
   return req.data
 }
 
 export const _getAggregates = async (s, e) => {
-  const req = await axios.get(network.explorerTxUrl + `/aggregates?startTime=${s}&endTime=${e}`)
+  const req = await axios.get(network.explorerBaseUrl + tx + `/aggregates?startTime=${s}&endTime=${e}`)
   return req.data.aggregates
 }
 
 export const _getAggregatesWithI = async (s, e, intervalSize = '1s') => {
-  const req = await axios.get(network.explorerTxUrl + `/aggregates?startTime=${s}&endTime=${e}&intervalSize=${intervalSize}`)
+  const req = await axios.get(network.explorerBaseUrl + tx + `/aggregates?startTime=${s}&endTime=${e}&intervalSize=${intervalSize}`)
   return req.data
 }
 
