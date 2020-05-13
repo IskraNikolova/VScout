@@ -32,18 +32,20 @@ import { secBetweenTwoTime, makeMD5 } from './../../utils/commons'
 
 async function initApp ({ dispatch, getters }) {
   // await dispatch(GET_LAST_BLOCK)
-  await dispatch(GET_TX_FOR_24_HOURS)
-  await dispatch(GET_TOTAL_TXS)
   await dispatch(GET_TXS_HISTORY)
-  setInterval(() => {
-    Promise.all(
-      [
-        dispatch(GET_TX_FOR_24_HOURS),
-        dispatch(GET_TOTAL_TXS),
-        // await dispatch(GET_LAST_BLOCK)
-        // dispatch(GET_BLOCK_TIME),
-        dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
-      ])
+  await dispatch(GET_TX_FOR_24_HOURS)
+  setInterval(async () => {
+    const hasChanges = await dispatch(GET_TOTAL_TXS)
+    if (hasChanges) {
+      Promise.all(
+        [
+          dispatch(GET_TX_FOR_24_HOURS),
+          dispatch(GET_TXS_HISTORY),
+          // await dispatch(GET_LAST_BLOCK)
+          // dispatch(GET_BLOCK_TIME),
+          dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
+        ])
+    }
   }, 4000)
 
   await dispatch(GET_BLOCKCHAINS)
@@ -88,11 +90,13 @@ async function getTxsFor24H ({ commit }) {
   }
 }
 
-async function getTotalTXs ({ commit }) {
+async function getTotalTXs ({ commit, getters }) {
   try {
     const txs = await _getTxs()
+    const isChange = getters.totalTxsCount < txs.count
     const totalTxsCount = txs.count
     commit(SET_TOTAL_TXS, { totalTxsCount })
+    return isChange
   } catch (err) {
     console.log(err)
   }

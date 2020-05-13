@@ -7,7 +7,7 @@
       <q-select
         @input="onGetValodators(model.value.subnetID)"
         :display-value="`Blockchain Name: ${model.value.name}`"
-        color="accent" dark v-model="model"
+        color="accent" v-model="model"
         :options="options"
       />
     </div>
@@ -67,11 +67,7 @@ export default {
   created () {
     this.options = this.blockchains.map(i => {
       const res = {
-        label: `<div
-          class="q-pa-xs"
-          style="height: 47px;margin: -13px;background: radial-gradient(circle, #344245 0%, #000709 70%);">
-            ${i.name}
-          </div>`,
+        label: i.name,
         value: i
       }
       return res

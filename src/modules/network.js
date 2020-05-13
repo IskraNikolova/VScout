@@ -33,7 +33,7 @@ export const _getAggregates = async (s, e) => {
   return req.data.aggregates
 }
 
-export const _getAggregatesWithI = async (s, e, intervalSize = 'hour') => {
+export const _getAggregatesWithI = async (s, e, intervalSize = '1s') => {
   const req = await axios.get(network.explorerTxUrl + `/aggregates?startTime=${s}&endTime=${e}&intervalSize=${intervalSize}`)
   return req.data
 }
