@@ -4,12 +4,14 @@
     dark flat id="custom-card" >
     <div class="row">
       <div class="col-md-2 col-xs-10">
-        <div style="font-size: 11px;" class="q-pb-md">STAKING APR</div>
+        <!--<div style="font-size: 11px;" class="q-pb-md">STAKING APR</div>
         <div class="text-h5 text-secondary q-pb-md"><b>0%</b></div>
-        <div style="font-size: 12px;"><span class="text-secondary">0%</span> staking APR</div>
+        <div style="font-size: 12px;"><span class="text-secondary">0%</span> staking APR</div>-->
+        <div style="font-size: 11px;" class="q-pb-md">NUMBER OF VALIDATORS</div>
+        <div class="text-h5 text-secondary q-pb-md"><b>{{ validators.length }}</b></div>
       </div>
       <div class="col-2 q-pt-md">
-        <img src="~assets/stake.svg" class="custom-icon">
+        <img src="~assets/validators.png" class="custom-icon">
       </div>
       <div class="col-md-2 col-xs-10">
         <div style="font-size: 11px;" class="q-pb-md">STAKED AVA</div>
@@ -22,14 +24,14 @@
         <!--todo dynamic take it-->
         <div style="font-size: 12px;">Delinquent stake: 0%</div>
       </div>
-      <div class="col-2 q-pt-md"><img src="~assets/coins-stack.svg" class="custom-icon"></div>
+      <div class="col-2 q-pt-md"><img src="~assets/stake-amount.png" class="custom-icon"></div>
       <div class="col-md-2 col-xs-10">
        <div style="font-size: 11px;" class="q-pb-md">PRICE</div>
        <div class="text-h5 text-secondary q-pb-md"><b>$0.50<span style="font-size: 13px;"> /AVA</span></b></div>
        <div style="font-size: 12px;">Market Capitalization: <span class="text-secondary">N/A</span></div>
       </div>
       <div class="col-2 q-pt-md">
-        <img src="~assets/dollar.svg" class="custom-icon">
+        <img src="~assets/output-st-ava.png" class="custom-icon">
       </div>
     </div>
   </q-card>

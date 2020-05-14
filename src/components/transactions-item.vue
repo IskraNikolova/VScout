@@ -11,7 +11,6 @@
         <div class="text-h5"><b><span class="text-positive">{{ totalTxsCount.toLocaleString() }}</span></b></div>
       </div>
       <div class="col-md-9 col-xs-12">
-        <!--todo calc and vuew -->
         <div>
           <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="Yr"/>
           <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="Mo"/>
@@ -19,7 +18,6 @@
           <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="D"/>
           <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="Hr"/>
           <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="Min"/>
-          <!--<q-btn no-caps size="xs" @click="onGetData" outline color="positive" label="30m"/>-->
         </div>
         <canvas id="myChart" height="70%"></canvas>
       </div>
