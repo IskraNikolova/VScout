@@ -1,15 +1,20 @@
 <template>
   <q-page class="q-pa-xl">
-    <div class="flex flex-center">
-      <q-img src="~assets/ava-black.png" id="b-logo" />
-    </div>
-    <div class="flex flex-right">
-      <q-select
-        @input="onGetValodators(model.value.subnetID)"
-        :display-value="`Blockchain Name: ${model.value.name}`"
-        color="accent" v-model="model"
-        :options="options"
-      />
+    <div class="row q-pb-xl" style="margin-top: -22px;">
+      <div class="col">
+        <div><q-img src="~assets/ava-black.png" id="b-logo" /></div>
+        <div>AVA P-Explorer</div>
+      </div>
+      <div class="">
+        <q-select
+          @input="onGetValodators(model.value.subnetID)"
+          :display-value="`${model.value.name}`"
+          color="accent" v-model="model"
+          :options="options"
+          hide-bottom-space
+          borderless
+        />
+      </div>
     </div>
     <!--<block-item />-->
     <stak-item />
@@ -92,6 +97,6 @@ export default {
   max-width:50px;
  }
  #b-logo {
-  width: 200px!important;
+  width: 60px!important;
  }
 </style>

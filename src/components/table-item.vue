@@ -16,7 +16,7 @@
         <q-btn size="xs" color="white" flat icon="reorder" @click="isGrid=false"/>
       </template>
       <template slot="top-right">
-        <q-input dark hide-underline clearable v-model="filter">
+        <q-input dark hide-underline color="accent" clearable v-model="filter">
           <template v-slot:append>
             <q-icon name="search" color="accent" />
           </template>
@@ -62,18 +62,20 @@
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
-            <div class="text-left">
-              <details-item
-                v-bind:img="props.row.img2"
-                v-bind:identity="props.row.identity"
-                v-bind:startTime="props.row.startTime"
-                v-bind:endTime="props.row.endTime"
-              />
-            </div>
+            <details-item
+              v-bind:img="props.row.img2"
+              v-bind:identity="props.row.identity"
+              v-bind:startTime="props.row.startTime"
+              v-bind:endTime="props.row.endTime"
+            />
           </q-td>
         </q-tr>
       </template>
     </q-table>
+                  <q-date
+                v-model="date"
+                dark
+              />
  </div>
 </template>
 
@@ -103,6 +105,7 @@ export default {
   },
   data () {
     return {
+      date: '2019/02/01',
       isGrid: false,
       filter: '',
       pagination: {
@@ -161,6 +164,6 @@ export default {
    border-left: 0.5px solid #474F52;
    border-right: 2px solid #87C5D6;
    background: radial-gradient(circle, #344245 0%, #000709 70%);
-   opacity:0.9;
+   opacity:0.8;
  }
 </style>

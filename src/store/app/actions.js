@@ -74,8 +74,8 @@ async function getBlockchains ({ commit }) {
 async function getTxsFor24H ({ commit }) {
   try {
     const minAgo = moment().subtract(24, 'hours')
-    const txsFor24H = await _getAggregates(minAgo.toISOString(), moment().toISOString())
-    commit(SET_TX_FOR_24_HOURS, { txsFor24H: txsFor24H.transactionCount })
+    const { transactionCount, transactionVolume } = await _getAggregates(minAgo.toISOString(), moment().toISOString())
+    commit(SET_TX_FOR_24_HOURS, { txsFor24H: { transactionCount, transactionVolume: Math.round(transactionVolume / 10 ** 9) } })
   } catch (err) {
     console.log(err)
   }
@@ -84,7 +84,6 @@ async function getTxsFor24H ({ commit }) {
 async function getTotalTXs ({ commit }) {
   try {
     const response = await _getLastTx()
-    console.log(response)
     if (response.count) {
       const totalTxsCount = response.count
       commit(SET_TOTAL_TXS, { totalTxsCount })
@@ -96,12 +95,16 @@ async function getTotalTXs ({ commit }) {
 
 const temp = {
   minute: {
-    sub: { value: 1, label: 'minute' },
-    interval: { value: 1, label: 's' }
+    sub: { value: 30, label: 'minute' },
+    interval: { value: 30, label: 's' }
   },
-  hour: {
-    sub: { value: 1, label: 'hour' },
+  hourTwo: {
+    sub: { value: 2, label: 'hour' },
     interval: { value: 5, label: 'm' }
+  },
+  hourSix: {
+    sub: { value: 6, label: 'hour' },
+    interval: { value: 15, label: 'm' }
   },
   day: {
     sub: { value: 1, label: 'day' },

@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="row">
     <div class="col">
       <div>Validator Id: <span id="identity">{{ identity }}</span></div>
@@ -9,7 +10,7 @@
       <q-avatar size="52px" color="grey" class="column-2"><img :src="img" /></q-avatar>
     </div>
   </div>
-</template>
+</div></template>
 
 <script>
 import { date, fromNow } from './../modules/time'

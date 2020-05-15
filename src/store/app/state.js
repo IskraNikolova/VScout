@@ -8,7 +8,7 @@ export default function () {
     lastBlockTime: [],
     blockchains: [],
     subnetID: network.defaultSubnetID,
-    txsFor24H: 0,
+    txsFor24H: { transactionCount: 0, transactionVolume: 0 },
     totalTxsCount: 0,
     txsHistory: [],
     txHKey: 'day'

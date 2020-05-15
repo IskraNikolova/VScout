@@ -7,31 +7,42 @@
         <!--<div style="font-size: 11px;" class="q-pb-md">STAKING APR</div>
         <div class="text-h5 text-secondary q-pb-md"><b>0%</b></div>
         <div style="font-size: 12px;"><span class="text-secondary">0%</span> staking APR</div>-->
-        <div style="font-size: 11px;" class="q-pb-md">NUMBER OF VALIDATORS</div>
-        <div class="text-h5 text-secondary q-pb-md"><b>{{ validators.length }}</b></div>
+        <div style="font-size: 11px;" class="q-pb-md">NUMBERS OF VALIDATORS</div>
+        <div class="text-h5 text-secondary q-pb-md">{{ validators.length }}</div>
+        <div style="font-size: 12px;">Pending Valitarors: <span class="text-secondary">2</span></div>
       </div>
-      <div class="col-2 q-pt-md">
+      <div class="col-1 q-pt-md">
         <img src="~assets/validators.png" class="custom-icon">
       </div>
       <div class="col-md-2 col-xs-10">
         <div style="font-size: 11px;" class="q-pb-md">STAKED AVA</div>
         <div class="text-h5 q-pb-md">
-          <b>
             <span class="text-secondary"><small>{{stake().toLocaleString()}}</small> </span>
             <span style="font-size: 13px;">/360M</span>
-          </b>
         </div>
         <!--todo dynamic take it-->
-        <div style="font-size: 12px;">Delinquent stake: 0%</div>
+        <div style="font-size: 12px;">Delinquent stake: <span class="text-secondary">0%</span></div>
       </div>
-      <div class="col-2 q-pt-md"><img src="~assets/stake-amount.png" class="custom-icon"></div>
+      <div class="col-1 q-pt-md">
+        <img src="~assets/stake-amount.png" class="custom-icon">
+      </div>
+      <div class="col-md-2 col-xs-10">
+       <div style="font-size: 11px;" class="q-pb-md">AVA VOLUME (24h)</div>
+       <div class="text-h5 q-pb-md">
+            <span class="text-secondary"><small>{{ txsFor24H.transactionVolume.toLocaleString() }}</small></span>
+            <span style="font-size: 13px;"> AVA</span>
+        </div>
+      </div>
+      <div class="col-1 q-pt-md">
+        <img src="~assets/output-st-ava.png" class="custom-icon">
+      </div>
       <div class="col-md-2 col-xs-10">
        <div style="font-size: 11px;" class="q-pb-md">PRICE</div>
-       <div class="text-h5 text-secondary q-pb-md"><b>$0.50<span style="font-size: 13px;"> /AVA</span></b></div>
+       <div class="text-h5 text-secondary q-pb-md"><small>$0.50<span style="font-size: 13px;"> /AVA</span></small></div>
        <div style="font-size: 12px;">Market Capitalization: <span class="text-secondary">N/A</span></div>
       </div>
-      <div class="col-2 q-pt-md">
-        <img src="~assets/output-st-ava.png" class="custom-icon">
+      <div class="col-1 q-pt-md">
+        <img src="~assets/dollar.png" class="custom-icon">
       </div>
     </div>
   </q-card>
@@ -44,7 +55,8 @@ export default {
   name: 'StakeItem',
   computed: {
     ...mapGetters([
-      'validators'
+      'validators',
+      'txsFor24H'
     ])
   },
   methods: {
@@ -62,7 +74,7 @@ export default {
  #custom-card {
    border-right: 2px solid #FFAAF2;
    background: radial-gradient(circle, #344245 0%, #000709 70%);
-   opacity:0.9;
+   opacity:0.8;
  }
  .custom-icon {
    width:30vw;
