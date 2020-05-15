@@ -6,7 +6,7 @@
     <div class="row">
       <div class="col-md-3 col-xs-12">
         <div style="font-size: 11px;" class="q-pb-md">TRANSACTIONS (24Hr)</div>
-        <div class="text-h5 text-positive q-pb-xl">{{ txsFor24H.transactionCount }} <small>(0.00 TPS)</small></div>
+        <div class="text-h5 text-positive q-pb-xl">{{ txsFor24H.transactionCount }} <small>({{ tps }} TPS)</small></div>
         <div style="font-size: 11px;" class="q-pb-md">TOTAL TRANSACTIONS</div>
         <div class="text-h5"><span class="text-positive">{{ totalTxsCount.toLocaleString() }}</span></div>
       </div>
@@ -27,6 +27,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import moment from 'moment'
 import Chart from 'chart.js'
 
 import { SET_KEY_TXH, GET_TXS_HISTORY } from './../store/app/types'
@@ -48,13 +49,24 @@ export default {
       'totalTxsCount',
       'txsHistory',
       'txHKey'
-    ])
+    ]),
+    tps: function () {
+      const t = this.txsFor24H.transactionCount / (24 * 60 * 60)
+      return t.toFixed(3)
+    }
   },
   async mounted () {
     await this.getTxHistory()
     this.arr = await this.txsHistory(this.txHKey)
     this.getChart()
     this.myChart.update()
+    this.$store.subscribe(async (mutation, state) => {
+      if (mutation.type === 'SET_TOTAL_TXS') {
+        this.arr = await this.txsHistory(this.txHKey)
+        this.getChart()
+        this.myChart.update()
+      }
+    })
   },
   data () {
     return {
@@ -90,9 +102,25 @@ export default {
         backgroundColor: 'white'
       }
 
+      const dataThird = {
+        label: `TPS History - ${this.arr.label} Ø`,
+        data: this.arr.intervals.map(a => {
+          const sec = getSec(a.endTime, a.startTime)
+          return (a.transactionCount / sec).toFixed(2)
+        }),
+        backgroundColor: 'grey'
+      }
+      function getSec (endT, start) {
+        var now = moment(endT)
+        var end = moment(start)
+        var duration = moment.duration(now.diff(end))
+        var sec = duration.asSeconds()
+        return sec
+      }
+
       const speedData = {
         labels: new Array(this.arr ? this.arr.intervals.length : 0).fill(''),
-        datasets: [dataFirst, dataSecond]
+        datasets: [dataFirst, dataSecond, dataThird]
       }
 
       this.myChart = new Chart(ctx, {

@@ -81,12 +81,12 @@ async function getTxsFor24H ({ commit }) {
   }
 }
 
-async function getTotalTXs ({ commit }) {
+async function getTotalTXs ({ commit, getters }) {
   try {
     const response = await _getLastTx()
     if (response.count) {
       const totalTxsCount = response.count
-      commit(SET_TOTAL_TXS, { totalTxsCount })
+      if (getters.totalTxsCount < totalTxsCount) commit(SET_TOTAL_TXS, { totalTxsCount })
     }
   } catch (err) {
     console.log(err)
@@ -96,39 +96,47 @@ async function getTotalTXs ({ commit }) {
 const temp = {
   minute: {
     sub: { value: 30, label: 'minute' },
-    interval: { value: 30, label: 's' }
+    interval: { value: 30, label: 's' },
+    label: '30 SEC'
   },
   hourTwo: {
     sub: { value: 2, label: 'hour' },
-    interval: { value: 5, label: 'm' }
+    interval: { value: 5, label: 'm' },
+    label: '5 MIN'
   },
   hourSix: {
     sub: { value: 6, label: 'hour' },
-    interval: { value: 15, label: 'm' }
+    interval: { value: 15, label: 'm' },
+    label: '15 MIN'
   },
   day: {
     sub: { value: 1, label: 'day' },
-    interval: { value: '', label: 'hour' }
+    interval: { value: '', label: 'hour' },
+    label: '1 HOUR'
   },
   week: {
     sub: { value: 7, label: 'days' },
-    interval: { value: '12', label: 'h' }
+    interval: { value: '12', label: 'h' },
+    label: '12 HOURS'
   },
   month: {
     sub: { value: 1, label: 'months' },
-    interval: { value: '', label: 'day' }
+    interval: { value: '', label: 'day' },
+    label: '1 DAY'
   },
   year: {
     sub: { value: 1, label: 'years' },
-    interval: { value: '', label: 'month' }
+    interval: { value: '', label: 'month' },
+    label: '1 MONTH'
   }
 }
 
 async function getTxsHistory ({ commit, getters }) {
   try {
-    const { sub, interval } = temp[getters.txHKey]
+    const { sub, interval, label } = temp[getters.txHKey]
     const minAgo = moment().subtract(sub.value, sub.label)
     const aggregates = await _getAggregatesWithI(minAgo.toISOString(), moment().toISOString(), `${interval.value}${interval.label}`)
+    aggregates.label = label
     commit(SET_TXS_HISTORY, { key: getters.txHKey, txsHistory: aggregates })
   } catch (err) {
     console.log(err)
