@@ -9,6 +9,8 @@ import {
   SET_TOTAL_TXS,
   GET_VALIDATORS,
   SET_VALIDATORS,
+  GET_PENDING_VALIDATORS,
+  SET_PENDING_VALIDATORS,
   GET_BLOCKCHAINS,
   SET_BLOCKCHAINS,
   SET_BLOCK_TIME,
@@ -23,6 +25,7 @@ import {
   _getBlock,
   _getBlockchains,
   _getValidators,
+  _getPendingValidators,
   _getAggregates,
   _getAggregatesWithI,
   _getLastTx
@@ -81,12 +84,12 @@ async function getTxsFor24H ({ commit }) {
   }
 }
 
-async function getTotalTXs ({ commit, getters }) {
+async function getTotalTXs ({ commit }) {
   try {
     const response = await _getLastTx()
     if (response.count) {
       const totalTxsCount = response.count
-      // if (getters.totalTxsCount < totalTxsCount)
+
       commit(SET_TOTAL_TXS, { totalTxsCount })
     }
   } catch (err) {
@@ -139,31 +142,42 @@ async function getTxsHistory ({ commit, getters }) {
   }
 }
 
-async function getValidators ({ commit, getters }, { subnetID }) {
+async function getValidators ({ commit }, { subnetID }) {
   try {
     var { validators } = await _getValidators({ subnetID })
     validators = validators.filter(i => i.endTime >= Date.now() / 1000)
     validators.sort(compare)
-    const val = map(validators, getters.lastBlock)
+    const val = map(validators)
     commit(SET_VALIDATORS, { validators: val })
   } catch (err) {
     console.log(err)
   }
 }
 
-function map (validators, lastBlock) {
+async function getPendingValidators ({ commit, getters }, { subnetID }) {
+  try {
+    var { validators } = await _getPendingValidators({ subnetID })
+    validators = validators.filter(i => i.endTime >= Date.now() / 1000)
+    validators.sort(compare)
+    const val = map(validators)
+    commit(SET_PENDING_VALIDATORS, { validators: val })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+function map (validators) {
   let index = 1
   const s = stake(validators)
   const vals = validators.map(val => {
+    const sa = val.stakeAmount ? val.stakeAmount : val.weight
     const rank = index++
     const validator = `${val.id.substr(0, 9)}...`
-    const precent = getPrecent(val.stakeAmount, s)
+    const precent = getPrecent(sa, s)
     const identity = val.id
-    const stakenAva = parseFloat(val.stakeAmount)
-    const stakeAva = getAvaFromnAva(val.stakeAmount)
+    const stakenAva = parseFloat(sa)
+    const stakeAva = getAvaFromnAva(sa)
     const stake = stakeAva
-    // todo last vote
-    const lastVote = lastBlock.timestamp
     const startTime = val.startTime
     const endTime = val.endTime
     const MD5 = makeMD5()
@@ -178,7 +192,6 @@ function map (validators, lastBlock) {
       identity,
       stake,
       stakenAva,
-      lastVote,
       startTime,
       endTime,
       img,
@@ -232,6 +245,7 @@ export default {
   [INIT_APP]: initApp,
   [GET_LAST_BLOCK]: getLastBlock,
   [GET_VALIDATORS]: getValidators,
+  [GET_PENDING_VALIDATORS]: getPendingValidators,
   [GET_BLOCKCHAINS]: getBlockchains,
   [GET_BLOCK_TIME]: getBlockTime,
   [GET_TX_FOR_24_HOURS]: getTxsFor24H,

@@ -42,13 +42,13 @@ export function getChartLabel (interval, type) {
 
   const func = {
     seconds: (date) => {
-      return `${moment(date).minutes().toString().padStart(2, '0')}:${moment(date).seconds().toString().padStart(2, '0')}`
+      return moment(date).format('HH:mm')
     },
     minutes: (date) => {
-      return `${moment(date).minutes().toString().padStart(2, '0')}:${moment(date).seconds().toString().padStart(2, '0')}`
+      return moment(date).format('LT')
     },
     hour: (date) => {
-      return `${moment(date).hours().toString().padStart(2, '0')}:${moment(date).minutes().toString().padStart(2, '0')}:${moment(date).seconds().toString().padStart(2, '0')}`
+      return moment(date).format('ddd ha')
     },
     day: (date) => {
       return `${moment(date).format('D')} ${moment.weekdaysShort()[moment(date).day()]}`

@@ -10,6 +10,7 @@ const platform = 'ext/P'
 const getBlock = 'timestamp.getBlock'
 const getBlockchains = 'platform.getBlockchains'
 const getCurrentValidators = 'platform.getCurrentValidators'
+const getPendingValidators = 'platform.getPendingValidators'
 
 let id = 1
 const jsonrpc = '2.0'
@@ -54,4 +55,8 @@ export const _getBlockchains = async () => {
 
 export const _getValidators = async ({ subnetID }) => {
   return request(network.endpointUrl + platform, body(getCurrentValidators, { subnetID }))
+}
+
+export const _getPendingValidators = async ({ subnetID }) => {
+  return request(network.endpointUrl + platform, body(getPendingValidators, { subnetID }))
 }

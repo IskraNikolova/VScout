@@ -19,7 +19,7 @@
     <!--<block-item />-->
     <stak-item />
     <transactions-item />
-    <table-item v-bind:validators="validators" />
+    <table-item v-bind:validators="validators" v-bind:pendingValidators="pendingValidators" @getValidators="getValidatorsV" />
     <faqs />
     <div class="flex flex-center q-mt-xl">
       <img src="~assets/ava-black.png" id="logo"/>
@@ -45,7 +45,8 @@ import TransactionsItem from './../components/transactions-item'
 
 import {
   SET_SUBNETID,
-  GET_VALIDATORS
+  GET_VALIDATORS,
+  GET_PENDING_VALIDATORS
 } from '../store/app/types'
 
 export default {
@@ -66,7 +67,9 @@ export default {
   computed: {
     ...mapGetters([
       'validators',
-      'blockchains'
+      'pendingValidators',
+      'blockchains',
+      'subnetID'
     ])
   },
   created () {
@@ -81,11 +84,20 @@ export default {
   },
   methods: {
     ...mapActions({
-      getValidators: GET_VALIDATORS
+      getValidators: GET_VALIDATORS,
+      getPendingValidators: GET_PENDING_VALIDATORS
     }),
     onGetValodators (subnetID) {
       this.$store.commit(SET_SUBNETID, { subnetID })
       this.getValidators({ subnetID })
+    },
+    async getValidatorsV (type) {
+      const temp = {
+        active: async () => await this.getValidators({ subnetID: this.subnetID }),
+        pending: async () => await this.getPendingValidators({ subnetID: this.subnetID })
+      }
+
+      if (typeof type !== 'undefined') await temp[type]()
     }
   }
 }

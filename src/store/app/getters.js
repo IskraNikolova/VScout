@@ -2,6 +2,10 @@ export function validators (state) {
   return state.validators
 }
 
+export function pendingValidators (state) {
+  return state.pendingValidators
+}
+
 export function blockchains (state) {
   return state.blockchains
 }

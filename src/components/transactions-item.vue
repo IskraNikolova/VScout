@@ -1,7 +1,7 @@
 <template>
   <q-card
-     class="q-mt-md q-pt-md q-pl-xl q-pr-xl"
-     dark flat id="custom-card"
+    class="q-mt-md q-pt-md q-pl-xl q-pr-xl"
+    dark flat id="custom-card"
   >
     <div class="row">
       <div class="col-md-3 col-xs-12">

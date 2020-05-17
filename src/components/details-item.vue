@@ -43,7 +43,6 @@ export default {
       return date(this.endTime)
     },
     fromNowGet: function () {
-      console.log(this.startTime)
       return fromNow(this.startTime)
     }
   }

@@ -9,7 +9,7 @@
         <div style="font-size: 12px;"><span class="text-secondary">0%</span> staking APR</div>-->
         <div style="font-size: 11px;" class="q-pb-md">NUMBERS OF VALIDATORS</div>
         <div class="text-h5 text-secondary q-pb-md">{{ validators.length }}</div>
-        <div style="font-size: 12px;">Pending Valitarors: <span class="text-secondary">2</span></div>
+        <div style="font-size: 12px;">Pending Valitarors: <span class="text-secondary">{{ pendingValidators.length }}</span></div>
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/validators.png" class="custom-icon">
@@ -53,6 +53,7 @@ export default {
   computed: {
     ...mapGetters([
       'validators',
+      'pendingValidators',
       'txsFor24H'
     ])
   },

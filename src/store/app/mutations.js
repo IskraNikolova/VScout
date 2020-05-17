@@ -3,6 +3,7 @@ import Vue from 'vue'
 import {
   SET_BLOCK,
   SET_VALIDATORS,
+  SET_PENDING_VALIDATORS,
   SET_BLOCKCHAINS,
   SET_SUBNETID,
   SET_TOTAL_TXS,
@@ -19,6 +20,9 @@ const mutations = {
   },
   [SET_VALIDATORS]: (state, { validators }) => {
     state.validators = validators
+  },
+  [SET_PENDING_VALIDATORS]: (state, { validators }) => {
+    state.pendingValidators = validators
   },
   [SET_BLOCKCHAINS]: (state, { blockchains }) => {
     state.blockchains = blockchains

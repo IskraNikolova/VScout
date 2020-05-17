@@ -1,7 +1,7 @@
 <template>
  <div class="q-mt-md">
     <q-table
-      :data="validators"
+      :data="curentVal"
       :columns="columns"
       row-key="rank"
       :separator="separator"
@@ -14,6 +14,8 @@
       <template slot="top-left">
         <q-btn size="xs" color="white" flat icon="apps" @click="isGrid=true"/>
         <q-btn size="xs" color="white" flat icon="reorder" @click="isGrid=false"/>
+        <q-btn size="xs" color="white" flat label="Active" @click.native="onGetValidators"/>
+        <q-btn size="xs" color="white" flat label="Pending" @click.native="onGetValidators"/>
       </template>
       <template slot="top-right">
         <q-input dark hide-underline color="accent" clearable v-model="filter">
@@ -79,7 +81,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { round } from './../utils/commons'
 import { date2 } from './../modules/time'
 
@@ -96,20 +97,19 @@ export default {
     validators: {
       type: Array,
       required: true
+    },
+    pendingValidators: {
+      type: Array,
+      required: true
     }
-  },
-  computed: {
-    ...mapGetters([
-      'lastBlock'
-    ])
   },
   data () {
     return {
-      date: '2019/02/01',
+      curentVal: [],
       isGrid: false,
       filter: '',
       pagination: {
-        rowsPerPage: this.validators.length // current rows per page being displayed
+        rowsPerPage: this.validators.length
       },
 
       border: '#87C5D6',
@@ -142,7 +142,19 @@ export default {
       ]
     }
   },
+  created () {
+    this.curentVal = this.validators
+  },
   methods: {
+    onGetValidators (e) {
+      const temp = {
+        active: () => { this.curentVal = this.validators },
+        pending: () => { this.curentVal = this.pendingValidators }
+      }
+      const type = e.target.innerText.toLowerCase()
+      this.$emit('getValidators', type)
+      temp[type]()
+    },
     startDate (time) {
       return date2(time)
     },
