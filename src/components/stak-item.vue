@@ -41,9 +41,6 @@
        <div class="text-h5 text-secondary q-pb-md"><small>$0.50<span style="font-size: 13px;"> /AVA</span></small></div>
        <div style="font-size: 12px;">Market Capitalization: <span class="text-secondary">N/A</span></div>
       </div>
-      <div class="col-1 q-pt-md">
-        <img src="~assets/dollar.png" class="custom-icon">
-      </div>
     </div>
   </q-card>
 </template>
@@ -72,7 +69,7 @@ export default {
 
 <style scoped>
  #custom-card {
-   border-right: 2px solid #FFAAF2;
+   border-right: 3px solid #FFAAF2;
    background: radial-gradient(circle, #344245 0%, #000709 70%);
    opacity:0.8;
  }

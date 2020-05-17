@@ -1,4 +1,4 @@
-
+import moment from 'moment'
 /**
 * Performs a deep merge of objects and returns new object. Does not modify
 * objects (immutable) and merges arrays via concatenation.
@@ -33,6 +33,35 @@ export function deepMerge (...objects) {
 export function round (num, prec) {
   const multiplier = Math.pow(prec, 1 || 0)
   return Math.round((num + Number.EPSILON) * multiplier) / multiplier
+}
+
+export function getChartLabel (interval, type) {
+  if (typeof type === 'undefined' ||
+      typeof interval === 'undefined') return
+  const key = type.split(' ')[1]
+
+  const func = {
+    seconds: (date) => {
+      return `${moment(date).minutes().toString().padStart(2, '0')}:${moment(date).seconds().toString().padStart(2, '0')}`
+    },
+    minutes: (date) => {
+      return `${moment(date).minutes().toString().padStart(2, '0')}:${moment(date).seconds().toString().padStart(2, '0')}`
+    },
+    hour: (date) => {
+      return `${moment(date).hours().toString().padStart(2, '0')}:${moment(date).minutes().toString().padStart(2, '0')}:${moment(date).seconds().toString().padStart(2, '0')}`
+    },
+    day: (date) => {
+      return `${moment(date).format('D')} ${moment.weekdaysShort()[moment(date).day()]}`
+    },
+    days: (date) => {
+      return ` ${moment(date).format('D')} ${moment.monthsShort()[moment(date).month()]}`
+    },
+    month: (date) => {
+      return moment.months()[moment(date).month()]
+    }
+  }
+
+  return func[key](interval.startTime)
 }
 
 /**

@@ -57,6 +57,9 @@
                 v-bind:endTime="props.row.endTime"
               />
             </div>
+            <div v-else-if="col.name === 'startTime'">
+              {{ startDate(col.value) }}
+            </div>
             <div v-else>{{ col.value }}</div>
           </q-td>
         </q-tr>
@@ -72,19 +75,16 @@
         </q-tr>
       </template>
     </q-table>
-                  <q-date
-                v-model="date"
-                dark
-              />
  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { round } from './../utils/commons'
+import { date2 } from './../modules/time'
 
 import ProgressBarValidateSession from './progress-bar-validatе-session'
 import DetailsItem from './details-item'
-import { round } from './../utils/commons'
 
 export default {
   name: 'TableItem',
@@ -109,7 +109,7 @@ export default {
       isGrid: false,
       filter: '',
       pagination: {
-        rowsPerPage: 20 // current rows per page being displayed
+        rowsPerPage: this.validators.length // current rows per page being displayed
       },
 
       border: '#87C5D6',
@@ -137,12 +137,15 @@ export default {
           sortable: true
         },
         { name: 'precent', align: 'left', label: 'CUMULATIVE STAKE (%)', field: 'cumulativeStake' },
-        { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress' },
-        { name: 'lastVote', align: 'left', label: 'LAST VOTE', field: 'lastVote' }
+        { name: 'startTime', align: 'left', label: 'START TIME', field: 'startTime' },
+        { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress' }
       ]
     }
   },
   methods: {
+    startDate (time) {
+      return date2(time)
+    },
     cumulativeStake (index) {
       return this.validators.reduce((result, item) => {
         if (item.rank <= index) {
@@ -162,7 +165,7 @@ export default {
 <style scoped>
  #custom-table {
    border-left: 0.5px solid #474F52;
-   border-right: 2px solid #87C5D6;
+   border-right: 3px solid #87C5D6;
    background: radial-gradient(circle, #344245 0%, #000709 70%);
    opacity:0.8;
  }

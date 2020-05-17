@@ -86,7 +86,8 @@ async function getTotalTXs ({ commit, getters }) {
     const response = await _getLastTx()
     if (response.count) {
       const totalTxsCount = response.count
-      if (getters.totalTxsCount < totalTxsCount) commit(SET_TOTAL_TXS, { totalTxsCount })
+      // if (getters.totalTxsCount < totalTxsCount)
+      commit(SET_TOTAL_TXS, { totalTxsCount })
     }
   } catch (err) {
     console.log(err)
@@ -96,38 +97,33 @@ async function getTotalTXs ({ commit, getters }) {
 const temp = {
   minute: {
     sub: { value: 30, label: 'minute' },
-    interval: { value: 30, label: 's' },
-    label: '30 SEC'
+    interval: { value: 60, label: 's' },
+    label: '60 seconds'
   },
   hourTwo: {
     sub: { value: 2, label: 'hour' },
-    interval: { value: 5, label: 'm' },
-    label: '5 MIN'
-  },
-  hourSix: {
-    sub: { value: 6, label: 'hour' },
-    interval: { value: 15, label: 'm' },
-    label: '15 MIN'
+    interval: { value: 10, label: 'm' },
+    label: '10 minutes'
   },
   day: {
     sub: { value: 1, label: 'day' },
     interval: { value: '', label: 'hour' },
-    label: '1 HOUR'
+    label: '1 hour'
   },
   week: {
     sub: { value: 7, label: 'days' },
-    interval: { value: '12', label: 'h' },
-    label: '12 HOURS'
+    interval: { value: '', label: 'day' },
+    label: '1 day'
   },
   month: {
     sub: { value: 1, label: 'months' },
-    interval: { value: '', label: 'day' },
-    label: '1 DAY'
+    interval: { value: '', label: 'week' },
+    label: '7 days'
   },
   year: {
     sub: { value: 1, label: 'years' },
     interval: { value: '', label: 'month' },
-    label: '1 MONTH'
+    label: '1 month'
   }
 }
 

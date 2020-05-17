@@ -15,6 +15,10 @@ export const date = (time) => {
   return moment(Number(time) * 1000).format('llll')
 }
 
+export const date2 = (time) => {
+  return moment(Number(time) * 1000).format('LL')
+}
+
 export const fromNow = (time) => {
   return moment(new Date(Number(time) * 1000), 'YYYYMMDD').fromNow()
 }
