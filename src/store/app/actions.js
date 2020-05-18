@@ -36,7 +36,7 @@ const promises = (dispatch, getters) => [
   dispatch(GET_TOTAL_TXS),
   dispatch(GET_TX_FOR_24_HOURS),
   dispatch(GET_TXS_HISTORY),
-  dispatch(GET_VALIDATORS, { subnetID: getters.subnetID })
+  dispatch(GET_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID })
 ]
 async function initApp ({ dispatch, getters }) {
   await dispatch(GET_BLOCKCHAINS)

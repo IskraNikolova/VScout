@@ -7,16 +7,16 @@
     <div class="row">
       <div class="col-md-4 col-xs-10">
         <div id="f-size11" class="q-pb-md">BLOKCHAIN</div>
-        <div class="text-h7 text-negative q-pb-md"><b>X-CHAIN</b></div>
-        <div id="f-size12">Blockchain ID <span class="text-negative">4ktRjsAKxgMr2aEzv9SWmrU7Xk5FniHUrVCX4P1TZSfTLZWFM</span></div>
+        <div class="text-h7 text-negative q-pb-md"><b>{{ currentBlockchain.name }}</b></div>
+        <div id="f-size12">Blockchain ID <span class="text-negative">{{ currentBlockchain.id }}</span></div>
       </div>
       <div class="col-2 q-pt-md">
         <img src="~assets/blockchain.svg" id="logo">
       </div>
       <div class="col-md-4 col-xs-10">
         <div id="f-size11" class="q-pb-md">SUBNET ID</div>
-        <div id="f-size13" class="text-negative q-pb-md"><b>11111111111111111111111111111111LpoYY</b></div>
-        <div id="f-size12">VM ID <span class="text-negative">jvYyfQTxGMJLuGWa55kdP2p2zSUYsQ5Raupu4TW34ZAUBAbtq</span></div>
+        <div id="f-size13" class="text-negative q-pb-md"><b>{{ currentBlockchain.subnetID }}</b></div>
+        <div id="f-size12">VM ID <span class="text-negative">{{ currentBlockchain.vmID }}</span></div>
       </div>
       <div class="col-2 q-pt-md">
         <img src="~assets/network.svg" id="logo">
@@ -29,11 +29,10 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'BlockItem',
+  name: 'BlockchainItem',
   computed: {
     ...mapGetters([
-      'lastBlock',
-      'blockTime'
+      'currentBlockchain'
     ])
   }
 }
@@ -45,10 +44,10 @@ export default {
     opacity:0.9;
   }
   #f-size12 {
-    font-size: 12px;
+    font-size: 83%;
   }
   #f-size11 {
-    font-size: 11px;
+    font-size: 82%;
   }
   #logo {
     width:45vw;

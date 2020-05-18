@@ -10,16 +10,16 @@ export function blockchains (state) {
   return state.blockchains
 }
 
+export function currentBlockchain (state) {
+  return state.currentBlockchain
+}
+
 export function lastBlock (state) {
   return state.lastBlock
 }
 
 export function blockTime (state) {
   return state.blockTime
-}
-
-export function subnetID (state) {
-  return state.subnetID
 }
 
 export function avarageBlockTime (state) {

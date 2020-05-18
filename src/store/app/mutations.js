@@ -5,7 +5,7 @@ import {
   SET_VALIDATORS,
   SET_PENDING_VALIDATORS,
   SET_BLOCKCHAINS,
-  SET_SUBNETID,
+  SET_CURRENT_BLOCKCHAIN,
   SET_TOTAL_TXS,
   SET_BLOCK_TIME,
   SET_LAST_BLOCK_TIME,
@@ -27,8 +27,8 @@ const mutations = {
   [SET_BLOCKCHAINS]: (state, { blockchains }) => {
     state.blockchains = blockchains
   },
-  [SET_SUBNETID]: (state, { subnetID }) => {
-    state.subnetID = subnetID
+  [SET_CURRENT_BLOCKCHAIN]: (state, { blockchain }) => {
+    state.currentBlockchain = blockchain
   },
   [SET_BLOCK_TIME]: (state, { blockTime }) => {
     state.blockTime = blockTime

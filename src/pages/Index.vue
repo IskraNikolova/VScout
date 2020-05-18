@@ -11,7 +11,7 @@
           dropdown-icon="img:statics/blockchain-black.svg"
         >
           <q-list v-for="(blockchain, i) in blockchains" v-bind:key="i">
-            <q-item clickable v-close-popup>
+            <q-item clickable v-close-popup @click="onSelectNetwork(blockchain)">
               <q-item-section>
                 <q-item-label><q-img src="statics/blockchain-black.svg" id="logo-xs"/> {{ blockchain.name }}</q-item-label>
                 <q-item-label caption><small>Subnet ID: </small><span class="text-negative">{{ blockchain.subnetID.substr(0, 4)}}...{{ blockchain.subnetID.substr(30)}}</span></q-item-label>
@@ -73,9 +73,9 @@ import TableItem from './../components/table-item'
 import TransactionsItem from './../components/transactions-item'
 
 import {
-  SET_SUBNETID,
   GET_VALIDATORS,
-  GET_PENDING_VALIDATORS
+  GET_PENDING_VALIDATORS,
+  SET_CURRENT_BLOCKCHAIN
 } from '../store/app/types'
 
 export default {
@@ -92,7 +92,7 @@ export default {
       'validators',
       'pendingValidators',
       'blockchains',
-      'subnetID'
+      'currentBlockchain'
     ])
   },
   data () {
@@ -105,14 +105,14 @@ export default {
       getValidators: GET_VALIDATORS,
       getPendingValidators: GET_PENDING_VALIDATORS
     }),
-    onGetValodators (subnetID) {
-      this.$store.commit(SET_SUBNETID, { subnetID })
-      this.getValidators({ subnetID })
+    onSelectNetwork (blockchain) {
+      this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
+      this.getValidators({ subnetID: blockchain.subnetID })
     },
     async getValidatorsV (type) {
       const temp = {
-        active: async () => await this.getValidators({ subnetID: this.subnetID }),
-        pending: async () => await this.getPendingValidators({ subnetID: this.subnetID })
+        active: async () => await this.getValidators({ subnetID: this.currentBlockchain.subnetID }),
+        pending: async () => await this.getPendingValidators({ subnetID: this.currentBlockchain.subnetID })
       }
 
       if (typeof type !== 'undefined') await temp[type]()

@@ -81,7 +81,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { round } from './../utils/commons'
 import { date2 } from './../modules/time'
 
@@ -145,11 +144,6 @@ export default {
   },
   created () {
     this.curentVal = this.validators
-  },
-  computed: {
-    ...mapGetters([
-      'subnetID'
-    ])
   },
   methods: {
     onGetValidators (e) {
