@@ -169,7 +169,7 @@ export default {
     },
     getStyle (cumulativeStake, precent) {
       // todo see table quasar doc for styling
-      return 'background-color: rgb(84, 93, 95);width: ' + (cumulativeStake * 1.17) + '%;border-right:' + (precent * 2.17) + 'px solid #87C5D6;text-align: right!important;height: 52px;margin:-9%;'
+      return 'background-color: rgb(84, 93, 95);width: ' + (cumulativeStake * 1.17) + '%;border-right:' + (precent * 2.35) + 'px solid #87C5D6;text-align: right!important;height: 52px;margin:-8%;'
     }
   }
 }

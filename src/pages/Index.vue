@@ -1,12 +1,45 @@
 <template>
   <q-page class="q-pa-xl">
-     <div class="row q-pb-xl">
-      <div class="col-xl-8 col-md-7 col-xs-1"></div>
-      <div class="col-xl-3 col-md-5 col-xs-12">
-      <q-toolbar>
-        <q-img src="~assets/AVAVE.png" id="toolbar-logo" class="q-mr-sm"/>
+     <div class="row justify-end q-pb-xl">
+      <div class="col-4 q-pl-xl">
+        <q-img src="~assets/AVAVE.png" id="toolbar-logo"/>
+      </div>
+      <div class="col-2">
+        <q-btn push no-caps flat size="md" icon="img:statics/rwc.png">
+          <q-popup-proxy>
+            <q-banner class="q-pa-md">
+             <div class="q-pb-md">Reward Calculator</div>
+             <q-input
+              label-color="orange" outlined
+              v-model="amount"
+              label="Staking AVA"
+              mask="#"
+              input-class="text-right"
+              suffix="$AVA"
+              precision= '2'
+              reverse-fill-mask
+              @input="calculate"
+              class="q-pb-md"
+            />
+            <q-input
+              label-color="orange" outlined
+              v-model="period"
+              label="Staking Time"
+              input-class="text-right"
+              type="number"
+              prefix="Days"
+              reverse-fill-mask
+              @input="calculate"
+              class="q-pb-md"
+            />
+            <div class="row">
+              <div><small>Monthly Earning  </small> <span class="text-accent">{{ result.toFixed(2) }}</span> AVA&nbsp;</div>
+              <div><small>Yearly Earning </small> <span class="text-accent">{{ (result * 12).toFixed(2) }}</span> AVA </div>
+            </div>
+            </q-banner>
+          </q-popup-proxy>
+        </q-btn>
         <q-btn-dropdown
-          style="margin-left: 170px;"
           flat
           dropdown-icon="img:statics/blockchain-black.svg"
         >
@@ -42,9 +75,8 @@
             </template>
           </q-input>
         </q-btn-dropdown>
-      </q-toolbar>
       </div>
-     </div>
+    </div>
     <blockchain-item />
     <stak-item />
     <transactions-item />
@@ -103,15 +135,27 @@ export default {
   },
   data () {
     return {
+      amount: 1000,
+      period: 30,
+      result: 0.00,
       customEndpoint: '',
       endpoints: network.endpointUrls
     }
+  },
+  created () {
+    this.calculate()
   },
   methods: {
     ...mapActions({
       getValidators: GET_VALIDATORS,
       getPendingValidators: GET_PENDING_VALIDATORS
     }),
+    calculate () {
+      const calc = (this.amount * this.period) * 0.4
+      if (Number.isNaN((calc))) this.amount = 0
+
+      this.result = calc
+    },
     onSelectNetwork (blockchain) {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
       this.getValidators({ subnetID: blockchain.subnetID })
@@ -158,8 +202,8 @@ export default {
 
 <style scoped>
  #toolbar-logo {
-  width: 40%;
-  max-width: 40%;
+  width: 60%;
+  max-width: 60%;
  }
  #logo {
   width: 70vw;
