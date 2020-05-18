@@ -6,6 +6,7 @@ import {
   SET_PENDING_VALIDATORS,
   SET_BLOCKCHAINS,
   SET_CURRENT_BLOCKCHAIN,
+  SET_ENDPOINT,
   SET_TOTAL_TXS,
   SET_BLOCK_TIME,
   SET_LAST_BLOCK_TIME,
@@ -29,6 +30,9 @@ const mutations = {
   },
   [SET_CURRENT_BLOCKCHAIN]: (state, { blockchain }) => {
     state.currentBlockchain = blockchain
+  },
+  [SET_ENDPOINT]: (state, { endpoint }) => {
+    state.networkEndpoint = endpoint
   },
   [SET_BLOCK_TIME]: (state, { blockTime }) => {
     state.blockTime = blockTime

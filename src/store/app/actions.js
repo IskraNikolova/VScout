@@ -46,9 +46,9 @@ async function initApp ({ dispatch, getters }) {
   }, 4000)
 }
 
-async function getLastBlock ({ commit }) {
+async function getLastBlock ({ commit, getters }) {
   try {
-    const lastBlock = await _getBlock()
+    const lastBlock = await _getBlock({ endpoint: getters.networkEndpoint })
     commit(SET_BLOCK, { lastBlock })
   } catch (err) {
     console.log(err)
@@ -57,7 +57,7 @@ async function getLastBlock ({ commit }) {
 
 async function getBlockTime ({ commit, getters }) {
   try {
-    const preLastBlock = await _getBlock({ id: getters.lastBlock.parentID })
+    const preLastBlock = await _getBlock({ id: getters.lastBlock.parentID, endpoint: getters.networkEndpoint })
     const blockTime = secBetweenTwoTime(getters.lastBlock.timestamp, preLastBlock.timestamp)
     commit(SET_BLOCK_TIME, { blockTime })
   } catch (err) {
@@ -65,10 +65,9 @@ async function getBlockTime ({ commit, getters }) {
   }
 }
 
-async function getBlockchains ({ commit }) {
+async function getBlockchains ({ commit, getters }) {
   try {
-    const { blockchains } = await _getBlockchains()
-    console.log(blockchains)
+    const { blockchains } = await _getBlockchains({ endpoint: getters.networkEndpoint })
     commit(SET_BLOCKCHAINS, { blockchains })
   } catch (err) {
     console.log(err)
@@ -143,9 +142,9 @@ async function getTxsHistory ({ commit, getters }) {
   }
 }
 
-async function getValidators ({ commit }, { subnetID }) {
+async function getValidators ({ commit, getters }, { subnetID }) {
   try {
-    var { validators } = await _getValidators({ subnetID })
+    var { validators } = await _getValidators({ subnetID, endpoint: getters.networkEndpoint })
     validators = validators.filter(i => i.endTime >= Date.now() / 1000)
     validators.sort(compare)
     const val = map(validators)
@@ -157,7 +156,7 @@ async function getValidators ({ commit }, { subnetID }) {
 
 async function getPendingValidators ({ commit, getters }, { subnetID }) {
   try {
-    var { validators } = await _getPendingValidators({ subnetID })
+    var { validators } = await _getPendingValidators({ subnetID, endpoint: getters.networkEndpoint })
     validators = validators.filter(i => i.endTime >= Date.now() / 1000)
     validators.sort(compare)
     const val = map(validators)

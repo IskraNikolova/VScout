@@ -14,6 +14,10 @@ export function currentBlockchain (state) {
   return state.currentBlockchain
 }
 
+export function networkEndpoint (state) {
+  return state.networkEndpoint
+}
+
 export function lastBlock (state) {
   return state.lastBlock
 }

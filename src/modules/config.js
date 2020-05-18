@@ -1,6 +1,6 @@
 export default {
   network: {
-    endpointUrl: 'https://bootstrap.ava.network:21000/',
+    endpointUrls: ['https://bootstrap.ava.network:21000/', 'http://127.0.0.1:9650/'],
     explorerBaseUrl: 'https://explorerapi.ava.network/',
     defaultBlockchain: {
       id: '4ktRjsAKxgMr2aEzv9SWmrU7Xk5FniHUrVCX4P1TZSfTLZWFM',

@@ -1,10 +1,10 @@
 <template>
   <q-page class="q-pa-xl">
-     <div class="q-gutter-y-md column q-pb-xl">
-      <q-toolbar style="padding-left: 600px;">
-        <q-separator color="orange" vertical class="q-mb-xs q-mr-xs"/>
-        <q-img src="~assets/ava-black.png" id="logo" class="q-mr-sm"/>
-        <div class="q-pt-md">Validator Explorer</div>
+     <div class="row q-pb-xl">
+      <div class="col-xl-8 col-md-7 col-xs-1"></div>
+      <div class="col-xl-3 col-md-5 col-xs-12">
+      <q-toolbar>
+        <q-img src="~assets/AVAVE.png" id="toolbar-logo" class="q-mr-sm"/>
         <q-btn-dropdown
           style="margin-left: 170px;"
           flat
@@ -23,27 +23,27 @@
           flat
           dropdown-icon="img:statics/node.svg"
         >
-          <q-list>
-            <div class="no-wrap q-pa-md text-negative">Switch To Endpoint</div>
-            <q-item clickable v-close-popup>
+          <div class="no-wrap q-pa-md text-negative">Switch To Endpoint</div>
+          <q-list v-for="(endpoint, i) in endpoints" v-bind:key="i">
+            <q-item clickable v-close-popup @click="onSelectEndpoint(endpoint)">
               <q-item-section>
-                <q-item-label>bootstrap.ava.network:21000</q-item-label>
+                <q-item-label>{{ endpoint }}</q-item-label>
               </q-item-section>
-            </q-item>
-            <q-item clickable v-close-popup>
-              <q-item-section>
-                <q-item-label>127.0.0.1:9650</q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-item>
-              <q-input
-                label="http(s)://yourAddress"
-                v-model="customEndpoint"
-              />
             </q-item>
           </q-list>
+          <q-input
+            clearable
+            class="q-pl-md q-pr-md"
+            label="http(s)://yourAddress/"
+            v-model="customEndpoint"
+          >
+            <template v-slot:after>
+              <q-btn round dense flat icon="send" @click="onSelectEndpoint(customEndpoint)"/>
+            </template>
+          </q-input>
         </q-btn-dropdown>
       </q-toolbar>
+      </div>
      </div>
     <blockchain-item />
     <stak-item />
@@ -66,6 +66,8 @@ import {
   mapActions
 } from 'vuex'
 
+const { network } = require('./../modules/config').default
+
 import Faqs from './../components/faqs'
 import StakItem from './../components/stak-item'
 import BlockchainItem from './../components/blockchain-item'
@@ -74,9 +76,12 @@ import TransactionsItem from './../components/transactions-item'
 
 import {
   GET_VALIDATORS,
+  SET_ENDPOINT,
   GET_PENDING_VALIDATORS,
   SET_CURRENT_BLOCKCHAIN
 } from '../store/app/types'
+
+import { testConnection } from './../modules/network'
 
 export default {
   name: 'PageIndex',
@@ -92,12 +97,14 @@ export default {
       'validators',
       'pendingValidators',
       'blockchains',
-      'currentBlockchain'
+      'currentBlockchain',
+      'networkEndpoint'
     ])
   },
   data () {
     return {
-      customEndpoint: ''
+      customEndpoint: '',
+      endpoints: network.endpointUrls
     }
   },
   methods: {
@@ -108,6 +115,34 @@ export default {
     onSelectNetwork (blockchain) {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
       this.getValidators({ subnetID: blockchain.subnetID })
+    },
+    async onSelectEndpoint (endpoint) {
+      const temp = {
+        'Network Error': () => {
+          this.$q.notify({
+            message: 'Network Error!',
+            color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
+            position: 'top',
+            timeout: 2000,
+            icon: 'warning'
+          })
+        },
+        'Request failed with status code 404': () => {
+          this.$q.notify({
+            message: 'Invalid network address!',
+            color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
+            position: 'top',
+            timeout: 2000,
+            icon: 'warning'
+          })
+        },
+        200: () => {
+          this.$store.commit(SET_ENDPOINT, { endpoint })
+          this.customEndpoint = ''
+        }
+      }
+      const connection = await testConnection({ endpoint })
+      temp[connection]()
     },
     async getValidatorsV (type) {
       const temp = {
@@ -122,6 +157,10 @@ export default {
 </script>
 
 <style scoped>
+ #toolbar-logo {
+  width: 40%;
+  max-width: 40%;
+ }
  #logo {
   width: 70vw;
   max-width: 70px;
