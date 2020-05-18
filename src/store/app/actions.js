@@ -68,6 +68,7 @@ async function getBlockTime ({ commit, getters }) {
 async function getBlockchains ({ commit }) {
   try {
     const { blockchains } = await _getBlockchains()
+    console.log(blockchains)
     commit(SET_BLOCKCHAINS, { blockchains })
   } catch (err) {
     console.log(err)

@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="q-pa-md q-pl-xl"
+    class="q-mt-md q-pt-md q-pl-xl q-pr-xl q-pb-md"
     dark flat id="custom-card" >
     <div class="row">
       <div class="col-md-2 col-xs-10">
@@ -38,7 +38,7 @@
       </div>
       <div class="col-md-2 col-xs-10">
        <div style="font-size: 11px;" class="q-pb-md">PRICE</div>
-       <div class="text-h5 text-secondary q-pb-md"><small>$0.50<span style="font-size: 13px;"> /AVA</span></small></div>
+       <div class="text-h5 text-secondary q-pb-md"><small>$0.00<span style="font-size: 13px;"> /AVA</span></small></div>
        <div style="font-size: 12px;">Market Capitalization: <span class="text-secondary">N/A</span></div>
       </div>
     </div>
@@ -72,7 +72,7 @@ export default {
  #custom-card {
    border-right: 3px solid #FFAAF2;
    background: radial-gradient(circle, #344245 0%, #000709 70%);
-   opacity:0.8;
+   opacity:0.9;
  }
  .custom-icon {
    width:30vw;

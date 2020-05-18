@@ -1,22 +1,51 @@
 <template>
   <q-page class="q-pa-xl">
-    <div class="row q-pb-xl" style="margin-top: -22px;">
-      <div class="col">
-        <div><q-img src="~assets/ava-black.png" id="b-logo" /></div>
-        <div>AVA P-Explorer</div>
-      </div>
-      <div class="">
-        <q-select
-          @input="onGetValodators(model.value.subnetID)"
-          :display-value="`${model.value.name}`"
-          color="accent" v-model="model"
-          :options="options"
-          hide-bottom-space
-          borderless
-        />
-      </div>
-    </div>
-    <!--<block-item />-->
+     <div class="q-gutter-y-md column q-pb-xl">
+      <q-toolbar style="padding-left: 600px;">
+        <q-separator color="orange" vertical class="q-mb-xs q-mr-xs"/>
+        <q-img src="~assets/ava-black.png" id="logo" class="q-mr-sm"/>
+        <div class="q-pt-md">Validator Explorer</div>
+        <q-btn-dropdown
+          style="margin-left: 170px;"
+          flat
+          dropdown-icon="img:statics/blockchain-black.svg"
+        >
+          <q-list v-for="(blockchain, i) in blockchains" v-bind:key="i">
+            <q-item clickable v-close-popup>
+              <q-item-section>
+                <q-item-label><q-img src="statics/blockchain-black.svg" id="logo-xs"/> {{ blockchain.name }}</q-item-label>
+                <q-item-label caption><small>Subnet ID: </small><span class="text-negative">{{ blockchain.subnetID.substr(0, 4)}}...{{ blockchain.subnetID.substr(30)}}</span></q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
+        <q-btn-dropdown
+          flat
+          dropdown-icon="img:statics/node.svg"
+        >
+          <q-list>
+            <div class="no-wrap q-pa-md text-negative">Switch To Endpoint</div>
+            <q-item clickable v-close-popup>
+              <q-item-section>
+                <q-item-label>bootstrap.ava.network:21000</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup>
+              <q-item-section>
+                <q-item-label>127.0.0.1:9650</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item>
+              <q-input
+                label="http(s)://yourAddress"
+                v-model="customEndpoint"
+              />
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
+      </q-toolbar>
+     </div>
+    <blockchain-item />
     <stak-item />
     <transactions-item />
     <table-item v-bind:validators="validators" v-bind:pendingValidators="pendingValidators" @getValidators="getValidatorsV" />
@@ -39,7 +68,7 @@ import {
 
 import Faqs from './../components/faqs'
 import StakItem from './../components/stak-item'
-// import BlockItem from './../components/block-item'
+import BlockchainItem from './../components/blockchain-item'
 import TableItem from './../components/table-item'
 import TransactionsItem from './../components/transactions-item'
 
@@ -54,15 +83,9 @@ export default {
   components: {
     Faqs,
     StakItem,
-    // BlockItem,
+    BlockchainItem,
     TableItem,
     TransactionsItem
-  },
-  data () {
-    return {
-      options: [],
-      model: {}
-    }
   },
   computed: {
     ...mapGetters([
@@ -72,15 +95,10 @@ export default {
       'subnetID'
     ])
   },
-  created () {
-    this.options = this.blockchains.map(i => {
-      const res = {
-        label: i.name,
-        value: i
-      }
-      return res
-    })
-    this.model = this.options[0]
+  data () {
+    return {
+      customEndpoint: ''
+    }
   },
   methods: {
     ...mapActions({
@@ -105,10 +123,16 @@ export default {
 
 <style scoped>
  #logo {
-  width:30vw;
-  max-width:50px;
+  width: 70vw;
+  max-width: 70px;
  }
- #b-logo {
-  width: 60px!important;
+ #logo-s {
+  width: 28vw;
+  max-width: 28px;
+ }
+ #logo-xs {
+  width: 18vw;
+  max-width: 18px;
+  opacity: 0.3;
  }
 </style>

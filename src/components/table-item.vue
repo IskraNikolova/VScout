@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { round } from './../utils/commons'
 import { date2 } from './../modules/time'
 
@@ -145,6 +146,11 @@ export default {
   created () {
     this.curentVal = this.validators
   },
+  computed: {
+    ...mapGetters([
+      'subnetID'
+    ])
+  },
   methods: {
     onGetValidators (e) {
       const temp = {
@@ -179,6 +185,6 @@ export default {
    border-left: 0.5px solid #474F52;
    border-right: 3px solid #87C5D6;
    background: radial-gradient(circle, #344245 0%, #000709 70%);
-   opacity:0.8;
+   opacity:0.9;
  }
 </style>
