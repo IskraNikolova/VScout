@@ -104,9 +104,9 @@ module.exports = function (ctx) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'Ava P-Chain explorer',
+        name: 'AVA Validator Explorer',
         short_name: 'AVAPChainEx',
-        description: 'Ava P-Chain explorer, display validators.',
+        description: 'AVA chains validator explorer',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',

@@ -1,8 +1,8 @@
 {
-  "name": "p-chain-ex",
+  "name": "chain-ex",
   "version": "0.0.1",
-  "description": "Ava P-Chain explorer, display validators.",
-  "productName": "AVA P-Chain Explorer",
+  "description": "AVA chains validator explorer",
+  "productName": "AVA Validator Explorer",
   "cordovaId": "io.ava.explorer.app",
   "capacitorId": "",
   "author": "Iskra Nikolova airiskra@gmail.com",
@@ -24,7 +24,6 @@
     "chart.js": "^2.9.3",
     "moment": "^2.24.0",
     "quasar": "^1.0.0",
-    "slopes": "^1.4.2",
     "vue-jest": "^3.0.5",
     "vuex-persist": "^2.2.0"
   },

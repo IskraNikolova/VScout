@@ -179,6 +179,6 @@ export default {
    border-left: 0.5px solid #474F52;
    border-right: 3px solid #87C5D6;
    background: radial-gradient(circle, #344245 0%, #000709 70%);
-   opacity:0.9;
+   opacity:0.98;
  }
 </style>

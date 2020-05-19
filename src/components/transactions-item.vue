@@ -174,6 +174,6 @@ export default {
   #custom-card {
     border-right: 3px solid #92FF60;
     background: radial-gradient(circle, #344245 0%, #000709 70%);
-    opacity:0.9;
+    opacity:0.98;
   }
 </style>

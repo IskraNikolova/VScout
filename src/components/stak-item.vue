@@ -72,7 +72,7 @@ export default {
  #custom-card {
    border-right: 3px solid #FFAAF2;
    background: radial-gradient(circle, #344245 0%, #000709 70%);
-   opacity:0.9;
+   opacity:0.98;
  }
  .custom-icon {
    width:30vw;

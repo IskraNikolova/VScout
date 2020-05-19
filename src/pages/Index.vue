@@ -5,37 +5,43 @@
         <q-img src="~assets/AVAVE.png" id="toolbar-logo"/>
       </div>
       <div class="col-2">
-        <q-btn push no-caps flat size="md" icon="img:statics/rwc.png">
+        <q-btn push no-caps flat id="logo-sim" icon="img:statics/rwc.svg">
           <q-popup-proxy>
-            <q-banner class="q-pa-md">
-             <div class="q-pb-md">Reward Calculator</div>
-             <q-input
-              label-color="orange" outlined
-              v-model="amount"
-              label="Staking AVA"
-              mask="#"
-              input-class="text-right"
-              suffix="$AVA"
-              precision= '2'
-              reverse-fill-mask
-              @input="calculate"
-              class="q-pb-md"
-            />
-            <q-input
-              label-color="orange" outlined
-              v-model="period"
-              label="Staking Time"
-              input-class="text-right"
-              type="number"
-              prefix="Days"
-              reverse-fill-mask
-              @input="calculate"
-              class="q-pb-md"
-            />
-            <div class="row">
-              <div><small>Monthly Earning  </small> <span class="text-accent">{{ result.toFixed(2) }}</span> AVA&nbsp;</div>
-              <div><small>Yearly Earning </small> <span class="text-accent">{{ (result * 12).toFixed(2) }}</span> AVA </div>
-            </div>
+            <q-banner class="q-pa-md" dense style="width: 430px;">
+              <div class="q-pb-md">Reward Calculator</div>
+              <div class="q-pa-md absolute-top-right"><q-badge outline size="xs" color="accent" :label="percentReward.toFixed(2) + '%'" /></div>
+              <q-input
+                label-color="negative"
+                outlined
+                v-model="stakeAmount"
+                label="Staking Amount"
+                mask="#"
+                input-class="text-right"
+                suffix="$AVA"
+                precision= '2'
+                reverse-fill-mask
+                color="accent"
+                @input="calculate"
+                class="q-pb-xl"
+                :rules="[value => value >= 2000 || 'Stake Amount must be greater or equal to 2000 $AVA']"
+              />
+              <q-slider
+                class="q-ml-xs q-mr-xs"
+                v-model="stakeTime"
+                :min="2"
+                :max="52"
+                :step="1"
+                :label-value="'Staking Time ' + stakeTime + ' weeks'"
+                label-always
+                @input="calculate"
+                label-text-color="negative"
+                label-color="white"
+                color="negative"
+              />
+              <div class="row">
+                <div class="col q-pl-xs q-mr-xs"><small>Weekly Earning  </small> <span class="text-accent">{{ (result / 52).toFixed(2) }}</span> $AVA&nbsp;</div>
+                <div class="col q-pl-xl"><small>Yearly Earning </small> <span class="text-accent">{{ result.toFixed(2) }}</span> $AVA </div>
+              </div>
             </q-banner>
           </q-popup-proxy>
         </q-btn>
@@ -43,6 +49,7 @@
           flat
           dropdown-icon="img:statics/blockchain-black.svg"
         >
+          <div class="no-wrap q-pa-md text-negative">Blockchains</div>
           <q-list v-for="(blockchain, i) in blockchains" v-bind:key="i">
             <q-item clickable v-close-popup @click="onSelectNetwork(blockchain)">
               <q-item-section>
@@ -77,9 +84,11 @@
         </q-btn-dropdown>
       </div>
     </div>
-    <blockchain-item />
+
     <stak-item />
-    <transactions-item />
+        <transactions-item />
+        <blockchain-item />
+
     <table-item v-bind:validators="validators" v-bind:pendingValidators="pendingValidators" @getValidators="getValidatorsV" />
     <faqs />
     <div class="flex flex-center q-mt-xl">
@@ -135,9 +144,10 @@ export default {
   },
   data () {
     return {
-      amount: 1000,
-      period: 30,
+      stakeAmount: 2000,
+      stakeTime: 2,
       result: 0.00,
+      percentReward: 4,
       customEndpoint: '',
       endpoints: network.endpointUrls
     }
@@ -151,10 +161,21 @@ export default {
       getPendingValidators: GET_PENDING_VALIDATORS
     }),
     calculate () {
-      const calc = (this.amount * this.period) * 0.4
-      if (Number.isNaN((calc))) this.amount = 0
+      // this.result = (0.002 * this.stakeTime + 0.896) * (this.stakeAmount / 360000000)
+      // this.result = (0.002 * this.stakeTime + 0.896) * (360000000 / 360000000)
+      this.stakeTime = Math.round(this.stakeTime)
+      const basePercY = 4
 
-      this.result = calc
+      if (this.stakeTime > 2) {
+        //  additional percent reward; calculate 11.11%  bonus devide 52 weeks
+        const bonusPercentPerWeek = 0.2136538461538462
+
+        this.percentReward = (this.stakeTime * bonusPercentPerWeek) + basePercY
+        this.result = (this.stakeAmount * this.percentReward) / 100
+      } else {
+        this.percentReward = basePercY
+        this.result = (this.stakeAmount * basePercY) / 100
+      }
     },
     onSelectNetwork (blockchain) {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
