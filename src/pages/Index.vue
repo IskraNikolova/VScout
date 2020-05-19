@@ -86,10 +86,10 @@
     </div>
 
     <stak-item />
-        <transactions-item />
-        <blockchain-item />
+    <transactions-item />
+    <blockchain-item />
 
-    <table-item v-bind:validators="validators" v-bind:pendingValidators="pendingValidators" @getValidators="getValidatorsV" />
+    <table-item @getValidators="getValidatorsV" />
     <faqs />
     <div class="flex flex-center q-mt-xl">
       <img src="~assets/ava-black.png" id="logo"/>
@@ -101,7 +101,6 @@
 </template>
 
 <script>
-
 import {
   mapGetters,
   mapActions
@@ -161,8 +160,6 @@ export default {
       getPendingValidators: GET_PENDING_VALIDATORS
     }),
     calculate () {
-      // this.result = (0.002 * this.stakeTime + 0.896) * (this.stakeAmount / 360000000)
-      // this.result = (0.002 * this.stakeTime + 0.896) * (360000000 / 360000000)
       this.stakeTime = Math.round(this.stakeTime)
       const basePercY = 4
 

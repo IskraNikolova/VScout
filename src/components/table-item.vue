@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { round } from './../utils/commons'
 import { date2 } from './../modules/time'
 
@@ -93,23 +94,24 @@ export default {
     ProgressBarValidateSession,
     DetailsItem
   },
-  props: {
-    validators: {
-      type: Array,
-      required: true
-    },
-    pendingValidators: {
-      type: Array,
-      required: true
-    }
-  },
+  // props: {
+  //   validators: {
+  //     type: Array,
+  //     required: true
+  //   },
+  //   pendingValidators: {
+  //     type: Array,
+  //     required: true
+  //   }
+  // },
   data () {
     return {
-      curentVal: [],
+      curentValidators: [],
       isGrid: false,
+      isActive: true,
       filter: '',
       pagination: {
-        rowsPerPage: this.validators.length
+        rowsPerPage: 10
       },
 
       border: '#87C5D6',
@@ -142,18 +144,31 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapGetters([
+      'validators',
+      'pendingValidators'
+    ]),
+    curentVal: {
+      get: function () {
+        return this.isActive ? this.validators : this.pendingValidators
+      }
+    }
+  },
   created () {
-    this.curentVal = this.validators
+    this.pagination = {
+      rowsPerPage: this.curentVal.length
+    }
   },
   methods: {
     onGetValidators (e) {
       const temp = {
-        active: () => { this.curentVal = this.validators },
-        pending: () => { this.curentVal = this.pendingValidators }
+        active: () => { this.isActive = true },
+        pending: () => { this.isActive = false }
       }
       const type = e.target.innerText.toLowerCase()
-      this.$emit('getValidators', type)
       temp[type]()
+      this.$emit('getValidators', type)
     },
     startDate (time) {
       return date2(time)
