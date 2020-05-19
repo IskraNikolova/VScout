@@ -1,10 +1,10 @@
 <template>
   <q-page class="q-pa-xl">
      <div class="row justify-end q-pb-xl">
-      <div class="col-4 q-pl-xl">
+      <div class="col-4">
         <q-img src="~assets/AVAVE.png" id="toolbar-logo"/>
       </div>
-      <div class="col-2">
+      <div class="col-md-2 col-xs-8">
         <q-btn push no-caps flat id="logo-sim" icon="img:statics/rwc.svg">
           <q-popup-proxy>
             <q-banner class="q-pa-md" dense style="width: 430px;">
