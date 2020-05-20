@@ -8,6 +8,9 @@
   "author": "Iskra Nikolova airiskra@gmail.com",
   "private": true,
   "scripts": {
+    "build": "quasar build",
+    "start": "node server.js",
+    "heroku-postbuild": "yarn && yarn build",
     "lint": "eslint --ext .js,.vue src",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "test:unit": "jest --updateSnapshot",
