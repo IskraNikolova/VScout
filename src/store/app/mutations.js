@@ -8,6 +8,7 @@ import {
   SET_CURRENT_BLOCKCHAIN,
   SET_ENDPOINT,
   SET_TOTAL_TXS,
+  SET_PREVIOUS_TOTAL_TXS,
   SET_BLOCK_TIME,
   SET_LAST_BLOCK_TIME,
   SET_TX_FOR_24_HOURS,
@@ -45,6 +46,9 @@ const mutations = {
   },
   [SET_TOTAL_TXS]: (state, { totalTxsCount }) => {
     state.totalTxsCount = totalTxsCount
+  },
+  [SET_PREVIOUS_TOTAL_TXS]: (state, { prevTotalTxs }) => {
+    state.prevTotalTxs = prevTotalTxs
   },
   [SET_KEY_TXH]: (state, { txHKey }) => {
     state.txHKey = txHKey

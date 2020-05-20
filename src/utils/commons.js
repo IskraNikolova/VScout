@@ -35,29 +35,28 @@ export function round (num, prec) {
   return Math.round((num + Number.EPSILON) * multiplier) / multiplier
 }
 
-export function getChartLabel (interval, type) {
-  if (typeof type === 'undefined' ||
+export function getChartLabel (interval, key) {
+  if (typeof key === 'undefined' ||
       typeof interval === 'undefined') return
-  const key = type.split(' ')[1]
 
   const func = {
-    seconds: (date) => {
+    minute: (date) => {
       return moment(date).format('HH:mm')
     },
-    minutes: (date) => {
+    hourTwo: (date) => {
       return moment(date).format('LT')
     },
-    hour: (date) => {
+    day: (date) => {
       return moment(date).format('ddd ha')
     },
-    day: (date) => {
+    week: (date) => {
       return `${moment(date).format('D')} ${moment.weekdaysShort()[moment(date).day()]}`
     },
-    days: (date) => {
+    month: (date) => {
       return ` ${moment(date).format('D')} ${moment.monthsShort()[moment(date).month()]}`
     },
-    month: (date) => {
-      return moment.months()[moment(date).month()]
+    year: (date) => {
+      return moment.months()[Math.max(0, moment(date).month() - 1)]
     }
   }
 

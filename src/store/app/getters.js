@@ -39,6 +39,10 @@ export function totalTxsCount (state) {
   return state.totalTxsCount
 }
 
+export function prevTotalTxs (state) {
+  return state.prevTotalTxs
+}
+
 export function txsHistory (state) {
   return key => state.txsHistory[key]
 }

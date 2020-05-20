@@ -7,6 +7,7 @@ import {
   SET_BLOCK,
   GET_TOTAL_TXS,
   SET_TOTAL_TXS,
+  SET_PREVIOUS_TOTAL_TXS,
   GET_VALIDATORS,
   SET_VALIDATORS,
   GET_PENDING_VALIDATORS,
@@ -84,12 +85,12 @@ async function getTxsFor24H ({ commit }) {
   }
 }
 
-async function getTotalTXs ({ commit }) {
+async function getTotalTXs ({ commit, getters }) {
   try {
     const response = await _getLastTx()
     if (response.count) {
       const totalTxsCount = response.count
-
+      commit(SET_PREVIOUS_TOTAL_TXS, { prevTotalTxs: getters.totalTxsCount })
       commit(SET_TOTAL_TXS, { totalTxsCount })
     }
   } catch (err) {
@@ -116,12 +117,12 @@ const temp = {
   week: {
     sub: { value: 7, label: 'days' },
     interval: { value: '', label: 'day' },
-    label: '1 day'
+    label: '24 hours'
   },
   month: {
     sub: { value: 1, label: 'months' },
-    interval: { value: '', label: 'week' },
-    label: '7 days'
+    interval: { value: '', label: 'day' },
+    label: '1 day'
   },
   year: {
     sub: { value: 1, label: 'years' },
@@ -141,12 +142,14 @@ async function getTxsHistory ({ commit, getters }) {
     )
 
     aggregates.intervals.map(a => {
-      if (moment(a.endTime) > moment()) {
+      if (moment(a.endTime) > moment() &&
+        aggregates.intervalSize !== 2592000000000000) {
         a.endTime = moment().toISOString()
       }
     })
 
     aggregates.label = label
+    aggregates.key = getters.txHKey
     commit(SET_TXS_HISTORY, { key: getters.txHKey, txsHistory: aggregates })
   } catch (err) {
     console.log(err)

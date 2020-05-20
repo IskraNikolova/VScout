@@ -12,6 +12,7 @@ export default function () {
     networkEndpoint: network.endpointUrls[0],
     txsFor24H: { transactionCount: 0, transactionVolume: 0 },
     totalTxsCount: 0,
+    prevTotalTxs: 0,
     txsHistory: [],
     txHKey: 'day'
   }

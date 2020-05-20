@@ -49,7 +49,8 @@ export default {
       'txsFor24H',
       'totalTxsCount',
       'txsHistory',
-      'txHKey'
+      'txHKey',
+      'prevTotalTxs'
     ]),
     tps: function () {
       const t = this.txsFor24H.transactionCount / (24 * 60 * 60)
@@ -62,8 +63,10 @@ export default {
     this.getChart()
     this.$store.subscribe(async (mutation, state) => {
       if (mutation.type === 'SET_TOTAL_TXS') {
-        this.arr = await this.txsHistory(this.txHKey)
-        this.updateChart()
+        if (this.prevTotalTxs < this.totalTxsCount || moment().seconds() % 60 === 0) {
+          this.arr = await this.txsHistory(this.txHKey)
+          this.updateChart()
+        }
       }
     })
   },
@@ -107,7 +110,7 @@ export default {
       return this.arr.intervals.map(a => a.transactionCount)
     },
     getLabels () {
-      return this.arr.intervals.map(a => getChartLabel(a, this.arr.label))
+      return this.arr.intervals.map(a => getChartLabel(a, this.arr.key))
     },
     getChartData () {
       const volumesData = {
