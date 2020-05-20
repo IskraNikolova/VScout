@@ -8,7 +8,7 @@
   "author": "Iskra Nikolova airiskra@gmail.com",
   "private": true,
   "scripts": {
-    "build": "yarn",
+    "build": "quasar build",
     "start": "node server.js",
     "heroku-postbuild": "yarn && yarn build",
     "lint": "eslint --ext .js,.vue src",
