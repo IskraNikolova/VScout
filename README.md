@@ -1,6 +1,8 @@
-# AVA P-Chain Explorer
+# AVA Validator Explorer
 
-Ava P-Chain explorer, display validators.
+## Project Description:
+ AVA Validator Explorer is a SPA web application for exploring the validator subsets on AVA network. It’s written in Quasar (Vue, Nodejs, Webpack, Jest) and includes multiple useful functionalities such as detailed network validators information (including optional identification), network stats, staking calculator, blockchain switcher, configurable endpoints and a FAQ section.
+ http://validator-exp.herokuapp.com/#/
 
 ## Install the dependencies
 ```bash
