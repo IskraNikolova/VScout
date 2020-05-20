@@ -60,12 +60,10 @@ export default {
     await this.getTxHistory()
     this.arr = await this.txsHistory(this.txHKey)
     this.getChart()
-    this.myChart.update()
     this.$store.subscribe(async (mutation, state) => {
       if (mutation.type === 'SET_TOTAL_TXS') {
         this.arr = await this.txsHistory(this.txHKey)
-        this.getChart()
-        this.myChart.update()
+        this.updateChart()
       }
     })
   },
@@ -85,49 +83,66 @@ export default {
       this.$store.commit(SET_KEY_TXH, { txHKey })
       await this.getTxHistory()
       this.arr = this.txsHistory(this.txHKey)
-      this.getChart()
+      this.updateChart()
+    },
+    updateChart () {
+      const data = this.getChartData()
+      this.myChart.data = data
       this.myChart.update()
+    },
+    getSec (endT, start) {
+      const now = moment(endT)
+      const end = moment(start)
+      const duration = moment.duration(now.diff(end))
+      const sec = duration.asSeconds()
+      return sec
+    },
+    getTps () {
+      return this.arr.intervals.map(a => {
+        const sec = this.getSec(a.endTime, a.startTime)
+        return (a.transactionCount / sec).toFixed(2)
+      })
+    },
+    getVolumes () {
+      return this.arr.intervals.map(a => a.transactionCount)
+    },
+    getLabels () {
+      return this.arr.intervals.map(a => getChartLabel(a, this.arr.label))
+    },
+    getChartData () {
+      const volumesData = {
+        label: 'Tx Volume',
+        data: this.getVolumes(),
+        borderColor: 'white'
+      }
+
+      const tpsData = {
+        label: `TPS History - ${this.arr.label} Ø`,
+        data: this.getTps(),
+        borderColor: 'rgba(146, 255, 96)'
+      }
+
+      const data = {
+        labels: this.getLabels(),
+        datasets: [volumesData, tpsData]
+      }
+      return data
     },
     getChart () {
       const ctx = window.document.getElementById('myChart').getContext('2d')
 
-      const dataFirst = {
-        label: 'Tx Volume',
-        data: this.arr.intervals.map(a => a.transactionCount),
-        // backgroundColor: 'white',
-        borderColor: 'white'
-      }
-
-      const dataSecond = {
-        label: `TPS History - ${this.arr.label} Ø`,
-        data: this.arr.intervals.map(a => {
-          const sec = getSec(a.endTime, a.startTime)
-          return (a.transactionCount / sec).toFixed(2)
-        }),
-        // backgroundColor: 'rgba(146, 255, 96)',
-        borderColor: 'rgba(146, 255, 96)'
-      }
-      function getSec (endT, start) {
-        var now = moment(endT)
-        var end = moment(start)
-        var duration = moment.duration(now.diff(end))
-        var sec = duration.asSeconds()
-        return sec
-      }
-
-      const speedData = {
-        labels: this.arr.intervals.map(a => getChartLabel(a, this.arr.label)),
-        datasets: [dataFirst, dataSecond]
-      }
+      const data = this.getChartData()
 
       this.myChart = new Chart(ctx, {
         type: 'line',
-        data: speedData,
+        data,
         options: {
+          hover: { mode: null },
+          mousemove: { mode: null },
+          mouseout: { mode: null },
           scales: {
             yAxes: [{
               ticks: {
-                // Include a dollar sign in the ticks
                 callback: function (value, index, values) {
                   return value
                 }
@@ -144,15 +159,6 @@ export default {
           },
           tooltips: {
             callbacks: {
-              // labelColor: function (tooltipItem, chart) {
-              //   return {
-              //     borderColor: 'rgb(255, 0, 0)',
-              //     backgroundColor: 'rgb(255, 0, 0)'
-              //   }
-              // },
-              // labelTextColor: function (tooltipItem, chart) {
-              //   return '#543453'
-              // },
               label: function (tooltipItem, data) {
                 let label = data.datasets[tooltipItem.datasetIndex].label || ''
 

@@ -61,7 +61,7 @@ export function getChartLabel (interval, type) {
     }
   }
 
-  return func[key](interval.startTime)
+  return func[key](interval.endTime)
 }
 
 /**

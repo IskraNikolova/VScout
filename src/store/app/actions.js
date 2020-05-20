@@ -134,7 +134,18 @@ async function getTxsHistory ({ commit, getters }) {
   try {
     const { sub, interval, label } = temp[getters.txHKey]
     const minAgo = moment().subtract(sub.value, sub.label)
-    const aggregates = await _getAggregatesWithI(minAgo.toISOString(), moment().toISOString(), `${interval.value}${interval.label}`)
+    const aggregates = await _getAggregatesWithI(
+      minAgo.toISOString(),
+      moment().toISOString(),
+      `${interval.value}${interval.label}`
+    )
+
+    aggregates.intervals.map(a => {
+      if (moment(a.endTime) > moment()) {
+        a.endTime = moment().toISOString()
+      }
+    })
+
     aggregates.label = label
     commit(SET_TXS_HISTORY, { key: getters.txHKey, txsHistory: aggregates })
   } catch (err) {
