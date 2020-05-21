@@ -101,13 +101,13 @@ async function getTotalTXs ({ commit, getters }) {
 const temp = {
   minute: {
     sub: { value: 30, label: 'minute' },
-    interval: { value: 60, label: 's' },
-    label: '60 seconds'
+    interval: { value: 30, label: 's' },
+    label: '30 seconds'
   },
   hourTwo: {
     sub: { value: 2, label: 'hour' },
-    interval: { value: 10, label: 'm' },
-    label: '10 minutes'
+    interval: { value: 5, label: 'm' },
+    label: '5 minutes'
   },
   day: {
     sub: { value: 1, label: 'day' },
@@ -141,6 +141,7 @@ async function getTxsHistory ({ commit, getters }) {
       `${interval.value}${interval.label}`
     )
 
+    // todo change this
     aggregates.intervals.map(a => {
       if (moment(a.endTime) > moment() &&
         aggregates.intervalSize !== 2592000000000000) {
