@@ -35,6 +35,10 @@ export function txsFor24H (state) {
   return state.txsFor24H
 }
 
+export function prevTxsFor24H (state) {
+  return state.prevTxsFor24H
+}
+
 export function totalTxsCount (state) {
   return state.totalTxsCount
 }

@@ -12,6 +12,7 @@ import {
   SET_BLOCK_TIME,
   SET_LAST_BLOCK_TIME,
   SET_TX_FOR_24_HOURS,
+  SET_PREVIOUS_24_TXS,
   SET_KEY_TXH,
   SET_TXS_HISTORY
 } from './types'
@@ -43,6 +44,9 @@ const mutations = {
   },
   [SET_TX_FOR_24_HOURS]: (state, { txsFor24H }) => {
     state.txsFor24H = txsFor24H
+  },
+  [SET_PREVIOUS_24_TXS]: (state, { prevTxsFor24H }) => {
+    state.prevTxsFor24H = prevTxsFor24H
   },
   [SET_TOTAL_TXS]: (state, { totalTxsCount }) => {
     state.totalTxsCount = totalTxsCount

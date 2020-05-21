@@ -18,6 +18,7 @@ import {
   GET_BLOCK_TIME,
   GET_TX_FOR_24_HOURS,
   SET_TX_FOR_24_HOURS,
+  SET_PREVIOUS_24_TXS,
   GET_TXS_HISTORY,
   SET_TXS_HISTORY
 } from './types'
@@ -75,10 +76,11 @@ async function getBlockchains ({ commit, getters }) {
   }
 }
 
-async function getTxsFor24H ({ commit }) {
+async function getTxsFor24H ({ commit, getters }) {
   try {
     const minAgo = moment().subtract(24, 'hours')
     const { transactionCount, transactionVolume } = await _getAggregates(minAgo.toISOString(), moment().toISOString())
+    commit(SET_PREVIOUS_24_TXS, { prevTxsFor24H: getters.txsFor24H })
     commit(SET_TX_FOR_24_HOURS, { txsFor24H: { transactionCount, transactionVolume: Math.round(transactionVolume / 10 ** 9) } })
   } catch (err) {
     console.log(err)

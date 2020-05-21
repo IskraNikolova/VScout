@@ -20,6 +20,7 @@ export const SET_BLOCK_TIME = 'SET_BLOCK_TIME'
 
 export const GET_TX_FOR_24_HOURS = 'GET_TX_FOR_24_HOURS'
 export const SET_TX_FOR_24_HOURS = 'SET_TX_FOR_24_HOURS'
+export const SET_PREVIOUS_24_TXS = 'SET_PREVIOUS_24_TXS'
 
 export const GET_TOTAL_TXS = 'GET_TOTAL_TXS'
 export const SET_TOTAL_TXS = 'SET_TOTAL_TXS'

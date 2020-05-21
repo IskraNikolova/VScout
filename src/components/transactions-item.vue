@@ -6,7 +6,12 @@
     <div class="row">
       <div class="col-md-3 col-xs-12">
         <div style="font-size: 11px;" class="q-pb-md">TRANSACTIONS (24Hr)</div>
-        <div class="text-h5 text-positive q-pb-xl">{{ txsFor24H.transactionCount }} <small>({{ tps }} TPS)</small></div>
+        <div class="col text-h5 text-positive q-pb-xl">
+          <img src="~assets/arrow-up.png" class="custom-icon arrow" v-if="prevTxsFor24H.transactionCount > txsFor24H.transactionCount">
+          <img src="~assets/arrow-up.png" class="custom-icon arrow" v-else-if="prevTxsFor24H.transactionCount < txsFor24H.transactionCount">
+          {{ txsFor24H.transactionCount }}
+          <small>({{ tps }} TPS)</small>
+        </div>
         <div style="font-size: 11px;" class="q-pb-md">TOTAL TRANSACTIONS</div>
         <div class="text-h5"><span class="text-positive">{{ totalTxsCount.toLocaleString() }}</span></div>
       </div>
@@ -50,7 +55,8 @@ export default {
       'totalTxsCount',
       'txsHistory',
       'txHKey',
-      'prevTotalTxs'
+      'prevTotalTxs',
+      'prevTxsFor24H'
     ]),
     tps: function () {
       const t = this.txsFor24H.transactionCount / (24 * 60 * 60)
@@ -59,6 +65,7 @@ export default {
   },
   async mounted () {
     await this.getTxHistory()
+    this.interval = this.txHKey
     this.arr = await this.txsHistory(this.txHKey)
     this.getChart()
     this.$store.subscribe(async (mutation, state) => {
@@ -181,9 +188,18 @@ export default {
 }
 </script>
 <style scoped>
-  #custom-card {
-    border-right: 3px solid #92FF60;
-    background: radial-gradient(circle, #344245 0%, #000709 70%);
-    opacity:0.98;
-  }
+#custom-card {
+  border-right: 3px solid #92FF60;
+  background: radial-gradient(circle, #344245 0%, #000709 70%);
+  opacity:0.98;
+}
+.custom-icon {
+  width:30vw;
+  max-width:30px;
+}
+.arrow {
+  margin-bottom: -5px;
+  margin-right: -10px;
+  margin-left: -9px;
+}
 </style>
