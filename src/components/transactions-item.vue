@@ -198,7 +198,7 @@ export default {
   max-width:30px;
 }
 .arrow {
-  width: 22px;
+  width: 23px;
   margin-bottom: -3px;
   margin-right: -10px;
   margin-left: -9px;
