@@ -162,6 +162,7 @@ async function getTxsHistory ({ commit, getters }) {
 async function getValidators ({ commit, getters }, { subnetID }) {
   try {
     var { validators } = await _getValidators({ subnetID, endpoint: getters.networkEndpoint })
+    console.log(validators)
     validators = validators.filter(i => i.endTime >= Date.now() / 1000)
     validators.sort(compare)
     const val = map(validators)
