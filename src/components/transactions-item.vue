@@ -7,8 +7,8 @@
       <div class="col-md-3 col-xs-12">
         <div style="font-size: 11px;" class="q-pb-md">TRANSACTIONS (24Hr)</div>
         <div class="col text-h5 text-positive q-pb-xl">
-          <img src="~assets/arrow-up.png" class="custom-icon arrow" v-if="prevTxsFor24H.transactionCount > txsFor24H.transactionCount">
-          <img src="~assets/arrow-up.png" class="custom-icon arrow" v-else-if="prevTxsFor24H.transactionCount < txsFor24H.transactionCount">
+          <img src="~assets/arrow-down.png" class="custom-icon arrow" v-if="prevTxsFor24H.transactionCount > txsFor24H.transactionCount">
+          <img src="~assets/arrow-up.png" class="custom-icon arrow" v-else>
           {{ txsFor24H.transactionCount }}
           <small>({{ tps }} TPS)</small>
         </div>
@@ -198,7 +198,7 @@ export default {
   max-width:30px;
 }
 .arrow {
-  margin-bottom: -5px;
+  margin-bottom: -3px;
   margin-right: -10px;
   margin-left: -9px;
 }
