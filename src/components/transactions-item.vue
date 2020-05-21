@@ -11,14 +11,23 @@
         <div class="text-h5"><span class="text-positive">{{ totalTxsCount.toLocaleString() }}</span></div>
       </div>
       <div class="col-md-9 col-xs-12">
-        <div>
-          <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="Yr"/>
-          <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="Mo"/>
-          <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="Wk"/>
-          <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="24h"/>
-          <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="2h"/>
-          <q-btn no-caps size="xs" @click="onGetData" outline color="positive" class="q-mr-xs" label="30m"/>
-        </div>
+        <q-btn-toggle
+          v-model="interval"
+          outline
+          no-caps
+          size="xs"
+          color="positive"
+          toggle-color="white"
+          @click.native="onGetData"
+          :options="[
+            {label: 'Yr', value: 'year'},
+            {label: 'Mo', value: 'month'},
+            {label: 'Wk', value: 'week'},
+            {label: '24h', value: 'day'},
+            {label: '2h', value: 'hourTwo'},
+            {label: '30m', value: 'minute'}
+          ]"
+        />
         <canvas id="myChart" height="70%"></canvas>
       </div>
     </div>
@@ -32,15 +41,6 @@ import Chart from 'chart.js'
 import { getChartLabel } from './../utils/commons'
 
 import { SET_KEY_TXH, GET_TXS_HISTORY } from './../store/app/types'
-
-const temp = {
-  Yr: 'year',
-  Mo: 'month',
-  Wk: 'week',
-  '24h': 'day',
-  '2h': 'hourTwo',
-  '30m': 'minute'
-}
 
 export default {
   name: 'TransactionsItem',
@@ -73,6 +73,7 @@ export default {
   data () {
     return {
       arr: [],
+      interval: 'day',
       myChart: {},
       label: 15
     }
@@ -81,8 +82,8 @@ export default {
     ...mapActions({
       getTxHistory: GET_TXS_HISTORY
     }),
-    async onGetData (e) {
-      const txHKey = temp[e.target.innerText]
+    async onGetData () {
+      const txHKey = this.interval
       this.$store.commit(SET_KEY_TXH, { txHKey })
       await this.getTxHistory()
       this.arr = this.txsHistory(this.txHKey)
