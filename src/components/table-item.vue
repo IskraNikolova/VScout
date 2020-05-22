@@ -19,7 +19,7 @@
         <q-btn size="xs" color="white" flat label="Pending" @click.native="onGetValidators"/>
       </template>
       <template slot="top-right">
-        <q-input @focus="true" dark borderless color="accent" label="Search validator..." clearable v-model="filter">
+        <q-input @focus="true" dark borderless color="accent" stack-label label="Search validator..." clearable v-model="filter">
           <template v-slot:append>
             <q-icon name="search" color="accent" />
           </template>
