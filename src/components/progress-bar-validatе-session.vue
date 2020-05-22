@@ -1,13 +1,13 @@
 <template>
-  <div style="margin-top: -5px;">
-    <label for="file" class="row">
-      <div class="col-3"><small>{{ timeago}}</small></div>
-    </label>
-    <q-linear-progress id="file" dark stripe rounded size="18px" :value="progress" color="accent">
-      <div class="absolute-full flex flex-center">
-        <q-badge color="black" text-color="accent" :label="progressBadge + '% '" />
+  <div>
+    <q-linear-progress dark size="49px" :value="progress" :buffer="progress" color="accent">
+      <div class="absolute-full text-white" style="font-size: 12px;margin-top: 10%;margin-left: 10px;">
+        {{ progressBadge }} %
       </div>
     </q-linear-progress>
+    <div class="absolute-full" style="font-size: 12px;text-align: right;margin-top: 16%;margin-right: 5px;">
+      <div class="text-white">{{ timeago }}</div>
+    </div>
   </div>
 </template>
 

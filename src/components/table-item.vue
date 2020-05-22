@@ -19,7 +19,7 @@
         <q-btn size="xs" color="white" flat label="Pending" @click.native="onGetValidators"/>
       </template>
       <template slot="top-right">
-        <q-input dark borderless color="accent" clearable v-model="filter">
+        <q-input @focus="true" dark borderless color="accent" label="Search validator..." clearable v-model="filter">
           <template v-slot:append>
             <q-icon name="search" color="accent" />
           </template>
@@ -31,8 +31,9 @@
             v-for="col in props.cols"
             :key="col.name"
             :props="props"
+            style="padding: 0px!important;margin:0px!important;"
           >
-            <div v-if="col.name === 'validator'" class="row">
+            <div v-if="col.name === 'validator'" class="row q-pl-md">
               <div :style="'border: solid 2px ' + border + ';border-radius: 50px;'">
                 <q-avatar size="24px" color="grey" class="column-2"><img :src="props.row.img" /></q-avatar>
               </div>
@@ -44,15 +45,35 @@
                 {{ col.value }}
               </div>
             </div>
-            <div v-else-if="col.name === 'stake'">
-              {{ col.value }} <small style="color: grey;"> ({{ props.row.stakenAva.toLocaleString() }} nAva)</small>
-              <br />
-              <small style="color: grey;">{{ props.row.precent }} %</small>
+            <div v-else-if="col.name === 'stake'" class="q-pl-md">
+              <div>{{ col.value }} <small style="color: grey;"> ({{ props.row.stakenAva.toLocaleString() }} nAva)</small></div>
+              <div><small style="color: grey;">{{ props.row.precent }} %</small></div>
             </div>
-            <div
-              v-else-if="col.name === 'precent'"
-              :style="getStyle(cumulativeStake(props.row.rank), props.row.precent)">
-              {{ cumulativeStake(props.row.rank) }} %
+            <div v-else-if="col.name === 'precent'" style="padding: -30px!important;">
+              <div class="container_row">
+                <div class="layer1">
+                  <q-linear-progress
+                    dark
+                    size="50px"
+                    :value="cumulativeStake(props.row.rank) / 100"
+                    :buffer="cumulativeStake(props.row.rank) / 100"
+                    color="accent"
+                  >
+                  </q-linear-progress>
+                </div>
+                <div class="layer2">
+                  <q-linear-progress
+                    dark
+                    size="50px"
+                    :value="(cumulativeStake(props.row.rank) - props.row.precent) / 100"
+                    :buffer="(cumulativeStake(props.row.rank) - props.row.precent) / 100"
+                    color="grey">
+                    <div class="absolute-full flex flex-left text-white q-ml-xs" style="font-size: 12px;margin-top: 10px;">
+                      {{cumulativeStake(props.row.rank)}} %
+                    </div>
+                  </q-linear-progress>
+                </div>
+              </div>
             </div>
             <div v-else-if="col.name === 'progress'">
               <progress-bar-validate-session
@@ -60,7 +81,7 @@
                 v-bind:endTime="props.row.endTime"
               />
             </div>
-            <div v-else-if="col.name === 'startTime'">
+            <div v-else-if="col.name === 'startTime'" class="q-pl-md">
               {{ startDate(col.value) }}
             </div>
             <div v-else>{{ col.value }}</div>
@@ -110,15 +131,29 @@
 
               <q-card-section class="col-5">
                <small>Cumulative stake (%)</small>
-               <q-linear-progress
-                 dark
-                 size="40px" :value="cumulativeStake(props.row.rank) / 100"
-                 color="accent"
-                 style="padding:0px!important;">
-               <div class="absolute-full flex flex-center">
-                  <q-badge text-color="white" outline :label="cumulativeStake(props.row.rank) + '%'" />
-                </div>
-               </q-linear-progress>
+               <div class="container_row">
+                  <div class="layer1">
+                    <q-linear-progress
+                    dark
+                    size="40px"
+                    :value="cumulativeStake(props.row.rank) / 100"
+                    :buffer="cumulativeStake(props.row.rank) / 100"
+                    color="accent">
+                    </q-linear-progress>
+                  </div>
+                  <div class="layer2">
+                    <q-linear-progress
+                      dark
+                      size="40px"
+                      :value="(cumulativeStake(props.row.rank) - props.row.precent) / 100"
+                      :buffer="(cumulativeStake(props.row.rank) - props.row.precent) / 100"
+                      color="grey">
+                      <div class="absolute-full flex flex-left text-white q-ml-xs" style="font-size: 12px;margin-top: 10px;">
+                        {{cumulativeStake(props.row.rank)}} %
+                      </div>
+                    </q-linear-progress>
+                  </div>
+               </div>
               </q-card-section>
 
             </q-card-section>
@@ -132,12 +167,18 @@
                 />
               </q-card-section>
 
-              <q-separator dark />
-
-              <q-card-section>
+            <q-separator dark />
+            <q-card-section horizontal>
+              <q-card-section class="col-6">
                 <small>Start Time</small>
                 <div>{{startDate(props.row.startTime)}}</div>
               </q-card-section>
+              <q-separator dark vertical/>
+              <q-card-section class="col-6">
+                <small>End Time</small>
+                <div>{{startDate(props.row.endTime)}}</div>
+              </q-card-section>
+            </q-card-section>
           </q-card>
         </div>
       </template>
@@ -236,10 +277,6 @@ export default {
 
         return round(result, 1000)
       }, 0)
-    },
-    getStyle (cumulativeStake, precent) {
-      // todo see table quasar doc for styling
-      return 'background-color: rgb(84, 93, 95);width: ' + (cumulativeStake * 1.17) + '%;border-right:' + (precent * 2.35) + 'px solid #87C5D6;text-align: right!important;height: 52px;margin:-8%;'
     }
   }
 }
@@ -249,4 +286,13 @@ export default {
    border-left: 0.5px solid #474F52;
    border-right: 3px solid #87C5D6;
  }
+ .container_row{
+  display: grid;
+}
+
+.layer1, .layer2{
+  grid-column: 1;
+  grid-row: 1;
+}
+
 </style>
