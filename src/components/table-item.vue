@@ -49,7 +49,7 @@
               <div>{{ col.value }} <small style="color: grey;"> ({{ props.row.stakenAva.toLocaleString() }} nAva)</small></div>
               <div><small style="color: grey;">{{ props.row.precent }} %</small></div>
             </div>
-            <div v-else-if="col.name === 'precent'" style="padding: -30px!important;">
+            <div v-else-if="col.name === 'precent'">
               <div class="container_row">
                 <div class="layer1">
                   <q-linear-progress

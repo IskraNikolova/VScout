@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-linear-progress dark size="49px" :value="progress" :buffer="progress" color="accent">
-      <div class="absolute-full text-white" style="font-size: 12px;margin-top: 10%;margin-left: 10px;">
+      <div class="absolute-full text-white" style="font-size: 12px;margin-top: 14px;margin-left: 10px;">
         {{ progressBadge }} %
       </div>
     </q-linear-progress>
