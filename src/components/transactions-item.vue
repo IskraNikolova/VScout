@@ -70,7 +70,8 @@ export default {
     this.getChart()
     this.$store.subscribe(async (mutation, state) => {
       if (mutation.type === 'SET_TOTAL_TXS') {
-        if (this.prevTotalTxs < this.totalTxsCount || moment().seconds() % 59 === 0) {
+        if (this.prevTotalTxs < this.totalTxsCount ||
+        moment().seconds() % 59 === 0) {
           await this.updateChart()
         }
       }
