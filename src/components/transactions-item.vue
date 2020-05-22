@@ -162,12 +162,9 @@ export default {
       this.chartVol.update()
       this.chartTps.update()
     },
-    getSec (endT, start) {
-      const now = moment(endT)
-      const end = moment(start)
-      const duration = moment.duration(now.diff(end))
-      const sec = duration.asSeconds()
-      return sec
+    getSec (e, s) {
+      const duration = moment.duration(moment(e).diff(moment(s)))
+      return duration.asSeconds()
     },
     getTps () {
       return this.arr.intervals.map(a => {
