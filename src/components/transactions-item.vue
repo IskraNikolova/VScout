@@ -50,8 +50,56 @@ import { getChartLabel } from './../utils/commons'
 
 import { SET_KEY_TXH, GET_TXS_HISTORY } from './../store/app/types'
 
+const options = {
+  animation: {
+    duration: 0
+  },
+  hover: { mode: null },
+  mousemove: { mode: null },
+  mouseout: { mode: null },
+  scales: {
+    yAxes: [{
+      ticks: {
+        callback: function (value, index, values) {
+          return value
+        }
+      }
+    }],
+    xAxes: [{
+      ticks: {
+        // Include a dollar sign in the ticks
+        callback: function (value, index, values) {
+          return value
+        }
+      }
+    }]
+  },
+  tooltips: {
+    callbacks: {
+      label: function (tooltipItem, data) {
+        let label = data.datasets[tooltipItem.datasetIndex].label || ''
+
+        if (label) {
+          label += ': '
+        }
+        label += Math.round(tooltipItem.yLabel * 100) / 100
+        return label
+      }
+    }
+  }
+}
+
 export default {
   name: 'TransactionsItem',
+  data () {
+    return {
+      arr: [],
+      labels: [],
+      chartVol: {},
+      chartTps: {},
+      interval: 'day'
+    }
+  },
   computed: {
     ...mapGetters([
       'txsFor24H',
@@ -67,46 +115,50 @@ export default {
     }
   },
   async mounted () {
-    await this.getTxHistory()
     this.interval = this.txHKey
-    this.arr = await this.txsHistory(this.txHKey)
-    this.getVolumeChart()
-    this.getTpsChart()
+    await this.initCharts()
     this.$store.subscribe(async (mutation, state) => {
       if (mutation.type === 'SET_TOTAL_TXS') {
-        await this.updateCharts()
-        // if (this.prevTotalTxs < this.totalTxsCount ||
-        // moment().seconds() % 59 === 0) {
-        //   await this.updateCharts()
-        // }
+        if (this.prevTotalTxs < this.totalTxsCount ||
+        moment().seconds() % 59 === 0) {
+          await this.updateCharts()
+        }
       }
     })
-  },
-  data () {
-    return {
-      arr: [],
-      interval: 'day',
-      chartVol: {},
-      chartTps: {},
-      label: 15
-    }
   },
   methods: {
     ...mapActions({
       getTxHistory: GET_TXS_HISTORY
     }),
+    async initCharts () {
+      await this.getData()
+      this.getVolumeChart()
+      this.getTpsChart()
+    },
     async onGetData () {
       const txHKey = this.interval
       this.$store.commit(SET_KEY_TXH, { txHKey })
       await this.updateCharts()
     },
-    async updateCharts () {
+    fastData () {
+      if (!this.txsHistory(this.txHKey)) return
+      this.arr = this.txsHistory(this.txHKey)
+      this.getLabels()
+    },
+    async getData () {
       await this.getTxHistory()
       this.arr = this.txsHistory(this.txHKey)
-      const dataVol = this.getVolChartData()
-      this.chartVol.data = dataVol
-      const dataTps = this.getTpsChartData()
-      this.chartTps.data = dataTps
+      this.getLabels()
+    },
+    async updateCharts () {
+      this.fastData()
+      this.update()
+      await this.getData()
+      this.update()
+    },
+    update () {
+      this.chartVol.data = this.getVolChartData()
+      this.chartTps.data = this.getTpsChartData()
       this.chartVol.update()
       this.chartTps.update()
     },
@@ -127,7 +179,7 @@ export default {
       return this.arr.intervals.map(a => a.transactionCount)
     },
     getLabels () {
-      return this.arr.intervals.map(a => getChartLabel(a, this.arr.key))
+      this.labels = this.arr.intervals.map(a => getChartLabel(a, this.arr.key))
     },
     getVolChartData () {
       const volumesData = {
@@ -137,7 +189,7 @@ export default {
       }
 
       const data = {
-        labels: this.getLabels(),
+        labels: this.labels,
         datasets: [volumesData]
       }
       return data
@@ -150,105 +202,25 @@ export default {
       }
 
       const data = {
-        labels: this.getLabels(),
+        labels: this.labels,
         datasets: [tpsData]
       }
       return data
     },
     getVolumeChart () {
       const ctx = window.document.getElementById('chartVol').getContext('2d')
-
-      const data = this.getVolChartData()
-
       this.chartVol = new Chart(ctx, {
         type: 'line',
-        data,
-        options: {
-          animation: {
-            duration: 0
-          },
-          hover: { mode: null },
-          mousemove: { mode: null },
-          mouseout: { mode: null },
-          scales: {
-            yAxes: [{
-              ticks: {
-                callback: function (value, index, values) {
-                  return value
-                }
-              }
-            }],
-            xAxes: [{
-              ticks: {
-                // Include a dollar sign in the ticks
-                callback: function (value, index, values) {
-                  return value
-                }
-              }
-            }]
-          },
-          tooltips: {
-            callbacks: {
-              label: function (tooltipItem, data) {
-                let label = data.datasets[tooltipItem.datasetIndex].label || ''
-
-                if (label) {
-                  label += ': '
-                }
-                label += Math.round(tooltipItem.yLabel * 100) / 100
-                return label
-              }
-            }
-          }
-        }
+        data: this.getVolChartData(),
+        options
       })
     },
     getTpsChart () {
       const ctx = window.document.getElementById('chartTps').getContext('2d')
-
-      const data = this.getTpsChartData()
-
       this.chartTps = new Chart(ctx, {
         type: 'line',
-        data,
-        options: {
-          animation: {
-            duration: 0
-          },
-          hover: { mode: null },
-          mousemove: { mode: null },
-          mouseout: { mode: null },
-          scales: {
-            yAxes: [{
-              ticks: {
-                callback: function (value, index, values) {
-                  return value
-                }
-              }
-            }],
-            xAxes: [{
-              ticks: {
-                // Include a dollar sign in the ticks
-                callback: function (value, index, values) {
-                  return value
-                }
-              }
-            }]
-          },
-          tooltips: {
-            callbacks: {
-              label: function (tooltipItem, data) {
-                let label = data.datasets[tooltipItem.datasetIndex].label || ''
-
-                if (label) {
-                  label += ': '
-                }
-                label += Math.round(tooltipItem.yLabel * 100) / 100
-                return label
-              }
-            }
-          }
-        }
+        data: this.getTpsChartData(),
+        options
       })
     }
   }
