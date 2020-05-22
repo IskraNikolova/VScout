@@ -10,8 +10,7 @@
       <div v-show="visible">
         <q-card
           dark
-          class="q-pa-md q-pl-xl q-pt-xl"
-          id="custom-card"
+          class="q-pa-md q-pl-xl q-pt-xl dark-background"
         >
             <div class="row absolute-top-right">
               <q-btn no-caps flat v-if="!innerVisible" @click="innerVisible=!innerVisible" color="white" icon="expand_more"/>
@@ -125,10 +124,3 @@ AVA platform is where everything runs. The AVA platform makes use of either Aval
   }
 }
 </script>
-
-<style scoped>
-  #custom-card {
-    background: radial-gradient(circle, #344245 0%, #000709 70%);
-    opacity:0.9;
-  }
-</style>

@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="q-mt-md q-pa-md q-pl-xl q-pr-xl"
+    class="q-mt-md q-pa-md q-pl-xl q-pr-xl dark-background"
     dark
     flat
     id="custom-card">
@@ -43,8 +43,6 @@ export default {
 <style scoped>
   #custom-card {
     border-right: 3px solid #ffa959;
-    background: radial-gradient(circle, #344245 0%, #000709 70%);
-    opacity:0.98;
   }
   #f-size12 {
     font-size: 83%;

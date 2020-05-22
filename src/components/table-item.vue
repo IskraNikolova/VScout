@@ -7,6 +7,7 @@
       :separator="separator"
       :filter="filter"
       dark
+      class="dark-background"
       :pagination.sync="pagination"
       :grid="isGrid"
       id="custom-table"
@@ -18,7 +19,7 @@
         <q-btn size="xs" color="white" flat label="Pending" @click.native="onGetValidators"/>
       </template>
       <template slot="top-right">
-        <q-input dark hide-underline color="accent" clearable v-model="filter">
+        <q-input dark borderless color="accent" clearable v-model="filter">
           <template v-slot:append>
             <q-icon name="search" color="accent" />
           </template>
@@ -76,6 +77,70 @@
           </q-td>
         </q-tr>
       </template>
+      <template v-slot:item="props">
+         <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4">
+           <q-card dark flat bordered>
+            <q-item>
+              <q-item-section avatar>
+                <q-avatar>
+                  <img :src="props.row.img2">
+                </q-avatar>
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label ><small>Rank</small> {{ props.row.rank }}</q-item-label>
+                <q-item-label>
+                  {{ props.row.identity }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+
+            <q-separator dark />
+
+            <q-card-section horizontal>
+              <q-card-section class="col-7">
+                <small>Stake (AVA / nAva)</small>
+                <br />
+                {{ props.row.stake }} <small style="color: grey;"> ({{ props.row.stakenAva.toLocaleString() }} nAva)</small>
+                <br />
+              <small style="color: grey;">{{ props.row.precent }} %</small>
+              </q-card-section>
+
+              <q-separator vertical dark />
+
+              <q-card-section class="col-5">
+               <small>Cumulative stake (%)</small>
+               <q-linear-progress
+                 dark
+                 size="40px" :value="cumulativeStake(props.row.rank) / 100"
+                 color="accent"
+                 style="padding:0px!important;">
+               <div class="absolute-full flex flex-center">
+                  <q-badge text-color="white" outline :label="cumulativeStake(props.row.rank) + '%'" />
+                </div>
+               </q-linear-progress>
+              </q-card-section>
+
+            </q-card-section>
+
+            <q-separator dark />
+              <q-card-section>
+                <small>Progress (%)</small>
+                <progress-bar-validate-session
+                  v-bind:startTime="props.row.startTime"
+                  v-bind:endTime="props.row.endTime"
+                />
+              </q-card-section>
+
+              <q-separator dark />
+
+              <q-card-section>
+                <small>Start Time</small>
+                <div>{{startDate(props.row.startTime)}}</div>
+              </q-card-section>
+          </q-card>
+        </div>
+      </template>
     </q-table>
  </div>
 </template>
@@ -94,16 +159,6 @@ export default {
     ProgressBarValidateSession,
     DetailsItem
   },
-  // props: {
-  //   validators: {
-  //     type: Array,
-  //     required: true
-  //   },
-  //   pendingValidators: {
-  //     type: Array,
-  //     required: true
-  //   }
-  // },
   data () {
     return {
       curentValidators: [],
@@ -193,7 +248,5 @@ export default {
  #custom-table {
    border-left: 0.5px solid #474F52;
    border-right: 3px solid #87C5D6;
-   background: radial-gradient(circle, #344245 0%, #000709 70%);
-   opacity:0.98;
  }
 </style>
