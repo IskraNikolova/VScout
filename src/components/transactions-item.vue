@@ -33,7 +33,10 @@
             {label: '30m', value: 'minute'}
           ]"
         />
-        <canvas id="myChart" height="70%"></canvas>
+        <div class="row">
+          <div class="col-6"><canvas id="chartVol"></canvas></div>
+          <div class="col-6"><canvas id="chartTps"></canvas></div>
+        </div>
       </div>
     </div>
   </q-card>
@@ -67,13 +70,15 @@ export default {
     await this.getTxHistory()
     this.interval = this.txHKey
     this.arr = await this.txsHistory(this.txHKey)
-    this.getChart()
+    this.getVolumeChart()
+    this.getTpsChart()
     this.$store.subscribe(async (mutation, state) => {
       if (mutation.type === 'SET_TOTAL_TXS') {
-        if (this.prevTotalTxs < this.totalTxsCount ||
-        moment().seconds() % 59 === 0) {
-          await this.updateChart()
-        }
+        await this.updateCharts()
+        // if (this.prevTotalTxs < this.totalTxsCount ||
+        // moment().seconds() % 59 === 0) {
+        //   await this.updateCharts()
+        // }
       }
     })
   },
@@ -81,7 +86,8 @@ export default {
     return {
       arr: [],
       interval: 'day',
-      myChart: {},
+      chartVol: {},
+      chartTps: {},
       label: 15
     }
   },
@@ -92,14 +98,17 @@ export default {
     async onGetData () {
       const txHKey = this.interval
       this.$store.commit(SET_KEY_TXH, { txHKey })
-      await this.updateChart()
+      await this.updateCharts()
     },
-    async updateChart () {
+    async updateCharts () {
       await this.getTxHistory()
       this.arr = this.txsHistory(this.txHKey)
-      const data = this.getChartData()
-      this.myChart.data = data
-      this.myChart.update()
+      const dataVol = this.getVolChartData()
+      this.chartVol.data = dataVol
+      const dataTps = this.getTpsChartData()
+      this.chartTps.data = dataTps
+      this.chartVol.update()
+      this.chartTps.update()
     },
     getSec (endT, start) {
       const now = moment(endT)
@@ -120,13 +129,20 @@ export default {
     getLabels () {
       return this.arr.intervals.map(a => getChartLabel(a, this.arr.key))
     },
-    getChartData () {
+    getVolChartData () {
       const volumesData = {
-        label: 'Tx Volume',
+        label: `Tx Volume  - ${this.arr.label} Ø`,
         data: this.getVolumes(),
         borderColor: 'white'
       }
 
+      const data = {
+        labels: this.getLabels(),
+        datasets: [volumesData]
+      }
+      return data
+    },
+    getTpsChartData () {
       const tpsData = {
         label: `TPS History - ${this.arr.label} Ø`,
         data: this.getTps(),
@@ -135,16 +151,64 @@ export default {
 
       const data = {
         labels: this.getLabels(),
-        datasets: [volumesData, tpsData]
+        datasets: [tpsData]
       }
       return data
     },
-    getChart () {
-      const ctx = window.document.getElementById('myChart').getContext('2d')
+    getVolumeChart () {
+      const ctx = window.document.getElementById('chartVol').getContext('2d')
 
-      const data = this.getChartData()
+      const data = this.getVolChartData()
 
-      this.myChart = new Chart(ctx, {
+      this.chartVol = new Chart(ctx, {
+        type: 'line',
+        data,
+        options: {
+          animation: {
+            duration: 0
+          },
+          hover: { mode: null },
+          mousemove: { mode: null },
+          mouseout: { mode: null },
+          scales: {
+            yAxes: [{
+              ticks: {
+                callback: function (value, index, values) {
+                  return value
+                }
+              }
+            }],
+            xAxes: [{
+              ticks: {
+                // Include a dollar sign in the ticks
+                callback: function (value, index, values) {
+                  return value
+                }
+              }
+            }]
+          },
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem, data) {
+                let label = data.datasets[tooltipItem.datasetIndex].label || ''
+
+                if (label) {
+                  label += ': '
+                }
+                label += Math.round(tooltipItem.yLabel * 100) / 100
+                return label
+              }
+            }
+          }
+        }
+      })
+    },
+    getTpsChart () {
+      const ctx = window.document.getElementById('chartTps').getContext('2d')
+
+      const data = this.getTpsChartData()
+
+      this.chartTps = new Chart(ctx, {
         type: 'line',
         data,
         options: {
