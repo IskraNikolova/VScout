@@ -34,8 +34,8 @@
           ]"
         />
         <div class="row">
-          <div class="col-6"><canvas id="chartVol"></canvas></div>
-          <div class="col-6"><canvas id="chartTps"></canvas></div>
+          <div class="col-md-6 col-xs-12"><canvas id="chartVol"></canvas></div>
+          <div class="col-md-6 col-xs-12"><canvas id="chartTps"></canvas></div>
         </div>
       </div>
     </div>
