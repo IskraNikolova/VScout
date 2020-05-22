@@ -56,7 +56,7 @@ export function getChartLabel (interval, key) {
       return ` ${moment(date).format('D')} ${moment.monthsShort()[moment(date).month()]}`
     },
     year: (date) => {
-      return moment.months()[Math.max(0, moment(date).month() - 1)]
+      return moment.months()[moment(date).month()]
     }
   }
 

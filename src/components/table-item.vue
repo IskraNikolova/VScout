@@ -209,7 +209,6 @@ export default {
       pagination: {
         rowsPerPage: 10
       },
-
       border: '#87C5D6',
       separator: 'cell',
       columns: [

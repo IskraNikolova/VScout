@@ -143,11 +143,10 @@ async function getTxsHistory ({ commit, getters }) {
       `${interval.value}${interval.label}`
     )
 
-    // todo change this
     aggregates.intervals.map(a => {
       if (moment(a.endTime) > moment() &&
-        aggregates.intervalSize !== 2592000000000000) {
-        a.endTime = moment().toISOString()
+        aggregates.intervalSize) {
+        aggregates.intervals.pop()
       }
     })
 
