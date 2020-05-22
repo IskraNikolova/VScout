@@ -103,8 +103,8 @@ async function getTotalTXs ({ commit, getters }) {
 const temp = {
   minute: {
     sub: { value: 30, label: 'minute' },
-    interval: { value: 30, label: 's' },
-    label: '30 seconds'
+    interval: { value: 60, label: 's' },
+    label: '60 seconds'
   },
   hourTwo: {
     sub: { value: 2, label: 'hour' },

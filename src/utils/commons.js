@@ -41,7 +41,7 @@ export function getChartLabel (interval, key) {
 
   const func = {
     minute: (date) => {
-      return moment(date).format('HH:mm')
+      return moment(date).format('mm:ss')
     },
     hourTwo: (date) => {
       return moment(date).format('LT')

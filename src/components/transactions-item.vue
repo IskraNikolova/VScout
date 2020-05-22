@@ -71,8 +71,7 @@ export default {
     this.$store.subscribe(async (mutation, state) => {
       if (mutation.type === 'SET_TOTAL_TXS') {
         if (this.prevTotalTxs < this.totalTxsCount || moment().seconds() % 59 === 0) {
-          this.arr = await this.txsHistory(this.txHKey)
-          this.updateChart()
+          await this.updateChart()
         }
       }
     })
@@ -92,11 +91,11 @@ export default {
     async onGetData () {
       const txHKey = this.interval
       this.$store.commit(SET_KEY_TXH, { txHKey })
+      await this.updateChart()
+    },
+    async updateChart () {
       await this.getTxHistory()
       this.arr = this.txsHistory(this.txHKey)
-      this.updateChart()
-    },
-    updateChart () {
       const data = this.getChartData()
       this.myChart.data = data
       this.myChart.update()
@@ -148,6 +147,9 @@ export default {
         type: 'line',
         data,
         options: {
+          animation: {
+            duration: 0
+          },
           hover: { mode: null },
           mousemove: { mode: null },
           mouseout: { mode: null },
