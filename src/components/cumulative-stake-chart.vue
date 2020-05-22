@@ -33,7 +33,7 @@ export default {
     this.chart = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: ['Staked AVA', 'Staker\'s Amount', 'All'],
+        labels: ['', '', ''],
         datasets: [{
           label: '#',
           data: [this.precentAll - this.precent, this.precent, 100 - (this.precentAll)],
