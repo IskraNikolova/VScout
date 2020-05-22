@@ -4,9 +4,6 @@
     dark flat id="custom-card" >
     <div class="row">
       <div class="col-md-2 col-xs-10">
-        <!--<div style="font-size: 11px;" class="q-pb-md">STAKING APR</div>
-        <div class="text-h5 text-secondary q-pb-md"><b>0%</b></div>
-        <div style="font-size: 12px;"><span class="text-secondary">0%</span> staking APR</div>-->
         <div style="font-size: 11px;" class="q-pb-md">NUMBERS OF VALIDATORS</div>
         <div class="text-h5 text-secondary q-pb-md">{{ validators.length }}</div>
         <div style="font-size: 12px;">Pending Valitarors: <span class="text-secondary">{{ pendingValidators.length }}</span></div>

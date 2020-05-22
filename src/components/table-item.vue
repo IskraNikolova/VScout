@@ -107,7 +107,6 @@
                   <img :src="props.row.img2">
                 </q-avatar>
               </q-item-section>
-
               <q-item-section>
                 <q-item-label ><small>Rank</small> {{ props.row.rank }}</q-item-label>
                 <q-item-label>
@@ -119,55 +118,36 @@
             <q-separator dark />
 
             <q-card-section horizontal>
-              <q-card-section class="col-7">
-                <small>Stake (AVA / nAva)</small>
+              <q-card-section class="col-5">
+                <div class="q-mb-md">Stake (AVA / nAva)</div>
                 <br />
-                {{ props.row.stake }} <small style="color: grey;"> ({{ props.row.stakenAva.toLocaleString() }} nAva)</small>
+                {{ props.row.stake.toLocaleString() }} <span class="text-accent">$AVA</span>
+                <br />
+                <small style="color: grey;"> ({{ props.row.stakenAva.toLocaleString() }} nAva)</small>
                 <br />
               <small style="color: grey;">{{ props.row.precent }} %</small>
               </q-card-section>
-
-              <q-separator vertical dark />
-
-              <q-card-section class="col-5">
-               <small>Cumulative stake (%)</small>
-               <div class="container_row">
-                  <div class="layer1">
-                    <q-linear-progress
-                    dark
-                    size="40px"
-                    :value="cumulativeStake(props.row.rank) / 100"
-                    :buffer="cumulativeStake(props.row.rank) / 100"
-                    color="accent">
-                    </q-linear-progress>
-                  </div>
-                  <div class="layer2">
-                    <q-linear-progress
-                      dark
-                      size="40px"
-                      :value="(cumulativeStake(props.row.rank) - props.row.precent) / 100"
-                      :buffer="(cumulativeStake(props.row.rank) - props.row.precent) / 100"
-                      color="grey">
-                      <div class="absolute-full flex flex-left text-white q-ml-xs" style="font-size: 12px;margin-top: 10px;">
-                        {{cumulativeStake(props.row.rank)}} %
-                      </div>
-                    </q-linear-progress>
-                  </div>
-               </div>
-              </q-card-section>
-
-            </q-card-section>
-
-            <q-separator dark />
-              <q-card-section>
-                <small>Progress (%)</small>
-                <progress-bar-validate-session
-                  v-bind:startTime="props.row.startTime"
-                  v-bind:endTime="props.row.endTime"
+              <q-separator dark vertical />
+              <q-card-section class="col-7">
+               <div>Cumulative stake (%)</div>
+               <cumulative-stake-chart
+                 v-bind:name="props.row.identity"
+                 v-bind:precent="props.row.precent"
+                 v-bind:precentAll="cumulativeStake(props.row.rank)"
                 />
               </q-card-section>
 
+            </q-card-section>
+            <q-card-section>
+              <small>Progress (%)</small>
+              <progress-bar-validate-session
+                v-bind:startTime="props.row.startTime"
+                v-bind:endTime="props.row.endTime"
+              />
+            </q-card-section>
+
             <q-separator dark />
+
             <q-card-section horizontal>
               <q-card-section class="col-6">
                 <small>Start Time</small>
@@ -191,14 +171,16 @@ import { mapGetters } from 'vuex'
 import { round } from './../utils/commons'
 import { dateLL } from './../modules/time'
 
-import ProgressBarValidateSession from './progress-bar-validatе-session'
 import DetailsItem from './details-item'
+import CumulativeStakeChart from './cumulative-stake-chart'
+import ProgressBarValidateSession from './progress-bar-validatе-session'
 
 export default {
   name: 'TableItem',
   components: {
-    ProgressBarValidateSession,
-    DetailsItem
+    DetailsItem,
+    CumulativeStakeChart,
+    ProgressBarValidateSession
   },
   data () {
     return {

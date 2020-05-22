@@ -45,7 +45,7 @@ async function initApp ({ dispatch, getters }) {
   await Promise.all(promises(dispatch, getters))
   setInterval(async () => {
     await Promise.all(promises(dispatch, getters))
-  }, 4000)
+  }, 50)
 }
 
 async function getLastBlock ({ commit, getters }) {
