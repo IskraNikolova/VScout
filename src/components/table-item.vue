@@ -1,5 +1,5 @@
 <template>
- <div class="q-mt-md">
+  <div class="q-mt-md">
     <q-table
       :data="curentVal"
       :columns="columns"
@@ -183,13 +183,13 @@
         </div>
       </template>
     </q-table>
- </div>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import { round } from './../utils/commons'
-import { date2 } from './../modules/time'
+import { dateLL } from './../modules/time'
 
 import ProgressBarValidateSession from './progress-bar-validatе-session'
 import DetailsItem from './details-item'
@@ -267,7 +267,7 @@ export default {
       this.$emit('getValidators', type)
     },
     startDate (time) {
-      return date2(time)
+      return dateLL(time)
     },
     cumulativeStake (index) {
       return this.validators.reduce((result, item) => {
