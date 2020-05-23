@@ -1,4 +1,5 @@
 import Vue from 'vue'
+const { network } = require('./../../modules/config').default
 
 import {
   SET_BLOCK,
@@ -39,7 +40,8 @@ const mutations = {
     state.networkEndpoint = endpoint
   },
   [SET_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
-    if (state.endpointsMemory.includes(endpoint)) return
+    if (state.endpointsMemory.includes(endpoint) ||
+    network.endpointUrls.indexOf(endpoint) < 1) return
     state.endpointsMemory.push(endpoint)
   },
   [REMOVE_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
