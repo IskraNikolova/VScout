@@ -121,7 +121,7 @@
               <q-card-section class="col-5">
                 <div class="q-mb-md">Stake (AVA / nAva)</div>
                 <br />
-                {{ props.row.stake.toLocaleString() }} <span class="text-accent">$AVA</span>
+                {{ props.row.stake > 1 ? props.row.stake.toLocaleString() : props.row.stake }} <span class="text-accent">$AVA</span>
                 <br />
                 <small style="color: grey;"> ({{ props.row.stakenAva.toLocaleString() }} nAva)</small>
                 <br />

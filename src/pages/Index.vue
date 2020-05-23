@@ -205,6 +205,7 @@ export default {
       }
       const connection = await testConnection({ endpoint })
       temp[connection]()
+      this.getValidators({ subnetID: this.currentBlockchain.subnetID })
     },
     async getValidatorsV (type) {
       const temp = {
