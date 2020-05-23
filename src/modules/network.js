@@ -1,24 +1,13 @@
 import axios from 'axios'
+import { c } from './../utils/constants'
 const { network } = require('./config').default
 
-// enpoints
-const tx = 'x/transactions'
-const timestamp = 'ext/bc/timestamp'
-const platform = 'ext/P'
-
-// methods
-const getBlock = 'timestamp.getBlock'
-const getBlockchains = 'platform.getBlockchains'
-const getCurrentValidators = 'platform.getCurrentValidators'
-const getPendingValidators = 'platform.getPendingValidators'
-
 let id = 1
-const jsonrpc = '2.0'
-axios.defaults.headers['content-type'] = 'application/json'
+axios.defaults.headers[c.contentTypeHeader] = c.contentTypeValue
 
 const body = (method, params = {}) => {
   return {
-    jsonrpc,
+    jsonrpc: c.jsonrpc,
     method,
     params,
     id: id++
@@ -27,7 +16,7 @@ const body = (method, params = {}) => {
 
 export const testConnection = async ({ endpoint, params = {} }) => {
   try {
-    const response = await axios.post(endpoint + timestamp, body(getBlock, params))
+    const response = await axios.post(endpoint + c.timestamp, body(c.getBlock, params))
     return response.status
   } catch (err) {
     return err.message
@@ -35,17 +24,17 @@ export const testConnection = async ({ endpoint, params = {} }) => {
 }
 
 export const _getLastTx = async () => {
-  const req = await axios.get(network.explorerBaseUrl + tx + '?sort=timestamp-desc&limit=1')
+  const req = await axios.get(network.explorerBaseUrl + c.tx + c.getLast)
   return req.data
 }
 
 export const _getAggregates = async (s, e) => {
-  const req = await axios.get(network.explorerBaseUrl + tx + `/aggregates?startTime=${s}&endTime=${e}`)
+  const req = await axios.get(network.explorerBaseUrl + c.tx + c.aggregates(s, e))
   return req.data.aggregates
 }
 
-export const _getAggregatesWithI = async (s, e, intervalSize = '1s') => {
-  const req = await axios.get(network.explorerBaseUrl + tx + `/aggregates?startTime=${s}&endTime=${e}&intervalSize=${intervalSize}`)
+export const _getAggregatesWithI = async (s, e, intervalSize) => {
+  const req = await axios.get(network.explorerBaseUrl + c.tx + c.aggregatesWInt(s, e, intervalSize))
   return req.data
 }
 
@@ -55,17 +44,17 @@ export const request = async (endpoint, body) => {
 }
 
 export const _getBlock = async ({ params = {}, endpoint }) => {
-  return request(endpoint + timestamp, body(getBlock, params))
+  return request(endpoint + c.timestamp, body(c.getBlock, params))
 }
 
 export const _getBlockchains = async ({ endpoint }) => {
-  return request(endpoint + platform, body(getBlockchains))
+  return request(endpoint + c.platform, body(c.getBlockchains))
 }
 
 export const _getValidators = async ({ subnetID, endpoint }) => {
-  return request(endpoint + platform, body(getCurrentValidators, { subnetID }))
+  return request(endpoint + c.platform, body(c.getCurrentValidators, { subnetID }))
 }
 
 export const _getPendingValidators = async ({ subnetID, endpoint }) => {
-  return request(endpoint + platform, body(getPendingValidators, { subnetID }))
+  return request(endpoint + c.platform, body(c.getPendingValidators, { subnetID }))
 }

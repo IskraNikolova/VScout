@@ -20,7 +20,7 @@ export default {
       required: true
     },
     precent: {
-      type: Number,
+      type: String,
       required: true
     },
     name: {
@@ -33,15 +33,25 @@ export default {
     this.chart = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: ['', '', ''],
         datasets: [{
-          label: '#',
-          data: [this.precentAll - this.precent, this.precent, 100 - (this.precentAll)],
+          data: [Math.round(this.precentAll - this.precent, 2), Math.round(this.precent, 2), Math.round(100 - (this.precentAll), 2)],
           backgroundColor: ['Grey', '#87C5D6', 'black'],
           borderColor: ['Grey', '#87C5D6', 'black']
         }]
       },
       options: {
+        legend: {
+          display: false
+        },
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem, data) {
+              const label = data.datasets[0].data[tooltipItem.index] + '%'
+
+              return label
+            }
+          }
+        },
         scales: {
           yAxes: [{
             ticks: {
