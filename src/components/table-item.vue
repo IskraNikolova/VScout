@@ -19,7 +19,7 @@
         <q-btn size="xs" color="white" flat label="Pending" @click.native="onGetValidators"/>
       </template>
       <template slot="top-right">
-        <q-input @focus="true" dark borderless color="accent" stack-label label="Search validator..." clearable v-model="filter">
+        <q-input @focus="true" dark borderless color="accent" stack-label label="Filter validators..." clearable v-model="filter">
           <template v-slot:append>
             <q-icon name="search" color="accent" />
           </template>
@@ -38,8 +38,9 @@
                 <q-avatar size="24px" color="grey" class="column-2"><img :src="props.row.img" /></q-avatar>
               </div>
               <div
-                style="cursor: pointer;"
+                style="cursor:pointer"
                 class="column q-pl-xl"
+                @click="copyToClipboard(props.row.identity)"
                 @mouseover="props.expand = true"
                 @mouseleave="props.expand = false">
                 {{ col.value }}
@@ -111,6 +112,7 @@
                 <q-item-label ><small>Rank </small> <span class="text-accent">{{ props.row.rank }}</span></q-item-label>
                 <q-item-label>
                   {{ props.row.identity }}
+                  <small><q-icon @click="copyToClipboard(props.row.identity)" color="accent" name="file_copy"/></small>
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -118,14 +120,17 @@
             <q-separator dark />
 
             <q-card-section horizontal>
-              <q-card-section class="col-5">
+              <q-card-section class="col-5 q-mb-xl">
                 <div class="q-mb-md">Stake (AVA / nAva)</div>
-                <br />
                 {{ props.row.stake > 1 ? props.row.stake.toLocaleString() : props.row.stake }} <span class="text-accent">$AVA</span>
                 <br />
                 <small style="color: grey;"> ({{ props.row.stakenAva.toLocaleString() }} nAva)</small>
-                <br />
-              <small style="color: grey;">{{ props.row.precent }} %</small>
+              <div class="q-mb-md" ><small style="color: grey;">{{ props.row.precent }} %</small></div>
+              <q-separator dark class="q-mb-md"/>
+              <div class="q-pl-xs">
+                <div >Staked by</div>
+                <div class="text-accent"><small>{{ fromNow(props.row.startTime) }}</small></div>
+              </div>
               </q-card-section>
               <q-separator dark vertical />
               <q-card-section class="col-7">
@@ -138,7 +143,7 @@
 
             </q-card-section>
             <q-card-section>
-              Progress (%)
+              <div class="text-grey">Progress (%)</div>
               <progress-bar-validate-session
                 v-bind:startTime="props.row.startTime"
                 v-bind:endTime="props.row.endTime"
@@ -167,8 +172,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { copyToClipboard } from 'quasar'
+
 import { round } from './../utils/commons'
-import { dateLL } from './../modules/time'
+import { dateLL, fromNow } from './../modules/time'
 
 import DetailsItem from './details-item'
 import CumulativeStakeChart from './cumulative-stake-chart'
@@ -237,6 +244,12 @@ export default {
     }
   },
   methods: {
+    fromNow (s) {
+      return fromNow(s)
+    },
+    copyToClipboard (id) {
+      copyToClipboard(id)
+    },
     onGetValidators (e) {
       const temp = {
         active: () => { this.isActive = true },
