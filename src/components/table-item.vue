@@ -108,7 +108,7 @@
                 </q-avatar>
               </q-item-section>
               <q-item-section>
-                <q-item-label ><small>Rank</small> {{ props.row.rank }}</q-item-label>
+                <q-item-label ><small>Rank </small> <span class="text-accent">{{ props.row.rank }}</span></q-item-label>
                 <q-item-label>
                   {{ props.row.identity }}
                 </q-item-label>
@@ -129,7 +129,6 @@
               </q-card-section>
               <q-separator dark vertical />
               <q-card-section class="col-7">
-               <div>Cumulative stake (%)</div>
                <cumulative-stake-chart
                  v-bind:name="props.row.identity"
                  v-bind:precent="props.row.precent"
@@ -139,7 +138,7 @@
 
             </q-card-section>
             <q-card-section>
-              <small>Progress (%)</small>
+              Progress (%)
               <progress-bar-validate-session
                 v-bind:startTime="props.row.startTime"
                 v-bind:endTime="props.row.endTime"
