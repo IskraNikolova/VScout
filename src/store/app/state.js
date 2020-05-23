@@ -4,6 +4,7 @@ export default function () {
   return {
     validators: [],
     pendingValidators: [],
+    endpointsMemory: [],
     lastBlock: {},
     blockTime: 0,
     lastBlockTime: [],

@@ -65,22 +65,30 @@
         >
           <div class="no-wrap q-pa-md text-negative">Switch To Endpoint</div>
           <q-list v-for="(endpoint, i) in endpoints" v-bind:key="i">
-            <q-item clickable v-close-popup @click="onSelectEndpoint(endpoint)">
+            <q-item clickable v-close-popup @click="onSelectEndpoint(endpoint, false)">
               <q-item-section>
                 <q-item-label>{{ endpoint }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
           <q-input
+            borderless
             clearable
             class="q-pl-md q-pr-md"
             label="http(s)://yourAddress/"
             v-model="customEndpoint"
+            @input="takeSuggestion"
           >
             <template v-slot:after>
-              <q-btn round dense flat icon="send" @click="onSelectEndpoint(customEndpoint)"/>
+              <q-btn round dense flat icon="send" @click="onSelectEndpoint(customEndpoint, true)"/>
             </template>
           </q-input>
+          <div style="cursor: pointer;" class="q-pl-md q-pb-xs" v-for="s in suggestions" v-bind:key="s" @click="customEndpoint = s; suggestions = [];">
+            <q-badge color="grey">
+              <span class="q-pr-xs">{{ s }}</span>
+              <q-icon @click="onRemoveFromMem(s, $event)" name="clear" color="white" />
+            </q-badge>
+          </div>
         </q-btn-dropdown>
       </div>
     </div>
@@ -117,6 +125,8 @@ import TransactionsItem from './../components/transactions-item'
 import {
   GET_VALIDATORS,
   SET_ENDPOINT,
+  SET_ENDPOINTS_MEMORY,
+  REMOVE_ENDPOINTS_MEMORY,
   GET_PENDING_VALIDATORS,
   SET_CURRENT_BLOCKCHAIN
 } from '../store/app/types'
@@ -138,7 +148,8 @@ export default {
       'pendingValidators',
       'blockchains',
       'currentBlockchain',
-      'networkEndpoint'
+      'networkEndpoint',
+      'endpointsMemory'
     ])
   },
   data () {
@@ -148,7 +159,9 @@ export default {
       result: 0.00,
       percentReward: 4,
       customEndpoint: '',
-      endpoints: network.endpointUrls
+      isCustom: false,
+      endpoints: network.endpointUrls,
+      suggestions: []
     }
   },
   created () {
@@ -159,6 +172,14 @@ export default {
       getValidators: GET_VALIDATORS,
       getPendingValidators: GET_PENDING_VALIDATORS
     }),
+    onRemoveFromMem (endpoint, event) {
+      event.stopImmediatePropagation()
+      this.$store.commit(REMOVE_ENDPOINTS_MEMORY, { endpoint })
+      this.takeSuggestion()
+    },
+    takeSuggestion () {
+      this.suggestions = this.endpointsMemory.filter(a => a.includes(this.customEndpoint))
+    },
     calculate () {
       this.stakeTime = Math.round(this.stakeTime)
       const basePercY = 4
@@ -178,7 +199,8 @@ export default {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
       this.getValidators({ subnetID: blockchain.subnetID })
     },
-    async onSelectEndpoint (endpoint) {
+    async onSelectEndpoint (endpoint, isCustom) {
+      this.isCustom = isCustom
       const temp = {
         'Network Error': () => {
           this.$q.notify({
@@ -200,12 +222,15 @@ export default {
         },
         200: () => {
           this.$store.commit(SET_ENDPOINT, { endpoint })
-          this.customEndpoint = ''
+          if (this.isCustom) {
+            this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
+            this.customEndpoint = ''
+          }
+          this.getValidators({ subnetID: this.currentBlockchain.subnetID })
         }
       }
       const connection = await testConnection({ endpoint })
       temp[connection]()
-      this.getValidators({ subnetID: this.currentBlockchain.subnetID })
     },
     async getValidatorsV (type) {
       const temp = {

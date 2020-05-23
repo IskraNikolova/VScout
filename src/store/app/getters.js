@@ -51,6 +51,10 @@ export function txsHistory (state) {
   return key => state.txsHistory[key]
 }
 
+export function endpointsMemory (state) {
+  return state.endpointsMemory
+}
+
 export function txHKey (state) {
   return state.txHKey
 }

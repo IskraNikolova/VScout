@@ -6,6 +6,8 @@ import {
   SET_PENDING_VALIDATORS,
   SET_BLOCKCHAINS,
   SET_CURRENT_BLOCKCHAIN,
+  SET_ENDPOINTS_MEMORY,
+  REMOVE_ENDPOINTS_MEMORY,
   SET_ENDPOINT,
   SET_TOTAL_TXS,
   SET_PREVIOUS_TOTAL_TXS,
@@ -35,6 +37,13 @@ const mutations = {
   },
   [SET_ENDPOINT]: (state, { endpoint }) => {
     state.networkEndpoint = endpoint
+  },
+  [SET_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
+    if (state.endpointsMemory.includes(endpoint)) return
+    state.endpointsMemory.push(endpoint)
+  },
+  [REMOVE_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
+    state.endpointsMemory = state.endpointsMemory.filter(a => a !== endpoint)
   },
   [SET_BLOCK_TIME]: (state, { blockTime }) => {
     state.blockTime = blockTime

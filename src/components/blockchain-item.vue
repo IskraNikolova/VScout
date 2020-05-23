@@ -10,7 +10,7 @@
         <div class="text-h5 text-negative q-pb-md">{{ currentBlockchain.name }}</div>
         <div id="f-size12">Blockchain ID <span class="text-negative">{{ currentBlockchain.id }}</span></div>
       </div>
-      <div class="col-2 q-pt-md">
+      <div class="col-1 q-pt-md">
         <img src="~assets/blockchain.svg" id="logo">
       </div>
       <div class="col-md-4 col-xs-10">
@@ -21,9 +21,13 @@
         <div class="text-negative" style="font-size: 18px;letter-spacing: -2px;margin-bottom: 20px;" v-else>{{ currentBlockchain.subnetID }}</div>
         <div id="f-size12">VM ID <div class="text-negative">{{ currentBlockchain.vmID }}</div></div>
       </div>
-      <div class="col-2 q-pt-md">
+      <div class="col-1 q-pt-md">
         <img src="~assets/network.svg" id="logo">
       </div>
+    </div>
+    <div class="absolute-bottom-right">
+      <div><small>Connect with <q-icon name="router"/></small></div>
+      <div class="q-pr-xl q-pb-md text-negative"><small>{{ networkEndpoint }}</small></div>
     </div>
   </q-card>
 </template>
@@ -35,7 +39,8 @@ export default {
   name: 'BlockchainItem',
   computed: {
     ...mapGetters([
-      'currentBlockchain'
+      'currentBlockchain',
+      'networkEndpoint'
     ])
   }
 }
