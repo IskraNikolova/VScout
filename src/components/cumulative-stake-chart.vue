@@ -38,8 +38,8 @@ export default {
       data: {
         datasets: [{
           data: [Math.round(this.precentAll - this.precent, 2), Math.round(this.precent, 2), Math.round(100 - (this.precentAll), 2)],
-          backgroundColor: ['Grey', '#87C5D6', 'black'],
-          borderColor: ['Grey', '#87C5D6', 'black']
+          backgroundColor: ['#677b87', '#87C5D6', 'black'],
+          borderColor: ['#677b87', '#87C5D6', 'black']
         }]
       },
       options: {

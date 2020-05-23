@@ -68,7 +68,7 @@
                     size="50px"
                     :value="(cumulativeStake(props.row.rank) - props.row.precent) / 100"
                     :buffer="(cumulativeStake(props.row.rank) - props.row.precent) / 100"
-                    color="grey">
+                    color="blue-grey-5">
                     <div class="absolute-full flex flex-left text-white q-ml-xs" style="font-size: 12px;margin-top: 10px;">
                       {{cumulativeStake(props.row.rank)}} %
                     </div>
