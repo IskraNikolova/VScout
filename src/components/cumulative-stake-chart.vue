@@ -50,7 +50,6 @@ export default {
           callbacks: {
             label: function (tooltipItem, data) {
               const label = data.datasets[0].data[tooltipItem.index] + '%'
-
               return label
             }
           }
