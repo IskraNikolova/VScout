@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="absolute-bottom-right">
-      <div><small>Connect with <q-icon name="router"/></small></div>
+      <div><small>Connected with <q-icon name="router"/></small></div>
       <div class="q-pr-xl q-pb-md text-negative"><small>{{ networkEndpoint }}</small></div>
     </div>
   </q-card>
