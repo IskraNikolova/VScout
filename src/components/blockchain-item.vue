@@ -6,7 +6,7 @@
     id="custom-card">
     <div class="row">
       <div class="col-md-4 col-xs-10">
-        <div style="font-size: 14px;" class="q-pb-md">Blockchain</div>
+        <div style="font-size: 12px;" class="q-pb-md">BLOCKCHAIN</div>
         <div class="text-h6 text-negative q-pb-md">{{ currentBlockchain.name }}</div>
         <div id="f-size12">Blockchain ID <span class="text-negative">{{ currentBlockchain.id }}</span></div>
       </div>
@@ -14,7 +14,7 @@
         <img src="~assets/blockchain.svg" id="logo">
       </div>
       <div class="col-md-4 col-xs-10">
-        <div style="font-size: 14px;" class="q-pb-md">Subnet ID</div>
+        <div style="font-size: 12px;" class="q-pb-md">SUBNET ID</div>
         <div class="text-h6 q-pb-md text-negative" v-if="currentBlockchain.subnetID === '11111111111111111111111111111111LpoYY'">
           Default Subnet
         </div>
@@ -25,7 +25,7 @@
         <img src="~assets/network.svg" id="logo">
       </div>
       <div class="col-md-2 col-xs-10">
-        <div style="font-size: 14px;" class="q-pb-md">Smart Digital Assets</div>
+        <div style="font-size: 12px;" class="q-pb-md">SMART DIGITAL ASSETS</div>
         <div class="q-pb-md">
           <q-btn-dropdown outline class="text-negative" v-if="assets(currentBlockchain.id)"  no-caps label="Built on chain">
               <div class="q-pa-md">
