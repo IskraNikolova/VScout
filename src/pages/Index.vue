@@ -211,7 +211,6 @@ export default {
       ])
     },
     async onSelectEndpoint (endpoint, isCustom) {
-      this.isCustom = isCustom
       const temp = {
         'Network Error': () => {
           this.$q.notify({
@@ -233,7 +232,7 @@ export default {
         },
         200: () => {
           this.$store.commit(SET_ENDPOINT, { endpoint })
-          if (this.isCustom) {
+          if (isCustom) {
             this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
             this.customEndpoint = ''
           }
