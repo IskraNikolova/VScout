@@ -4,7 +4,7 @@
     dark flat id="custom-card" >
     <div class="row">
       <div class="col-md-2 col-xs-10">
-        <div style="font-size: 11px;" class="q-pb-md">NUMBERS OF VALIDATORS</div>
+        <div style="font-size: 14px;" class="q-pb-md">Numbers Of Validators</div>
         <div class="text-h5 text-secondary q-pb-md">{{ validators.length }}</div>
         <div style="font-size: 12px;">Pending Valitarors: <span class="text-secondary">{{ pendingValidators.length }}</span></div>
       </div>
@@ -12,7 +12,7 @@
         <img src="~assets/validators.png" class="custom-icon">
       </div>
       <div class="col-md-2 col-xs-10">
-        <div style="font-size: 11px;" class="q-pb-md">STAKED AVA</div>
+        <div style="font-size: 14px;" class="q-pb-md">Staked AVA</div>
         <div class="text-h5 q-pb-md">
             <span class="text-secondary"><small>{{stake().toLocaleString()}}</small> </span>
             <span style="font-size: 13px;">/360M</span>
@@ -24,7 +24,7 @@
         <img src="~assets/stake-amount.png" class="custom-icon">
       </div>
       <div class="col-md-2 col-xs-10">
-       <div style="font-size: 11px;" class="q-pb-md">AVA VOLUME (24h)</div>
+       <div style="font-size: 14px;" class="q-pb-md">AVA Volume (24h)</div>
        <div class="text-h5 q-pb-md">
             <span class="text-secondary"><small>{{ txsFor24H.transactionVolume.toLocaleString() }}</small></span>
             <span style="font-size: 13px;"> AVA</span>
@@ -34,7 +34,7 @@
         <img src="~assets/output-st-ava.png" class="custom-icon">
       </div>
       <div class="col-md-2 col-xs-10">
-       <div style="font-size: 11px;" class="q-pb-md">PRICE</div>
+       <div style="font-size: 14px;" class="q-pb-md">Price</div>
        <div class="text-h5 text-secondary q-pb-md"><small>$0.00<span style="font-size: 13px;"> /AVA</span></small></div>
        <div style="font-size: 12px;">Market Capitalization: <span class="text-secondary">N/A</span></div>
       </div>

@@ -5,14 +5,14 @@
   >
     <div class="row">
       <div class="col-md-3 col-xs-12">
-        <div style="font-size: 11px;" class="q-pb-md">TRANSACTIONS (24Hr)</div>
+        <div style="font-size: 14px;" class="q-pb-md">Transactions (24Hr)</div>
         <div class="col text-h5 text-positive q-pb-xl">
           <img src="~assets/arrow-down.png" class="custom-icon arrow" v-if="prevTxsFor24H.transactionCount > txsFor24H.transactionCount">
           <img src="~assets/arrow-up.png" class="custom-icon arrow" v-else>
           {{ txsFor24H.transactionCount }}
           <small>({{ tps }} TPS)</small>
         </div>
-        <div style="font-size: 11px;" class="q-pb-md">TOTAL TRANSACTIONS</div>
+        <div style="font-size: 14px;" class="q-pb-md">Total Transactions</div>
         <div class="text-h5"><span class="text-positive">{{ totalTxsCount.toLocaleString() }}</span></div>
       </div>
       <div class="col-md-9 col-xs-12">

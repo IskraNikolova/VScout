@@ -25,7 +25,7 @@
         <q-separator />
 
         <q-card-actions align="right">
-          <q-btn flat color="negative" @click="toUrl(ui.assetInfo.asset.id)" label="Asset Genesis" />
+          <q-btn flat color="negative" @click="toUrl(ui.assetInfo.asset.id)" no-caps label="Asset Genesis" />
           <q-btn @click="close()" color="negative" flat icon="close" />
         </q-card-actions>
       </q-card>
