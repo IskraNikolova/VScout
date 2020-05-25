@@ -9,6 +9,7 @@ export default function () {
     blockTime: 0,
     lastBlockTime: [],
     blockchains: [],
+    assetsByChain: {},
     currentBlockchain: network.defaultBlockchain,
     networkEndpoint: network.endpointUrls[0],
     txsFor24H: { transactionCount: 0, transactionVolume: 0 },

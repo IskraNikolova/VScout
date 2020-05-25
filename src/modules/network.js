@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { groupBy } from './../utils/commons'
 import { c } from './../utils/constants'
 const { network } = require('./config').default
 
@@ -24,17 +25,24 @@ export const testConnection = async ({ endpoint, params = {} }) => {
 }
 
 export const _getLastTx = async () => {
-  const req = await axios.get(network.explorerBaseUrl + c.tx + c.getLast)
+  const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.getLast)
   return req.data
 }
 
+export const _getAssetsForChain = async () => {
+  const req = await axios.get(network.explorerApiBaseUrl + c.listAssests)
+  if (!req.data.assets) return
+
+  return groupBy(req.data.assets, 'chainID')
+}
+
 export const _getAggregates = async (s, e) => {
-  const req = await axios.get(network.explorerBaseUrl + c.tx + c.aggregates(s, e))
+  const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.aggregates(s, e))
   return req.data.aggregates
 }
 
 export const _getAggregatesWithI = async (s, e, intervalSize) => {
-  const req = await axios.get(network.explorerBaseUrl + c.tx + c.aggregatesWInt(s, e, intervalSize))
+  const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.aggregatesWInt(s, e, intervalSize))
   return req.data
 }
 

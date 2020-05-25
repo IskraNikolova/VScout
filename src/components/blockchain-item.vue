@@ -6,28 +6,45 @@
     id="custom-card">
     <div class="row">
       <div class="col-md-4 col-xs-10">
-        <div id="f-size11" class="q-pb-md">BLOKCHAIN</div>
-        <div class="text-h5 text-negative q-pb-md">{{ currentBlockchain.name }}</div>
+        <div id="f-size12" class="q-pb-md">Blockchain</div>
+        <div class="text-h6 text-negative q-pb-md">{{ currentBlockchain.name }}</div>
         <div id="f-size12">Blockchain ID <span class="text-negative">{{ currentBlockchain.id }}</span></div>
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/blockchain.svg" id="logo">
       </div>
       <div class="col-md-4 col-xs-10">
-        <div id="f-size11" class="q-pb-md">SUBNET ID</div>
+        <div id="f-size12" class="q-pb-md">Subnet ID</div>
         <div class="text-h6 q-pb-md text-negative" v-if="currentBlockchain.subnetID === '11111111111111111111111111111111LpoYY'">
           Default Subnet
         </div>
-        <div class="text-negative" style="font-size: 18px;letter-spacing: -2px;margin-bottom: 20px;" v-else>{{ currentBlockchain.subnetID }}</div>
+        <div v-else class="text-negative" style="font-size: 18px;letter-spacing: -2px;margin-bottom: 20px;" >{{ currentBlockchain.subnetID }}</div>
         <div id="f-size12">VM ID <div class="text-negative">{{ currentBlockchain.vmID }}</div></div>
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/network.svg" id="logo">
       </div>
-    </div>
-    <div class="absolute-bottom-right">
-      <div><small>Connected with <q-icon name="router"/></small></div>
-      <div class="q-pr-xl q-pb-md text-negative"><small>{{ networkEndpoint }}</small></div>
+      <div v-if="assets(currentBlockchain.id)" class="col-md-2 col-xs-10">
+        <div id="f-size12" class="q-pb-md">Smart Digital Assets</div>
+        <div class="q-pb-md">
+          <q-btn-dropdown outline class="text-negative" no-caps label="Built on chain">
+              <div class="q-pa-md">
+                <small><img src="~assets/coins.svg" id="small-logo">Assets on {{ currentBlockchain.name }}</small>
+                <q-separator />
+              </div>
+              <q-list v-for="asset in assets(currentBlockchain.id)" v-bind:key="asset.id">
+                <q-item clickable v-close-popup @click="onOpenAssetInfo(asset)">
+                  <q-item-section><span>{{ asset.symbol }}</span></q-item-section>
+                  <q-item-section side>
+                    <q-icon size="xs" name="info" color="grey" />
+                  </q-item-section>
+                </q-item>
+              </q-list>
+          </q-btn-dropdown>
+          <asset-info-item ref="assetDialog"/>
+        </div>
+        <div class="q-pt-xs"><span>Total </span><span class="text-negative">{{ assets(currentBlockchain.id).length }}</span> </div>
+      </div>
     </div>
   </q-card>
 </template>
@@ -35,13 +52,24 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import AssetInfoItem from './asset-info-item'
+
 export default {
   name: 'BlockchainItem',
+  components: {
+    AssetInfoItem
+  },
   computed: {
     ...mapGetters([
       'currentBlockchain',
-      'networkEndpoint'
+      'networkEndpoint',
+      'assets'
     ])
+  },
+  methods: {
+    onOpenAssetInfo (asset) {
+      this.$refs.assetDialog.open({ asset })
+    }
   }
 }
 </script>
@@ -58,5 +86,9 @@ export default {
   #logo {
     width:45vw;
     max-width:45px;
+  }
+  #small-logo {
+    width:15vw;
+    max-width:15px;
   }
 </style>

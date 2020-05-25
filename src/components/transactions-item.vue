@@ -37,6 +37,7 @@
           <div class="col-md-6 col-xs-12"><canvas id="chartVol"></canvas></div>
           <div class="col-md-6 col-xs-12"><canvas id="chartTps"></canvas></div>
         </div>
+        <div class="absolute absolute-top-right text-grey q-pt-md q-pr-xl"><small>AVA X-CHAIN</small></div>
       </div>
     </div>
   </q-card>

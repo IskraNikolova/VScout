@@ -30,6 +30,13 @@ export function deepMerge (...objects) {
   }
 }
 
+export function groupBy (xs, key) {
+  return xs.reduce(function (rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x)
+    return rv
+  }, {})
+}
+
 export function round (num, prec) {
   const multiplier = Math.pow(prec, 1 || 0)
   return Math.round((num + Number.EPSILON) * multiplier) / multiplier

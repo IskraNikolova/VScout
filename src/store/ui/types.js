@@ -1,1 +1,4 @@
 export const UPDATE_UI = 'UPDATE_UI'
+
+export const OPEN_ASSET_INFO = 'OPEN_ASSET_INFO'
+export const CLOSE_ASSET_INFO = 'CLOSE_ASSET_INFO'

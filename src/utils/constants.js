@@ -1,6 +1,7 @@
 export const c = {
   // enpoints
   tx: 'x/transactions',
+  listAssests: 'x/assets',
   timestamp: 'ext/bc/timestamp',
   platform: 'ext/P',
 

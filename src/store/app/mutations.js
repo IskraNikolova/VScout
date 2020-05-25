@@ -17,7 +17,8 @@ import {
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
   SET_KEY_TXH,
-  SET_TXS_HISTORY
+  SET_TXS_HISTORY,
+  SET_ASSETS_BY_BLOCKCHAINS
 } from './types'
 
 const mutations = {
@@ -71,6 +72,14 @@ const mutations = {
   [SET_TXS_HISTORY]: (state, { key, txsHistory }) => {
     if (!state.txsHistory[key]) Vue.set(state.txsHistory, key, [])
     state.txsHistory[key] = txsHistory
+  },
+  [SET_ASSETS_BY_BLOCKCHAINS]: (state, { assetsByChain }) => {
+    state.assetsByChain = assetsByChain
+    Object.keys(state.assetsByChain).map((key) => {
+      state.assetsByChain[key].sort((a, b) => {
+        return Number(b.currentSupply) - Number(a.currentSupply)
+      })
+    })
   }
 }
 

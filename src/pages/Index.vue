@@ -62,6 +62,7 @@
         <q-btn-dropdown
           flat
           dropdown-icon="img:statics/node.svg"
+          id="target-el"
         >
           <div class="no-wrap q-pa-md text-negative">Switch To Endpoint</div>
           <q-list v-for="(endpoint, i) in endpoints" v-bind:key="i">
@@ -90,6 +91,10 @@
             </q-badge>
           </div>
         </q-btn-dropdown>
+        <q-tooltip :target="switchNet" content-class="bg-white text-black">
+          <div>Connected with <q-icon name="router"/></div>
+          <div class="text-negative">{{ networkEndpoint }}</div>
+        </q-tooltip>
       </div>
     </div>
 
@@ -128,7 +133,8 @@ import {
   SET_ENDPOINTS_MEMORY,
   REMOVE_ENDPOINTS_MEMORY,
   GET_PENDING_VALIDATORS,
-  SET_CURRENT_BLOCKCHAIN
+  SET_CURRENT_BLOCKCHAIN,
+  GET_ASSETS_BY_BLOCKCHAINS
 } from '../store/app/types'
 
 import { testConnection } from './../modules/network'
@@ -161,7 +167,8 @@ export default {
       customEndpoint: '',
       isCustom: false,
       endpoints: network.endpointUrls,
-      suggestions: []
+      suggestions: [],
+      switchNet: '#target-el'
     }
   },
   created () {
@@ -170,6 +177,7 @@ export default {
   methods: {
     ...mapActions({
       getValidators: GET_VALIDATORS,
+      getAssets: GET_ASSETS_BY_BLOCKCHAINS,
       getPendingValidators: GET_PENDING_VALIDATORS
     }),
     onRemoveFromMem (endpoint, event) {
@@ -195,9 +203,12 @@ export default {
         this.result = (this.stakeAmount * basePercY) / 100
       }
     },
-    onSelectNetwork (blockchain) {
+    async onSelectNetwork (blockchain) {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
-      this.getValidators({ subnetID: blockchain.subnetID })
+      await Promise.all([
+        this.getAssets(),
+        this.getValidators({ subnetID: blockchain.subnetID })
+      ])
     },
     async onSelectEndpoint (endpoint, isCustom) {
       this.isCustom = isCustom

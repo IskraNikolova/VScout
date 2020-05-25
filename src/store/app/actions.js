@@ -20,7 +20,9 @@ import {
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
   GET_TXS_HISTORY,
-  SET_TXS_HISTORY
+  SET_TXS_HISTORY,
+  GET_ASSETS_BY_BLOCKCHAINS,
+  SET_ASSETS_BY_BLOCKCHAINS
 } from './types'
 
 import {
@@ -30,7 +32,8 @@ import {
   _getPendingValidators,
   _getAggregates,
   _getAggregatesWithI,
-  _getLastTx
+  _getLastTx,
+  _getAssetsForChain
 } from './../../modules/network'
 
 import { secBetweenTwoTime, makeMD5 } from './../../utils/commons'
@@ -41,7 +44,9 @@ const promises = (dispatch, getters) => [
   dispatch(GET_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID })
 ]
 async function initApp ({ dispatch, getters }) {
+  // todo refactor this
   await dispatch(GET_BLOCKCHAINS)
+  await dispatch(GET_ASSETS_BY_BLOCKCHAINS)
   await Promise.all(promises(dispatch, getters))
   setInterval(async () => {
     await Promise.all(promises(dispatch, getters))
@@ -170,6 +175,15 @@ async function getValidators ({ commit, getters }, { subnetID }) {
   }
 }
 
+async function getAssetsByBlockchain ({ commit }) {
+  try {
+    const assetsByChain = await _getAssetsForChain()
+    commit(SET_ASSETS_BY_BLOCKCHAINS, { assetsByChain })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 async function getPendingValidators ({ commit, getters }, { subnetID }) {
   try {
     var { validators } = await _getPendingValidators({ subnetID, endpoint: getters.networkEndpoint })
@@ -266,5 +280,6 @@ export default {
   [GET_BLOCK_TIME]: getBlockTime,
   [GET_TX_FOR_24_HOURS]: getTxsFor24H,
   [GET_TOTAL_TXS]: getTotalTXs,
-  [GET_TXS_HISTORY]: getTxsHistory
+  [GET_TXS_HISTORY]: getTxsHistory,
+  [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsByBlockchain
 }
