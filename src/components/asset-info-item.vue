@@ -55,7 +55,7 @@ export default {
       openURL('https://ava-explorer.herokuapp.com/tx/' + url)
     },
     getCurrentSupply (value, denomination) {
-      let returnValue = value
+      let returnValue = value.toLocaleString()
 
       if (denomination > 0 && value > 0) {
         returnValue = value / 10 ** denomination
