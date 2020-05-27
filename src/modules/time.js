@@ -15,6 +15,15 @@ export const date = (time) => {
   return moment(Number(time) * 1000).format('llll')
 }
 
+export const datePickerFormat = ({ value, label }) => {
+  const date = moment().add(Number(value), label)
+  return date.format('YYYY-MM-DD HH:mm')
+}
+
+export const toUnix = (date) => {
+  return moment(date).unix()
+}
+
 export const dateLL = (time) => {
   return moment(Number(time) * 1000).format('LL')
 }

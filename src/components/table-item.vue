@@ -17,6 +17,8 @@
         <q-btn size="xs" color="white" flat icon="reorder" @click="isGrid=false"/>
         <q-btn size="xs" color="white" flat label="Active" @click.native="onGetValidators"/>
         <q-btn size="xs" color="white" flat label="Pending" @click.native="onGetValidators"/>
+        <q-btn size="xs" outline color="white" label="Add Validator" icon="add" @click.native="onAddValidator"/>
+        <add-validator-dialog ref="addValidatorDialog" />
       </template>
       <template slot="top-right">
         <q-input @focus="true" dark borderless color="accent" stack-label label="Filter validators..." clearable v-model="filter">
@@ -178,6 +180,7 @@ import { round } from './../utils/commons'
 import { dateLL, fromNow } from './../modules/time'
 
 import DetailsItem from './details-item'
+import AddValidatorDialog from './add-validator-dialog'
 import CumulativeStakeChart from './cumulative-stake-chart'
 import ProgressBarValidateSession from './progress-bar-validatе-session'
 
@@ -185,6 +188,7 @@ export default {
   name: 'TableItem',
   components: {
     DetailsItem,
+    AddValidatorDialog,
     CumulativeStakeChart,
     ProgressBarValidateSession
   },
@@ -244,6 +248,9 @@ export default {
     }
   },
   methods: {
+    onAddValidator () {
+      this.$refs.addValidatorDialog.open()
+    },
     fromNow (s) {
       return fromNow(s)
     },
