@@ -23,6 +23,7 @@ export const c = {
   issueTx: 'platform.issueTx',
   importAVA: 'platform.importAVA',
   getAccount: 'platform.getAccount',
+  listAccounts: 'platform.listAccounts',
   createAccount: 'platform.createAccount',
   getBlockchains: 'platform.getBlockchains',
   getCurrentValidators: 'platform.getCurrentValidators',

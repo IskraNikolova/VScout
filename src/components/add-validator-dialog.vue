@@ -173,11 +173,12 @@
             hint="Percent fee this validator charges when others delegate stake to them, multiplied by 10,000."
           />
           <div class="q-pt-md">
-            <q-btn size="md" label="Add Validator" outline type="submit" color="accent"/>
+            <q-btn size="md" label="Add Validator" type="submit" color="accent"/>
             <q-btn size="md" label="Reset" type="reset" color="grey" flat class="q-ml-sm" />
           </div>
         </q-form>
         <sign-tx-dialog ref="signTxDialog" />
+        <create-user-dialog ref="createUserDialog"/>
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -189,6 +190,7 @@ import { datePickerFormat, toUnix } from './../modules/time'
 
 import PCreateAccountDialog from './p-create-account-dialog'
 import SignTxDialog from './sign-tx-dialog'
+import CreateUserDialog from './create-user-dialog'
 
 import {
   GET_NODE_ID, GET_ACCOUNT,
@@ -248,6 +250,7 @@ export default {
   },
   components: {
     PCreateAccountDialog,
+    CreateUserDialog,
     SignTxDialog
   },
   data () {

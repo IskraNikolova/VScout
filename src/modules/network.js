@@ -84,6 +84,10 @@ export const _createAccount = async ({ endpoint, params }) => {
   return request2(endpoint + c.platform, body(c.createAccount, params))
 }
 
+export const _listAccounts = async ({ endpoint, params }) => {
+  return request2(endpoint + c.platform, body(c.listAccounts, params))
+}
+
 export const _getAccount = async ({ endpoint, params }) => {
   return request(endpoint + c.platformBc, body(c.getAccount, params))
 }

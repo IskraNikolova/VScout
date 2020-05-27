@@ -5,6 +5,7 @@ export default function () {
     addValidatorDialog: { isOpen: false, destinationAccount: { address: null }, payingAccount: { address: null } },
     signTx: { isOpen: false, unsignedTx: null, signer: null },
     pCreate: { isOpen: false, type: null },
-    uCreate: { isOpen: false }
+    uCreate: { isOpen: false },
+    selectAccounts: { isOpen: false, accounts: null }
   }
 }

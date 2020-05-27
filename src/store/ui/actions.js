@@ -8,6 +8,8 @@ import {
   CLOSE_CREATE_USER,
   OPEN_ASSET_INFO,
   CLOSE_ASSET_INFO,
+  OPEN_SELECT_ACCOUNTS,
+  CLOSE_SELECT_ACCOUNTS,
   OPEN_ADD_VALIDATOR_DIALOG,
   CLOSE_ADD_VALIDATOR_DIALOG
 } from './types'
@@ -48,6 +50,14 @@ const closeAssetInfo = ({ commit }) => {
   commit(UPDATE_UI, { assetInfo: { isOpen: false, asset: {} } })
 }
 
+const openSelectAccounts = ({ commit }, { accounts }) => {
+  commit(UPDATE_UI, { selectAccounts: { isOpen: true, accounts } })
+}
+
+const closeSelectAccounts = ({ commit }) => {
+  commit(UPDATE_UI, { selectAccounts: { isOpen: false, accounts: null } })
+}
+
 const openAddValidatorDialog = ({ commit }) => {
   commit(UPDATE_UI, { addValidatorDialog: { isOpen: true, destinationAccount: { address: null }, payingAccount: { address: null } } })
 }
@@ -66,6 +76,8 @@ export default {
   [CLOSE_CREATE_USER]: closeCreateU,
   [OPEN_ASSET_INFO]: openAssetInfo,
   [CLOSE_ASSET_INFO]: closeAssetInfo,
+  [OPEN_SELECT_ACCOUNTS]: openSelectAccounts,
+  [CLOSE_SELECT_ACCOUNTS]: closeSelectAccounts,
   [OPEN_ADD_VALIDATOR_DIALOG]: openAddValidatorDialog,
   [CLOSE_ADD_VALIDATOR_DIALOG]: closeAddValidatorDialog
 }

@@ -29,6 +29,7 @@ import {
   GET_NODE_ID,
   GET_ACCOUNT,
   CREATE_ACCOUNT,
+  LIST_ACCOUNTS,
   ADD_VALIDATOR_TO_DEFAULT_SUBNET
 } from './types'
 
@@ -54,6 +55,7 @@ import {
   _getAccount,
   _createAccount,
   _createUser,
+  _listAccounts,
   _addDefaultSubnetValidator
 } from './../../modules/network'
 
@@ -87,8 +89,13 @@ async function getLastBlock ({ commit, getters }) {
 
 async function getBlockTime ({ commit, getters }) {
   try {
-    const preLastBlock = await _getBlock({ id: getters.lastBlock.parentID, endpoint: getters.networkEndpoint })
-    const blockTime = secBetweenTwoTime(getters.lastBlock.timestamp, preLastBlock.timestamp)
+    const preLastBlock = await _getBlock({
+      id: getters.lastBlock.parentID,
+      endpoint: getters.networkEndpoint
+    })
+    const blockTime = secBetweenTwoTime(
+      getters.lastBlock.timestamp,
+      preLastBlock.timestamp)
     commit(SET_BLOCK_TIME, { blockTime })
   } catch (err) {
     console.log(err)
@@ -97,7 +104,9 @@ async function getBlockTime ({ commit, getters }) {
 
 async function getBlockchains ({ commit, getters }) {
   try {
-    const { blockchains } = await _getBlockchains({ endpoint: getters.networkEndpoint })
+    const { blockchains } = await _getBlockchains({
+      endpoint: getters.networkEndpoint
+    })
     commit(SET_BLOCKCHAINS, { blockchains })
   } catch (err) {
     console.log(err)
@@ -107,9 +116,17 @@ async function getBlockchains ({ commit, getters }) {
 async function getTxsFor24H ({ commit, getters }) {
   try {
     const minAgo = moment().subtract(24, 'hours')
-    const { transactionCount, transactionVolume } = await _getAggregates(minAgo.toISOString(), moment().toISOString())
+    const { transactionCount, transactionVolume } = await _getAggregates(
+      minAgo.toISOString(),
+      moment().toISOString()
+    )
     commit(SET_PREVIOUS_24_TXS, { prevTxsFor24H: getters.txsFor24H })
-    commit(SET_TX_FOR_24_HOURS, { txsFor24H: { transactionCount, transactionVolume: Math.round(transactionVolume / 10 ** 9) } })
+    commit(SET_TX_FOR_24_HOURS, {
+      txsFor24H: {
+        transactionCount,
+        transactionVolume: Math.round(transactionVolume / 10 ** 9)
+      }
+    })
   } catch (err) {
     console.log(err)
   }
@@ -188,9 +205,13 @@ async function getTxsHistory ({ commit, getters }) {
 
 async function getValidators ({ commit, getters }, { subnetID }) {
   try {
-    var { validators } = await _getValidators({ subnetID, endpoint: getters.networkEndpoint })
-    validators = validators.filter(i => i.endTime >= Date.now() / 1000)
-    validators.sort(compare)
+    var { validators } = await _getValidators({
+      subnetID,
+      endpoint: getters.networkEndpoint
+    })
+    validators = validators
+      .filter(i => i.endTime >= Date.now() / 1000)
+      .sort(compare)
     const val = map(validators)
     commit(SET_VALIDATORS, { validators: val })
   } catch (err) {
@@ -209,7 +230,10 @@ async function getAssetsByBlockchain ({ commit }) {
 
 async function getPendingValidators ({ commit, getters }, { subnetID }) {
   try {
-    var { validators } = await _getPendingValidators({ subnetID, endpoint: getters.networkEndpoint })
+    var { validators } = await _getPendingValidators({
+      subnetID,
+      endpoint: getters.networkEndpoint
+    })
     validators = validators.filter(i => i.endTime >= Date.now() / 1000)
     validators.sort(compare)
     const val = map(validators)
@@ -231,7 +255,10 @@ async function getNodeId ({ getters }) {
 
 async function getAccount ({ commit, getters }, { address, type }) {
   try {
-    const account = await _getAccount({ endpoint: getters.networkEndpoint, params: { address } })
+    const account = await _getAccount({
+      endpoint: getters.networkEndpoint,
+      params: { address }
+    })
     if (type === 'destination') {
       commit(UPDATE_UI, {
         addValidatorDialog: {
@@ -284,6 +311,23 @@ async function createUser ({ getters }, { username, password }) {
   try {
     const params = { username, password }
     const response = await _createUser({
+      endpoint: getters.networkEndpoint,
+      params
+    })
+    if (response.data.error) {
+      throw new Error(response.data.error.message)
+    }
+
+    return response.data.result
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
+async function listAccounts ({ getters }, { username, password }) {
+  try {
+    const params = { username, password }
+    const response = await _listAccounts({
       endpoint: getters.networkEndpoint,
       params
     })
@@ -460,6 +504,7 @@ export default {
   [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsByBlockchain,
   [GET_NODE_ID]: getNodeId,
   [GET_ACCOUNT]: getAccount,
+  [LIST_ACCOUNTS]: listAccounts,
   [CREATE_ACCOUNT]: createAccount,
   [CREATE_USER]: createUser,
   [ADD_VALIDATOR_TO_DEFAULT_SUBNET]: addValidatorToDefaultS

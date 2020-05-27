@@ -7,7 +7,7 @@
     <q-card style="min-width: 380px!important;">
       <q-card-section class="row items-center">
         <q-item>
-            <q-item-section avatar>
+          <q-item-section avatar>
             <q-avatar>
               <img src="~assets/sign.svg" />
             </q-avatar>

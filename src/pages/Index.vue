@@ -150,6 +150,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'ui',
       'validators',
       'pendingValidators',
       'blockchains',
