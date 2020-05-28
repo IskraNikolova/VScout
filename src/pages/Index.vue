@@ -39,9 +39,18 @@
                 color="negative"
               />
               <div class="row">
-                <div class="col q-pl-xs q-mr-xs"><small>Monthly Earning  </small> <span class="text-accent">{{ (monthly).toFixed(2) }}</span> $AVA&nbsp;</div>
-                 <div class="col q-pl-xs q-mr-xs"><small>{{ stakeTime }} Weeks Earning  </small> <span class="text-accent">{{ (weekly * stakeTime).toFixed(2) }}</span> $AVA&nbsp;</div>
-                <div class="col q-pl-xl"><small>Yearly Earning </small> <span class="text-accent">{{ yearly.toFixed(2) }}</span> $AVA </div>
+                <div class="col-4">
+                  <small>Monthly Earning</small>
+                  <div><span class="text-accent">{{ (monthly).toFixed(2) }}</span> $AVA</div>
+                </div>
+                <div class="col-4 q-pl-xs">
+                  <small>{{ stakeTime }} Weekly Earning  </small>
+                  <div><span class="text-accent">{{ (weekly * stakeTime).toFixed(2) }}</span> $AVA</div>
+                </div>
+                <div class="col-4 q-pl-md">
+                  <small>Yearly Earning </small>
+                  <div><span class="text-accent">{{ yearly.toFixed(2) }}</span> $AVA</div>
+                </div>
               </div>
             </q-banner>
           </q-popup-proxy>
