@@ -17,7 +17,7 @@
         <q-btn size="xs" color="white" flat icon="reorder" @click="isGrid=false"/>
         <q-btn size="xs" color="white" flat label="Active" @click.native="onGetValidators"/>
         <q-btn size="xs" color="white" flat label="Pending" @click.native="onGetValidators"/>
-        <q-btn size="xs" outline color="white" label="Add Validator" icon="add" @click.native="onAddValidator"/>
+        <!--<q-btn size="xs" outline color="white" label="Add Validator" icon="add" @click.native="onAddValidator"/>-->
         <add-validator-dialog ref="addValidatorDialog" />
       </template>
       <template slot="top-right">

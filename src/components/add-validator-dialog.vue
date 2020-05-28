@@ -2,25 +2,10 @@
   <q-dialog
     v-model="ui.addValidatorDialog.isOpen"
     persistent
-    :maximized="maximizedToggle"
     transition-show="slide-up"
     transition-hide="slide-down"
   >
-    <q-card style="min-width: 500px!important;">
-      <q-bar class="bg-white text-grey" bordered>
-        <small><q-icon color="negative" name="router"/> {{ networkEndpoint }}</small>
-        <q-space />
-        <q-btn dense flat icon="minimize" @click="maximizedToggle = false" :disable="!maximizedToggle">
-          <q-tooltip v-if="maximizedToggle" content-class="bg-white text-primary">Minimize</q-tooltip>
-        </q-btn>
-        <q-btn dense flat icon="crop_square" @click="maximizedToggle = true" :disable="maximizedToggle">
-          <q-tooltip v-if="!maximizedToggle" content-class="bg-white text-primary">Maximize</q-tooltip>
-        </q-btn>
-        <q-btn dense flat icon="close" @click="close">
-          <q-tooltip content-class="bg-white text-primary">Close</q-tooltip>
-        </q-btn>
-      </q-bar>
-
+    <q-card style="min-width: 90%!important;">
       <q-card-section>
         <div class="text-h6">Add a Validator to the Default Subnet</div>
       </q-card-section>
@@ -255,7 +240,6 @@ export default {
   },
   data () {
     return {
-      maximizedToggle: false,
       nodeID: null,
       startDate: null,
       endDate: null,
