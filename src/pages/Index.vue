@@ -9,7 +9,7 @@
           <q-popup-proxy>
             <q-banner class="q-pa-md" dense style="width: 430px;">
               <div class="q-pb-md">Reward Calculator</div>
-              <div class="q-pa-md absolute-top-right"><q-badge outline size="xs" color="accent" :label="percentReward.toFixed(2) + '%'" /></div>
+              <div class="q-pa-md absolute-top-right"><q-badge outline size="xs" color="accent" :label="'Y ' + percentReward.toFixed(2) + '%'" /></div>
               <q-input
                 label-color="negative"
                 outlined
@@ -39,8 +39,9 @@
                 color="negative"
               />
               <div class="row">
-                <div class="col q-pl-xs q-mr-xs"><small>Weekly Earning  </small> <span class="text-accent">{{ (result / 52).toFixed(2) }}</span> $AVA&nbsp;</div>
-                <div class="col q-pl-xl"><small>Yearly Earning </small> <span class="text-accent">{{ result.toFixed(2) }}</span> $AVA </div>
+                <div class="col q-pl-xs q-mr-xs"><small>Monthly Earning  </small> <span class="text-accent">{{ (monthly).toFixed(2) }}</span> $AVA&nbsp;</div>
+                 <div class="col q-pl-xs q-mr-xs"><small>{{ stakeTime }} Weeks Earning  </small> <span class="text-accent">{{ (weekly * stakeTime).toFixed(2) }}</span> $AVA&nbsp;</div>
+                <div class="col q-pl-xl"><small>Yearly Earning </small> <span class="text-accent">{{ yearly.toFixed(2) }}</span> $AVA </div>
               </div>
             </q-banner>
           </q-popup-proxy>
@@ -150,6 +151,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'ui',
       'validators',
       'pendingValidators',
       'blockchains',
@@ -163,7 +165,10 @@ export default {
       stakeAmount: 2000,
       stakeTime: 2,
       result: 0.00,
-      percentReward: 4,
+      yearly: 0.00,
+      weekly: 0.00,
+      monthly: 0.00,
+      percentReward: 12,
       customEndpoint: '',
       isCustom: false,
       endpoints: network.endpointUrls,
@@ -190,18 +195,21 @@ export default {
     },
     calculate () {
       this.stakeTime = Math.round(this.stakeTime)
-      const basePercY = 4
+      this.yearly = (this.stakeAmount * this.percentReward) / 100
+      this.monthly = (this.stakeAmount * (this.percentReward / 12)) / 100
+      this.weekly = (this.stakeAmount * (this.percentReward / 52)) / 100
+      // const basePercY = 4
 
-      if (this.stakeTime > 2) {
-        //  additional percent reward; calculate 11.11%  bonus devide 52 weeks
-        const bonusPercentPerWeek = 0.2136538461538462
+      // if (this.stakeTime > 2) {
+      //   //  additional percent reward; calculate 11.11%  bonus devide 52 weeks
+      //   const bonusPercentPerWeek = 0.2136538461538462
 
-        this.percentReward = (this.stakeTime * bonusPercentPerWeek) + basePercY
-        this.result = (this.stakeAmount * this.percentReward) / 100
-      } else {
-        this.percentReward = basePercY
-        this.result = (this.stakeAmount * basePercY) / 100
-      }
+      //   this.percentReward = (this.stakeTime * bonusPercentPerWeek) + basePercY
+      //   this.result = (this.stakeAmount * this.percentReward) / 100
+      // } else {
+      //   this.percentReward = basePercY
+      //   this.result = (this.stakeAmount * basePercY) / 100
+      // }
     },
     async onSelectNetwork (blockchain) {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })

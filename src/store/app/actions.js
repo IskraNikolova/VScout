@@ -3,6 +3,9 @@ const BigNumber = require('bignumber.js')
 
 import {
   INIT_APP,
+  SIGN_TX,
+  CREATE_USER,
+  FUND_ACCOUNT,
   GET_LAST_BLOCK,
   SET_BLOCK,
   GET_TOTAL_TXS,
@@ -22,27 +25,49 @@ import {
   GET_TXS_HISTORY,
   SET_TXS_HISTORY,
   GET_ASSETS_BY_BLOCKCHAINS,
-  SET_ASSETS_BY_BLOCKCHAINS
+  SET_ASSETS_BY_BLOCKCHAINS,
+  GET_NODE_ID,
+  GET_ACCOUNT,
+  CREATE_ACCOUNT,
+  LIST_ACCOUNTS,
+  ADD_VALIDATOR_TO_DEFAULT_SUBNET
 } from './types'
 
 import {
+  UPDATE_UI
+} from './../ui/types'
+
+import {
   _getBlock,
+  _sign,
+  _issueTx,
+  _exportAVA,
+  _importAVA,
   _getBlockchains,
   _getValidators,
   _getPendingValidators,
   _getAggregates,
   _getAggregatesWithI,
   _getLastTx,
-  _getAssetsForChain
+  _getTxStatus,
+  _getAssetsForChain,
+  _getNodeId,
+  _getAccount,
+  _createAccount,
+  _createUser,
+  _listAccounts,
+  _addDefaultSubnetValidator
 } from './../../modules/network'
 
 import { secBetweenTwoTime, makeMD5 } from './../../utils/commons'
+
 const promises = (dispatch, getters) => [
   dispatch(GET_TOTAL_TXS),
   dispatch(GET_TX_FOR_24_HOURS),
   dispatch(GET_TXS_HISTORY),
   dispatch(GET_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID })
 ]
+
 async function initApp ({ dispatch, getters }) {
   // todo refactor this
   await dispatch(GET_BLOCKCHAINS)
@@ -64,8 +89,13 @@ async function getLastBlock ({ commit, getters }) {
 
 async function getBlockTime ({ commit, getters }) {
   try {
-    const preLastBlock = await _getBlock({ id: getters.lastBlock.parentID, endpoint: getters.networkEndpoint })
-    const blockTime = secBetweenTwoTime(getters.lastBlock.timestamp, preLastBlock.timestamp)
+    const preLastBlock = await _getBlock({
+      id: getters.lastBlock.parentID,
+      endpoint: getters.networkEndpoint
+    })
+    const blockTime = secBetweenTwoTime(
+      getters.lastBlock.timestamp,
+      preLastBlock.timestamp)
     commit(SET_BLOCK_TIME, { blockTime })
   } catch (err) {
     console.log(err)
@@ -74,7 +104,9 @@ async function getBlockTime ({ commit, getters }) {
 
 async function getBlockchains ({ commit, getters }) {
   try {
-    const { blockchains } = await _getBlockchains({ endpoint: getters.networkEndpoint })
+    const { blockchains } = await _getBlockchains({
+      endpoint: getters.networkEndpoint
+    })
     commit(SET_BLOCKCHAINS, { blockchains })
   } catch (err) {
     console.log(err)
@@ -84,9 +116,17 @@ async function getBlockchains ({ commit, getters }) {
 async function getTxsFor24H ({ commit, getters }) {
   try {
     const minAgo = moment().subtract(24, 'hours')
-    const { transactionCount, transactionVolume } = await _getAggregates(minAgo.toISOString(), moment().toISOString())
+    const { transactionCount, transactionVolume } = await _getAggregates(
+      minAgo.toISOString(),
+      moment().toISOString()
+    )
     commit(SET_PREVIOUS_24_TXS, { prevTxsFor24H: getters.txsFor24H })
-    commit(SET_TX_FOR_24_HOURS, { txsFor24H: { transactionCount, transactionVolume: Math.round(transactionVolume / 10 ** 9) } })
+    commit(SET_TX_FOR_24_HOURS, {
+      txsFor24H: {
+        transactionCount,
+        transactionVolume: Math.round(transactionVolume / 10 ** 9)
+      }
+    })
   } catch (err) {
     console.log(err)
   }
@@ -165,9 +205,13 @@ async function getTxsHistory ({ commit, getters }) {
 
 async function getValidators ({ commit, getters }, { subnetID }) {
   try {
-    var { validators } = await _getValidators({ subnetID, endpoint: getters.networkEndpoint })
-    validators = validators.filter(i => i.endTime >= Date.now() / 1000)
-    validators.sort(compare)
+    var { validators } = await _getValidators({
+      subnetID,
+      endpoint: getters.networkEndpoint
+    })
+    validators = validators
+      .filter(i => i.endTime >= Date.now() / 1000)
+      .sort(compare)
     const val = map(validators)
     commit(SET_VALIDATORS, { validators: val })
   } catch (err) {
@@ -186,13 +230,187 @@ async function getAssetsByBlockchain ({ commit }) {
 
 async function getPendingValidators ({ commit, getters }, { subnetID }) {
   try {
-    var { validators } = await _getPendingValidators({ subnetID, endpoint: getters.networkEndpoint })
+    var { validators } = await _getPendingValidators({
+      subnetID,
+      endpoint: getters.networkEndpoint
+    })
     validators = validators.filter(i => i.endTime >= Date.now() / 1000)
     validators.sort(compare)
     const val = map(validators)
     commit(SET_PENDING_VALIDATORS, { validators: val })
   } catch (err) {
     console.log(err)
+  }
+}
+
+async function getNodeId ({ getters }) {
+  try {
+    const result = await _getNodeId({ endpoint: getters.networkEndpoint })
+    return result.nodeID
+  } catch (err) {
+    console.log(err)
+    return null
+  }
+}
+
+async function getAccount ({ commit, getters }, { address, type }) {
+  try {
+    const account = await _getAccount({
+      endpoint: getters.networkEndpoint,
+      params: { address }
+    })
+    if (type === 'destination') {
+      commit(UPDATE_UI, {
+        addValidatorDialog: {
+          isOpen: true,
+          destinationAccount: account,
+          payingAccount: getters.ui.addValidatorDialog.payingAccount
+        }
+      })
+    } else {
+      commit(UPDATE_UI, {
+        addValidatorDialog: {
+          isOpen: true,
+          destinationAccount: getters.ui.addValidatorDialog.destinationAccount,
+          payingAccount: account
+        }
+      })
+    }
+  } catch (err) {
+    commit(UPDATE_UI, {
+      addValidatorDialog: {
+        isOpen: true,
+        destinationAccount: {
+          address: null
+        }
+      }
+    })
+  }
+}
+
+async function createAccount ({ dispatch, getters }, { username, password, type }) {
+  try {
+    const params = { username, password }
+    const response = await _createAccount({
+      endpoint: getters.networkEndpoint,
+      params
+    })
+
+    if (response.data.error) {
+      throw new Error(response.data.error.message)
+    }
+
+    const account = response.data.result
+    await dispatch(GET_ACCOUNT, { address: account.address, type })
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
+async function createUser ({ getters }, { username, password }) {
+  try {
+    const params = { username, password }
+    const response = await _createUser({
+      endpoint: getters.networkEndpoint,
+      params
+    })
+    if (response.data.error) {
+      throw new Error(response.data.error.message)
+    }
+
+    return response.data.result
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
+async function listAccounts ({ getters }, { username, password }) {
+  try {
+    const params = { username, password }
+    const response = await _listAccounts({
+      endpoint: getters.networkEndpoint,
+      params
+    })
+    if (response.data.error) {
+      throw new Error(response.data.error.message)
+    }
+
+    return response.data.result
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
+async function addValidatorToDefaultS ({ getters }, { params, signer }) {
+  try {
+    const endpoint = getters.networkEndpoint
+    const account = await _getAccount({
+      endpoint,
+      params: { address: signer }
+    })
+
+    const nonce = Number(account.nonce) + 1
+    params.payerNonce = nonce
+    if (account.balance < params.stakeAmount) {
+      throw new Error('Insufficient funds!')
+    }
+    const { unsignedTx } = await _addDefaultSubnetValidator({
+      endpoint: getters.networkEndpoint,
+      params
+    })
+    return unsignedTx
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
+async function signTransaction ({ getters }, { transaction, signer, username, password }) {
+  try {
+    const endpoint = getters.networkEndpoint
+    const tx = await _sign({ endpoint, params: { tx: transaction, signer, username, password } })
+    await _issueTx({ endpoint, params: tx })
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
+async function fundAccount ({ getters }, { amount, username, password }) {
+  try {
+    const to = getters.ui.addValidatorDialog.payingAccount.address
+    const nonce = Number(getters.ui.addValidatorDialog.payingAccount.nonce)
+    const payerNonce = nonce + 1
+    const endpoint = getters.networkEndpoint
+
+    // export AVA
+    const params = { to, amount, username, password }
+    const txID = await _exportAVA({ endpoint, params })
+
+    // getTxStatus
+    let txStat = await _getTxStatus({ endpoint, params: txID })
+    if (!txStat) {
+      throw new Error('Check your balance')
+    }
+
+    const interval = setInterval(async () => {
+      if (txStat.status !== 'Processing') {
+        // import
+        const tx = await _importAVA({
+          endpoint,
+          params: {
+            username,
+            password,
+            to,
+            payerNonce
+          }
+        })
+        // issueTx
+        await _issueTx({ endpoint, params: tx })
+        clearInterval(interval)
+      }
+      txStat = await _getTxStatus({ endpoint, params: txID })
+    }, 1000)
+  } catch (err) {
+    throw new Error(err)
   }
 }
 
@@ -273,6 +491,8 @@ function compare (a, b) {
 
 export default {
   [INIT_APP]: initApp,
+  [SIGN_TX]: signTransaction,
+  [FUND_ACCOUNT]: fundAccount,
   [GET_LAST_BLOCK]: getLastBlock,
   [GET_VALIDATORS]: getValidators,
   [GET_PENDING_VALIDATORS]: getPendingValidators,
@@ -281,5 +501,12 @@ export default {
   [GET_TX_FOR_24_HOURS]: getTxsFor24H,
   [GET_TOTAL_TXS]: getTotalTXs,
   [GET_TXS_HISTORY]: getTxsHistory,
-  [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsByBlockchain
+  [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsByBlockchain,
+  [GET_NODE_ID]: getNodeId,
+  [GET_ACCOUNT]: getAccount,
+  [LIST_ACCOUNTS]: listAccounts,
+  [CREATE_ACCOUNT]: createAccount,
+  [CREATE_USER]: createUser,
+  [ADD_VALIDATOR_TO_DEFAULT_SUBNET]: addValidatorToDefaultS
+
 }

@@ -51,6 +51,11 @@ export const request = async (endpoint, body) => {
   return response.data.result
 }
 
+export const request2 = async (endpoint, body) => {
+  const response = await axios.post(endpoint, body)
+  return response
+}
+
 export const _getBlock = async ({ params = {}, endpoint }) => {
   return request(endpoint + c.timestamp, body(c.getBlock, params))
 }
@@ -65,4 +70,52 @@ export const _getValidators = async ({ subnetID, endpoint }) => {
 
 export const _getPendingValidators = async ({ subnetID, endpoint }) => {
   return request(endpoint + c.platform, body(c.getPendingValidators, { subnetID }))
+}
+
+export const _createUser = async ({ endpoint, params }) => {
+  return request2(endpoint + c.keystore, body(c.createUser, params))
+}
+
+export const _createAddress = async ({ endpoint, params }) => {
+  return request(endpoint + c.avm, body(c.createAddress, params))
+}
+
+export const _createAccount = async ({ endpoint, params }) => {
+  return request2(endpoint + c.platform, body(c.createAccount, params))
+}
+
+export const _listAccounts = async ({ endpoint, params }) => {
+  return request2(endpoint + c.platform, body(c.listAccounts, params))
+}
+
+export const _getAccount = async ({ endpoint, params }) => {
+  return request(endpoint + c.platformBc, body(c.getAccount, params))
+}
+
+export const _issueTx = async ({ endpoint, params }) => {
+  return request(endpoint + c.platform, body(c.issueTx, params))
+}
+
+export const _exportAVA = async ({ endpoint, params }) => {
+  return request(endpoint + c.avm, body(c.exportAVA, params))
+}
+
+export const _importAVA = async ({ endpoint, params }) => {
+  return request(endpoint + c.platform, body(c.importAVA, params))
+}
+
+export const _sign = async ({ endpoint, params }) => {
+  return request(endpoint + c.platform, body(c.sign, params))
+}
+
+export const _getTxStatus = async ({ endpoint, params }) => {
+  return request(endpoint + c.avm, body(c.getTxStatus, params))
+}
+
+export const _getNodeId = async ({ endpoint }) => {
+  return request(endpoint + c.admin, body(c.getNodeID))
+}
+
+export const _addDefaultSubnetValidator = async ({ endpoint, params }) => {
+  return request(endpoint + c.platform, body(c.addDefaultSubnetValidator, params))
 }
