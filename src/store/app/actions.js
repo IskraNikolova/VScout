@@ -55,6 +55,7 @@ import {
   _getAccount,
   _createAccount,
   _createUser,
+  _createAddress,
   _listAccounts,
   _addDefaultSubnetValidator
 } from './../../modules/network'
@@ -307,7 +308,7 @@ async function createAccount ({ dispatch, getters }, { username, password, type 
   }
 }
 
-async function createUser ({ getters }, { username, password }) {
+async function createUser ({ getters }, { username, password, withAddress }) {
   try {
     const params = { username, password }
     const response = await _createUser({
@@ -316,6 +317,18 @@ async function createUser ({ getters }, { username, password }) {
     })
     if (response.data.error) {
       throw new Error(response.data.error.message)
+    }
+
+    if (withAddress) {
+      const res = await _createAddress({
+        endpoint: getters.networkEndpoint,
+        params
+      })
+
+      if (res.data.error) {
+        throw new Error(res.data.error.message)
+      }
+      return res.data.result
     }
 
     return response.data.result
@@ -354,11 +367,16 @@ async function addValidatorToDefaultS ({ getters }, { params, signer }) {
     if (account.balance < params.stakeAmount) {
       throw new Error('Insufficient funds!')
     }
-    const { unsignedTx } = await _addDefaultSubnetValidator({
+
+    const response = await _addDefaultSubnetValidator({
       endpoint: getters.networkEndpoint,
       params
     })
-    return unsignedTx
+    if (response.data.error) {
+      throw new Error(response.data.error.message)
+    }
+
+    return response.data.result.unsignedTx
   } catch (err) {
     throw new Error(err.message)
   }
@@ -367,8 +385,16 @@ async function addValidatorToDefaultS ({ getters }, { params, signer }) {
 async function signTransaction ({ getters }, { transaction, signer, username, password }) {
   try {
     const endpoint = getters.networkEndpoint
-    const tx = await _sign({ endpoint, params: { tx: transaction, signer, username, password } })
-    await _issueTx({ endpoint, params: tx })
+    const response = await _sign({ endpoint, params: { tx: transaction, signer, username, password } })
+    if (response.data.error) {
+      throw new Error(response.data.error.message)
+    }
+
+    const res = await _issueTx({ endpoint, params: response.data.result })
+    if (res.data.error) {
+      throw new Error(res.data.error.message)
+    }
+    return res.data.result.Tx
   } catch (err) {
     throw new Error(err.message)
   }
@@ -383,18 +409,23 @@ async function fundAccount ({ getters }, { amount, username, password }) {
 
     // export AVA
     const params = { to, amount, username, password }
-    const txID = await _exportAVA({ endpoint, params })
+    const response = await _exportAVA({ endpoint, params })
+
+    if (response.data.error) {
+      throw new Error(response.data.error.message)
+    }
+    const txID = response.data.result
 
     // getTxStatus
     let txStat = await _getTxStatus({ endpoint, params: txID })
-    if (!txStat) {
-      throw new Error('Check your balance')
+    if (txStat.data.error) {
+      throw new Error(txStat.data.error.message)
     }
 
     const interval = setInterval(async () => {
-      if (txStat.status !== 'Processing') {
+      if (txStat.data.result.status !== 'Processing') {
         // import
-        const tx = await _importAVA({
+        const r = await _importAVA({
           endpoint,
           params: {
             username,
@@ -403,14 +434,20 @@ async function fundAccount ({ getters }, { amount, username, password }) {
             payerNonce
           }
         })
+        if (r.data.error) {
+          throw new Error(r.data.error.message)
+        }
         // issueTx
-        await _issueTx({ endpoint, params: tx })
+        const res = await _issueTx({ endpoint, params: r.data.result.tx })
+        if (res.data.error) {
+          throw new Error(res.data.error.message)
+        }
         clearInterval(interval)
       }
       txStat = await _getTxStatus({ endpoint, params: txID })
     }, 1000)
   } catch (err) {
-    throw new Error(err)
+    throw new Error(err.message)
   }
 }
 

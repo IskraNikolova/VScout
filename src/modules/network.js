@@ -77,7 +77,7 @@ export const _createUser = async ({ endpoint, params }) => {
 }
 
 export const _createAddress = async ({ endpoint, params }) => {
-  return request(endpoint + c.avm, body(c.createAddress, params))
+  return request2(endpoint + c.avm, body(c.createAddress, params))
 }
 
 export const _createAccount = async ({ endpoint, params }) => {
@@ -93,23 +93,23 @@ export const _getAccount = async ({ endpoint, params }) => {
 }
 
 export const _issueTx = async ({ endpoint, params }) => {
-  return request(endpoint + c.platform, body(c.issueTx, params))
+  return request2(endpoint + c.platform, body(c.issueTx, params))
 }
 
 export const _exportAVA = async ({ endpoint, params }) => {
-  return request(endpoint + c.avm, body(c.exportAVA, params))
+  return request2(endpoint + c.avm, body(c.exportAVA, params))
 }
 
 export const _importAVA = async ({ endpoint, params }) => {
-  return request(endpoint + c.platform, body(c.importAVA, params))
+  return request2(endpoint + c.platform, body(c.importAVA, params))
 }
 
 export const _sign = async ({ endpoint, params }) => {
-  return request(endpoint + c.platform, body(c.sign, params))
+  return request2(endpoint + c.platform, body(c.sign, params))
 }
 
 export const _getTxStatus = async ({ endpoint, params }) => {
-  return request(endpoint + c.avm, body(c.getTxStatus, params))
+  return request2(endpoint + c.avm, body(c.getTxStatus, params))
 }
 
 export const _getNodeId = async ({ endpoint }) => {
@@ -117,5 +117,5 @@ export const _getNodeId = async ({ endpoint }) => {
 }
 
 export const _addDefaultSubnetValidator = async ({ endpoint, params }) => {
-  return request(endpoint + c.platform, body(c.addDefaultSubnetValidator, params))
+  return request2(endpoint + c.platform, body(c.addDefaultSubnetValidator, params))
 }

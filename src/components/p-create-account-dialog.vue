@@ -6,7 +6,7 @@
   >
     <q-card style="min-width: 500px!important;">
       <q-card-section class="row items-center">
-        <div class="text-h7">Create<span class="text-accent">/</span>Select  Platform Account</div>
+        <div class="text-h7">Platform Account</div>
         <q-space />
         <q-btn icon="close" flat round dense @click="onClose" />
       </q-card-section>
@@ -202,15 +202,20 @@ export default {
 
       temp[this.ui.pCreate.type]()
       this.$refs.selectAccount.closeSelectAccounts()
-      if (this.dismissFund) {
-        await this.fundAccount({
-          amount: this.fundAmount,
-          username: this.username,
-          password: this.password
-        })
-        this.dismissFund = false
-      }
       this.closeP()
+      if (this.dismissFund) {
+        try {
+          await this.fundAccount({
+            amount: this.fundAmount,
+            username: this.username,
+            password: this.password
+          })
+          this.dismissFund = false
+          this.closeP()
+        } catch (err) {
+          this.error = err.message
+        }
+      }
     }
   }
 }

@@ -11,7 +11,9 @@
         <q-space />
         <q-btn icon="close" flat round dense @click="close" />
       </q-card-section>
-
+      <div class="text-warning q-pl-md outlined" v-if="error">
+        <q-icon name="report_problem" /> {{ error }}
+      </div>
       <q-card-section class="q-pt-none">
         <q-form
           @submit="onSubmit"
@@ -255,11 +257,13 @@ export default {
       startDate: null,
       endDate: null,
       stakeAmount: null,
-      delegationFeeRate: null
+      delegationFeeRate: null,
+      error: null
     }
   },
   created () {
     this.setInitDates()
+    this.error = null
   },
   methods: {
     ...mapActions({
@@ -280,8 +284,10 @@ export default {
       // todo check for errors
       const nodeID = await this.getNodeId()
       this.nodeID = nodeID
+      this.error = null
     },
     async onSubmit () {
+      this.error = null
       const destination = this.ui.addValidatorDialog.destinationAccount.address
 
       const params = {
@@ -297,7 +303,7 @@ export default {
         const unsignedTx = await this.addValidatorToDef({ params, signer: this.payingAccount })
         this.$refs.signTxDialog.openS({ unsignedTx, signer: this.payingAccount })
       } catch (err) {
-        alert(err.message)
+        this.error = err.message
       }
     },
     onReset () {
@@ -306,6 +312,7 @@ export default {
       this.stakeAmount = null
       this.delegationFeeRate = null
       this.destination = null
+      this.error = null
     }
   }
 }

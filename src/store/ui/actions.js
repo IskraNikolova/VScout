@@ -22,8 +22,8 @@ const openSignTx = ({ commit }, { unsignedTx, signer }) => {
   commit(UPDATE_UI, { signTx: { isOpen: true, unsignedTx, signer } })
 }
 
-const closeSignTx = ({ commit }) => {
-  commit(UPDATE_UI, { signTx: { isOpen: false, unsignedTx: null, signer: null } })
+const closeSignTx = ({ commit }, signedTx) => {
+  commit(UPDATE_UI, { signTx: { isOpen: false, unsignedTx: null, signer: null, signedTx } })
 }
 
 const openPCreate = ({ commit }, { type }) => {

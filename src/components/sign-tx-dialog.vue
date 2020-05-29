@@ -119,19 +119,15 @@ export default {
       closeS: CLOSE_SIGN_TX,
       signTx: SIGN_TX
     }),
-    onClose () {
-      this.error = null
-      this.closeS()
-    },
     async onSubmit () {
       try {
-        this.error = null
-        this.signTx({
+        const signedTx = await this.signTx({
           transaction: this.ui.signTx.unsignedTx,
           signer: this.ui.signTx.signer,
           username: this.username,
           password: this.password
         })
+        this.closeS(signedTx)
       } catch (err) {
         this.error = err.message
       }
