@@ -27,6 +27,7 @@ import {
   GET_ASSETS_BY_BLOCKCHAINS,
   SET_ASSETS_BY_BLOCKCHAINS,
   GET_NODE_ID,
+  SET_NODE_ID,
   GET_ACCOUNT,
   CREATE_ACCOUNT,
   LIST_ACCOUNTS,
@@ -60,6 +61,11 @@ import {
   _addDefaultSubnetValidator
 } from './../../modules/network'
 
+import {
+  _initializeNetwork,
+  _getValidatorById
+} from './../../modules/networkRpc'
+
 import { secBetweenTwoTime, makeMD5 } from './../../utils/commons'
 
 const promises = (dispatch, getters) => [
@@ -71,8 +77,10 @@ const promises = (dispatch, getters) => [
 
 async function initApp ({ dispatch, getters }) {
   // todo refactor this
+  await _initializeNetwork()
   await dispatch(GET_BLOCKCHAINS)
   await dispatch(GET_ASSETS_BY_BLOCKCHAINS)
+  await dispatch(GET_NODE_ID)
   await Promise.all(promises(dispatch, getters))
   setInterval(async () => {
     await Promise.all(promises(dispatch, getters))
@@ -206,14 +214,19 @@ async function getTxsHistory ({ commit, getters }) {
 
 async function getValidators ({ commit, getters }, { subnetID }) {
   try {
-    var { validators } = await _getValidators({
+    let { validators } = await _getValidators({
       subnetID,
       endpoint: getters.networkEndpoint
     })
+    if (!validators) return
+
     validators = validators
       .filter(i => i.endTime >= Date.now() / 1000)
       .sort(compare)
-    const val = map(validators)
+
+    const val = await map(validators)
+    if (!val) return
+
     commit(SET_VALIDATORS, { validators: val })
   } catch (err) {
     console.log(err)
@@ -223,6 +236,7 @@ async function getValidators ({ commit, getters }, { subnetID }) {
 async function getAssetsByBlockchain ({ commit }) {
   try {
     const assetsByChain = await _getAssetsForChain()
+
     commit(SET_ASSETS_BY_BLOCKCHAINS, { assetsByChain })
   } catch (err) {
     console.log(err)
@@ -237,17 +251,17 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
     })
     validators = validators.filter(i => i.endTime >= Date.now() / 1000)
     validators.sort(compare)
-    const val = map(validators)
+    const val = await map(validators)
     commit(SET_PENDING_VALIDATORS, { validators: val })
   } catch (err) {
     console.log(err)
   }
 }
 
-async function getNodeId ({ getters }) {
+async function getNodeId ({ getters, commit }) {
   try {
     const result = await _getNodeId({ endpoint: getters.networkEndpoint })
-    return result.nodeID
+    commit(SET_NODE_ID, { nodeID: result.nodeID })
   } catch (err) {
     console.log(err)
     return null
@@ -451,38 +465,24 @@ async function fundAccount ({ getters }, { amount, username, password }) {
   }
 }
 
-function map (validators) {
-  let index = 1
-  const s = stake(validators)
-  const vals = validators.map(val => {
+async function map (validators) {
+  const vals = Promise.all(validators.map(async (val, i) => {
+    const info = await _getValidatorById(val.id)
     const sa = val.stakeAmount ? val.stakeAmount : val.weight
-    const rank = index++
-    const validator = `${val.id.substr(0, 9)}...`
-    const precent = getPrecent(sa, s)
-    const identity = val.id
-    const stakenAva = parseFloat(sa)
-    const stakeAva = getAvaFromnAva(sa)
-    const stake = stakeAva
-    const startTime = val.startTime
-    const endTime = val.endTime
     const MD5 = makeMD5()
-    const seed = val.id
-    const hash = MD5.hex(seed)
-    const img = 'http://www.gravatar.com/avatar/' + hash + '?d=identicon&s=150'
-    const img2 = 'http://www.gravatar.com/avatar/' + hash + '?d=monsterid&s=150'
+    const hash = MD5.hex(val.id)
     return {
-      rank,
-      validator,
-      precent,
-      identity,
-      stake,
-      stakenAva,
-      startTime,
-      endTime,
-      img,
-      img2
+      rank: i + 1,
+      precent: getPrecent(sa, stake(validators)),
+      validator: val.id,
+      stake: getAvaFromnAva(sa),
+      stakenAva: parseFloat(sa),
+      startTime: val.startTime,
+      endTime: val.endTime,
+      imgHash: hash,
+      info
     }
-  })
+  }))
 
   return vals
 }

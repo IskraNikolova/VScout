@@ -43,7 +43,6 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^6.1.2",
-    "ethereumjs-tx": "^2.1.2",
     "express": "^4.17.1",
     "install": "^0.13.0",
     "jest": "^25.3.0",

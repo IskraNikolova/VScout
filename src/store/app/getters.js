@@ -62,3 +62,7 @@ export function txHKey (state) {
 export function assets (state) {
   return (key) => state.assetsByChain[key]
 }
+
+export function nodeID (state) {
+  return state.nodeID
+}

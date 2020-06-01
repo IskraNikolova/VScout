@@ -107,7 +107,6 @@
         </q-tooltip>
       </div>
     </div>
-
     <stak-item />
     <transactions-item />
     <blockchain-item />
@@ -140,6 +139,7 @@ import TransactionsItem from './../components/transactions-item'
 import {
   GET_VALIDATORS,
   SET_ENDPOINT,
+  GET_NODE_ID,
   SET_ENDPOINTS_MEMORY,
   REMOVE_ENDPOINTS_MEMORY,
   GET_PENDING_VALIDATORS,
@@ -185,11 +185,12 @@ export default {
       switchNet: '#target-el'
     }
   },
-  created () {
+  mounted () {
     this.calculate()
   },
   methods: {
     ...mapActions({
+      getNodeID: GET_NODE_ID,
       getValidators: GET_VALIDATORS,
       getAssets: GET_ASSETS_BY_BLOCKCHAINS,
       getPendingValidators: GET_PENDING_VALIDATORS
@@ -207,18 +208,6 @@ export default {
       this.yearly = (this.stakeAmount * this.percentReward) / 100
       this.monthly = (this.stakeAmount * (this.percentReward / 12)) / 100
       this.weekly = (this.stakeAmount * (this.percentReward / 52)) / 100
-      // const basePercY = 4
-
-      // if (this.stakeTime > 2) {
-      //   //  additional percent reward; calculate 11.11%  bonus devide 52 weeks
-      //   const bonusPercentPerWeek = 0.2136538461538462
-
-      //   this.percentReward = (this.stakeTime * bonusPercentPerWeek) + basePercY
-      //   this.result = (this.stakeAmount * this.percentReward) / 100
-      // } else {
-      //   this.percentReward = basePercY
-      //   this.result = (this.stakeAmount * basePercY) / 100
-      // }
     },
     async onSelectNetwork (blockchain) {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
@@ -247,17 +236,20 @@ export default {
             icon: 'warning'
           })
         },
-        200: () => {
+        200: async () => {
           this.$store.commit(SET_ENDPOINT, { endpoint })
           if (isCustom) {
             this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
             this.customEndpoint = ''
           }
-          this.getValidators({ subnetID: this.currentBlockchain.subnetID })
+          await Promise.all([
+            this.getNodeID(),
+            this.getValidators({ subnetID: this.currentBlockchain.subnetID })
+          ])
         }
       }
       const connection = await testConnection({ endpoint })
-      temp[connection]()
+      await temp[connection]()
     },
     async getValidatorsV (type) {
       const temp = {

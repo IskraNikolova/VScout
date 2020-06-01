@@ -27,7 +27,7 @@
               outlined
               clearable
               label-color="negative"
-              v-model="nodeID"
+              v-model="nodeIDModel"
               label="Your node ID *"
               hint="Validators identify one another by their node IDs"
               lazy-rules
@@ -207,7 +207,8 @@ export default {
     ...mapGetters([
       'ui',
       'currentBlockchain',
-      'networkEndpoint'
+      'networkEndpoint',
+      'nodeID'
     ]),
     destination: {
       get: function () {
@@ -253,7 +254,7 @@ export default {
   },
   data () {
     return {
-      nodeID: null,
+      nodeIDModel: null,
       startDate: null,
       endDate: null,
       stakeAmount: null,
@@ -282,8 +283,8 @@ export default {
     },
     async onGetNodeID () {
       // todo check for errors
-      const nodeID = await this.getNodeId()
-      this.nodeID = nodeID
+      await this.getNodeId()
+      this.nodeIDModel = this.nodeID
       this.error = null
     },
     async onSubmit () {

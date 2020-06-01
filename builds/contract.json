@@ -1,40 +1,17 @@
 [
 	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "id",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "name",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bytes",
-				"name": "avatarUrl",
-				"type": "bytes"
-			},
-			{
-				"internalType": "bytes",
-				"name": "link",
-				"type": "bytes"
-			}
-		],
-		"name": "addValidator",
-		"outputs": [],
+		"inputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
+		"type": "constructor"
 	},
 	{
 		"anonymous": false,
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "bytes32",
+				"internalType": "string",
 				"name": "id",
-				"type": "bytes32"
+				"type": "string"
 			},
 			{
 				"indexed": false,
@@ -55,92 +32,30 @@
 				"type": "bytes"
 			}
 		],
-		"name": "AddValidatorEvent",
+		"name": "SetValidatorInfoEvent",
 		"type": "event"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "bytes32",
-				"name": "id",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "name",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bytes",
-				"name": "avatarUrl",
-				"type": "bytes"
-			},
-			{
-				"internalType": "bytes",
-				"name": "link",
-				"type": "bytes"
+				"internalType": "address",
+				"name": "_admin",
+				"type": "address"
 			}
 		],
-		"name": "updateValidator",
+		"name": "addAdmin",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "bytes32",
-				"name": "id",
-				"type": "bytes32"
-			},
-			{
-				"indexed": false,
-				"internalType": "bytes32",
-				"name": "name",
-				"type": "bytes32"
-			},
-			{
-				"indexed": false,
-				"internalType": "bytes",
-				"name": "avatarUrl",
-				"type": "bytes"
-			},
-			{
-				"indexed": false,
-				"internalType": "bytes",
-				"name": "link",
-				"type": "bytes"
-			}
-		],
-		"name": "UpdateValidatorEvent",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "bytes32",
-				"name": "id",
-				"type": "bytes32"
-			}
-		],
-		"name": "getValidatorById",
+		"inputs": [],
+		"name": "getPermissionCode",
 		"outputs": [
 			{
-				"internalType": "bytes32",
+				"internalType": "uint256",
 				"name": "",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bytes",
-				"name": "",
-				"type": "bytes"
-			},
-			{
-				"internalType": "bytes",
-				"name": "",
-				"type": "bytes"
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -149,9 +64,9 @@
 	{
 		"inputs": [
 			{
-				"internalType": "bytes32",
+				"internalType": "string",
 				"name": "",
-				"type": "bytes32"
+				"type": "string"
 			}
 		],
 		"name": "members",
@@ -173,6 +88,39 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_id",
+				"type": "string"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "_name",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_avatarUrl",
+				"type": "bytes"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_link",
+				"type": "bytes"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_code",
+				"type": "uint256"
+			}
+		],
+		"name": "setValidatorInfo",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]

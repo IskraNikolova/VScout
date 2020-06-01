@@ -18,6 +18,7 @@ import {
   SET_PREVIOUS_24_TXS,
   SET_KEY_TXH,
   SET_TXS_HISTORY,
+  SET_NODE_ID,
   SET_ASSETS_BY_BLOCKCHAINS
 } from './types'
 
@@ -80,6 +81,9 @@ const mutations = {
         return Number(b.currentSupply) - Number(a.currentSupply)
       })
     })
+  },
+  [SET_NODE_ID]: (state, { nodeID }) => {
+    state.nodeID = nodeID
   }
 }
 

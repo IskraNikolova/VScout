@@ -25,30 +25,50 @@ export const testConnection = async ({ endpoint, params = {} }) => {
 }
 
 export const _getLastTx = async () => {
-  const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.getLast)
-  return req.data
+  try {
+    const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.getLast)
+    return req.data
+  } catch (err) {
+    throw new Error(err.message)
+  }
 }
 
 export const _getAssetsForChain = async () => {
-  const req = await axios.get(network.explorerApiBaseUrl + c.listAssests)
-  if (!req.data.assets) return
+  try {
+    const req = await axios.get(network.explorerApiBaseUrl + c.listAssests)
+    if (!req.data.assets) return
 
-  return groupBy(req.data.assets, 'chainID')
+    return groupBy(req.data.assets, 'chainID')
+  } catch (err) {
+    throw new Error(err.message)
+  }
 }
 
 export const _getAggregates = async (s, e) => {
-  const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.aggregates(s, e))
-  return req.data.aggregates
+  try {
+    const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.aggregates(s, e))
+    return req.data.aggregates
+  } catch (err) {
+    throw new Error(err.message)
+  }
 }
 
 export const _getAggregatesWithI = async (s, e, intervalSize) => {
-  const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.aggregatesWInt(s, e, intervalSize))
-  return req.data
+  try {
+    const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.aggregatesWInt(s, e, intervalSize))
+    return req.data
+  } catch (err) {
+    throw new Error(err.message)
+  }
 }
 
 export const request = async (endpoint, body) => {
-  const response = await axios.post(endpoint, body)
-  return response.data.result
+  try {
+    const response = await axios.post(endpoint, body)
+    return response.data.result
+  } catch (err) {
+    throw new Error(err.message)
+  }
 }
 
 export const request2 = async (endpoint, body) => {

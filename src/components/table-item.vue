@@ -1,5 +1,11 @@
 <template>
   <div class="q-mt-md">
+    <div>
+      <q-input v-model="name" label="name"/>
+      <q-input v-model="avatarUrl" label="avatar"/>
+      <q-input v-model="link" label="link"/>
+      <q-btn @click="invokeContract"/>
+    </div>
     <q-table
       :data="curentVal"
       :columns="columns"
@@ -21,7 +27,15 @@
         <add-validator-dialog ref="addValidatorDialog" />
       </template>
       <template slot="top-right">
-        <q-input @focus="true" dark borderless color="accent" stack-label label="Filter validators..." clearable v-model="filter">
+        <q-input
+          @focus="true"
+          dark
+          borderless
+          color="accent"
+          stack-label
+          label="Filter validators..."
+          clearable v-model="filter"
+        >
           <template v-slot:append>
             <q-icon name="search" color="accent" />
           </template>
@@ -30,26 +44,33 @@
       <template v-slot:body="props">
         <q-tr :props="props" auto-width>
           <q-td
-            v-for="col in props.cols"
+            v-for="(col) in props.cols"
             :key="col.name"
             :props="props"
             style="padding: 0px!important;margin:0px!important;"
           >
             <div v-if="col.name === 'validator'" class="row q-pl-md">
               <div :style="'border: solid 2px ' + border + ';border-radius: 50px;'">
-                <q-avatar size="24px" color="grey" class="column-2"><img :src="props.row.img" /></q-avatar>
+                <q-avatar size="24px" color="grey" class="column-2">
+                  <img :src="takeAvatar(props)" />
+                </q-avatar>
               </div>
               <div
                 style="cursor:pointer"
                 class="column q-pl-xl"
-                @click="copyToClipboard(props.row.identity)"
+                @click="onClick(props)"
                 @mouseover="props.expand = true"
                 @mouseleave="props.expand = false">
-                {{ col.value }}
+               {{ getValidatorIdentity(props, col.value) }}
               </div>
             </div>
             <div v-else-if="col.name === 'stake'" class="q-pl-md">
-              <div>{{ col.value }} <small style="color: grey;"> ({{ props.row.stakenAva.toLocaleString() }} nAva)</small></div>
+              <div>
+                {{ col.value }}
+                <small style="color: grey;">
+                ({{ getLocalString(props.row.stakenAva)}} nAva)
+                </small>
+              </div>
               <div><small style="color: grey;">{{ props.row.precent }} %</small></div>
             </div>
             <div v-else-if="col.name === 'precent'">
@@ -58,8 +79,8 @@
                   <q-linear-progress
                     dark
                     size="50px"
-                    :value="cumulativeStake(props.row.rank) / 100"
-                    :buffer="cumulativeStake(props.row.rank) / 100"
+                    :value="getPrecent(props)"
+                    :buffer="getPrecent(props)"
                     color="accent"
                   >
                   </q-linear-progress>
@@ -68,8 +89,8 @@
                   <q-linear-progress
                     dark
                     size="50px"
-                    :value="(cumulativeStake(props.row.rank) - props.row.precent) / 100"
-                    :buffer="(cumulativeStake(props.row.rank) - props.row.precent) / 100"
+                    :value="getProgressPrecent(props)"
+                    :buffer="getProgressPrecent(props)"
                     color="blue-grey-5">
                     <div class="absolute-full flex flex-left text-white q-ml-xs" style="font-size: 12px;margin-top: 10px;">
                       {{cumulativeStake(props.row.rank)}} %
@@ -93,8 +114,8 @@
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
             <details-item
-              v-bind:img="props.row.img2"
-              v-bind:identity="props.row.identity"
+              v-bind:img="getImgMonster(props.row.imgHash)"
+              v-bind:identity="props.row.validator"
               v-bind:startTime="props.row.startTime"
               v-bind:endTime="props.row.endTime"
             />
@@ -107,14 +128,25 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar>
-                  <img :src="props.row.img2">
+                  <img :src="getImgMonster(props.row.imgHash)">
                 </q-avatar>
               </q-item-section>
               <q-item-section>
-                <q-item-label ><small>Rank </small> <span class="text-accent">{{ props.row.rank }}</span></q-item-label>
+                <q-item-label >
+                  <small>Rank </small>
+                  <span class="text-accent">
+                    {{ props.row.rank }}
+                  </span>
+                </q-item-label>
                 <q-item-label>
-                  {{ props.row.identity }}
-                  <small><q-icon @click="copyToClipboard(props.row.identity)" color="accent" name="file_copy"/></small>
+                  {{ props.row.validator }}
+                  <small>
+                    <q-icon
+                      @click="copyToClipboard(props.row.validator)"
+                      color="accent"
+                      name="file_copy"
+                    />
+                  </small>
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -124,20 +156,27 @@
             <q-card-section horizontal>
               <q-card-section class="col-5 q-mb-xl">
                 <div class="q-mb-md">Stake (AVA / nAva)</div>
-                {{ props.row.stake > 1 ? props.row.stake.toLocaleString() : props.row.stake }} <span class="text-accent">$AVA</span>
+                {{ getLocalString(props.row.stake) }}
+                <span class="text-accent">$AVA</span>
                 <br />
-                <small style="color: grey;"> ({{ props.row.stakenAva.toLocaleString() }} nAva)</small>
-              <div class="q-mb-md" ><small style="color: grey;">{{ props.row.precent }} %</small></div>
+                <small style="color: grey;">
+                  ({{ getLocalString(props.row.stakenAva) }} nAva)
+                </small>
+              <div class="q-mb-md" >
+                <small style="color: grey;">{{ props.row.precent }} %</small>
+              </div>
               <q-separator dark class="q-mb-md"/>
               <div class="q-pl-xs">
                 <div >Staked by</div>
-                <div class="text-accent"><small>{{ fromNow(props.row.startTime) }}</small></div>
+                <div class="text-accent">
+                  <small>{{ fromNow(props.row.startTime) }}</small>
+                </div>
               </div>
               </q-card-section>
               <q-separator dark vertical />
               <q-card-section class="col-7">
                <cumulative-stake-chart
-                 v-bind:name="props.row.identity"
+                 v-bind:name="props.row.validator"
                  v-bind:precent="props.row.precent"
                  v-bind:precentAll="cumulativeStake(props.row.rank)"
                 />
@@ -174,7 +213,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { copyToClipboard } from 'quasar'
+import { copyToClipboard, openURL } from 'quasar'
+import { _setValidatorInfo } from './../modules/networkRpc'
 
 import { round } from './../utils/commons'
 import { dateLL, fromNow } from './../modules/time'
@@ -194,6 +234,10 @@ export default {
   },
   data () {
     return {
+      id: '',
+      name: '',
+      avatarUrl: '',
+      link: '',
       curentValidators: [],
       isGrid: false,
       isActive: true,
@@ -234,7 +278,8 @@ export default {
   computed: {
     ...mapGetters([
       'validators',
-      'pendingValidators'
+      'pendingValidators',
+      'nodeID'
     ]),
     curentVal: {
       get: function () {
@@ -243,21 +288,72 @@ export default {
     }
   },
   created () {
+    if (!this.curentVal) return
     this.pagination = {
       rowsPerPage: this.curentVal.length
     }
   },
   methods: {
+    onClick (props) {
+      try {
+        openURL(props.row.info.link)
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    takeAvatar (props) {
+      if (props.row.info.avatarUrl) return props.row.info.avatarUrl
+      return 'http://www.gravatar.com/avatar/' + props.row.imgHash + '?d=identicon&s=150'
+    },
+    getImgMonster (hash) {
+      if (!hash) return
+      return 'http://www.gravatar.com/avatar/' + hash + '?d=monsterid&s=150'
+    },
+    getLocalString (val) {
+      if (!val) return val
+      return val.toLocaleString()
+    },
+    getProgressPrecent (props) {
+      try {
+        const progress = this.cumulativeStake(props.row.rank) - props.row.precent
+        return progress / 100
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    getValidatorIdentity (props, value) {
+      if (props.row.info.name) return props.row.info.name
+      return this.formatId(value)
+    },
+    getPrecent (props) {
+      try {
+        return this.cumulativeStake(props.row.rank) / 100
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    formatId (id) {
+      if (!id) return
+      return id.substr(0, 20) + '...'
+    },
+    async invokeContract () {
+      await _setValidatorInfo({ id: this.id, name: this.name, avatar: this.avatarUrl, link: this.avatarUrl })
+    },
     onAddValidator () {
       this.$refs.addValidatorDialog.open()
     },
     fromNow (s) {
+      if (!s) return
       return fromNow(s)
     },
     copyToClipboard (id) {
+      if (!id) return
+      this.id = id
       copyToClipboard(id)
     },
     onGetValidators (e) {
+      if (!e.target.innerText) return
+
       const temp = {
         active: () => { this.isActive = true },
         pending: () => { this.isActive = false }
@@ -267,6 +363,7 @@ export default {
       this.$emit('getValidators', type)
     },
     startDate (time) {
+      if (!time) return
       return dateLL(time)
     },
     cumulativeStake (index) {

@@ -2,7 +2,8 @@ export default {
   network: {
     endpointUrls: ['https://bootstrap.ava.network:21000/', 'http://127.0.0.1:9650/'],
     explorerApiBaseUrl: 'https://explorerapi.ava.network/',
-    contract: '0x931e859E722bABF2e149B13A4cfD31Bb1B36568e',
+    contract: '0x1927828aAb191F947F7bf7592CE239C8cdBA4e29',
+    address: '0xC5CaD0F03Ab9238964A216A58Ab314A7949C30FB',
     defaultBlockchain: {
       id: '4ktRjsAKxgMr2aEzv9SWmrU7Xk5FniHUrVCX4P1TZSfTLZWFM',
       name: 'X-Chain',

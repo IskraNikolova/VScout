@@ -1,44 +1,42 @@
 import Web3 from 'web3'
-import Tx from 'ethereumjs-tx'
 const abiDecoder = require('abi-decoder')
 import contractAbi from './../../builds/contract.json'
+import config from './config'
+import { Notify } from 'quasar'
 
 import {
-  hexStringToAsciiString,
-  hexStringToUtf8String
+  hexStringToAsciiString
 } from './string-conversion'
-  
 
 let web3
 let contract
 abiDecoder.addABI(contractAbi)
+const addr = config.network.address
 
-export const initializeNetwork = async () => {
-  web3 = new Web3(getProvider({ endpoint: `wss://${store.getters.endpoint.address}` }))
+export const _initializeNetwork = async () => {
+  const ethEnabled = () => {
+    if (window.web3) {
+      web3 = window.web3 = new Web3(window.web3.currentProvider)
+      window.ethereum.enable()
+      window.ethereum.autoRefreshOnNetworkChange = false
+      return true
+    }
+    return false
+  }
+
+  if (!ethEnabled()) {
+    Notify('Please install MetaMask to use this dApp!')
+  }
+
   contract = await new web3.eth.Contract(contractAbi, config.network.contract)
-}
-  
-const getProvider = ({ endpoint }) => {
-  const provider = new Web3.providers.WebsocketProvider(endpoint)
-  provider.on('connect', async () => {
-    console.log('WS Connected')
-  })
-  provider.on('error', e => {
-    console.error('WS Error' + e)
-    web3.setProvider(getProvider({ endpoint }))
-  })
-  provider.on('end', e => {
-    console.error('WS End' + e)
-    web3.setProvider(getProvider({ endpoint }))
-  })
-  return provider
 }
 
 const getEstimatedGas = async ({ data, from }) => {
   try {
-    let gas = await web3.eth.estimateGas({ to: contract, from, data })
+    const gas = await web3.eth.estimateGas({ to: config.network.contract, from, data })
     return gas
   } catch (err) {
+    console.log(err)
     return 500000
   }
 }
@@ -49,29 +47,21 @@ const prepareTransaction = async (method, from) => {
     const estimatedGas = await getEstimatedGas({ data, from })
     const gasPrice = await web3.eth.getGasPrice()
 
-    const transactionCount = await web3.eth.getTransactionCount(from, 'pending')
+    const transactionCount =
+      await web3.eth.getTransactionCount(from, 'pending')
 
     const rawTx = {
-      chainId: config.network.chainId,
+      from,
       nonce: parseInt(transactionCount),
       gasPrice: parseInt(gasPrice),
       gasLimit: parseInt(estimatedGas),
-      to: contract,
+      to: config.network.contract,
       value: 0,
       data: data
     }
-
-    const tx = new Tx(rawTx)
-    tx.sign(getPrivateKeyBuffer())
-
-    return {
-      serializedTransaction: '0x' + tx.serialize().toString('hex'),
-      transactionHash: '0x' + tx.hash().toString('hex')
-    }
+    return rawTx
   } catch (err) {
-    const provider = new Web3.providers.WebsocketProvider(`wss://${store.getters.endpoint.address}`)
-    web3.setProvider(provider)
-    prepareTransaction(method, from)
+    console.log(err)
   }
 }
 
@@ -81,15 +71,14 @@ const prepareTransaction = async (method, from) => {
  * @returns {Promise<string>} transaction hash
  */
 const executeMethod = async (method) => {
-  const { serializedTransaction, transactionHash } = await prepareTransaction(method)
+  const rawTx = await prepareTransaction(method, web3.givenProvider.selectedAddress)
   return new Promise((resolve, reject) => {
-    web3.eth.sendSignedTransaction(serializedTransaction)
+    web3.eth.sendTransaction(rawTx)
       .on('transactionHash', (hash) => {
-        debug('Transaction hash %s', hash)
         resolve(hash)
       })
       .on('confirmation', (confirmationNumber, receipt) => {
-        console.log(transactionHash)
+        console.log(confirmationNumber)
       })
       .on('error', (err) => {
         if (err.message && err.message.includes('insufficient funds')) Notify.create('Insufficient funds')
@@ -101,55 +90,57 @@ const executeMethod = async (method) => {
 
 export const getChatPastEvents = async (eventName, filters = {}) => {
   try {
-    let events = await contract.getPastEvents(eventName, filters)
+    const events = await contract.getPastEvents(eventName, filters)
     return events
   } catch (err) {
     return []
   }
 }
 
-export const getValidatorById = async (id) => {
+export const _getValidatorById = async (id) => {
   if (!id) return
-  
-  let hexId = utf8StringToHex(id)
-  const validator = await contract
-    .methods
-    .getValidatorById(hexId)
-    .call()
 
-  const name = hexStringToUtf8String(validator.name)
-  let avatarUrl = ''
-  let link = ''
+  try {
+    const validator = await contract
+      .methods
+      .members(id)
+      .call()
 
-  if (validator.avatarUrl) {
-    avatarUrl = hexStringToAsciiString(validator.avatarUrl)
-  }
-
-  if (validator.link) {
-    link = hexStringToAsciiString(validator.link)
-  }
-  
     return {
-      id,
-      name,
-      avatarUrl,
-      link
+      name: hexStringToAsciiString(validator.name),
+      avatarUrl: hexStringToAsciiString(validator.avatarUrl),
+      link: hexStringToAsciiString(validator.link)
     }
+  } catch (err) {
+    return false
+  }
+}
+
+export const getPermission = async () => {
+  const result = await contract
+    .methods
+    .getPermissionCode()
+    .call({ from: addr })
+
+  return result
 }
 
 /**
- * Send a validator update to the contract
+ * Send a validator info to the contract
  * @param {Object} params parameters
  * @param {string} params.id
  * @param {string} params.name
  * @param {string} params.avatar
  * @param {string} params.link
  */
-export const updateProfileOnContract = async ({ id, name, avatar, link }) => {
-  let hexId = utf8StringToHex(id)
-  let hexName = utf8StringToHex(name)
-  const method = contract.methods.updateProfile(hexId, hexName, avatar, link)
-  return executeMethod(method, config.network.contract)
+export const _setValidatorInfo = async ({ id, name, avatar, link }) => {
+  const byteName = stringToHex(name)
+  const byteAvatar = stringToHex(avatar)
+  const byteLink = stringToHex(link)
+  const code = await getPermission()
+  console.log(code)
+  const method = contract.methods.setValidatorInfo(id, byteName, byteAvatar, byteLink, code)
+  return executeMethod(method)
 }
 
 export const stringToHex = input => web3.utils.asciiToHex(input)

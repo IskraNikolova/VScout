@@ -177,6 +177,7 @@ export default {
       return this.arr.intervals.map(a => a.transactionCount)
     },
     getLabels () {
+      // todo check for undefined errors
       this.labels = this.arr.intervals.map(a => getChartLabel(a, this.arr.key))
     },
     getVolChartData () {

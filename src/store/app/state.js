@@ -17,6 +17,7 @@ export default function () {
     totalTxsCount: 0,
     prevTotalTxs: 0,
     txsHistory: [],
-    txHKey: 'day'
+    txHKey: 'day',
+    nodeID: ''
   }
 }
