@@ -11,6 +11,7 @@ import {
   GET_TOTAL_TXS,
   SET_TOTAL_TXS,
   SET_PREVIOUS_TOTAL_TXS,
+  INIT_VALIDATORS,
   GET_VALIDATORS,
   SET_VALIDATORS,
   GET_PENDING_VALIDATORS,
@@ -70,22 +71,26 @@ import { fromNow } from './../../modules/time'
 
 import { secBetweenTwoTime, makeMD5, round } from './../../utils/commons'
 
-const promises = (dispatch, getters) => [
-  dispatch(GET_TOTAL_TXS),
-  dispatch(GET_TX_FOR_24_HOURS),
-  dispatch(GET_TXS_HISTORY),
-  dispatch(GET_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID })
-]
-
 async function initApp ({ dispatch, getters }) {
   // todo refactor this
   // await _initializeNetwork()
-  await dispatch(GET_BLOCKCHAINS)
-  await dispatch(GET_ASSETS_BY_BLOCKCHAINS)
-  await dispatch(GET_NODE_ID)
-  await Promise.all(promises(dispatch, getters))
+  await Promise.all([
+    dispatch(GET_BLOCKCHAINS),
+    dispatch(GET_ASSETS_BY_BLOCKCHAINS),
+    dispatch(GET_NODE_ID),
+    dispatch(GET_TOTAL_TXS),
+    dispatch(GET_TX_FOR_24_HOURS),
+    dispatch(GET_TXS_HISTORY),
+    dispatch(GET_PENDING_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID }),
+    dispatch(INIT_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID })
+  ])
   setInterval(async () => {
-    await Promise.all(promises(dispatch, getters))
+    await Promise.all([
+      dispatch(GET_TOTAL_TXS),
+      dispatch(GET_TX_FOR_24_HOURS),
+      dispatch(GET_TXS_HISTORY),
+      dispatch(GET_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID })
+    ])
   }, 4000)
 }
 
@@ -230,6 +235,8 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
       subnetID,
       endpoint: getters.networkEndpoint
     })
+    if (!validators || validators.length === getters.pendingValidators.length) return
+
     validators = validators.filter(i => i.endTime >= Date.now() / 1000)
     validators.sort(compare)
     const val = await map(validators)
@@ -446,33 +453,51 @@ async function fundAccount ({ getters }, { amount, username, password }) {
   }
 }
 
+async function initValidators ({ commit, getters }, { subnetID }) {
+  try {
+    const { validators } = await _getValidators({
+      subnetID,
+      endpoint: getters.networkEndpoint
+    })
+
+    if (!validators) return
+
+    const result = await getVal(validators)
+    commit(SET_VALIDATORS, { validators: result })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 async function getValidators ({ commit, getters }, { subnetID }) {
   try {
-    let { validators } = await _getValidators({
+    const { validators } = await _getValidators({
       subnetID,
       endpoint: getters.networkEndpoint
     })
 
     if (!validators || validators.length === getters.validators.length) return
 
-    validators = validators
-      .filter(i => i.endTime >= Date.now() / 1000)
-      .sort(compare)
-
-    const val = await map(validators)
-
-    const fin = val.map((v, i) => {
-      const currentValidators = val.slice(0, i + 1)
-      const cm = cumulativeStakeFunc(currentValidators)
-      v.cumulativeStake = cm
-      return v
-    })
-    if (!fin) return
-
-    commit(SET_VALIDATORS, { validators: fin })
+    const result = await getVal(validators)
+    commit(SET_VALIDATORS, { validators: result })
   } catch (err) {
     console.log(err)
   }
+}
+
+async function getVal (validators) {
+  validators = validators
+    .filter(i => i.endTime >= Date.now() / 1000)
+    .sort(compare)
+
+  const val = await map(validators)
+
+  return val.map((v, i) => {
+    const currentValidators = val.slice(0, i + 1)
+    const cm = cumulativeStakeFunc(currentValidators)
+    v.cumulativeStake = cm
+    return v
+  })
 }
 
 async function map (validators) {
@@ -557,6 +582,7 @@ export default {
   [FUND_ACCOUNT]: fundAccount,
   [GET_LAST_BLOCK]: getLastBlock,
   [GET_VALIDATORS]: getValidators,
+  [INIT_VALIDATORS]: initValidators,
   [GET_PENDING_VALIDATORS]: getPendingValidators,
   [GET_BLOCKCHAINS]: getBlockchains,
   [GET_BLOCK_TIME]: getBlockTime,
