@@ -5,12 +5,12 @@
     flat
     id="custom-card">
     <div class="row">
-      <div class="col-md-4 col-xs-10">
+      <div class="col-md-3 col-xs-10">
         <div style="font-size: 12px;" class="q-pb-md">BLOCKCHAIN</div>
         <div class="row">
           <div class="text-h6 text-negative q-pb-md">{{ currentBlockchain.name }}</div>
-          <div class="q-pl-xl q-pt-xs">
-            <q-btn-dropdown outline class="text-white" v-if="assets(currentBlockchain.id)" size="md" no-caps label="Smart Digital Assets">
+          <div class="q-pl-md q-pt-xs">
+            <q-btn-dropdown outline class="text-white" v-if="assets(currentBlockchain.id)" size="xs" no-caps label="Smart Digital Assets">
                 <div class="q-pa-md">
                   <small><img src="~assets/coins.svg" id="small-logo">Assets on {{ currentBlockchain.name }}</small>
                   <q-separator />
@@ -30,14 +30,14 @@
             <asset-info-item ref="assetDialog"/>
           </div>
           </div>
-        <div id="f-size12">Blockchain ID <span class="text-negative">{{ currentBlockchain.id }}</span></div>
+        <div id="f-size12">Blockchain ID <div class="text-negative">{{ currentBlockchain.id }}</div></div>
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/blockchain.svg" id="logo">
       </div>
       <div class="col-md-3 col-xs-10">
         <div style="font-size: 12px;" class="q-pb-md">SUBNET ID</div>
-        <div class="text-h7 q-pb-md text-negative" v-if="currentBlockchain.subnetID === '11111111111111111111111111111111LpoYY'">
+        <div class="text-h6 q-pb-md text-negative" v-if="currentBlockchain.subnetID === '11111111111111111111111111111111LpoYY'">
           Default Subnet
         </div>
         <div v-else class="text-negative" style="font-size: 18px;letter-spacing: -2px;margin-bottom: 20px;" >{{ currentBlockchain.subnetID }}</div>
@@ -46,8 +46,9 @@
       <div class="col-1 q-pt-md">
         <img src="~assets/network.svg" id="logo">
       </div>
-      <div class="col-md-2 col-xs-10">
-        <div style="font-size: 12px;" class="q-pb-md">NETWORK CONNECTION</div>
+      <div class="col-md-3 col-xs-10">
+        <div style="font-size: 12px;" class="q-pb-md">NETWORK</div>
+        <small>Connected with</small>
         <div class="text-h7 q-pb-md text-negative" >
           {{ networkEndpoint }}
         </div>
