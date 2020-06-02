@@ -139,7 +139,7 @@ import TransactionsItem from './../components/transactions-item'
 import {
   GET_VALIDATORS,
   SET_ENDPOINT,
-  GET_NODE_ID,
+  SET_NODE_ID,
   SET_ENDPOINTS_MEMORY,
   REMOVE_ENDPOINTS_MEMORY,
   GET_PENDING_VALIDATORS,
@@ -171,6 +171,7 @@ export default {
   },
   data () {
     return {
+      btnNetwork: false,
       stakeAmount: 2000,
       stakeTime: 2,
       result: 0.00,
@@ -190,7 +191,6 @@ export default {
   },
   methods: {
     ...mapActions({
-      getNodeID: GET_NODE_ID,
       getValidators: GET_VALIDATORS,
       getAssets: GET_ASSETS_BY_BLOCKCHAINS,
       getPendingValidators: GET_PENDING_VALIDATORS
@@ -216,40 +216,26 @@ export default {
         this.getValidators({ subnetID: blockchain.subnetID })
       ])
     },
-    async onSelectEndpoint (endpoint, isCustom) {
-      const temp = {
-        'Network Error': () => {
-          this.$q.notify({
-            message: 'Network Error!',
-            color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
-            position: 'top',
-            timeout: 2000,
-            icon: 'warning'
-          })
-        },
-        'Request failed with status code 404': () => {
-          this.$q.notify({
-            message: 'Invalid network address!',
-            color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
-            position: 'top',
-            timeout: 2000,
-            icon: 'warning'
-          })
-        },
-        200: async () => {
+    onSelectEndpoint (endpoint, isCustom) {
+      testConnection({ endpoint })
+        .then((nodeID) => {
           this.$store.commit(SET_ENDPOINT, { endpoint })
+          this.$store.commit(SET_NODE_ID, { nodeID })
           if (isCustom) {
             this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
             this.customEndpoint = ''
           }
-          await Promise.all([
-            this.getNodeID(),
-            this.getValidators({ subnetID: this.currentBlockchain.subnetID })
-          ])
-        }
-      }
-      const connection = await testConnection({ endpoint })
-      await temp[connection]()
+          this.getValidators({ subnetID: this.currentBlockchain.subnetID })
+        })
+        .catch((err) => {
+          this.$q.notify({
+            message: err.message,
+            color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
+            position: 'top',
+            timeout: 2000,
+            icon: 'warning'
+          })
+        })
     },
     async getValidatorsV (type) {
       const temp = {

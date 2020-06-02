@@ -62,11 +62,13 @@ import {
 } from './../../modules/network'
 
 import {
-  _initializeNetwork,
+  // _initializeNetwork,
   _getValidatorById
 } from './../../modules/networkRpc'
 
-import { secBetweenTwoTime, makeMD5 } from './../../utils/commons'
+import { fromNow } from './../../modules/time'
+
+import { secBetweenTwoTime, makeMD5, round } from './../../utils/commons'
 
 const promises = (dispatch, getters) => [
   dispatch(GET_TOTAL_TXS),
@@ -77,7 +79,7 @@ const promises = (dispatch, getters) => [
 
 async function initApp ({ dispatch, getters }) {
   // todo refactor this
-  await _initializeNetwork()
+  // await _initializeNetwork()
   await dispatch(GET_BLOCKCHAINS)
   await dispatch(GET_ASSETS_BY_BLOCKCHAINS)
   await dispatch(GET_NODE_ID)
@@ -207,27 +209,6 @@ async function getTxsHistory ({ commit, getters }) {
     aggregates.label = label
     aggregates.key = getters.txHKey
     commit(SET_TXS_HISTORY, { key: getters.txHKey, txsHistory: aggregates })
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-async function getValidators ({ commit, getters }, { subnetID }) {
-  try {
-    let { validators } = await _getValidators({
-      subnetID,
-      endpoint: getters.networkEndpoint
-    })
-    if (!validators) return
-
-    validators = validators
-      .filter(i => i.endTime >= Date.now() / 1000)
-      .sort(compare)
-
-    const val = await map(validators)
-    if (!val) return
-
-    commit(SET_VALIDATORS, { validators: val })
   } catch (err) {
     console.log(err)
   }
@@ -437,7 +418,8 @@ async function fundAccount ({ getters }, { amount, username, password }) {
     }
 
     const interval = setInterval(async () => {
-      if (txStat.data.result.status !== 'Processing') {
+      if (txStat.data.result.status === 'Accepted') {
+        clearInterval(interval)
         // import
         const r = await _importAVA({
           endpoint,
@@ -452,16 +434,44 @@ async function fundAccount ({ getters }, { amount, username, password }) {
           throw new Error(r.data.error.message)
         }
         // issueTx
-        const res = await _issueTx({ endpoint, params: r.data.result.tx })
+        const res = await _issueTx({ endpoint, params: r.data.result })
         if (res.data.error) {
-          throw new Error(res.data.error.message)
+          console.log(res.data.error.message)
         }
-        clearInterval(interval)
       }
       txStat = await _getTxStatus({ endpoint, params: txID })
     }, 1000)
   } catch (err) {
     throw new Error(err.message)
+  }
+}
+
+async function getValidators ({ commit, getters }, { subnetID }) {
+  try {
+    let { validators } = await _getValidators({
+      subnetID,
+      endpoint: getters.networkEndpoint
+    })
+
+    if (!validators || validators.length === getters.validators.length) return
+
+    validators = validators
+      .filter(i => i.endTime >= Date.now() / 1000)
+      .sort(compare)
+
+    const val = await map(validators)
+
+    const fin = val.map((v, i) => {
+      const currentValidators = val.slice(0, i + 1)
+      const cm = cumulativeStakeFunc(currentValidators)
+      v.cumulativeStake = cm
+      return v
+    })
+    if (!fin) return
+
+    commit(SET_VALIDATORS, { validators: fin })
+  } catch (err) {
+    console.log(err)
   }
 }
 
@@ -471,20 +481,35 @@ async function map (validators) {
     const sa = val.stakeAmount ? val.stakeAmount : val.weight
     const MD5 = makeMD5()
     const hash = MD5.hex(val.id)
+    const avatar = info.avatarUrl ? info.avatarUrl : `http://www.gravatar.com/avatar/${hash}?d=identicon&s=150`
+    const monster = `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150`
+    const name = info.name ? info.name : val.id.substr(0, 20) + '...'
+
     return {
       rank: i + 1,
+      address: val.address,
       precent: getPrecent(sa, stake(validators)),
       validator: val.id,
       stake: getAvaFromnAva(sa),
       stakenAva: parseFloat(sa),
       startTime: val.startTime,
       endTime: val.endTime,
-      imgHash: hash,
-      info
+      fromNowST: fromNow(val.startTime),
+      avatar,
+      monster,
+      name,
+      link: info.link
     }
   }))
 
   return vals
+}
+
+function cumulativeStakeFunc (currentValidators) {
+  return currentValidators.reduce((result, item) => {
+    result += parseFloat(item.precent)
+    return round(result, 1000)
+  }, 0)
 }
 
 function getPrecent (v, s) {

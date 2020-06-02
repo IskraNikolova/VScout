@@ -46,7 +46,8 @@
           </div>
           <asset-info-item ref="assetDialog"/>
         </div>
-        <div class="q-pt-xs"><span>Total </span><span class="text-negative">{{ assets(currentBlockchain.id) ? assets(currentBlockchain.id).length : 'N/A'}}</span> </div>
+        <!--<div class="q-pt-xs"><span>Total </span><span class="text-negative">{{ assets(currentBlockchain.id) ? assets(currentBlockchain.id).length : 'N/A'}}</span> </div>-->
+        <div id="f-size12">Node ID <div class="text-negative">{{ nodeID }}</div></div>
       </div>
     </div>
   </q-card>
@@ -66,7 +67,8 @@ export default {
     ...mapGetters([
       'currentBlockchain',
       'networkEndpoint',
-      'assets'
+      'assets',
+      'nodeID'
     ])
   },
   methods: {
