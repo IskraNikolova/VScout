@@ -1,21 +1,43 @@
 <template>
   <q-card
-    class="q-mt-md q-pa-md q-pl-xl q-pr-xl dark-background"
+    class="q-mt-md q-pt-md q-pb-md q-pl-xl dark-background"
     dark
     flat
     id="custom-card">
     <div class="row">
       <div class="col-md-4 col-xs-10">
         <div style="font-size: 12px;" class="q-pb-md">BLOCKCHAIN</div>
-        <div class="text-h6 text-negative q-pb-md">{{ currentBlockchain.name }}</div>
+        <div class="row">
+          <div class="text-h6 text-negative q-pb-md">{{ currentBlockchain.name }}</div>
+          <div class="q-pl-xl q-pt-xs">
+            <q-btn-dropdown outline class="text-white" v-if="assets(currentBlockchain.id)" size="md" no-caps label="Smart Digital Assets">
+                <div class="q-pa-md">
+                  <small><img src="~assets/coins.svg" id="small-logo">Assets on {{ currentBlockchain.name }}</small>
+                  <q-separator />
+                </div>
+                <q-list v-for="asset in assets(currentBlockchain.id)" v-bind:key="asset.id">
+                  <q-item clickable v-close-popup @click="onOpenAssetInfo(asset)">
+                    <q-item-section><span>{{ asset.symbol }}</span></q-item-section>
+                    <q-item-section side>
+                      <q-icon size="xs" name="info" color="grey" />
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+            </q-btn-dropdown>
+            <div v-else class="text-h6 q-pb-md text-negative" >
+              None
+            </div>
+            <asset-info-item ref="assetDialog"/>
+          </div>
+          </div>
         <div id="f-size12">Blockchain ID <span class="text-negative">{{ currentBlockchain.id }}</span></div>
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/blockchain.svg" id="logo">
       </div>
-      <div class="col-md-4 col-xs-10">
+      <div class="col-md-3 col-xs-10">
         <div style="font-size: 12px;" class="q-pb-md">SUBNET ID</div>
-        <div class="text-h6 q-pb-md text-negative" v-if="currentBlockchain.subnetID === '11111111111111111111111111111111LpoYY'">
+        <div class="text-h7 q-pb-md text-negative" v-if="currentBlockchain.subnetID === '11111111111111111111111111111111LpoYY'">
           Default Subnet
         </div>
         <div v-else class="text-negative" style="font-size: 18px;letter-spacing: -2px;margin-bottom: 20px;" >{{ currentBlockchain.subnetID }}</div>
@@ -25,29 +47,14 @@
         <img src="~assets/network.svg" id="logo">
       </div>
       <div class="col-md-2 col-xs-10">
-        <div style="font-size: 12px;" class="q-pb-md">SMART DIGITAL ASSETS</div>
-        <div class="q-pb-md">
-          <q-btn-dropdown outline class="text-negative" v-if="assets(currentBlockchain.id)"  no-caps label="Built on chain">
-              <div class="q-pa-md">
-                <small><img src="~assets/coins.svg" id="small-logo">Assets on {{ currentBlockchain.name }}</small>
-                <q-separator />
-              </div>
-              <q-list v-for="asset in assets(currentBlockchain.id)" v-bind:key="asset.id">
-                <q-item clickable v-close-popup @click="onOpenAssetInfo(asset)">
-                  <q-item-section><span>{{ asset.symbol }}</span></q-item-section>
-                  <q-item-section side>
-                    <q-icon size="xs" name="info" color="grey" />
-                  </q-item-section>
-                </q-item>
-              </q-list>
-          </q-btn-dropdown>
-          <div v-else class="text-h6 q-pb-md text-negative" >
-            None
-          </div>
-          <asset-info-item ref="assetDialog"/>
+        <div style="font-size: 12px;" class="q-pb-md">NETWORK CONNECTION</div>
+        <div class="text-h7 q-pb-md text-negative" >
+          {{ networkEndpoint }}
         </div>
-        <!--<div class="q-pt-xs"><span>Total </span><span class="text-negative">{{ assets(currentBlockchain.id) ? assets(currentBlockchain.id).length : 'N/A'}}</span> </div>-->
         <div id="f-size12">Node ID <div class="text-negative">{{ nodeID }}</div></div>
+      </div>
+      <div class="col-1 q-pt-md">
+        <img src="~assets/node-orange.png" id="logo">
       </div>
     </div>
   </q-card>
