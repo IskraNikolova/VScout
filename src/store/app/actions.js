@@ -6,8 +6,6 @@ import {
   SIGN_TX,
   CREATE_USER,
   FUND_ACCOUNT,
-  GET_LAST_BLOCK,
-  SET_BLOCK,
   GET_TOTAL_TXS,
   SET_TOTAL_TXS,
   SET_PREVIOUS_TOTAL_TXS,
@@ -18,8 +16,6 @@ import {
   SET_PENDING_VALIDATORS,
   GET_BLOCKCHAINS,
   SET_BLOCKCHAINS,
-  SET_BLOCK_TIME,
-  GET_BLOCK_TIME,
   GET_TX_FOR_24_HOURS,
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
@@ -40,7 +36,6 @@ import {
 } from './../ui/types'
 
 import {
-  _getBlock,
   _sign,
   _issueTx,
   _exportAVA,
@@ -69,10 +64,9 @@ import {
 
 import { fromNow } from './../../modules/time'
 
-import { secBetweenTwoTime, makeMD5, round } from './../../utils/commons'
+import { makeMD5, round } from './../../utils/commons'
 
 async function initApp ({ dispatch, getters }) {
-  // todo refactor this
   // await _initializeNetwork()
   await Promise.all([
     dispatch(GET_BLOCKCHAINS),
@@ -89,33 +83,10 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_TOTAL_TXS),
       dispatch(GET_TX_FOR_24_HOURS),
       dispatch(GET_TXS_HISTORY),
+      dispatch(GET_PENDING_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID }),
       dispatch(GET_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID })
     ])
-  }, 4000)
-}
-
-async function getLastBlock ({ commit, getters }) {
-  try {
-    const lastBlock = await _getBlock({ endpoint: getters.networkEndpoint })
-    commit(SET_BLOCK, { lastBlock })
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-async function getBlockTime ({ commit, getters }) {
-  try {
-    const preLastBlock = await _getBlock({
-      id: getters.lastBlock.parentID,
-      endpoint: getters.networkEndpoint
-    })
-    const blockTime = secBetweenTwoTime(
-      getters.lastBlock.timestamp,
-      preLastBlock.timestamp)
-    commit(SET_BLOCK_TIME, { blockTime })
-  } catch (err) {
-    console.log(err)
-  }
+  }, 6000)
 }
 
 async function getBlockchains ({ commit, getters }) {
@@ -402,10 +373,8 @@ async function signTransaction ({ getters }, { transaction, signer, username, pa
   }
 }
 
-async function fundAccount ({ getters }, { amount, username, password }) {
+async function fundAccount ({ getters }, { amount, username, password, to, nonce }) {
   try {
-    const to = getters.ui.addValidatorDialog.payingAccount.address
-    const nonce = Number(getters.ui.addValidatorDialog.payingAccount.nonce)
     const payerNonce = nonce + 1
     const endpoint = getters.networkEndpoint
 
@@ -476,7 +445,7 @@ async function getValidators ({ commit, getters }, { subnetID }) {
       endpoint: getters.networkEndpoint
     })
 
-    if (!validators || validators.length === getters.validators.length) return
+    // if (!validators || validators.length === getters.validators.length) return
 
     const result = await getVal(validators)
     commit(SET_VALIDATORS, { validators: result })
@@ -580,12 +549,10 @@ export default {
   [INIT_APP]: initApp,
   [SIGN_TX]: signTransaction,
   [FUND_ACCOUNT]: fundAccount,
-  [GET_LAST_BLOCK]: getLastBlock,
   [GET_VALIDATORS]: getValidators,
   [INIT_VALIDATORS]: initValidators,
   [GET_PENDING_VALIDATORS]: getPendingValidators,
   [GET_BLOCKCHAINS]: getBlockchains,
-  [GET_BLOCK_TIME]: getBlockTime,
   [GET_TX_FOR_24_HOURS]: getTxsFor24H,
   [GET_TOTAL_TXS]: getTotalTXs,
   [GET_TXS_HISTORY]: getTxsHistory,

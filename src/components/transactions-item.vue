@@ -132,9 +132,12 @@ export default {
       getTxHistory: GET_TXS_HISTORY
     }),
     async initCharts () {
-      await this.getData()
-      this.getVolumeChart()
-      this.getTpsChart()
+      try {
+        await this.getData()
+        this.getVolumeChart()
+        this.getTpsChart()
+      } catch (err) {
+      }
     },
     async onGetData () {
       const txHKey = this.interval
@@ -154,8 +157,11 @@ export default {
     async updateCharts () {
       this.fastData()
       this.update()
-      await this.getData()
-      this.update()
+      try {
+        await this.getData()
+        this.update()
+      } catch (err) {
+      }
     },
     update () {
       this.chartVol.data = this.getVolChartData()

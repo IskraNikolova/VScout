@@ -1,0 +1,257 @@
+<template>
+  <q-dialog
+    v-model="ui.addIdentification.isOpen"
+    persistent
+    transition-show="slide-up"
+    transition-hide="slide-down"
+  >
+    <q-card style="min-width: 90%!important; min-height: 595px;padding-left: 8%;" class="q-pl-xl q-pt-md q-pb-md">
+      <q-card-section class="row items-center">
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar>
+              <img src="~assets/id.svg" />
+            </q-avatar>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-h6">Add Identification To Your Validator</q-item-label>
+            <q-item-label caption>
+              You can add some bio for your validator (node).
+              You must provide your username and password to authenticate it.
+             <br/>Data will be store to contract, for this reason, to make this recording you must have a MetaMask installed
+              and a C-Chain address <a href="https://medium.com/avalabs/deploy-a-smart-contract-on-ava-using-remix-and-metamask-98933a93f436">here</a> <br />with a minimum amount of C-AVA for contract write.
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-btn icon="close" flat round dense @click="onClose" />
+      </q-card-section>
+      <div class="text-warning q-pl-md outlined" v-if="error">
+        <q-icon name="report_problem" /> {{ error }}
+      </div>
+      <q-card-section>
+        <q-form
+          @submit="onSubmit"
+          @reset="onReset"
+          class="q-gutter-md"
+        >
+          <div class="row">
+            <div class="col-md-5 col-12 q-mr-xl q-pt-md q-pb-md">
+            <q-input
+              class="q-mb-md"
+              color="accent"
+              outlined
+              clearable
+              label-color="negative"
+              v-model="nodeIDModel"
+              label="Your node ID *"
+              hint="Enter validator ID or load it from '+' button if you use it for network connection."
+              lazy-rules
+              :rules="[ val => val && val.length > 0 || 'Please type your node ID!']"
+            >
+              <template v-if="networkEndpoint.includes('http://127.0.0.1:')" v-slot:append>
+                <q-btn round dense @click="onGetNodeID" flat no-caps color="accent" icon="add"/>
+              </template>
+            </q-input>
+            <q-input
+              color="accent"
+              class="q-mb-xs"
+              outlined
+              clearable
+              label-color="negative"
+              v-model="name"
+              label="Validator Name"
+              hint="Validator's Name will be show on validator's list instead validator ID."
+            />
+            <q-input
+              color="accent"
+              class="q-mb-xs"
+              outlined
+              clearable
+              label-color="negative"
+              v-model="avatar"
+              label="Avatar Url"
+              hint="For avatar you must use url."
+            />
+            <q-input
+              color="accent"
+              class="q-mb-xs"
+              outlined
+              clearable
+              label-color="negative"
+              v-model="link"
+              label="Link"
+              hint="Your business link or other."
+            />
+          </div>
+          <q-separator vertical class="q-mr-xl" />
+          <div class="col-md-5 col-12 q-pr-xl">
+            <q-card-section class="row">
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="text-h6">Proof Of Authentication</q-item-label>
+                  <q-item-label v-if="!ui.addIdentification.isAuth" caption>
+                    First add your node ID. Also need to connect to your local node!
+                  </q-item-label>
+                  <q-item-label v-else caption class="text-positive">
+                    Success!
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-card-section>
+            <div v-if="!ui.addIdentification.isAuth">
+              <q-input
+                readonly
+                color="accent"
+                class="q-mb-xs"
+                outlined
+                label-color="negative"
+                v-model="address"
+                label="P-Chain address "
+                hint="The account providing the staked AVA. Are You?"
+              />
+              <q-input
+                color="accent"
+                class="q-mb-xs"
+                outlined
+                clearable
+                label-color="negative"
+                v-model="username"
+                label="Username *"
+                lazy-rules
+                @focus="error=null"
+                :rules="[ val => val && val.length > 0 || 'Please type your username!']"
+              />
+              <q-input
+                color="accent"
+                class="q-mb-xs"
+                outlined
+                clearable
+                type="password"
+                label-color="negative"
+                v-model="password"
+                @focus="error=null"
+                label="Password *"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 || 'Please type your password!']"
+              />
+              <div class="row q-pr-xl">
+                <q-space />
+                <q-btn label="Authorization"  @click="onAuth()" size="10px" color="accent"/>
+                <q-btn label="Cancel" flat @click="onClose()" size="10px" color="accent"/>
+              </div>
+            </div>
+            <div v-else>
+              <q-img basic src="~assets/success.png" id="logo"/>
+            </div>
+          </div>
+        </div>
+        <div class="row q-pr-xl" v-if="ui.addIdentification.isAuth">
+          <q-space />
+          <q-btn label="Add To Contract" type="submit" size="10px" color="accent"/>
+          <q-btn size="md" label="Reset" type="reset" color="grey" flat class="q-ml-sm" />
+        </div>
+        </q-form>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+</template>
+
+<script>
+import { mapActions, mapGetters } from 'vuex'
+
+import { _setValidatorInfo } from './../modules/networkRpc'
+
+import {
+  GET_NODE_ID,
+  LIST_ACCOUNTS
+} from './../store/app/types'
+
+import {
+  UPDATE_UI,
+  OPEN_ADD_IDENTIFICATION,
+  CLOSE_ADD_IDENTIFICATION
+} from './../store/ui/types'
+
+export default {
+  name: 'AddIdentificationDialog',
+  data () {
+    return {
+      username: null,
+      password: null,
+      name: null,
+      avatar: null,
+      link: null,
+      nodeIDModel: null,
+      error: null
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'ui',
+      'nodeID',
+      'networkEndpoint',
+      'validatorById'
+    ]),
+    address: function () {
+      const validator = this.validatorById(this.nodeIDModel)
+      if (!validator) return
+      return validator.address
+    }
+  },
+  methods: {
+    ...mapActions({
+      openAddId: OPEN_ADD_IDENTIFICATION,
+      closeAddId: CLOSE_ADD_IDENTIFICATION,
+      listAccounts: LIST_ACCOUNTS,
+      getNodeId: GET_NODE_ID
+    }),
+    onClose () {
+      this.closeAddId()
+    },
+    async onAuth () {
+      try {
+        const res = await this.listAccounts({
+          username: this.username,
+          password: this.password
+        })
+        if (!res) return
+        const accounts = res.accounts
+        const isAuth = accounts.find(a => a.address === this.address)
+        this.$store.commit(UPDATE_UI, { addIdentification: { isAuth } })
+      } catch (err) {
+        this.err = err.message
+      }
+    },
+    async onSubmit () {
+      await _setValidatorInfo({
+        id: this.nodeIDModel,
+        name: this.name,
+        avatar: this.avatar,
+        link: this.link
+      })
+    },
+    onGetNodeID () {
+      this.nodeIDModel = this.nodeID
+      this.error = null
+    },
+    onReset () {
+      this.name = null
+      this.link = null
+      this.avatar = null
+      this.error = null
+    }
+  }
+}
+</script>
+<style scoped>
+ #logo-s {
+  width: 28vw;
+  max-width: 28px;
+ }
+ #logo {
+  width: 200vw;
+  max-width: 200px;
+  margin-left: 20%;
+  margin-right: 20%;
+ }
+</style>

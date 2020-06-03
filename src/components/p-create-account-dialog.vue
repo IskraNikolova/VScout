@@ -156,8 +156,11 @@ export default {
           password: this.password,
           type: this.ui.pCreate.type
         })
+
         if (this.dismissFund) {
           await this.fundAccount({
+            to: this.ui.addValidatorDialog.payingAccount.address,
+            nonce: Number(this.ui.addValidatorDialog.payingAccount.nonce),
             amount: this.fundAmount,
             username: this.username,
             password: this.password
@@ -206,6 +209,8 @@ export default {
       if (this.dismissFund) {
         try {
           await this.fundAccount({
+            to: this.ui.addValidatorDialog.payingAccount.address,
+            nonce: Number(this.ui.addValidatorDialog.payingAccount.nonce),
             amount: this.fundAmount,
             username: this.username,
             password: this.password

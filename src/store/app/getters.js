@@ -2,6 +2,10 @@ export function validators (state) {
   return state.validators
 }
 
+export function validatorById (state) {
+  return (id) => state.validators.find(val => val.validator === id)
+}
+
 export function pendingValidators (state) {
   return state.pendingValidators
 }

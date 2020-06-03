@@ -1,11 +1,5 @@
 <template>
   <div class="q-mt-md">
-    <!--<div>
-      <q-input v-model="name" label="name"/>
-      <q-input v-model="avatarUrl" label="avatar"/>
-      <q-input v-model="link" label="link"/>
-      <q-btn @click="invokeContract"/>
-    </div>-->
     <q-table
       :data="curentVal"
       :columns="columns"
@@ -23,8 +17,10 @@
         <q-btn size="xs" color="white" flat icon="reorder" @click="isGrid=false"/>
         <q-btn size="xs" color="white" flat label="Active" @click.native="onGetValidators"/>
         <q-btn size="xs" color="white" flat label="Pending" @click.native="onGetValidators"/>
-        <!--<q-btn size="xs" outline color="white" label="Add Validator" icon="add" @click.native="onAddValidator"/>-->
-        <!--<add-validator-dialog ref="addValidatorDialog" />-->
+        <q-btn size="xs" outline color="white" label="Add Validator" icon="add" @click.native="onAddValidator" class="q-mr-md"/>
+        <add-validator-dialog ref="addValidatorDialog" />
+        <!--<q-btn size="xs" outline color="white" label="Add Identification" icon="img:statics/id.png" @click.native="onAddIdentification" />
+        <add-identification-dialog ref="addIdentificationRef" />-->
       </template>
       <template slot="top-right">
         <q-input
@@ -215,12 +211,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import { copyToClipboard, openURL } from 'quasar'
-import { _setValidatorInfo } from './../modules/networkRpc'
 
 import { dateLL } from './../modules/time'
 
 import DetailsItem from './details-item'
-// import AddValidatorDialog from './add-validator-dialog'
+// import AddIdentificationDialog from './add-identification-dialog'
+import AddValidatorDialog from './add-validator-dialog'
 import CumulativeStakeChart from './cumulative-stake-chart'
 import ProgressBarValidateSession from './progress-bar-validatе-session'
 
@@ -228,7 +224,8 @@ export default {
   name: 'TableItem',
   components: {
     DetailsItem,
-    // AddValidatorDialog,
+    // AddIdentificationDialog,
+    AddValidatorDialog,
     CumulativeStakeChart,
     ProgressBarValidateSession
   },
@@ -260,7 +257,7 @@ export default {
           name: 'validator',
           align: 'left',
           label: 'VALIDATOR',
-          field: 'validator'
+          field: 'name'
         },
         {
           name: 'stake',
@@ -296,13 +293,6 @@ export default {
     }
   },
   methods: {
-    isLocalNode () {
-      if (this.networkEndpoint.startsWith('http://localhost' ||
-      this.networkEndpoint.startsWith('http://127.0.0.1'))) {
-        return true
-      }
-      return false
-    },
     onClick (props) {
       if (!props.row.link) return
       try {
@@ -315,16 +305,11 @@ export default {
       if (!val) return val
       return val.toLocaleString()
     },
-    async invokeContract () {
-      await _setValidatorInfo({
-        id: this.id,
-        name: this.name,
-        avatar: this.avatarUrl,
-        link: this.avatarUrl
-      })
-    },
     onAddValidator () {
       this.$refs.addValidatorDialog.open()
+    },
+    onAddIdentification () {
+      this.$refs.addIdentificationRef.openAddId()
     },
     copyToClipboard (id) {
       if (!id) return

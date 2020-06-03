@@ -308,7 +308,7 @@ export default {
       }
     },
     onReset () {
-      this.nodeID = null
+      this.nodeIDModel = null
       this.setInitDates()
       this.stakeAmount = null
       this.delegationFeeRate = null
