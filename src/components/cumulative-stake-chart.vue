@@ -33,11 +33,13 @@ export default {
   },
   mounted () {
     const ctx = document.getElementById(`${this.name}`).getContext('2d')
+    let percent = this.precentAll
+    if (!percent) percent = 0
     this.chart = new Chart(ctx, {
       type: 'pie',
       data: {
         datasets: [{
-          data: [Math.round(this.precentAll - this.precent, 2), Math.round(this.precent, 2), Math.round(100 - (this.precentAll), 2)],
+          data: [Math.round(percent - this.precent, 2), Math.round(this.precent, 2), Math.round(100 - (percent), 2)],
           backgroundColor: ['#677b87', '#87C5D6', 'black'],
           borderColor: ['#677b87', '#87C5D6', 'black']
         }]

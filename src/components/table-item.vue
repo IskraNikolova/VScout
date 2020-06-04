@@ -149,7 +149,7 @@
             <q-card-section horizontal>
               <q-card-section class="col-5 q-mb-xl">
                 <div class="q-mb-md">Stake (AVA / nAva)</div>
-                {{ getLocalString(props.row.stake) }}
+                {{ props.row.stake > 1 ? getLocalString(props.row.stake) : props.row.stake }}
                 <span class="text-accent">$AVA</span>
                 <br />
                 <small style="color: grey;">
@@ -171,7 +171,7 @@
                <cumulative-stake-chart
                  v-bind:name="props.row.validator"
                  v-bind:precent="props.row.precent"
-                 v-bind:precentAll="props.row.cumulativeStake"
+                 v-bind:precentAll="props.row.cumulativeStake ? props.row.cumulativeStake : NaN"
                 />
               </q-card-section>
 
@@ -308,8 +308,9 @@ export default {
 
       copyToClipboard(id)
       this.$q.notify({
-        message: 'Copied to clipboard',
-        color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
+        message: 'Copied to clipboard!',
+        color: 'white',
+        textColor: 'black',
         position: 'center',
         timeout: 1000
       })
