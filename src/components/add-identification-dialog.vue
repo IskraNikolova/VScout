@@ -14,7 +14,7 @@
             </q-avatar>
           </q-item-section>
           <q-item-section>
-            <q-item-label class="text-h6">Add Identification To Your Validator</q-item-label>
+            <q-item-label class="text-h6">Add/Update Identification For Your Validator</q-item-label>
             <q-item-label caption>
               You can add some bio for your validator (node).
               You must provide your username and password to authenticate it.
@@ -27,6 +27,9 @@
       </q-card-section>
       <div class="text-warning q-pl-md outlined" v-if="error">
         <q-icon name="report_problem" /> {{ error }}
+      </div>
+      <div class="text-positive q-pl-md outlined" v-if="notify">
+        {{ notify }}
       </div>
       <q-card-section>
         <q-form
@@ -61,6 +64,7 @@
               v-model="name"
               label="Validator Name"
               hint="Validator's Name will be show on validator's list instead validator ID."
+              :error="validateData.errors.name"
             />
             <q-input
               color="accent"
@@ -71,6 +75,7 @@
               v-model="avatar"
               label="Avatar Url"
               hint="For avatar you must use url."
+              :error="validateData.errors.avatar"
             />
             <q-input
               color="accent"
@@ -81,6 +86,7 @@
               v-model="link"
               label="Link"
               hint="Your business link or other."
+              :error="validateData.errors.link"
             />
           </div>
           <q-separator vertical class="q-mr-xl" />
@@ -158,6 +164,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import DOMPurify from 'dompurify'
 
 import { _setValidatorInfo } from './../modules/networkRpc'
 
@@ -182,7 +189,8 @@ export default {
       avatar: null,
       link: null,
       nodeIDModel: null,
-      error: null
+      error: null,
+      notify: null
     }
   },
   computed: {
@@ -196,6 +204,17 @@ export default {
       const validator = this.validatorById(this.nodeIDModel)
       if (!validator) return
       return validator.address
+    },
+    validateData () {
+      const inputAvatar = `<img src="${this.avatar}">`
+      const inputLink = `<a href="${this.link}">`
+      return {
+        errors: {
+          name: DOMPurify.sanitize(this.name) !== this.name,
+          avatar: DOMPurify.sanitize(inputAvatar) !== inputAvatar,
+          link: DOMPurify.sanitize(inputLink) !== inputLink
+        }
+      }
     }
   },
   methods: {
@@ -210,25 +229,36 @@ export default {
     },
     async onAuth () {
       try {
-        const res = await this.listAccounts({
-          username: this.username,
-          password: this.password
-        })
-        if (!res) return
-        const accounts = res.accounts
-        const isAuth = accounts.find(a => a.address === this.address)
+        // const res = await this.listAccounts({
+        //   username: this.username,
+        //   password: this.password
+        // })
+        // if (!res) return
+        // const accounts = res.accounts
+        const isAuth = true // accounts.find(a => a.address === this.address)
         this.$store.commit(UPDATE_UI, { addIdentification: { isAuth } })
       } catch (err) {
         this.err = err.message
       }
     },
     async onSubmit () {
-      await _setValidatorInfo({
-        id: this.nodeIDModel,
-        name: this.name,
-        avatar: this.avatar,
-        link: this.link
-      })
+      try {
+        const txHash = await _setValidatorInfo({
+          id: this.nodeIDModel,
+          name: this.name,
+          avatar: this.avatar,
+          link: this.link
+        })
+        this.$q.notify({
+          message: `Transaction hash is ${txHash}.Your transaction is being broadcasted to the blockchain! Please hold on!`,
+          color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
+          position: 'center',
+          timeout: 3000
+        })
+        this.closeAddId()
+      } catch (err) {
+        this.err = err.message
+      }
     },
     onGetNodeID () {
       this.nodeIDModel = this.nodeID
@@ -239,6 +269,7 @@ export default {
       this.link = null
       this.avatar = null
       this.error = null
+      this.notify = null
     }
   }
 }

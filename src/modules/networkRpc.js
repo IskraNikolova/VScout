@@ -8,7 +8,7 @@ import {
   hexStringToAsciiString
 } from './string-conversion'
 
-let web3
+// let web3
 let contract
 abiDecoder.addABI(contractAbi)
 const addr = config.network.address
@@ -16,7 +16,7 @@ const addr = config.network.address
 export const _initializeNetwork = async () => {
   const ethEnabled = () => {
     if (window.web3) {
-      web3 = window.web3 = new Web3(window.web3.currentProvider)
+      window.web3 = new Web3(window.web3.currentProvider)
       window.ethereum.enable()
       window.ethereum.autoRefreshOnNetworkChange = false
       return true
@@ -28,12 +28,30 @@ export const _initializeNetwork = async () => {
     Notify('Please install MetaMask to use this dApp!')
   }
 
-  contract = await new web3.eth.Contract(contractAbi, config.network.contract)
+  // todo when C-Chain is available
+  // web3 = new Web3(getProvider({ endpoint: `wss://${config.network.endpointCChain}` }))
+
+  contract = await new window.web3.eth.Contract(contractAbi, config.network.contract)
 }
+
+// const getProvider = ({ endpoint }) => {
+//   const provider = new Web3.providers.WebsocketProvider(endpoint)
+//   provider.on('connect', async () => {
+//     console.log('WS Connected')
+//   })
+//   provider.on('error', e => {
+//     console.error('WS Error' + e)
+//     web3.setProvider(getProvider({ endpoint }))
+//   })
+//   provider.on('end', e => {
+//     console.error('WS End' + e)
+//   })
+//   return provider
+// }
 
 const getEstimatedGas = async ({ data, from }) => {
   try {
-    const gas = await web3.eth.estimateGas({ to: config.network.contract, from, data })
+    const gas = await window.web3.eth.estimateGas({ to: config.network.contract, from, data })
     return gas
   } catch (err) {
     console.log(err)
@@ -45,10 +63,10 @@ const prepareTransaction = async (method, from) => {
   try {
     const data = method.encodeABI()
     const estimatedGas = await getEstimatedGas({ data, from })
-    const gasPrice = await web3.eth.getGasPrice()
+    const gasPrice = await window.web3.eth.getGasPrice()
 
     const transactionCount =
-      await web3.eth.getTransactionCount(from, 'pending')
+      await window.web3.eth.getTransactionCount(from, 'pending')
 
     const rawTx = {
       from,
@@ -71,14 +89,14 @@ const prepareTransaction = async (method, from) => {
  * @returns {Promise<string>} transaction hash
  */
 const executeMethod = async (method) => {
-  const rawTx = await prepareTransaction(method, web3.givenProvider.selectedAddress)
+  const rawTx = await prepareTransaction(method, window.web3.givenProvider.selectedAddress)
   return new Promise((resolve, reject) => {
-    web3.eth.sendTransaction(rawTx)
+    window.web3.eth.sendTransaction(rawTx)
       .on('transactionHash', (hash) => {
         resolve(hash)
       })
       .on('confirmation', (confirmationNumber, receipt) => {
-        console.log(confirmationNumber)
+        if (confirmationNumber === 3) Notify.create('Transaction is confirmed!')
       })
       .on('error', (err) => {
         if (err.message && err.message.includes('insufficient funds')) Notify.create('Insufficient funds')
@@ -134,15 +152,57 @@ export const getPermission = async () => {
  * @param {string} params.link
  */
 export const _setValidatorInfo = async ({ id, name, avatar, link }) => {
-  const byteName = stringToHex(name)
-  const byteAvatar = stringToHex(avatar)
-  const byteLink = stringToHex(link)
-  const code = await getPermission()
-  console.log(code)
-  const method = contract.methods.setValidatorInfo(id, byteName, byteAvatar, byteLink, code)
-  return executeMethod(method)
+  try {
+    const account = await contract
+      .methods
+      .members(id)
+      .call()
+
+    const byteName = name ? stringToHex(name) : account.name
+    const byteAvatar = avatar ? stringToHex(avatar) : account.avatarUrl
+    const byteLink = link ? stringToHex(link) : account.link
+    const code = await getPermission()
+
+    const method = contract.methods.setValidatorInfo(id, byteName, byteAvatar, byteLink, code)
+    return executeMethod(method)
+  } catch (err) {
+    throw new Error(err.message)
+  }
 }
 
-export const stringToHex = input => web3.utils.asciiToHex(input)
+export const stringToHex = input => window.web3.utils.asciiToHex(input)
 
-export const utf8StringToHex = input => web3.utils.utf8ToHex(input).padEnd(66, '0')
+export const utf8StringToHex = input => window.web3.utils.utf8ToHex(input).padEnd(66, '0')
+
+export const subscribeToContractEvents = ({ eventName, filters, handler }) => {
+  const events = contract._jsonInterface.filter(a => a.type === 'event')
+  const ev = events.find(e => e.name === eventName)
+  const eventInterface = {
+    ...ev
+  }
+  window.web3.eth.subscribe('logs', {
+    address: config.network.contract,
+    topics: [eventInterface.signature]
+  }, (error, result) => {
+    if (error) return handler(error)
+
+    const event = window.web3.eth.abi.decodeLog(
+      eventInterface.inputs,
+      result.data,
+      result.topics.slice(1)
+    )
+
+    // Don't call handler if data doesn't match filters
+    let isMatch = false
+    const filtersKeys = Object.keys(filters)
+    filtersKeys.forEach(key => {
+      const value = filters[`${key}`]
+      if (event[`${key}`].toLowerCase() === value.toLowerCase()) isMatch = true
+    })
+    if (!isMatch) return
+
+    handler(null, {
+      ...event
+    })
+  })
+}

@@ -28,7 +28,8 @@ import {
   GET_ACCOUNT,
   CREATE_ACCOUNT,
   LIST_ACCOUNTS,
-  ADD_VALIDATOR_TO_DEFAULT_SUBNET
+  ADD_VALIDATOR_TO_DEFAULT_SUBNET,
+  SUBSCRIBE_TO_EVENT
 } from './types'
 
 import {
@@ -58,8 +59,9 @@ import {
 } from './../../modules/network'
 
 import {
-  // _initializeNetwork,
-  _getValidatorById
+  _initializeNetwork,
+  _getValidatorById,
+  subscribeToContractEvents
 } from './../../modules/networkRpc'
 
 import { fromNow } from './../../modules/time'
@@ -67,7 +69,8 @@ import { fromNow } from './../../modules/time'
 import { makeMD5, round } from './../../utils/commons'
 
 async function initApp ({ dispatch, getters }) {
-  // await _initializeNetwork()
+  await _initializeNetwork()
+  dispatch(SUBSCRIBE_TO_EVENT)
   await Promise.all([
     dispatch(GET_BLOCKCHAINS),
     dispatch(GET_ASSETS_BY_BLOCKCHAINS),
@@ -545,6 +548,20 @@ function compare (a, b) {
   }
 }
 
+function subscribeToEvents ({ commit, dispatch }) {
+  const sentMessageHandler = async (error, result) => {
+    if (error) console.error(error)
+    console.log(result)
+    // TODO UPDATE VALIDATOR INFO
+  }
+
+  subscribeToContractEvents({
+    eventName: 'SetValidatorInfoEvent',
+    filters: {},
+    handler: sentMessageHandler
+  })
+}
+
 export default {
   [INIT_APP]: initApp,
   [SIGN_TX]: signTransaction,
@@ -562,6 +579,7 @@ export default {
   [LIST_ACCOUNTS]: listAccounts,
   [CREATE_ACCOUNT]: createAccount,
   [CREATE_USER]: createUser,
-  [ADD_VALIDATOR_TO_DEFAULT_SUBNET]: addValidatorToDefaultS
+  [ADD_VALIDATOR_TO_DEFAULT_SUBNET]: addValidatorToDefaultS,
+  [SUBSCRIBE_TO_EVENT]: subscribeToEvents
 
 }

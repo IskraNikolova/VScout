@@ -19,12 +19,11 @@
         <q-btn size="xs" color="white" flat label="Pending" @click.native="onGetValidators"/>
         <q-btn size="xs" outline color="white" label="Add Validator" icon="add" @click.native="onAddValidator" class="q-mr-md"/>
         <add-validator-dialog ref="addValidatorDialog" />
-        <!--<q-btn size="xs" outline color="white" label="Add Identification" icon="img:statics/id.png" @click.native="onAddIdentification" />
-        <add-identification-dialog ref="addIdentificationRef" />-->
+        <q-btn size="xs" outline color="white" label="Add Identification" icon="img:statics/id.png" @click.native="onAddIdentification" />
+        <add-identification-dialog ref="addIdentificationRef" />
       </template>
       <template slot="top-right">
         <q-input
-          @focus="true"
           dark
           borderless
           color="accent"
@@ -52,21 +51,18 @@
                 </q-avatar>
               </div>
               <div
-                style="cursor:pointer"
+                style="cursor:pointer;"
                 class="col-9 q-pl-xl"
                 @click="onClick(props)"
                 @mouseover=" props.expand = true"
                 @mouseleave=" props.expand = false">
-               {{ props.row.name}}
+                {{ props.row.name}}
               </div>
-              <!--<div v-if="nodeID === col.value && isLocalNode()" class="col-2"> test</div>-->
             </div>
             <div v-else-if="col.name === 'stake'" class="q-pl-md">
               <div>
                 {{ col.value }}
-                <small style="color: grey;">
-                ({{ getLocalString(props.row.stakenAva)}} nAva)
-                </small>
+                <small style="color: grey;">({{ getLocalString(props.row.stakenAva)}} nAva)</small>
               </div>
               <div><small style="color: grey;">{{ props.row.precent }} %</small></div>
             </div>
@@ -215,7 +211,7 @@ import { copyToClipboard, openURL } from 'quasar'
 import { dateLL } from './../modules/time'
 
 import DetailsItem from './details-item'
-// import AddIdentificationDialog from './add-identification-dialog'
+import AddIdentificationDialog from './add-identification-dialog'
 import AddValidatorDialog from './add-validator-dialog'
 import CumulativeStakeChart from './cumulative-stake-chart'
 import ProgressBarValidateSession from './progress-bar-validatе-session'
@@ -224,17 +220,13 @@ export default {
   name: 'TableItem',
   components: {
     DetailsItem,
-    // AddIdentificationDialog,
+    AddIdentificationDialog,
     AddValidatorDialog,
     CumulativeStakeChart,
     ProgressBarValidateSession
   },
   data () {
     return {
-      id: '',
-      name: '',
-      avatarUrl: '',
-      link: '',
       curentValidators: [],
       isGrid: false,
       isActive: true,
@@ -313,8 +305,14 @@ export default {
     },
     copyToClipboard (id) {
       if (!id) return
-      this.id = id
+
       copyToClipboard(id)
+      this.$q.notify({
+        message: 'Copied to clipboard',
+        color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
+        position: 'center',
+        timeout: 1000
+      })
     },
     onGetValidators (e) {
       if (!e.target.innerText) return
