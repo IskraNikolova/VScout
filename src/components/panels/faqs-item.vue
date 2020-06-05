@@ -9,19 +9,18 @@
     <q-slide-transition>
       <div v-show="visible">
         <q-card
-          dark
-          class="q-pa-md q-pl-xl q-pt-xl dark-background"
+          class="q-pa-md q-pl-xl q-pt-xl"
         >
             <div class="row absolute-top-right">
-              <q-btn no-caps flat v-if="!innerVisible" @click="innerVisible=!innerVisible" color="white" icon="expand_more"/>
-              <q-btn no-caps flat v-else @click="innerVisible=!innerVisible" color="white" icon="expand_less"/>
+              <q-btn no-caps flat v-if="!innerVisible" @click="innerVisible=!innerVisible" icon="expand_more"/>
+              <q-btn no-caps flat v-else @click="innerVisible=!innerVisible" icon="expand_less"/>
             </div>
             <div v-for="(question, i) in questions"
               v-bind:key="i" class="q-mb-xl">
               <q-slide-transition>
                 <div v-show="visible">
                   <div class="text-h6">{{question.title}}</div>
-                  <q-separator dark spaced style="width: 70%;"/>
+                  <q-separator spaced style="width: 70%;"/>
                   <q-slide-transition>
                     <div v-show="innerVisible">
                       <div v-html="question.content" style="color: grey;font-size: 13px;"></div>
@@ -37,8 +36,9 @@
 </template>
 
 <script>
+
 export default {
-  name: 'Faqs',
+  name: 'FaqsItem',
   data () {
     return {
       visible: false,

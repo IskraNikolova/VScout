@@ -6,9 +6,9 @@
       <div>Start <span class="text-accent">{{ startDate }} </span><small>({{ fromNowGet }})</small></div>
       <div>End <span class="text-accent">{{ endDate }}</span></div>
     </div>
-    <div class="col">
+    <!--<div class="col">
       <q-avatar size="52px" color="grey" class="column-2"><img :src="img" /></q-avatar>
-    </div>
+    </div>-->
   </div>
 </div></template>
 

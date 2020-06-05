@@ -32,7 +32,7 @@ export const _getLastTx = async () => {
     const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.getLast)
     return req.data
   } catch (err) {
-    throw new Error(err.message)
+    return null
   }
 }
 
@@ -43,7 +43,7 @@ export const _getAssetsForChain = async () => {
 
     return groupBy(req.data.assets, 'chainID')
   } catch (err) {
-    throw new Error(err.message)
+    return null
   }
 }
 
@@ -52,7 +52,7 @@ export const _getAggregates = async (s, e) => {
     const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.aggregates(s, e))
     return req.data.aggregates
   } catch (err) {
-    throw new Error(err.message)
+    return null
   }
 }
 
@@ -61,7 +61,7 @@ export const _getAggregatesWithI = async (s, e, intervalSize) => {
     const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.aggregatesWInt(s, e, intervalSize))
     return req.data
   } catch (err) {
-    throw new Error(err.message)
+    return null
   }
 }
 
@@ -79,20 +79,28 @@ export const request2 = async (endpoint, body) => {
   return response
 }
 
-export const _getBlock = async ({ params = {}, endpoint }) => {
-  return request(endpoint + c.timestamp, body(c.getBlock, params))
-}
-
 export const _getBlockchains = async ({ endpoint }) => {
-  return request(endpoint + c.platform, body(c.getBlockchains))
+  try {
+    return request(endpoint + c.platform, body(c.getBlockchains))
+  } catch (err) {
+    return null
+  }
 }
 
 export const _getValidators = async ({ subnetID, endpoint }) => {
-  return request(endpoint + c.platform, body(c.getCurrentValidators, { subnetID }))
+  try {
+    return request(endpoint + c.platform, body(c.getCurrentValidators, { subnetID }))
+  } catch (err) {
+    return null
+  }
 }
 
 export const _getPendingValidators = async ({ subnetID, endpoint }) => {
-  return request(endpoint + c.platform, body(c.getPendingValidators, { subnetID }))
+  try {
+    return request(endpoint + c.platform, body(c.getPendingValidators, { subnetID }))
+  } catch (err) {
+    return null
+  }
 }
 
 export const _createUser = async ({ endpoint, params }) => {
@@ -145,7 +153,11 @@ export const _getTxStatus = async ({ endpoint, params }) => {
 }
 
 export const _getNodeId = async ({ endpoint }) => {
-  return request(endpoint + c.admin, body(c.getNodeID))
+  try {
+    return request(endpoint + c.admin, body(c.getNodeID))
+  } catch (err) {
+    return null
+  }
 }
 
 export const _addDefaultSubnetValidator = async ({ endpoint, params }) => {

@@ -112,7 +112,7 @@
     <blockchain-item />
 
     <table-item @getValidators="getValidatorsV" />
-    <faqs />
+    <faqs-item />
     <div class="flex flex-center q-mt-xl">
       <img src="~assets/ava-black.png" id="logo"/>
     </div>
@@ -130,11 +130,11 @@ import {
 
 const { network } = require('./../modules/config').default
 
-import Faqs from './../components/faqs'
-import StakItem from './../components/stak-item'
-import BlockchainItem from './../components/blockchain-item'
-import TableItem from './../components/table-item'
-import TransactionsItem from './../components/transactions-item'
+import FaqsItem from './../components/panels/faqs-item'
+import StakItem from './../components/panels/stak-item'
+import BlockchainItem from './../components/panels/blockchain-item'
+import TableItem from './../components/panels/table-item'
+import TransactionsItem from './../components/panels/transactions-item'
 
 import {
   GET_VALIDATORS,
@@ -152,7 +152,7 @@ import { testConnection } from './../modules/network'
 export default {
   name: 'PageIndex',
   components: {
-    Faqs,
+    FaqsItem,
     StakItem,
     BlockchainItem,
     TableItem,

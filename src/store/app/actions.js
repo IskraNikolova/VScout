@@ -16,6 +16,7 @@ import {
   SET_PENDING_VALIDATORS,
   GET_BLOCKCHAINS,
   SET_BLOCKCHAINS,
+  SET_CURRENT_BLOCKCHAIN,
   GET_TX_FOR_24_HOURS,
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
@@ -59,7 +60,7 @@ import {
 } from './../../modules/network'
 
 import {
-  _initializeNetwork,
+  // _initializeNetwork,
   _getValidatorById,
   subscribeToContractEvents
 } from './../../modules/networkRpc'
@@ -69,70 +70,64 @@ import { fromNow } from './../../modules/time'
 import { makeMD5, round } from './../../utils/commons'
 
 async function initApp ({ dispatch, getters }) {
-  await _initializeNetwork()
-  dispatch(SUBSCRIBE_TO_EVENT)
   await Promise.all([
-    dispatch(GET_BLOCKCHAINS),
-    dispatch(GET_ASSETS_BY_BLOCKCHAINS),
-    dispatch(GET_NODE_ID),
-    dispatch(GET_TOTAL_TXS),
     dispatch(GET_TX_FOR_24_HOURS),
     dispatch(GET_TXS_HISTORY),
-    dispatch(GET_PENDING_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID }),
-    dispatch(INIT_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID })
+    dispatch(GET_BLOCKCHAINS),
+    dispatch(INIT_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID }),
+    dispatch(GET_ASSETS_BY_BLOCKCHAINS),
+    dispatch(GET_NODE_ID),
+    dispatch(GET_TOTAL_TXS)
   ])
+  // await _initializeNetwork()
+  // dispatch(SUBSCRIBE_TO_EVENT)
   setInterval(async () => {
     await Promise.all([
-      dispatch(GET_TOTAL_TXS),
       dispatch(GET_TX_FOR_24_HOURS),
       dispatch(GET_TXS_HISTORY),
       dispatch(GET_PENDING_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID }),
-      dispatch(GET_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID })
+      dispatch(GET_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID }),
+      dispatch(GET_TOTAL_TXS)
     ])
-  }, 6000)
+  }, 4000)
 }
 
 async function getBlockchains ({ commit, getters }) {
-  try {
-    const { blockchains } = await _getBlockchains({
-      endpoint: getters.networkEndpoint
-    })
-    commit(SET_BLOCKCHAINS, { blockchains })
-  } catch (err) {
-    console.log(err)
-  }
+  const response = await _getBlockchains({
+    endpoint: getters.networkEndpoint
+  })
+  if (response === null) return
+
+  const { blockchains } = response
+  commit(SET_BLOCKCHAINS, { blockchains })
+  commit(SET_CURRENT_BLOCKCHAIN, { blockchain: blockchains[0] })
 }
 
 async function getTxsFor24H ({ commit, getters }) {
-  try {
-    const minAgo = moment().subtract(24, 'hours')
-    const { transactionCount, transactionVolume } = await _getAggregates(
-      minAgo.toISOString(),
-      moment().toISOString()
-    )
-    commit(SET_PREVIOUS_24_TXS, { prevTxsFor24H: getters.txsFor24H })
-    commit(SET_TX_FOR_24_HOURS, {
-      txsFor24H: {
-        transactionCount,
-        transactionVolume: Math.round(transactionVolume / 10 ** 9)
-      }
-    })
-  } catch (err) {
-    console.log(err)
-  }
+  const minAgo = moment().subtract(24, 'hours')
+  const response = await _getAggregates(
+    minAgo.toISOString(),
+    moment().toISOString()
+  )
+  if (response === null) return
+
+  const { transactionCount, transactionVolume } = response
+  commit(SET_PREVIOUS_24_TXS, { prevTxsFor24H: getters.txsFor24H })
+  commit(SET_TX_FOR_24_HOURS, {
+    txsFor24H: {
+      transactionCount,
+      transactionVolume: Math.round(transactionVolume / 10 ** 9)
+    }
+  })
 }
 
 async function getTotalTXs ({ commit, getters }) {
-  try {
-    const response = await _getLastTx()
-    if (response.count) {
-      const totalTxsCount = response.count
-      commit(SET_PREVIOUS_TOTAL_TXS, { prevTotalTxs: getters.totalTxsCount })
-      commit(SET_TOTAL_TXS, { totalTxsCount })
-    }
-  } catch (err) {
-    console.log(err)
-  }
+  const response = await _getLastTx()
+  if (response === null) return
+
+  const totalTxsCount = response.count
+  commit(SET_PREVIOUS_TOTAL_TXS, { prevTotalTxs: getters.totalTxsCount })
+  commit(SET_TOTAL_TXS, { totalTxsCount })
 }
 
 const temp = {
@@ -169,65 +164,60 @@ const temp = {
 }
 
 async function getTxsHistory ({ commit, getters }) {
-  try {
-    const { sub, interval, label } = temp[getters.txHKey]
-    const minAgo = moment().subtract(sub.value, sub.label)
-    const aggregates = await _getAggregatesWithI(
-      minAgo.toISOString(),
-      moment().toISOString(),
-      `${interval.value}${interval.label}`
-    )
+  const t = temp[getters.txHKey]
+  if (!t) return
+  const { sub, interval, label } = t
+  const minAgo = moment().subtract(sub.value, sub.label)
 
-    aggregates.intervals.map(a => {
-      if (moment(a.endTime) > moment() &&
-        aggregates.intervalSize) {
-        aggregates.intervals.pop()
-      }
-    })
+  const aggregates = await _getAggregatesWithI(
+    minAgo.toISOString(),
+    moment().toISOString(),
+    `${interval.value}${interval.label}`
+  )
+  if (aggregates === null) return null
 
-    aggregates.label = label
-    aggregates.key = getters.txHKey
-    commit(SET_TXS_HISTORY, { key: getters.txHKey, txsHistory: aggregates })
-  } catch (err) {
-    console.log(err)
-  }
+  aggregates.intervals.map(a => {
+    if (moment(a.endTime) > moment() &&
+      aggregates.intervalSize) {
+      aggregates.intervals.pop()
+    }
+  })
+
+  aggregates.label = label
+  aggregates.key = getters.txHKey
+  commit(SET_TXS_HISTORY, { key: getters.txHKey, txsHistory: aggregates })
+  return true
 }
 
 async function getAssetsByBlockchain ({ commit }) {
-  try {
-    const assetsByChain = await _getAssetsForChain()
+  const assetsByChain = await _getAssetsForChain()
+  if (assetsByChain === null) return
 
-    commit(SET_ASSETS_BY_BLOCKCHAINS, { assetsByChain })
-  } catch (err) {
-    console.log(err)
-  }
+  commit(SET_ASSETS_BY_BLOCKCHAINS, { assetsByChain })
 }
 
 async function getPendingValidators ({ commit, getters }, { subnetID }) {
-  try {
-    var { validators } = await _getPendingValidators({
-      subnetID,
-      endpoint: getters.networkEndpoint
-    })
-    if (!validators || validators.length === getters.pendingValidators.length) return
+  const response = await _getPendingValidators({
+    subnetID,
+    endpoint: getters.networkEndpoint
+  })
 
-    validators = validators.filter(i => i.endTime >= Date.now() / 1000)
-    validators.sort(compare)
-    const val = await map(validators)
-    commit(SET_PENDING_VALIDATORS, { validators: val })
-  } catch (err) {
-    console.log(err)
-  }
+  if (!response === null) return
+
+  let { validators } = response
+  if (validators.length === getters.pendingValidators.length) return
+
+  validators = validators.filter(i => i.endTime >= Date.now() / 1000)
+  validators.sort(compare)
+  const val = await map(validators)
+  commit(SET_PENDING_VALIDATORS, { validators: val })
 }
 
 async function getNodeId ({ getters, commit }) {
-  try {
-    const result = await _getNodeId({ endpoint: getters.networkEndpoint })
-    commit(SET_NODE_ID, { nodeID: result.nodeID })
-  } catch (err) {
-    console.log(err)
-    return null
-  }
+  const result = await _getNodeId({ endpoint: getters.networkEndpoint })
+  if (result === null) return null
+
+  commit(SET_NODE_ID, { nodeID: result.nodeID })
 }
 
 async function getAccount ({ commit, getters }, { address, type }) {
@@ -426,35 +416,29 @@ async function fundAccount ({ getters }, { amount, username, password, to, nonce
 }
 
 async function initValidators ({ commit, getters }, { subnetID }) {
-  try {
-    const { validators } = await _getValidators({
-      subnetID,
-      endpoint: getters.networkEndpoint
-    })
+  const response = await _getValidators({
+    subnetID,
+    endpoint: getters.networkEndpoint
+  })
 
-    if (!validators) return
+  if (response === null) return
 
-    const result = await getVal(validators)
-    commit(SET_VALIDATORS, { validators: result })
-  } catch (err) {
-    console.log(err)
-  }
+  const { validators } = response
+  const result = await getVal(validators)
+  commit(SET_VALIDATORS, { validators: result })
 }
 
 async function getValidators ({ commit, getters }, { subnetID }) {
-  try {
-    const { validators } = await _getValidators({
-      subnetID,
-      endpoint: getters.networkEndpoint
-    })
+  const response = await _getValidators({
+    subnetID,
+    endpoint: getters.networkEndpoint
+  })
+  if (response === null) return
+  const { validators } = response
+  if (validators.length === getters.validators.length) return
 
-    // if (!validators || validators.length === getters.validators.length) return
-
-    const result = await getVal(validators)
-    commit(SET_VALIDATORS, { validators: result })
-  } catch (err) {
-    console.log(err)
-  }
+  const result = await getVal(validators)
+  commit(SET_VALIDATORS, { validators: result })
 }
 
 async function getVal (validators) {

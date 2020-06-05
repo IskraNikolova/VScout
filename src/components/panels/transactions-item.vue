@@ -1,19 +1,23 @@
 <template>
   <q-card
-    class="q-mt-md q-pt-md q-pl-xl q-pr-xl dark-background"
-    dark flat id="custom-card"
+    class="q-mt-md q-pt-md q-pl-xl q-pr-xl"
+    id="custom-card"
   >
     <div class="row">
       <div class="col-md-3 col-xs-12">
         <div style="font-size: 12px;" class="q-pb-md">TRANSACTIONS (24Hr)</div>
-        <div class="col text-h5 text-positive q-pb-xl">
-          <img src="~assets/arrow-down.png" class="custom-icon arrow" v-if="prevTxsFor24H.transactionCount > txsFor24H.transactionCount">
+        <div class="col text-h5 text-accent q-pb-xl">
+          <img
+            src="~assets/arrow-down.png"
+            class="custom-icon arrow"
+            v-if="prevTxsFor24H.transactionCount > txsFor24H.transactionCount"
+          >
           <img src="~assets/arrow-up.png" class="custom-icon arrow" v-else>
           {{ txsFor24H.transactionCount }}
           <small>({{ tps }} TPS)</small>
         </div>
         <div style="font-size: 12px;" class="q-pb-md">TOTAL TRANSACTIONS</div>
-        <div class="text-h5"><span class="text-positive">{{ totalTxsCount.toLocaleString() }}</span></div>
+        <div class="text-h5"><span class="text-accent">{{ totalTxsCount.toLocaleString() }}</span></div>
       </div>
       <div class="col-md-9 col-xs-12">
         <q-btn-toggle
@@ -21,8 +25,7 @@
           outline
           no-caps
           size="xs"
-          color="positive"
-          toggle-color="white"
+          toggle-color="accent"
           @click.native="onGetData"
           :options="[
             {label: 'Yr', value: 'year'},
@@ -47,9 +50,9 @@
 import { mapGetters, mapActions } from 'vuex'
 import moment from 'moment'
 import Chart from 'chart.js'
-import { getChartLabel } from './../utils/commons'
+import { getChartLabel } from './../../utils/commons'
 
-import { SET_KEY_TXH, GET_TXS_HISTORY } from './../store/app/types'
+import { SET_KEY_TXH, GET_TXS_HISTORY } from './../../store/app/types'
 
 const options = {
   animation: {
@@ -98,7 +101,7 @@ export default {
       labels: [],
       chartVol: {},
       chartTps: {},
-      interval: 'day'
+      interval: 'minute'
     }
   },
   computed: {
@@ -132,16 +135,22 @@ export default {
       getTxHistory: GET_TXS_HISTORY
     }),
     async initCharts () {
-      try {
-        await this.getData()
-        this.getVolumeChart()
-        this.getTpsChart()
-      } catch (err) {
-      }
+      this.getVolumeChart()
+      this.getTpsChart()
+      const response = await this.getTxHistory()
+      if (response === null) return
+
+      this.arr = this.txsHistory(this.txHKey)
+      this.getLabels()
+      this.getVolumeChart()
+      this.getTpsChart()
     },
     async onGetData () {
       const txHKey = this.interval
       this.$store.commit(SET_KEY_TXH, { txHKey })
+      const response = await this.getTxHistory()
+      if (response === null) return
+
       await this.updateCharts()
     },
     fastData () {
@@ -149,19 +158,12 @@ export default {
       this.arr = this.txsHistory(this.txHKey)
       this.getLabels()
     },
-    async getData () {
-      await this.getTxHistory()
-      this.arr = this.txsHistory(this.txHKey)
-      this.getLabels()
-    },
     async updateCharts () {
       this.fastData()
       this.update()
-      try {
-        await this.getData()
-        this.update()
-      } catch (err) {
-      }
+      this.arr = this.txsHistory(this.txHKey)
+      this.getLabels()
+      this.update()
     },
     update () {
       this.chartVol.data = this.getVolChartData()
@@ -183,14 +185,13 @@ export default {
       return this.arr.intervals.map(a => a.transactionCount)
     },
     getLabels () {
-      // todo check for undefined errors
       this.labels = this.arr.intervals.map(a => getChartLabel(a, this.arr.key))
     },
     getVolChartData () {
       const volumesData = {
         label: `Tx Volume  - ${this.arr.label} Ø`,
         data: this.getVolumes(),
-        borderColor: 'white'
+        borderColor: 'black'
       }
 
       const data = {
@@ -203,7 +204,7 @@ export default {
       const tpsData = {
         label: `TPS History - ${this.arr.label} Ø`,
         data: this.getTps(),
-        borderColor: 'rgba(146, 255, 96)'
+        borderColor: '#87C5D6'
       }
 
       const data = {
@@ -213,18 +214,28 @@ export default {
       return data
     },
     getVolumeChart () {
+      let data = []
+      try {
+        data = this.getVolChartData()
+      } catch (err) {
+      }
       const ctx = window.document.getElementById('chartVol').getContext('2d')
       this.chartVol = new Chart(ctx, {
         type: 'line',
-        data: this.getVolChartData(),
+        data,
         options
       })
     },
     getTpsChart () {
+      let data = []
+      try {
+        data = this.getTpsChartData()
+      } catch (err) {
+      }
       const ctx = window.document.getElementById('chartTps').getContext('2d')
       this.chartTps = new Chart(ctx, {
         type: 'line',
-        data: this.getTpsChartData(),
+        data,
         options
       })
     }
@@ -233,7 +244,7 @@ export default {
 </script>
 <style scoped>
 #custom-card {
-  border-right: 3px solid #92FF60;
+  border-right: 2px solid #87C5D6;
 }
 .custom-icon {
   width:30vw;

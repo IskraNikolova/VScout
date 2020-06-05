@@ -24,14 +24,12 @@ export const _initializeNetwork = async () => {
     return false
   }
 
-  if (!ethEnabled()) {
-    Notify('Please install MetaMask to use this dApp!')
+  if (ethEnabled()) {
+    contract = await new window.web3.eth.Contract(contractAbi, config.network.contract)
   }
 
   // todo when C-Chain is available
   // web3 = new Web3(getProvider({ endpoint: `wss://${config.network.endpointCChain}` }))
-
-  contract = await new window.web3.eth.Contract(contractAbi, config.network.contract)
 }
 
 // const getProvider = ({ endpoint }) => {
@@ -175,6 +173,7 @@ export const stringToHex = input => window.web3.utils.asciiToHex(input)
 export const utf8StringToHex = input => window.web3.utils.utf8ToHex(input).padEnd(66, '0')
 
 export const subscribeToContractEvents = ({ eventName, filters, handler }) => {
+  if (!contract) return
   const events = contract._jsonInterface.filter(a => a.type === 'event')
   const ev = events.find(e => e.name === eventName)
   const eventInterface = {

@@ -2,7 +2,6 @@ import Vue from 'vue'
 const { network } = require('./../../modules/config').default
 
 import {
-  SET_BLOCK,
   SET_VALIDATORS,
   SET_PENDING_VALIDATORS,
   SET_BLOCKCHAINS,
@@ -12,8 +11,6 @@ import {
   SET_ENDPOINT,
   SET_TOTAL_TXS,
   SET_PREVIOUS_TOTAL_TXS,
-  SET_BLOCK_TIME,
-  SET_LAST_BLOCK_TIME,
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
   SET_KEY_TXH,
@@ -23,9 +20,6 @@ import {
 } from './types'
 
 const mutations = {
-  [SET_BLOCK]: (state, { lastBlock }) => {
-    state.lastBlock = lastBlock
-  },
   [SET_VALIDATORS]: (state, { validators }) => {
     state.validators = validators
   },
@@ -48,12 +42,6 @@ const mutations = {
   },
   [REMOVE_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
     state.endpointsMemory = state.endpointsMemory.filter(a => a !== endpoint)
-  },
-  [SET_BLOCK_TIME]: (state, { blockTime }) => {
-    state.blockTime = blockTime
-  },
-  [SET_LAST_BLOCK_TIME]: (state, { blockTime }) => {
-    state.lastBlockTime.push(blockTime)
   },
   [SET_TX_FOR_24_HOURS]: (state, { txsFor24H }) => {
     state.txsFor24H = txsFor24H

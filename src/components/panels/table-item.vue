@@ -6,25 +6,23 @@
       row-key="rank"
       :separator="separator"
       :filter="filter"
-      dark
-      class="dark-background"
       :pagination.sync="pagination"
       :grid="isGrid"
+      class="light-background shadow-3"
       id="custom-table"
     >
       <template slot="top-left">
-        <q-btn size="xs" color="white" flat icon="apps" @click="isGrid=true"/>
-        <q-btn size="xs" color="white" flat icon="reorder" @click="isGrid=false"/>
-        <q-btn size="xs" color="white" flat label="Active" @click.native="onGetValidators"/>
-        <q-btn size="xs" color="white" flat label="Pending" @click.native="onGetValidators"/>
-        <q-btn size="xs" outline color="white" label="Add Validator" icon="add" @click.native="onAddValidator" class="q-mr-md"/>
+        <q-btn size="xs" flat icon="apps" @click="isGrid=true"/>
+        <q-btn size="xs" flat icon="reorder" @click="isGrid=false"/>
+        <q-btn size="xs" flat label="Active" @click.native="onGetValidators"/>
+        <q-btn size="xs" flat label="Pending" @click.native="onGetValidators"/>
+        <q-btn size="xs" outline label="Add Validator" icon="add" @click.native="onAddValidator" class="q-mr-md"/>
         <add-validator-dialog ref="addValidatorDialog" />
-        <q-btn size="xs" outline color="white" label="Add Identification" icon="img:statics/id.png" @click.native="onAddIdentification" />
-        <add-identification-dialog ref="addIdentificationRef" />
+        <!--<q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
+        <add-identification-dialog ref="addIdentificationRef" />-->
       </template>
       <template slot="top-right">
         <q-input
-          dark
           borderless
           color="accent"
           stack-label
@@ -70,7 +68,6 @@
               <div class="container_row">
                 <div class="layer1">
                   <q-linear-progress
-                    dark
                     size="50px"
                     :value="props.row.cumulativeStake / 100"
                     :buffer="props.row.cumulativeStake / 100"
@@ -80,7 +77,6 @@
                 </div>
                 <div class="layer2">
                   <q-linear-progress
-                    dark
                     size="50px"
                     :value="(props.row.cumulativeStake - props.row.precent) / 100"
                     :buffer="(props.row.cumulativeStake - props.row.precent) / 100"
@@ -115,9 +111,9 @@
           </q-td>
         </q-tr>
       </template>
-      <template dark v-slot:item="props">
+      <template v-slot:item="props">
          <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4">
-           <q-card dark flat bordered>
+           <q-card flat bordered>
             <q-item>
               <q-item-section avatar>
                 <q-avatar>
@@ -144,7 +140,7 @@
               </q-item-section>
             </q-item>
 
-            <q-separator dark />
+            <q-separator />
 
             <q-card-section horizontal>
               <q-card-section class="col-5 q-mb-xl">
@@ -158,7 +154,7 @@
               <div class="q-mb-md" >
                 <small style="color: grey;">{{ props.row.precent }} %</small>
               </div>
-              <q-separator dark class="q-mb-md"/>
+              <q-separator class="q-mb-md"/>
               <div class="q-pl-xs">
                 <div >Staked by</div>
                 <div class="text-accent">
@@ -166,12 +162,12 @@
                 </div>
               </div>
               </q-card-section>
-              <q-separator dark vertical />
+              <q-separator vertical />
               <q-card-section class="col-7">
                <cumulative-stake-chart
                  v-bind:name="props.row.validator"
-                 v-bind:precent="props.row.precent"
-                 v-bind:precentAll="props.row.cumulativeStake ? props.row.cumulativeStake : NaN"
+                 v-bind:percent="props.row.precent"
+                 v-bind:percentAll="props.row.cumulativeStake ? props.row.cumulativeStake : NaN"
                 />
               </q-card-section>
 
@@ -184,14 +180,14 @@
               />
             </q-card-section>
 
-            <q-separator dark />
+            <q-separator />
 
             <q-card-section horizontal>
               <q-card-section class="col-6">
                 <small>Start Time</small>
                 <div>{{ formatDate(props.row.startTime) }}</div>
               </q-card-section>
-              <q-separator dark vertical/>
+              <q-separator vertical/>
               <q-card-section class="col-6">
                 <small>End Time</small>
                 <div>{{ formatDate(props.row.endTime) }}</div>
@@ -208,19 +204,19 @@
 import { mapGetters } from 'vuex'
 import { copyToClipboard, openURL } from 'quasar'
 
-import { dateLL } from './../modules/time'
+import { dateLL } from './../../modules/time'
 
-import DetailsItem from './details-item'
-import AddIdentificationDialog from './add-identification-dialog'
-import AddValidatorDialog from './add-validator-dialog'
-import CumulativeStakeChart from './cumulative-stake-chart'
-import ProgressBarValidateSession from './progress-bar-validatе-session'
+import DetailsItem from './../details-item'
+// import AddIdentificationDialog from './../add-identification-dialog'
+import AddValidatorDialog from './../add-validator-dialog'
+import CumulativeStakeChart from './../cumulative-stake-chart'
+import ProgressBarValidateSession from './../progress-bar-validatе-session'
 
 export default {
   name: 'TableItem',
   components: {
     DetailsItem,
-    AddIdentificationDialog,
+    // AddIdentificationDialog,
     AddValidatorDialog,
     CumulativeStakeChart,
     ProgressBarValidateSession
@@ -278,12 +274,6 @@ export default {
       }
     }
   },
-  created () {
-    if (!this.curentVal) return
-    this.pagination = {
-      rowsPerPage: Math.min(20, this.curentVal.length)
-    }
-  },
   methods: {
     onClick (props) {
       if (!props.row.link) return
@@ -335,8 +325,7 @@ export default {
 </script>
 <style scoped>
  #custom-table {
-   border-left: 0.5px solid #474F52;
-   border-right: 3px solid #87C5D6;
+   border-right: 2px solid #87C5D6;
  }
  .container_row{
   display: grid;

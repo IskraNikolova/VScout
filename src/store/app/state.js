@@ -5,19 +5,16 @@ export default function () {
     validators: [],
     pendingValidators: [],
     endpointsMemory: [],
-    lastBlock: {},
-    blockTime: 0,
-    lastBlockTime: [],
     blockchains: [],
     assetsByChain: {},
-    currentBlockchain: network.defaultBlockchain,
+    currentBlockchain: {},
     networkEndpoint: network.endpointUrls[0],
     txsFor24H: { transactionCount: 0, transactionVolume: 0 },
     prevTxsFor24H: { transactionCount: 0, transactionVolume: 0 },
     totalTxsCount: 0,
     prevTotalTxs: 0,
     txsHistory: [],
-    txHKey: 'day',
+    txHKey: 'minute',
     nodeID: ''
   }
 }

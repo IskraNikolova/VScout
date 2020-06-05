@@ -18,8 +18,8 @@
             <q-item-label caption>
               You can add some bio for your validator (node).
               You must provide your username and password to authenticate it.
-             <br/>Data will be store to contract, for this reason, to make this recording you must have a MetaMask installed
-              and a C-Chain address <a href="https://medium.com/avalabs/deploy-a-smart-contract-on-ava-using-remix-and-metamask-98933a93f436">here</a> <br />with a minimum amount of C-AVA for contract write.
+             <br/>Data will be store to contract, for this reason, to make this recording you must have a <a href="https://metamask.io/">MetaMask</a> installed
+              and a C-Chain address <a href="https://medium.com/avalabs/deploy-a-smart-contract-on-ava-using-remix-and-metamask-98933a93f436">see</a> <br />with a minimum amount of C-AVA for contract write.
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -229,13 +229,13 @@ export default {
     },
     async onAuth () {
       try {
-        // const res = await this.listAccounts({
-        //   username: this.username,
-        //   password: this.password
-        // })
-        // if (!res) return
-        // const accounts = res.accounts
-        const isAuth = true // accounts.find(a => a.address === this.address)
+        const res = await this.listAccounts({
+          username: this.username,
+          password: this.password
+        })
+        if (!res) return
+        const accounts = res.accounts
+        const isAuth = accounts.find(a => a.address === this.address)
         this.$store.commit(UPDATE_UI, { addIdentification: { isAuth } })
       } catch (err) {
         this.err = err.message

@@ -1,8 +1,6 @@
 <template>
   <q-card
-    class="q-mt-md q-pt-md q-pb-md q-pl-xl dark-background"
-    dark
-    flat
+    class="q-mt-md q-pt-md q-pb-md q-pl-xl"
     id="custom-card">
     <div class="row">
       <div class="col-md-3 col-xs-10">
@@ -10,7 +8,7 @@
         <div class="row">
           <div class="text-h6 text-negative q-pb-md">{{ currentBlockchain.name }}</div>
           <div class="q-pl-md q-pt-xs">
-            <q-btn-dropdown outline class="text-white" v-if="assets(currentBlockchain.id)" size="xs" no-caps label="Smart Digital Assets">
+            <q-btn-dropdown outline v-if="assets(currentBlockchain.id)" size="xs" no-caps label="Smart Digital Assets">
                 <div class="q-pa-md">
                   <small><img src="~assets/coins.svg" id="small-logo">Assets on {{ currentBlockchain.name }}</small>
                   <q-separator />
@@ -30,10 +28,10 @@
             <asset-info-item ref="assetDialog"/>
           </div>
           </div>
-        <div id="f-size12">Blockchain ID <div class="text-negative">{{ currentBlockchain.id }}</div></div>
+        <div id="f-size12">Blockchain ID <div class="text-grey">{{ currentBlockchain.id }}</div></div>
       </div>
       <div class="col-1 q-pt-md">
-        <img src="~assets/blockchain.svg" id="logo">
+        <img src="~assets/network-nodes.svg" id="logo">
       </div>
       <div class="col-md-3 col-xs-10">
         <div style="font-size: 12px;" class="q-pb-md">SUBNET ID</div>
@@ -41,10 +39,10 @@
           Default Subnet
         </div>
         <div v-else class="text-negative" style="font-size: 18px;letter-spacing: -2px;margin-bottom: 20px;" >{{ currentBlockchain.subnetID }}</div>
-        <div id="f-size12">VM ID <div class="text-negative">{{ currentBlockchain.vmID }}</div></div>
+        <div id="f-size12">VM ID <div class="text-grey">{{ currentBlockchain.vmID }}</div></div>
       </div>
       <div class="col-1 q-pt-md">
-        <img src="~assets/network.svg" id="logo">
+        <img src="~assets/computer-network.svg" id="logo">
       </div>
       <div class="col-md-3 col-xs-10">
         <div style="font-size: 12px;" class="q-pb-md">NETWORK</div>
@@ -52,10 +50,10 @@
         <div class="text-h7 q-pb-md text-negative" >
           {{ networkEndpoint }}
         </div>
-        <div id="f-size12">Node ID <div class="text-negative">{{ nodeID }}</div></div>
+        <div id="f-size12">Node ID <div class="text-grey">{{ nodeID }}</div></div>
       </div>
       <div class="col-1 q-pt-md">
-        <img src="~assets/node-orange.png" id="logo">
+        <img src="~assets/connection.svg" id="logo2">
       </div>
     </div>
   </q-card>
@@ -64,7 +62,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import AssetInfoItem from './asset-info-item'
+import AssetInfoItem from './../asset-info-item'
 
 export default {
   name: 'BlockchainItem',
@@ -88,7 +86,7 @@ export default {
 </script>
 <style scoped>
   #custom-card {
-    border-right: 3px solid #ffa959;
+    border-right: 2px solid #ffa959;
   }
   #f-size12 {
     font-size: 83%;
@@ -99,6 +97,10 @@ export default {
   #logo {
     width:45vw;
     max-width:45px;
+  }
+  #logo2 {
+    width:40vw;
+    max-width:40px;
   }
   #small-logo {
     width:15vw;
