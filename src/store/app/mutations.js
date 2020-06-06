@@ -13,7 +13,6 @@ import {
   SET_PREVIOUS_TOTAL_TXS,
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
-  SET_KEY_TXH,
   SET_TXS_HISTORY,
   SET_NODE_ID,
   SET_ASSETS_BY_BLOCKCHAINS
@@ -55,11 +54,9 @@ const mutations = {
   [SET_PREVIOUS_TOTAL_TXS]: (state, { prevTotalTxs }) => {
     state.prevTotalTxs = prevTotalTxs
   },
-  [SET_KEY_TXH]: (state, { txHKey }) => {
-    state.txHKey = txHKey
-  },
   [SET_TXS_HISTORY]: (state, { key, txsHistory }) => {
     if (!state.txsHistory[key]) Vue.set(state.txsHistory, key, [])
+    state.txHKey = key
     state.txsHistory[key] = txsHistory
   },
   [SET_ASSETS_BY_BLOCKCHAINS]: (state, { assetsByChain }) => {

@@ -72,7 +72,7 @@ import { makeMD5, round } from './../../utils/commons'
 async function initApp ({ dispatch, getters }) {
   await Promise.all([
     dispatch(GET_TX_FOR_24_HOURS),
-    dispatch(GET_TXS_HISTORY),
+    dispatch(GET_TXS_HISTORY, { txHKey: getters.txHKey }),
     dispatch(GET_BLOCKCHAINS),
     dispatch(INIT_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID }),
     dispatch(GET_ASSETS_BY_BLOCKCHAINS),
@@ -84,12 +84,12 @@ async function initApp ({ dispatch, getters }) {
   setInterval(async () => {
     await Promise.all([
       dispatch(GET_TX_FOR_24_HOURS),
-      dispatch(GET_TXS_HISTORY),
+      dispatch(GET_TXS_HISTORY, { txHKey: getters.txHKey }),
       dispatch(GET_PENDING_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID }),
       dispatch(GET_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID }),
       dispatch(GET_TOTAL_TXS)
     ])
-  }, 4000)
+  }, 6000)
 }
 
 async function getBlockchains ({ commit, getters }) {
@@ -163,9 +163,10 @@ const temp = {
   }
 }
 
-async function getTxsHistory ({ commit, getters }) {
-  const t = temp[getters.txHKey]
+async function getTxsHistory ({ commit, getters }, { txHKey }) {
+  const t = temp[txHKey]
   if (!t) return
+  commit(SET_TXS_HISTORY, { key: txHKey, txsHistory: getters.txsHistory(txHKey) })
   const { sub, interval, label } = t
   const minAgo = moment().subtract(sub.value, sub.label)
 
@@ -184,8 +185,9 @@ async function getTxsHistory ({ commit, getters }) {
   })
 
   aggregates.label = label
-  aggregates.key = getters.txHKey
-  commit(SET_TXS_HISTORY, { key: getters.txHKey, txsHistory: aggregates })
+  aggregates.key = txHKey
+
+  commit(SET_TXS_HISTORY, { key: txHKey, txsHistory: aggregates })
   return true
 }
 
@@ -360,7 +362,8 @@ async function signTransaction ({ getters }, { transaction, signer, username, pa
     if (res.data.error) {
       throw new Error(res.data.error.message)
     }
-    return res.data.result.Tx
+
+    return res.data.result.txID
   } catch (err) {
     throw new Error(err.message)
   }

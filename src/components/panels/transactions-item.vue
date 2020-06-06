@@ -52,52 +52,12 @@ import moment from 'moment'
 import Chart from 'chart.js'
 import { getChartLabel } from './../../utils/commons'
 
-import { SET_KEY_TXH, GET_TXS_HISTORY } from './../../store/app/types'
-
-const options = {
-  animation: {
-    duration: 0
-  },
-  hover: { mode: null },
-  mousemove: { mode: null },
-  mouseout: { mode: null },
-  scales: {
-    yAxes: [{
-      ticks: {
-        callback: function (value, index, values) {
-          return value
-        }
-      }
-    }],
-    xAxes: [{
-      ticks: {
-        // Include a dollar sign in the ticks
-        callback: function (value, index, values) {
-          return value
-        }
-      }
-    }]
-  },
-  tooltips: {
-    callbacks: {
-      label: function (tooltipItem, data) {
-        let label = data.datasets[tooltipItem.datasetIndex].label || ''
-
-        if (label) {
-          label += ': '
-        }
-        label += Math.round(tooltipItem.yLabel * 100) / 100
-        return label
-      }
-    }
-  }
-}
+import { GET_TXS_HISTORY } from './../../store/app/types'
 
 export default {
   name: 'TransactionsItem',
   data () {
     return {
-      arr: [],
       labels: [],
       chartVol: {},
       chartTps: {},
@@ -118,15 +78,18 @@ export default {
       return t.toFixed(2)
     }
   },
-  async mounted () {
+  mounted () {
     this.interval = this.txHKey
-    await this.initCharts()
+    this.getVolumeChart()
+    this.getTpsChart()
     this.$store.subscribe(async (mutation, state) => {
       if (mutation.type === 'SET_TOTAL_TXS') {
         if (this.prevTotalTxs < this.totalTxsCount ||
         moment().seconds() % 59 === 0) {
-          await this.updateCharts()
+          await this.update()
         }
+      } else if (mutation.type === 'SET_TXS_HISTORY') {
+        await this.update()
       }
     })
   },
@@ -134,40 +97,64 @@ export default {
     ...mapActions({
       getTxHistory: GET_TXS_HISTORY
     }),
-    async initCharts () {
-      this.getVolumeChart()
-      this.getTpsChart()
-      const response = await this.getTxHistory()
-      if (response === null) return
-
-      this.arr = this.txsHistory(this.txHKey)
+    initCharts () {
       this.getLabels()
       this.getVolumeChart()
       this.getTpsChart()
     },
     async onGetData () {
-      const txHKey = this.interval
-      this.$store.commit(SET_KEY_TXH, { txHKey })
-      const response = await this.getTxHistory()
+      this.update()
+      const response = await this.getTxHistory({ txHKey: this.interval })
       if (response === null) return
 
-      await this.updateCharts()
-    },
-    fastData () {
-      if (!this.txsHistory(this.txHKey)) return
-      this.arr = this.txsHistory(this.txHKey)
-      this.getLabels()
-    },
-    async updateCharts () {
-      this.fastData()
       this.update()
-      this.arr = this.txsHistory(this.txHKey)
-      this.getLabels()
-      this.update()
+    },
+    options () {
+      return {
+        animation: {
+          duration: 0
+        },
+        hover: { mode: null },
+        mousemove: { mode: null },
+        mouseout: { mode: null },
+        scales: {
+          yAxes: [{
+            ticks: {
+              callback: function (value, index, values) {
+                return value
+              }
+            }
+          }],
+          xAxes: [{
+            ticks: {
+              // Include a dollar sign in the ticks
+              callback: function (value, index, values) {
+                return value
+              }
+            }
+          }]
+        },
+        tooltips: {
+          callbacks: {
+            label: function (tooltipItem, data) {
+              if (!data || !data.datasets || !data.datasets[tooltipItem.datasetIndex]) return
+              let label = data.datasets[tooltipItem.datasetIndex].label || ''
+
+              if (label) {
+                label += ': '
+              }
+              label += Math.round(tooltipItem.yLabel * 100) / 100
+              return label
+            }
+          }
+        }
+      }
     },
     update () {
+      this.getLabels()
       this.chartVol.data = this.getVolChartData()
       this.chartTps.data = this.getTpsChartData()
+      if (!this.chartVol.data) return
       this.chartVol.update()
       this.chartTps.update()
     },
@@ -175,68 +162,59 @@ export default {
       const duration = moment.duration(moment(e).diff(moment(s)))
       return duration.asSeconds()
     },
-    getTps () {
-      return this.arr.intervals.map(a => {
-        const sec = this.getSec(a.endTime, a.startTime)
-        return (a.transactionCount / sec).toFixed(2)
-      })
-    },
-    getVolumes () {
-      return this.arr.intervals.map(a => a.transactionCount)
-    },
     getLabels () {
-      this.labels = this.arr.intervals.map(a => getChartLabel(a, this.arr.key))
+      const data = this.txsHistory(this.interval)
+      if (!data) {
+        this.labels = []
+        return
+      }
+      this.labels = data.intervals.map(a => getChartLabel(a, data.key))
     },
     getVolChartData () {
+      let data = this.txsHistory(this.interval)
+      if (!data) data = { label: '', intervals: [] }
       const volumesData = {
-        label: `Tx Volume  - ${this.arr.label} Ø`,
-        data: this.getVolumes(),
+        label: `Tx Volume  - ${data.label} Ø`,
+        data: data.intervals.map(a => a.transactionCount),
         borderColor: 'black'
       }
 
-      const data = {
+      return {
         labels: this.labels,
         datasets: [volumesData]
       }
-      return data
     },
     getTpsChartData () {
+      let data = this.txsHistory(this.interval)
+      if (!data) data = { label: '', intervals: [] }
       const tpsData = {
-        label: `TPS History - ${this.arr.label} Ø`,
-        data: this.getTps(),
+        label: `TPS History - ${data.label} Ø`,
+        data: data.intervals.map(a => {
+          const sec = this.getSec(a.endTime, a.startTime)
+          return (a.transactionCount / sec).toFixed(2)
+        }),
         borderColor: '#87C5D6'
       }
 
-      const data = {
+      return {
         labels: this.labels,
         datasets: [tpsData]
       }
-      return data
     },
     getVolumeChart () {
-      let data = []
-      try {
-        data = this.getVolChartData()
-      } catch (err) {
-      }
       const ctx = window.document.getElementById('chartVol').getContext('2d')
       this.chartVol = new Chart(ctx, {
         type: 'line',
-        data,
-        options
+        data: this.getVolChartData(),
+        options: this.options()
       })
     },
     getTpsChart () {
-      let data = []
-      try {
-        data = this.getTpsChartData()
-      } catch (err) {
-      }
       const ctx = window.document.getElementById('chartTps').getContext('2d')
       this.chartTps = new Chart(ctx, {
         type: 'line',
-        data,
-        options
+        data: this.getTpsChartData(),
+        options: this.options()
       })
     }
   }
