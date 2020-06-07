@@ -213,7 +213,7 @@ export default {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
       await Promise.all([
         this.getAssets(),
-        this.getValidators({ subnetID: blockchain.subnetID })
+        this.getValidators({ subnetID: blockchain.subnetID, endpoint: this.networkEndpoint })
       ])
     },
     onSelectEndpoint (endpoint, isCustom) {
@@ -225,21 +225,31 @@ export default {
             this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
             this.customEndpoint = ''
           }
-          this.getValidators({ subnetID: this.currentBlockchain.subnetID })
+          this.getValidators({ subnetID: this.currentBlockchain.subnetID, endpoint })
         })
         .catch((err) => {
-          this.$q.notify({
-            message: err.message,
-            color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
-            position: 'top',
-            timeout: 2000,
-            icon: 'warning'
-          })
+          const result = this.getValidators({ subnetID: this.currentBlockchain.subnetID, endpoint })
+          if (result) {
+            this.$store.commit(SET_ENDPOINT, { endpoint })
+            if (isCustom) {
+              this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
+              this.customEndpoint = ''
+            }
+          } else {
+            this.$store.commit(SET_NODE_ID, { nodeID: '' })
+            this.$q.notify({
+              message: err.message,
+              color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
+              position: 'top',
+              timeout: 2000,
+              icon: 'warning'
+            })
+          }
         })
     },
     async getValidatorsV (type) {
       const temp = {
-        active: async () => await this.getValidators({ subnetID: this.currentBlockchain.subnetID }),
+        active: async () => await this.getValidators({ subnetID: this.currentBlockchain.subnetID, endpoint: this.networkEndpoint }),
         pending: async () => await this.getPendingValidators({ subnetID: this.currentBlockchain.subnetID })
       }
 

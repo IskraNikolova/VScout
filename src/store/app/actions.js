@@ -86,7 +86,7 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_TX_FOR_24_HOURS),
       dispatch(GET_TXS_HISTORY, { txHKey: getters.txHKey }),
       dispatch(GET_PENDING_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID }),
-      dispatch(GET_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID }),
+      dispatch(GET_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID, endpoint: getters.networkEndpoint }),
       dispatch(GET_TOTAL_TXS)
     ])
   }, 6000)
@@ -431,10 +431,10 @@ async function initValidators ({ commit, getters }, { subnetID }) {
   commit(SET_VALIDATORS, { validators: result })
 }
 
-async function getValidators ({ commit, getters }, { subnetID }) {
+async function getValidators ({ commit, getters }, { subnetID, endpoint }) {
   const response = await _getValidators({
     subnetID,
-    endpoint: getters.networkEndpoint
+    endpoint
   })
   if (response === null) return
   const { validators } = response
@@ -442,6 +442,7 @@ async function getValidators ({ commit, getters }, { subnetID }) {
 
   const result = await getVal(validators)
   commit(SET_VALIDATORS, { validators: result })
+  return true
 }
 
 async function getVal (validators) {

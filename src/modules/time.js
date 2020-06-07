@@ -31,3 +31,7 @@ export const dateLL = (time) => {
 export const fromNow = (time) => {
   return moment(new Date(Number(time) * 1000), 'YYYYMMDD').fromNow()
 }
+
+export const getSeconds = (time) => {
+  return moment(new Date(Number(time) * 1000), 'YYYYMMDD').fromNow()
+}

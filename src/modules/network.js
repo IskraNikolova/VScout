@@ -18,6 +18,7 @@ const body = (method, params = {}) => {
 export const testConnection = async ({ endpoint }) => {
   try {
     const response = await axios.post(endpoint + c.admin, body(c.getNodeID))
+
     if (response.data.error) {
       throw new Error(response.data.error.message)
     }
@@ -81,7 +82,7 @@ export const request2 = async (endpoint, body) => {
 
 export const _getBlockchains = async ({ endpoint }) => {
   try {
-    return request(endpoint + c.platform, body(c.getBlockchains))
+    return await request(endpoint + c.platform, body(c.getBlockchains))
   } catch (err) {
     return null
   }
@@ -89,7 +90,7 @@ export const _getBlockchains = async ({ endpoint }) => {
 
 export const _getValidators = async ({ subnetID, endpoint }) => {
   try {
-    return request(endpoint + c.platform, body(c.getCurrentValidators, { subnetID }))
+    return await request(endpoint + c.platform, body(c.getCurrentValidators, { subnetID }))
   } catch (err) {
     return null
   }
@@ -97,7 +98,7 @@ export const _getValidators = async ({ subnetID, endpoint }) => {
 
 export const _getPendingValidators = async ({ subnetID, endpoint }) => {
   try {
-    return request(endpoint + c.platform, body(c.getPendingValidators, { subnetID }))
+    return await request(endpoint + c.platform, body(c.getPendingValidators, { subnetID }))
   } catch (err) {
     return null
   }
@@ -124,7 +125,7 @@ export const _listAccounts = async ({ endpoint, params }) => {
 }
 
 export const _getAccount = async ({ endpoint, params }) => {
-  return request(endpoint + c.platformBc, body(c.getAccount, params))
+  return await request(endpoint + c.platformBc, body(c.getAccount, params))
 }
 
 export const _issueTx = async ({ endpoint, params }) => {
@@ -154,7 +155,7 @@ export const _getTxStatus = async ({ endpoint, params }) => {
 
 export const _getNodeId = async ({ endpoint }) => {
   try {
-    return request(endpoint + c.admin, body(c.getNodeID))
+    return await request(endpoint + c.admin, body(c.getNodeID))
   } catch (err) {
     return null
   }
