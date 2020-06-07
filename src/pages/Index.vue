@@ -230,13 +230,13 @@ export default {
         .catch((err) => {
           const result = this.getValidators({ subnetID: this.currentBlockchain.subnetID, endpoint })
           if (result) {
+            this.$store.commit(SET_NODE_ID, { nodeID: '' })
             this.$store.commit(SET_ENDPOINT, { endpoint })
             if (isCustom) {
               this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
               this.customEndpoint = ''
             }
           } else {
-            this.$store.commit(SET_NODE_ID, { nodeID: '' })
             this.$q.notify({
               message: err.message,
               color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
