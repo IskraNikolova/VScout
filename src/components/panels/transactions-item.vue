@@ -78,10 +78,9 @@ export default {
       return t.toFixed(2)
     }
   },
-  mounted () {
+  async mounted () {
     this.interval = this.txHKey
-    this.getVolumeChart()
-    this.getTpsChart()
+    this.initCharts()
     this.$store.subscribe(async (mutation, state) => {
       if (mutation.type === 'SET_TOTAL_TXS') {
         if (this.prevTotalTxs < this.totalTxsCount ||
