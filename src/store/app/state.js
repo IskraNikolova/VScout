@@ -13,7 +13,7 @@ export default function () {
     prevTxsFor24H: { transactionCount: 0, transactionVolume: 0 },
     totalTxsCount: 0,
     prevTotalTxs: 0,
-    txsHistory: [],
+    txsHistoryState: {},
     txHKey: 'minute',
     nodeID: ''
   }

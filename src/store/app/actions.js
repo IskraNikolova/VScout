@@ -163,10 +163,10 @@ const temp = {
   }
 }
 
-async function getTxsHistory ({ commit, getters }, { txHKey }) {
+async function getTxsHistory ({ commit }, { txHKey }) {
   const t = temp[txHKey]
   if (!t) return
-  commit(SET_TXS_HISTORY, { key: txHKey, txsHistory: getters.txsHistory(txHKey) })
+
   const { sub, interval, label } = t
   const minAgo = moment().subtract(sub.value, sub.label)
 

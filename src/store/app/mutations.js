@@ -1,4 +1,3 @@
-import Vue from 'vue'
 const { network } = require('./../../modules/config').default
 
 import {
@@ -55,9 +54,9 @@ const mutations = {
     state.prevTotalTxs = prevTotalTxs
   },
   [SET_TXS_HISTORY]: (state, { key, txsHistory }) => {
-    if (!state.txsHistory[key]) Vue.set(state.txsHistory, key, [])
     state.txHKey = key
-    state.txsHistory[key] = txsHistory
+    if (!txsHistory) return
+    state.txsHistoryState[key] = txsHistory
   },
   [SET_ASSETS_BY_BLOCKCHAINS]: (state, { assetsByChain }) => {
     state.assetsByChain = assetsByChain

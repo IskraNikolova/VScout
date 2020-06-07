@@ -52,7 +52,7 @@ export function prevTotalTxs (state) {
 }
 
 export function txsHistory (state) {
-  return key => state.txsHistory[key]
+  return key => state.txsHistoryState[key]
 }
 
 export function endpointsMemory (state) {
