@@ -1,4 +1,6 @@
 import moment from 'moment'
+
+import { Notify } from 'quasar'
 const BigNumber = require('bignumber.js')
 
 import {
@@ -96,9 +98,13 @@ async function getBlockchains ({ commit, getters }) {
   const response = await _getBlockchains({
     endpoint: getters.networkEndpoint
   })
-  if (response === null) return
 
-  const { blockchains } = response
+  if (response.data.error) {
+    Notify.create(response.data.error.message)
+    return null
+  }
+
+  const { blockchains } = response.data.result
   commit(SET_BLOCKCHAINS, { blockchains })
   commit(SET_CURRENT_BLOCKCHAIN, { blockchain: blockchains[0] })
 }
@@ -204,9 +210,12 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
     endpoint: getters.networkEndpoint
   })
 
-  if (response === null) return
+  if (response.data.error) {
+    Notify.create(response.data.error.message)
+    return null
+  }
 
-  let { validators } = response
+  let { validators } = response.data.result
   if (validators.length === getters.pendingValidators.length) return
 
   validators = validators.filter(i => i.endTime >= Date.now() / 1000)
@@ -216,18 +225,25 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
 }
 
 async function getNodeId ({ getters, commit }) {
-  const result = await _getNodeId({ endpoint: getters.networkEndpoint })
-  if (result === null) return null
+  const response = await _getNodeId({ endpoint: getters.networkEndpoint })
+  if (response.data.error) {
+    Notify.create(response.data.error.message)
+    return
+  }
 
-  commit(SET_NODE_ID, { nodeID: result.nodeID })
+  commit(SET_NODE_ID, { nodeID: response.data.result.nodeID })
 }
 
 async function getAccount ({ commit, getters }, { address, type }) {
   try {
-    const account = await _getAccount({
+    const res = await _getAccount({
       endpoint: getters.networkEndpoint,
       params: { address }
     })
+    if (res.data.error) {
+      throw new Error(res.data.error.message)
+    }
+    const account = res.data.result
     if (type === 'destination') {
       commit(UPDATE_UI, {
         addValidatorDialog: {
@@ -325,11 +341,15 @@ async function listAccounts ({ getters }, { username, password }) {
 async function addValidatorToDefaultS ({ getters }, { params, signer }) {
   try {
     const endpoint = getters.networkEndpoint
-    const account = await _getAccount({
+    const res = await _getAccount({
       endpoint,
       params: { address: signer }
     })
 
+    if (res.data.error) {
+      throw new Error(res.data.error.message)
+    }
+    const account = res.data.result
     const nonce = Number(account.nonce) + 1
     params.payerNonce = nonce
     if (account.balance < params.stakeAmount) {
@@ -424,9 +444,12 @@ async function initValidators ({ commit, getters }, { subnetID }) {
     endpoint: getters.networkEndpoint
   })
 
-  if (response === null) return
+  if (response.data.error) {
+    Notify.create(response.data.error.message)
+    return null
+  }
 
-  const { validators } = response
+  const { validators } = response.data.result
   const result = await getVal(validators)
   commit(SET_VALIDATORS, { validators: result })
 }
@@ -436,8 +459,13 @@ async function getValidators ({ commit, getters }, { subnetID, endpoint }) {
     subnetID,
     endpoint
   })
-  if (response === null) return
-  const { validators } = response
+  if (response.data.error) {
+    Notify.create(response.data.error.message)
+    return null
+  }
+
+  const { validators } = response.data.result
+
   if (validators.length === getters.validators.length) return
 
   const result = await getVal(validators)

@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="ui.selectAccounts.isOpen" persistent>
-    <q-card style="min-width: 500px!important;max-height: 500px;">
+    <q-card class="select-account-card">
       <q-card-section class="row items-center">
         <q-item>
           <q-item-section avatar>

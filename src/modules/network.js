@@ -15,19 +15,6 @@ const body = (method, params = {}) => {
   }
 }
 
-export const testConnection = async ({ endpoint }) => {
-  try {
-    const response = await axios.post(endpoint + c.admin, body(c.getNodeID))
-
-    if (response.data.error) {
-      throw new Error(response.data.error.message)
-    }
-    return response.data.result.nodeID
-  } catch (err) {
-    throw new Error(err.message)
-  }
-}
-
 export const _getLastTx = async () => {
   try {
     const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.getLast)
@@ -67,101 +54,81 @@ export const _getAggregatesWithI = async (s, e, intervalSize) => {
 }
 
 export const request = async (endpoint, body) => {
-  try {
-    const response = await axios.post(endpoint, body)
-    return response.data.result
-  } catch (err) {
-    throw new Error(err.message)
-  }
-}
-
-export const request2 = async (endpoint, body) => {
   const response = await axios.post(endpoint, body)
   return response
 }
 
 export const _getBlockchains = async ({ endpoint }) => {
-  try {
-    return await request(endpoint + c.platform, body(c.getBlockchains))
-  } catch (err) {
-    return null
-  }
+  const response = await request(endpoint + c.platform, body(c.getBlockchains))
+  return response
 }
 
 export const _getValidators = async ({ subnetID, endpoint }) => {
-  try {
-    return await request(endpoint + c.platform, body(c.getCurrentValidators, { subnetID }))
-  } catch (err) {
-    return null
-  }
+  const response = await request(endpoint + c.platform, body(c.getCurrentValidators, { subnetID }))
+  return response
 }
 
 export const _getPendingValidators = async ({ subnetID, endpoint }) => {
-  try {
-    return await request(endpoint + c.platform, body(c.getPendingValidators, { subnetID }))
-  } catch (err) {
-    return null
-  }
+  const response = await request(endpoint + c.platform, body(c.getPendingValidators, { subnetID }))
+  return response
 }
 
 export const _createUser = async ({ endpoint, params }) => {
-  const response = await request2(endpoint + c.keystore, body(c.createUser, params))
+  const response = await request(endpoint + c.keystore, body(c.createUser, params))
   return response
 }
 
 export const _createAddress = async ({ endpoint, params }) => {
-  const response = await request2(endpoint + c.avm, body(c.createAddress, params))
+  const response = await request(endpoint + c.avm, body(c.createAddress, params))
   return response
 }
 
 export const _createAccount = async ({ endpoint, params }) => {
-  const response = await request2(endpoint + c.platform, body(c.createAccount, params))
+  const response = await request(endpoint + c.platform, body(c.createAccount, params))
   return response
 }
 
 export const _listAccounts = async ({ endpoint, params }) => {
-  const response = await request2(endpoint + c.platform, body(c.listAccounts, params))
+  const response = await request(endpoint + c.platform, body(c.listAccounts, params))
   return response
 }
 
 export const _getAccount = async ({ endpoint, params }) => {
-  return await request(endpoint + c.platformBc, body(c.getAccount, params))
+  const response = await request(endpoint + c.platformBc, body(c.getAccount, params))
+  return response
 }
 
 export const _issueTx = async ({ endpoint, params }) => {
-  const response = await request2(endpoint + c.platform, body(c.issueTx, params))
+  const response = await request(endpoint + c.platform, body(c.issueTx, params))
   return response
 }
 
 export const _exportAVA = async ({ endpoint, params }) => {
-  const response = await request2(endpoint + c.avm, body(c.exportAVA, params))
+  const response = await request(endpoint + c.avm, body(c.exportAVA, params))
   return response
 }
 
 export const _importAVA = async ({ endpoint, params }) => {
-  const response = await request2(endpoint + c.platform, body(c.importAVA, params))
+  const response = await request(endpoint + c.platform, body(c.importAVA, params))
   return response
 }
 
 export const _sign = async ({ endpoint, params }) => {
-  const response = await request2(endpoint + c.platform, body(c.sign, params))
+  const response = await request(endpoint + c.platform, body(c.sign, params))
   return response
 }
 
 export const _getTxStatus = async ({ endpoint, params }) => {
-  const response = await request2(endpoint + c.avm, body(c.getTxStatus, params))
+  const response = await request(endpoint + c.avm, body(c.getTxStatus, params))
   return response
 }
 
 export const _getNodeId = async ({ endpoint }) => {
-  try {
-    return await request(endpoint + c.admin, body(c.getNodeID))
-  } catch (err) {
-    return null
-  }
+  const response = await request(endpoint + c.admin, body(c.getNodeID))
+  return response
 }
 
 export const _addDefaultSubnetValidator = async ({ endpoint, params }) => {
-  const response = await request2(endpoint + c.platform, body(c.addDefaultSubnetValidator, params))
+  const response = await request(endpoint + c.platform, body(c.addDefaultSubnetValidator, params))
   return response
 }

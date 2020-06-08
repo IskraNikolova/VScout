@@ -1,6 +1,6 @@
 <template>
   <q-dialog v-model="ui.uCreate.isOpen" persistent >
-    <q-card style="max-width: 600px!important;min-height: 370px;">
+    <q-card class="create-card">
       <q-card-section class="row">
         <q-card-section class="row items-center">
           <!--Header Panel -->

@@ -127,10 +127,8 @@ export default {
           username: this.username,
           password: this.password
         })
-        console.log(signedTx)
         this.closeS(signedTx)
       } catch (err) {
-        console.log(err)
         this.error = err.message
       }
     }

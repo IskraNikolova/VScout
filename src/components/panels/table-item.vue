@@ -290,7 +290,6 @@ export default {
       try {
         openURL(props.row.link)
       } catch (err) {
-        console.log(err)
       }
     },
     getLocalString (val) {

@@ -5,7 +5,7 @@
     transition-show="slide-up"
     transition-hide="slide-down"
   >
-    <q-card style="min-width: 90%!important; min-height: 595px;padding-left: 8%;" class="q-pl-xl q-pt-md q-pb-md">
+    <q-card class="q-pl-xl q-pt-md q-pb-md iden-card">
       <q-card-section class="row items-center">
         <q-item>
           <q-item-section avatar>

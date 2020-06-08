@@ -22,9 +22,6 @@
                   </q-item>
                 </q-list>
             </q-btn-dropdown>
-            <div v-else class="text-h6 q-pb-md text-orange" >
-              None
-            </div>
             <asset-info-item ref="assetDialog"/>
           </div>
           </div>
