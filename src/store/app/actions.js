@@ -204,7 +204,7 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
     endpoint: getters.networkEndpoint
   })
 
-  if (!response === null) return
+  if (response === null) return
 
   let { validators } = response
   if (validators.length === getters.pendingValidators.length) return
@@ -466,7 +466,7 @@ async function map (validators) {
     const sa = val.stakeAmount ? val.stakeAmount : val.weight
     const MD5 = makeMD5()
     const hash = MD5.hex(val.id)
-    const avatar = info.avatarUrl ? info.avatarUrl : `http://www.gravatar.com/avatar/${hash}?d=identicon&s=150`
+    const avatar = info.avatarUrl ? info.avatarUrl : `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150`
     const monster = `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150`
     const name = info.name ? info.name : val.id.substr(0, 20) + '...'
 

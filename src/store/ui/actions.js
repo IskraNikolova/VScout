@@ -28,8 +28,9 @@ const closeSignTx = ({ commit }, signedTx) => {
   commit(UPDATE_UI, { signTx: { isOpen: false, unsignedTx: null, signer: null, signedTx } })
 }
 
-const openPCreate = ({ commit }, { type }) => {
+const openPCreate = ({ commit, getters }, { type }) => {
   commit(UPDATE_UI, { pCreate: { isOpen: true, type } })
+  console.log(getters.ui)
 }
 
 const closePCreate = ({ commit }) => {

@@ -4,9 +4,9 @@
     id="custom-card">
     <div class="row">
       <div class="col-md-3 col-xs-10">
-        <div style="font-size: 12px;" class="q-pb-md">BLOCKCHAIN</div>
+        <div id="f-size12" class="q-pb-md">BLOCKCHAIN</div>
         <div class="row">
-          <div class="text-h6 text-negative q-pb-md">{{ currentBlockchain.name }}</div>
+          <div class="text-h6 text-orange q-pb-md">{{ currentBlockchain.name }}</div>
           <div class="q-pl-md q-pt-xs">
             <q-btn-dropdown outline v-if="assets(currentBlockchain.id)" size="xs" no-caps label="Smart Digital Assets">
                 <div class="q-pa-md">
@@ -22,7 +22,7 @@
                   </q-item>
                 </q-list>
             </q-btn-dropdown>
-            <div v-else class="text-h6 q-pb-md text-negative" >
+            <div v-else class="text-h6 q-pb-md text-orange" >
               None
             </div>
             <asset-info-item ref="assetDialog"/>
@@ -34,20 +34,20 @@
         <img src="~assets/network-nodes.svg" id="logo">
       </div>
       <div class="col-md-3 col-xs-10">
-        <div style="font-size: 12px;" class="q-pb-md">SUBNET ID</div>
-        <div class="text-h6 q-pb-md text-negative" v-if="currentBlockchain.subnetID === '11111111111111111111111111111111LpoYY'">
+        <div id="f-size12" class="q-pb-md">SUBNET ID</div>
+        <div class="text-h6 q-pb-md text-orange" v-if="currentBlockchain.subnetID === '11111111111111111111111111111111LpoYY'">
           Default Subnet
         </div>
-        <div v-else class="text-negative" style="font-size: 18px;letter-spacing: -2px;margin-bottom: 20px;" >{{ currentBlockchain.subnetID }}</div>
+        <div v-else class="text-orange subId">{{ currentBlockchain.subnetID }}</div>
         <div id="f-size12">VM ID <div class="text-grey">{{ currentBlockchain.vmID }}</div></div>
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/computer-network.svg" id="logo">
       </div>
       <div class="col-md-3 col-xs-10">
-        <div style="font-size: 12px;" class="q-pb-md">NETWORK</div>
+        <div id="f-size12" class="q-pb-md">NETWORK</div>
         <small>Connected with</small>
-        <div class="text-h7 q-pb-md text-negative" >
+        <div class="text-h7 q-pb-md text-orange" >
           {{ networkEndpoint }}
         </div>
         <div id="f-size12">Node ID <div class="text-grey">{{ nodeID }}</div></div>
@@ -87,9 +87,6 @@ export default {
 <style scoped>
   #custom-card {
     border-right: 2px solid #ffa959;
-  }
-  #f-size12 {
-    font-size: 83%;
   }
   #f-size11 {
     font-size: 82%;

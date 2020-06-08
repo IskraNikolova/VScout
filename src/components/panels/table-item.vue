@@ -14,8 +14,17 @@
       <template slot="top-left">
         <q-btn size="xs" flat icon="apps" @click="isGrid=true"/>
         <q-btn size="xs" flat icon="reorder" @click="isGrid=false"/>
-        <q-btn size="xs" flat label="Active" @click.native="onGetValidators"/>
-        <q-btn size="xs" flat label="Pending" @click.native="onGetValidators"/>
+        <q-btn-toggle
+          v-model="type"
+          flat
+          size="xs"
+          toggle-color="accent"
+          @click.native="onGetValidators"
+          :options="[
+            {label: 'Active', value: 'active'},
+            {label: 'Pending', value: 'pending'}
+          ]"
+        />
         <q-btn size="xs" outline label="Add Validator" icon="add" @click.native="onAddValidator" class="q-mr-md"/>
         <add-validator-dialog ref="addValidatorDialog" />
         <!--<q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
@@ -81,7 +90,7 @@
                     :value="(props.row.cumulativeStake - props.row.precent) / 100"
                     :buffer="(props.row.cumulativeStake - props.row.precent) / 100"
                     color="blue-grey-5">
-                    <div class="absolute-full flex flex-left text-white q-ml-xs" style="font-size: 12px;margin-top: 10px;">
+                    <div class="absolute-full text-black q-ml-xs" style="font-size: 15px;margin-top: 6%;">
                       {{props.row.cumulativeStake}} %
                     </div>
                   </q-linear-progress>
@@ -112,12 +121,12 @@
         </q-tr>
       </template>
       <template v-slot:item="props">
-         <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4">
-           <q-card flat bordered>
+        <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4">
+          <q-card flat bordered>
             <q-item>
               <q-item-section avatar>
                 <q-avatar>
-                  <img :src="props.row.monster">
+                  <img :src="props.row.avatar">
                 </q-avatar>
               </q-item-section>
               <q-item-section>
@@ -128,7 +137,7 @@
                   </span>
                 </q-item-label>
                 <q-item-label>
-                  {{ props.row.validator }}
+                  {{ props.row.name }}
                   <small>
                     <q-icon
                       @click="copyToClipboard(props.row.validator)"
@@ -164,10 +173,10 @@
               </q-card-section>
               <q-separator vertical />
               <q-card-section class="col-7">
-               <cumulative-stake-chart
-                 v-bind:name="props.row.validator"
-                 v-bind:percent="props.row.precent"
-                 v-bind:percentAll="props.row.cumulativeStake ? props.row.cumulativeStake : NaN"
+                <cumulative-stake-chart
+                  v-bind:name="props.row.validator"
+                  v-bind:percent="props.row.precent"
+                  v-bind:percentAll="props.row.cumulativeStake ? props.row.cumulativeStake : NaN"
                 />
               </q-card-section>
 
@@ -204,7 +213,7 @@
 import { mapGetters } from 'vuex'
 import { copyToClipboard, openURL } from 'quasar'
 
-import { dateLL } from './../../modules/time'
+import { date } from './../../modules/time'
 
 import DetailsItem from './../details-item'
 // import AddIdentificationDialog from './../add-identification-dialog'
@@ -223,6 +232,7 @@ export default {
   },
   data () {
     return {
+      type: 'active',
       curentValidators: [],
       isGrid: false,
       isActive: true,
@@ -255,7 +265,7 @@ export default {
           sortable: true
         },
         { name: 'precent', align: 'left', label: 'CUMULATIVE STAKE (%)', field: 'cumulativeStake' },
-        { name: 'startTime', align: 'left', label: 'START TIME', field: 'startTime' },
+        { name: 'startTime', align: 'left', label: 'START TIME', field: 'startTime', sortable: true },
         { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress' }
       ]
     }
@@ -305,20 +315,17 @@ export default {
         timeout: 1000
       })
     },
-    onGetValidators (e) {
-      if (!e.target.innerText) return
-
+    onGetValidators () {
       const temp = {
         active: () => { this.isActive = true },
         pending: () => { this.isActive = false }
       }
-      const type = e.target.innerText.toLowerCase()
-      temp[type]()
-      this.$emit('getValidators', type)
+      temp[this.type]()
+      this.$emit('getValidators', this.type)
     },
     formatDate (time) {
       if (!time) return
-      return dateLL(time)
+      return date(time)
     }
   }
 }

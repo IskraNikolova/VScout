@@ -22,63 +22,64 @@
           </div>
         </q-card-section>
          <!--Form panel-->
-         <div class="col">
           <q-card-section>
             <q-form
               @submit="onSubmit"
               @reset="onReset"
               class="q-gutter-md"
             >
-              <q-input
-                color="accent"
-                class="q-mb-xs"
-                outlined
-                clearable
-                label-color="negative"
-                v-model="username"
-                label="Username *"
-                lazy-rules
-                @focus="error=null"
-                :rules="[ val => val && val.length > 0 || 'Please type your username!']"
-              />
-              <q-input
-                color="accent"
-                class="q-mb-xs"
-                outlined
-                clearable
-                type="password"
-                label-color="negative"
-                v-model="password"
-                @focus="error=null"
-                label="Password *"
-                lazy-rules
-                :rules="[ val => val && val.length > 0 || 'Please type your password!']"
-              />
-              <div class="q-pb-xl row">
+              <div class="row">
+                <div class="col-md-6 col-xs-12">
+                <q-input
+                  color="accent"
+                  class="q-mb-xs"
+                  outlined
+                  clearable
+                  label-color="orange"
+                  v-model="username"
+                  label="Username *"
+                  lazy-rules
+                  @focus="error=null"
+                  :rules="[ val => val && val.length > 0 || 'Please type your username!']"
+                />
+                <q-input
+                  color="accent"
+                  class="q-mb-xs"
+                  outlined
+                  clearable
+                  type="password"
+                  label-color="orange"
+                  v-model="password"
+                  @focus="error=null"
+                  label="Password *"
+                  lazy-rules
+                  :rules="[ val => val && val.length > 0 || 'Please type your password!']"
+                />
+                </div>
+                <!-- Create address, QR Code Panel -->
+                <div class="col-md-6 col-xs-12">
+                  <q-card-section>
+                    <div v-if="!hasQr" class="qr"><small>QR Code</small></div>
+                    <div v-else>
+                      <div style="text-align: center;"><canvas id="qr-code"></canvas></div>
+                      <div><small>{{ address }}</small></div>
+                    </div>
+                    <q-inner-loading :showing="visible">
+                      <q-spinner-tail size="50px" color="orange" />
+                    </q-inner-loading>
+                    <div class="text-grey">
+                      <q-checkbox keep-color color="accent" v-model="createAddress" label="Create a new address controlled by the given user." />
+                    </div>
+                  </q-card-section>
+                </div>
+              </div>
+              <div class="q-pb-xs row">
                 <q-space />
                 <q-btn label="Create" type="submit" size="10px" color="accent"/>
                 <q-btn label="Reset" type="reset" flat size="10px" color="accent"/>
               </div>
             </q-form>
           </q-card-section>
-        </div>
-        <q-separator vertical class="q-ma-md q-mb-xl" />
-        <!-- Create address, QR Code Panel -->
-        <div class="col">
-          <q-card-section>
-            <div v-if="!hasQr" style="border-style: groove;border-width: 0.5px;width:100px;height: 100px;margin:auto;text-align: center;color: grey;padding-top:18%;"><small>QR Code</small></div>
-            <div v-else>
-              <div style="text-align: center;"><canvas id="qr-code"></canvas></div>
-              <div><small>{{ address }}</small></div>
-            </div>
-            <q-inner-loading :showing="visible">
-              <q-spinner-tail size="50px" color="negative" />
-            </q-inner-loading>
-            <div class="q-mt-md text-grey">
-              <q-checkbox keep-color color="accent" v-model="createAddress" label="Create a new address controlled by the given user." />
-            </div>
-          </q-card-section>
-        </div>
       </q-card-section>
     </q-card>
   </q-dialog>

@@ -23,7 +23,7 @@
             class="q-mb-xs"
             outlined
             clearable
-            label-color="negative"
+            label-color="orange"
             v-model="username"
             label="Username *"
             hint="Use exist user on this node."
@@ -37,20 +37,20 @@
             outlined
             clearable
             type="password"
-            label-color="negative"
+            label-color="orange"
             v-model="password"
             @focus="error=null"
             label="Password *"
             lazy-rules
             :rules="[ val => val && val.length > 0 || 'Please type your password!']"
           />
-          <div v-if="isFund" >
+          <div v-if="ui.pCreate.type === 'paying'" >
             <q-input
               v-if="dismissFund"
               color="accent"
               outlined
               clearable
-              label-color="negative"
+              label-color="orange"
               v-model="fundAmount"
               suffix="$nAVA"
               label="Fund Amount *"
@@ -110,26 +110,19 @@ export default {
   computed: {
     ...mapGetters([
       'ui'
-    ]),
-    isFund: function () {
-      const temp = {
-        paying: true
-      }
-      return temp[this.ui.pCreate.type]
-    }
+    ])
   },
   data () {
     return {
       username: null,
       password: null,
       fundAmount: null,
-      dismissFund: true,
+      dismissFund: false,
       error: null
     }
   },
   created () {
     this.error = null
-    this.dismissFund = this.isFund
   },
   methods: {
     ...mapActions({

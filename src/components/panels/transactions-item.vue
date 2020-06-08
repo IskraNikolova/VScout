@@ -5,7 +5,7 @@
   >
     <div class="row">
       <div class="col-md-3 col-xs-12">
-        <div style="font-size: 12px;" class="q-pb-md">TRANSACTIONS (24Hr)</div>
+        <div id="f-size12" class="q-pb-md">TRANSACTIONS (24Hr)</div>
         <div class="col text-h5 text-accent q-pb-xl">
           <img
             src="~assets/arrow-down.png"
@@ -16,7 +16,7 @@
           {{ txsFor24H.transactionCount }}
           <small>({{ tps }} TPS)</small>
         </div>
-        <div style="font-size: 12px;" class="q-pb-md">TOTAL TRANSACTIONS</div>
+        <div id="f-size12" class="q-pb-md">TOTAL TRANSACTIONS</div>
         <div class="text-h5"><span class="text-accent">{{ totalTxsCount.toLocaleString() }}</span></div>
       </div>
       <div class="col-md-9 col-xs-12">

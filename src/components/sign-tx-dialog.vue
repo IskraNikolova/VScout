@@ -35,7 +35,7 @@
               class="q-mb-xs"
               outlined
               label="Unsigned Tx"
-              label-color="negative"
+              label-color="orange"
               v-model="ui.signTx.unsignedTx"
             />
             <q-input
@@ -43,7 +43,7 @@
               color="accent"
               class="q-mb-xs"
               outlined
-              label-color="negative"
+              label-color="orange"
               label="Signer"
               v-model="ui.signTx.signer"
               hint="The account providing the staked AVA and the fee."
@@ -54,7 +54,7 @@
               class="q-mb-xs"
               outlined
               clearable
-              label-color="negative"
+              label-color="orange"
               v-model="username"
               label="Username *"
               lazy-rules
@@ -67,7 +67,7 @@
               outlined
               clearable
               type="password"
-              label-color="negative"
+              label-color="orange"
               v-model="password"
               @focus="error=null"
               label="Password *"

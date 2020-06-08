@@ -26,55 +26,66 @@ export default {
       required: true
     }
   },
+  computed: {
+    nameC: function () {
+      return this.name
+    }
+  },
   data () {
     return {
       chart: null
     }
   },
-  mounted () {
-    const ctx = window.document
-      .getElementById(`${this.name}`)
-      .getContext('2d')
+  methods: {
+    getChart () {
+      const el = document
+        .getElementById(`${this.nameC}`)
+      if (el === null) return
+      const ctx = el.getContext('2d')
 
-    let percentAll = this.percentAll
-    if (!percentAll) percentAll = 0
+      let percentAll = this.percentAll
+      if (!percentAll) percentAll = 0
 
-    const dataArray = [
-      Math.round(percentAll - this.percent, 2),
-      Math.round(this.percent, 2),
-      Math.round(100 - (percentAll), 2)
-    ]
+      const dataArray = [
+        Math.round(percentAll - this.percent, 2),
+        Math.round(this.percent, 2),
+        Math.round(100 - (percentAll), 2)
+      ]
 
-    this.chart = new Chart(ctx, {
-      type: 'pie',
-      data: {
-        datasets: [{
-          data: dataArray,
-          backgroundColor: ['#677b87', '#87C5D6', 'black'],
-          borderColor: ['#677b87', '#87C5D6', 'black']
-        }]
-      },
-      options: {
-        legend: {
-          display: false
-        },
-        tooltips: {
-          callbacks: {
-            label: function (tooltipItem, data) {
-              const label = data.datasets[0].data[tooltipItem.index] + '%'
-              return label
-            }
-          }
-        },
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
-            }
+      this.chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          datasets: [{
+            data: dataArray,
+            backgroundColor: ['#677b87', '#87C5D6', 'black'],
+            borderColor: ['#677b87', '#87C5D6', 'black']
           }]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem, data) {
+                const label = data.datasets[0].data[tooltipItem.index] + '%'
+                return label
+              }
+            }
+          },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
         }
-      }
-    })
+      })
+    }
+  },
+  mounted () {
+    this.getChart()
   }
 }
 </script>

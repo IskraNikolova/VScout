@@ -44,7 +44,7 @@
               color="accent"
               outlined
               clearable
-              label-color="negative"
+              label-color="orange"
               v-model="nodeIDModel"
               label="Your node ID *"
               hint="Enter validator ID or load it from '+' button if you use it for network connection."
@@ -60,7 +60,7 @@
               class="q-mb-xs"
               outlined
               clearable
-              label-color="negative"
+              label-color="orange"
               v-model="name"
               label="Validator Name"
               hint="Validator's Name will be show on validator's list instead validator ID."
@@ -71,7 +71,7 @@
               class="q-mb-xs"
               outlined
               clearable
-              label-color="negative"
+              label-color="orange"
               v-model="avatar"
               label="Avatar Url"
               hint="For avatar you must use url."
@@ -82,7 +82,7 @@
               class="q-mb-xs"
               outlined
               clearable
-              label-color="negative"
+              label-color="orange"
               v-model="link"
               label="Link"
               hint="Your business link or other."
@@ -110,7 +110,7 @@
                 color="accent"
                 class="q-mb-xs"
                 outlined
-                label-color="negative"
+                label-color="orange"
                 v-model="address"
                 label="P-Chain address "
                 hint="The account providing the staked AVA. Are You?"
@@ -120,7 +120,7 @@
                 class="q-mb-xs"
                 outlined
                 clearable
-                label-color="negative"
+                label-color="orange"
                 v-model="username"
                 label="Username *"
                 lazy-rules
@@ -133,7 +133,7 @@
                 outlined
                 clearable
                 type="password"
-                label-color="negative"
+                label-color="orange"
                 v-model="password"
                 @focus="error=null"
                 label="Password *"

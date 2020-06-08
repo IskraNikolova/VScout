@@ -11,7 +11,7 @@
               <div class="q-pb-md">Reward Calculator</div>
               <div class="q-pa-md absolute-top-right"><q-badge outline size="xs" color="accent" :label="'Y ' + percentReward.toFixed(2) + '%'" /></div>
               <q-input
-                label-color="negative"
+                label-color="orange"
                 outlined
                 v-model="stakeAmount"
                 label="Staking Amount"
@@ -34,9 +34,9 @@
                 :label-value="'Staking Time ' + stakeTime + ' weeks'"
                 label-always
                 @input="calculate"
-                label-text-color="negative"
+                label-text-color="orange"
                 label-color="white"
-                color="negative"
+                color="orange"
               />
               <div class="row">
                 <div class="col-4">
@@ -59,12 +59,12 @@
           flat
           dropdown-icon="img:statics/blockchain-black.svg"
         >
-          <div class="no-wrap q-pa-md text-negative">Blockchains</div>
+          <div class="no-wrap q-pa-md text-orange">Blockchains</div>
           <q-list v-for="(blockchain, i) in blockchains" v-bind:key="i">
             <q-item clickable v-close-popup @click="onSelectNetwork(blockchain)">
               <q-item-section>
                 <q-item-label><q-img src="statics/blockchain-black.svg" id="logo-xs"/> {{ blockchain.name }}</q-item-label>
-                <q-item-label caption><small>Subnet ID: </small><span class="text-negative">{{ blockchain.subnetID.substr(0, 4)}}...{{ blockchain.subnetID.substr(30)}}</span></q-item-label>
+                <q-item-label caption><small>Subnet ID: </small><span class="text-orange">{{ blockchain.subnetID.substr(0, 4)}}...{{ blockchain.subnetID.substr(30)}}</span></q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -74,7 +74,7 @@
           dropdown-icon="img:statics/node.svg"
           id="target-el"
         >
-          <div class="no-wrap q-pa-md text-negative">Switch To Endpoint</div>
+          <div class="no-wrap q-pa-md text-orange">Switch To Endpoint</div>
           <q-list v-for="(endpoint, i) in endpoints" v-bind:key="i">
             <q-item clickable v-close-popup @click="onSelectEndpoint(endpoint, false)">
               <q-item-section>
@@ -103,7 +103,7 @@
         </q-btn-dropdown>
         <q-tooltip :target="switchNet" content-class="bg-white text-black">
           <div>Connected with <q-icon name="router"/></div>
-          <div class="text-negative">{{ networkEndpoint }}</div>
+          <div class="text-orange">{{ networkEndpoint }}</div>
         </q-tooltip>
       </div>
     </div>
