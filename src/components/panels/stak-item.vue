@@ -69,6 +69,8 @@ export default {
 <style scoped>
  #custom-card {
    border-right: 2px solid grey;
+   padding-top: 3%;
+   padding-bottom: 3%;
  }
  .custom-icon {
    width:30vw;

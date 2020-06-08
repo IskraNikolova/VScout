@@ -4,7 +4,7 @@
     id="custom-card"
   >
     <div class="row">
-      <div class="col-md-3 col-xs-12">
+      <div class="col-md-3 col-xs-12" style="padding-top: 3%;">
         <div id="f-size12" class="q-pb-md">TRANSACTIONS (24Hr)</div>
         <div class="col text-h5 text-accent q-pb-xl">
           <img

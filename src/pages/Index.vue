@@ -123,12 +123,12 @@
         </q-tooltip>
       </div>
     </div>
-    <stak-item />
-    <transactions-item />
-    <blockchain-item />
+    <stak-item class="q-pa-md"/>
+    <transactions-item class="q-pa-md" />
+    <blockchain-item  class="q-pa-md"/>
 
-    <table-item @getValidators="getValidatorsV" />
-    <faqs-item />
+    <table-item @getValidators="getValidatorsV"/>
+    <faqs-item class="q-pa-md" />
     <div class="flex flex-center q-mt-xl">
       <img src="~assets/ava-black.png" id="logo"/>
     </div>

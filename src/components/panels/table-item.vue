@@ -6,9 +6,9 @@
       row-key="rank"
       :separator="separator"
       :filter="filter"
-      :pagination.sync="pagination"
+      :pagination="pagination"
       :grid="isGrid"
-      class="light-background shadow-3"
+      :class="getClass()"
       id="custom-table"
     >
       <template slot="top-left">
@@ -30,7 +30,7 @@
         <!--<q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
         <add-identification-dialog ref="addIdentificationRef" />-->
       </template>
-      <template slot="top-right">
+      <template slot="top-right" v-if="!isGrid">
         <q-input
           borderless
           color="accent"
@@ -291,6 +291,13 @@ export default {
         openURL(props.row.link)
       } catch (err) {
       }
+    },
+    getClass () {
+      if (this.isGrid) {
+        return 'light-background-grid shadow-3'
+      }
+
+      return 'light-background shadow-3'
     },
     getLocalString (val) {
       if (!val) return val

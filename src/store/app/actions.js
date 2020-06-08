@@ -181,14 +181,19 @@ async function getTxsHistory ({ commit }, { txHKey }) {
     moment().toISOString(),
     `${interval.value}${interval.label}`
   )
+
   if (aggregates === null) return null
 
-  aggregates.intervals.map(a => {
-    if (moment(a.endTime) > moment() &&
-      aggregates.intervalSize) {
-      aggregates.intervals.pop()
-    }
-  })
+  try {
+    aggregates.intervals.map(a => {
+      if (moment(a.endTime) > moment() &&
+        aggregates.intervalSize) {
+        aggregates.intervals.pop()
+      }
+    })
+  } catch (err) {
+    return null
+  }
 
   aggregates.label = label
   aggregates.key = txHKey

@@ -1,7 +1,7 @@
 <template>
   <q-card
     class="q-mt-md q-pt-md q-pb-md q-pl-xl"
-    id="custom-card">
+    id="custom-card" style="padding-top: 3%;padding-bottom: 3%;">
     <div class="row">
       <div class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md">BLOCKCHAIN</div>
