@@ -136,7 +136,7 @@
                   </span>
                 </q-item-label>
                 <q-item-label>
-                  {{ props.row.name }}
+                  <div style="word-wrap : break-word;">{{ props.row.name }}</div>
                   <small>
                     <q-icon
                       @click="copyToClipboard(props.row.validator)"
