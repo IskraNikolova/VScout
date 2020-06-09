@@ -52,14 +52,13 @@
             style="padding: 0px!important;margin:0px!important;"
           >
             <div v-if="col.name === 'validator'" class="row q-pl-md">
-              <div :style="'border: solid 2px ' + border + ';border-radius: 50px;'">
-                <q-avatar size="24px" color="grey" class="column-2">
-                  <img :src="props.row.avatar" />
-                </q-avatar>
-              </div>
+              <!--<div :style="'border: solid 2px ' + border + ';border-radius: 50px;width: 24px;'">-->
+              <q-avatar size="25px">
+                <img :src="props.row.avatar" />
+              </q-avatar>
               <div
-                style="cursor:pointer;"
-                class="col-9 q-pl-xl"
+                style="cursor:pointer;font-size: 90%;"
+                class="q-pt-xs q-ml-md"
                 @click="onClick(props)"
                 @mouseover=" props.expand = true"
                 @mouseleave=" props.expand = false">
@@ -136,7 +135,7 @@
                   </span>
                 </q-item-label>
                 <q-item-label>
-                  <div style="word-wrap : break-word;">{{ props.row.name }}</div>
+                  {{ props.row.name }}
                   <small>
                     <q-icon
                       @click="copyToClipboard(props.row.validator)"

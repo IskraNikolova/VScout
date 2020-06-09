@@ -20,11 +20,12 @@
         <div class="text-h5"><span class="text-accent">{{ totalTxsCount.toLocaleString() }}</span></div>
       </div>
       <div class="col-md-9 col-xs-12">
-        <q-btn-toggle
+        <div style="max-width: 200px;"><q-btn-toggle
           v-model="interval"
           outline
           no-caps
           size="xs"
+          spread
           toggle-color="accent"
           @click.native="onGetData"
           :options="[
@@ -35,7 +36,7 @@
             {label: '2h', value: 'hourTwo'},
             {label: '30m', value: 'minute'}
           ]"
-        />
+        /></div>
         <div class="row">
           <div class="col-md-6 col-xs-12"><canvas id="chartVol"></canvas></div>
           <div class="col-md-6 col-xs-12"><canvas id="chartTps"></canvas></div>

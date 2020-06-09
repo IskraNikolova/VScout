@@ -514,7 +514,7 @@ async function map (validators) {
     const MD5 = makeMD5()
     const hash = MD5.hex(val.id)
     const avatar = info.avatarUrl ? info.avatarUrl : `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150`
-    const name = info.name ? info.name : val.id.substr(0, 20) + '...'
+    const name = info.name ? info.name : val.id
 
     return {
       rank: i + 1,

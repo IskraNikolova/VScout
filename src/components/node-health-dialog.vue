@@ -60,7 +60,7 @@ export default {
     healthy: function () {
       try {
         return this.nodeHealthInfo.healthy
-      } catch(err) {
+      } catch (err) {
         return ''
       }
     },
