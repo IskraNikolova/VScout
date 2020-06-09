@@ -51,7 +51,7 @@
             </div>
           </div>
         <div class="q-pl-md q-pt-xs col">
-          <q-btn color="accent" no-caps outline size="xs" label="Check Health" @click="onOpenHealth"/>
+          <q-btn :color="color" no-caps outline size="xs" label="Check Health" @click="onOpenHealth"/>
           <node-health-dialog ref="nodeHealthDialog" />
         </div>
         </div>
@@ -83,7 +83,21 @@ export default {
       'nodeHealth',
       'networkEndpoint',
       'currentBlockchain'
-    ])
+    ]),
+    nodeHealthInfo: function () {
+      return this.nodeHealth(this.nodeID)
+    },
+    healthy: function () {
+      try {
+        return this.nodeHealthInfo.healthy
+      } catch (err) {
+        return ''
+      }
+    },
+    color: function () {
+      if (this.healthy) return 'accent'
+      return 'negative'
+    }
   },
   methods: {
     onOpenAssetInfo (asset) {
