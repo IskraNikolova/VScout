@@ -4,7 +4,7 @@
     id="custom-card"
   >
     <div class="row">
-      <div class="col-md-3 col-xs-12" style="padding-top: 3%;">
+      <div class="col-md-3 col-xs-12" style="padding-top: 2.5%;">
         <div id="f-size12" class="q-pb-md">TRANSACTIONS (24Hr)</div>
         <div class="col text-h5 text-accent q-pb-xl">
           <img
@@ -18,9 +18,10 @@
         </div>
         <div id="f-size12" class="q-pb-md">TOTAL TRANSACTIONS</div>
         <div class="text-h5"><span class="text-accent">{{ totalTxsCount.toLocaleString() }}</span></div>
+        <div><small>AVA X-CHAIN</small></div>
       </div>
       <div class="col-md-9 col-xs-12">
-        <div style="max-width: 200px;"><q-btn-toggle
+        <div style="max-width: 250px;"><q-btn-toggle
           v-model="interval"
           outline
           no-caps
@@ -41,7 +42,6 @@
           <div class="col-md-6 col-xs-12"><canvas id="chartVol"></canvas></div>
           <div class="col-md-6 col-xs-12"><canvas id="chartTps"></canvas></div>
         </div>
-        <div class="absolute absolute-top-right text-grey q-pt-md q-pr-xl"><small>AVA X-CHAIN</small></div>
       </div>
     </div>
   </q-card>
