@@ -58,7 +58,11 @@ export default {
       return this.nodeHealth(this.nodeID)
     },
     healthy: function () {
-      return this.nodeHealthInfo.healthy
+      try {
+        return this.nodeHealthInfo.healthy
+      } catch(err) {
+        return ''
+      }
     },
     heartbeat: function () {
       try {
