@@ -4,7 +4,7 @@
     v-model="ui.nodeHealth.isOpen"
     persistent
   >
-    <q-card style="min-width: 500px!important;">
+    <q-card style="min-width: 30%!important;">
       <q-card-section class="row items-center">
         <q-item>
           <q-item-section avatar>
