@@ -1,45 +1,48 @@
 const { network } = require('./../../modules/config').default
+import Vue from 'vue'
 
 import {
-  SET_VALIDATORS,
-  SET_PENDING_VALIDATORS,
-  SET_BLOCKCHAINS,
-  SET_CURRENT_BLOCKCHAIN,
-  SET_ENDPOINTS_MEMORY,
-  REMOVE_ENDPOINTS_MEMORY,
+  SET_NODE_ID,
   SET_ENDPOINT,
   SET_TOTAL_TXS,
-  SET_PREVIOUS_TOTAL_TXS,
+  SET_VALIDATORS,
+  SET_BLOCKCHAINS,
+  SET_TXS_HISTORY,
+  SET_NODE_HEALTH,
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
-  SET_TXS_HISTORY,
-  SET_NODE_ID,
+  SET_ENDPOINTS_MEMORY,
+  SET_PENDING_VALIDATORS,
+  SET_CURRENT_BLOCKCHAIN,
+  SET_PREVIOUS_TOTAL_TXS,
+  REMOVE_ENDPOINTS_MEMORY,
   SET_ASSETS_BY_BLOCKCHAINS
 } from './types'
 
 const mutations = {
-  [SET_VALIDATORS]: (state, { validators }) => {
-    state.validators = validators
-  },
-  [SET_PENDING_VALIDATORS]: (state, { validators }) => {
-    state.pendingValidators = validators
-  },
-  [SET_BLOCKCHAINS]: (state, { blockchains }) => {
-    state.blockchains = blockchains
-  },
-  [SET_CURRENT_BLOCKCHAIN]: (state, { blockchain }) => {
-    state.currentBlockchain = blockchain
+  [SET_NODE_ID]: (state, { nodeID }) => {
+    state.nodeID = nodeID
   },
   [SET_ENDPOINT]: (state, { endpoint }) => {
     state.networkEndpoint = endpoint
   },
-  [SET_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
-    if (state.endpointsMemory.includes(endpoint) ||
-    network.endpointUrls.indexOf(endpoint) > 1) return
-    state.endpointsMemory.push(endpoint)
+  [SET_TOTAL_TXS]: (state, { totalTxsCount }) => {
+    state.totalTxsCount = totalTxsCount
   },
-  [REMOVE_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
-    state.endpointsMemory = state.endpointsMemory.filter(a => a !== endpoint)
+  [SET_VALIDATORS]: (state, { validators }) => {
+    state.validators = validators
+  },
+  [SET_BLOCKCHAINS]: (state, { blockchains }) => {
+    state.blockchains = blockchains
+  },
+  [SET_TXS_HISTORY]: (state, { key, txsHistory }) => {
+    state.txHKey = key
+    if (!txsHistory) return
+    state.txsHistoryState[key] = txsHistory
+  },
+  [SET_NODE_HEALTH]: (state, { nodeID, nodeHealth }) => {
+    if (!state.nodeHealth[nodeID]) Vue.set(state.nodeHealth, nodeID, {})
+    state.nodeHealth[nodeID] = nodeHealth
   },
   [SET_TX_FOR_24_HOURS]: (state, { txsFor24H }) => {
     state.txsFor24H = txsFor24H
@@ -47,16 +50,22 @@ const mutations = {
   [SET_PREVIOUS_24_TXS]: (state, { prevTxsFor24H }) => {
     state.prevTxsFor24H = prevTxsFor24H
   },
-  [SET_TOTAL_TXS]: (state, { totalTxsCount }) => {
-    state.totalTxsCount = totalTxsCount
+  [SET_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
+    if (state.endpointsMemory.includes(endpoint) ||
+    network.endpointUrls.indexOf(endpoint) > 1) return
+    state.endpointsMemory.push(endpoint)
+  },
+  [SET_PENDING_VALIDATORS]: (state, { validators }) => {
+    state.pendingValidators = validators
+  },
+  [SET_CURRENT_BLOCKCHAIN]: (state, { blockchain }) => {
+    state.currentBlockchain = blockchain
   },
   [SET_PREVIOUS_TOTAL_TXS]: (state, { prevTotalTxs }) => {
     state.prevTotalTxs = prevTotalTxs
   },
-  [SET_TXS_HISTORY]: (state, { key, txsHistory }) => {
-    state.txHKey = key
-    if (!txsHistory) return
-    state.txsHistoryState[key] = txsHistory
+  [REMOVE_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
+    state.endpointsMemory = state.endpointsMemory.filter(a => a !== endpoint)
   },
   [SET_ASSETS_BY_BLOCKCHAINS]: (state, { assetsByChain }) => {
     state.assetsByChain = assetsByChain
@@ -65,9 +74,6 @@ const mutations = {
         return Number(b.currentSupply) - Number(a.currentSupply)
       })
     })
-  },
-  [SET_NODE_ID]: (state, { nodeID }) => {
-    state.nodeID = nodeID
   }
 }
 

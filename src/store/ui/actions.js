@@ -4,16 +4,18 @@ import {
   CLOSE_SIGN_TX,
   OPEN_P_CREATE,
   CLOSE_P_CREATE,
-  OPEN_CREATE_USER,
-  CLOSE_CREATE_USER,
   OPEN_ASSET_INFO,
   CLOSE_ASSET_INFO,
+  OPEN_CREATE_USER,
+  OPEN_NODE_HEALTH,
+  CLOSE_CREATE_USER,
+  CLOSE_NODE_HEALTH,
   OPEN_SELECT_ACCOUNTS,
   CLOSE_SELECT_ACCOUNTS,
-  OPEN_ADD_VALIDATOR_DIALOG,
-  CLOSE_ADD_VALIDATOR_DIALOG,
   OPEN_ADD_IDENTIFICATION,
-  CLOSE_ADD_IDENTIFICATION
+  CLOSE_ADD_IDENTIFICATION,
+  OPEN_ADD_VALIDATOR_DIALOG,
+  CLOSE_ADD_VALIDATOR_DIALOG
 } from './types'
 
 const updateUi = ({ commit }, data) => {
@@ -61,6 +63,14 @@ const closeSelectAccounts = ({ commit }) => {
   commit(UPDATE_UI, { selectAccounts: { isOpen: false, accounts: null } })
 }
 
+const openNodeHealth = ({ commit }) => {
+  commit(UPDATE_UI, { nodeHealth: { isOpen: true } })
+}
+
+const closeNodeHealth = ({ commit }) => {
+  commit(UPDATE_UI, { nodeHealth: { isOpen: false } })
+}
+
 const openAddIdentification = ({ commit }) => {
   commit(UPDATE_UI, { addIdentification: { isOpen: true, isAuth: false } })
 }
@@ -87,6 +97,8 @@ export default {
   [CLOSE_CREATE_USER]: closeCreateU,
   [OPEN_ASSET_INFO]: openAssetInfo,
   [CLOSE_ASSET_INFO]: closeAssetInfo,
+  [OPEN_NODE_HEALTH]: openNodeHealth,
+  [CLOSE_NODE_HEALTH]: closeNodeHealth,
   [OPEN_SELECT_ACCOUNTS]: openSelectAccounts,
   [CLOSE_SELECT_ACCOUNTS]: closeSelectAccounts,
   [OPEN_ADD_IDENTIFICATION]: openAddIdentification,

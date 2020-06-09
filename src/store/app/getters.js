@@ -70,3 +70,7 @@ export function assets (state) {
 export function nodeID (state) {
   return state.nodeID
 }
+
+export function nodeHealth (state) {
+  return (id) => state.nodeHealth[id]
+}

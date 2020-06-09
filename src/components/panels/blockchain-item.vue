@@ -8,7 +8,7 @@
         <div class="row">
           <div class="text-h6 text-orange q-pb-md">{{ currentBlockchain.name }}</div>
           <div class="q-pl-md q-pt-xs">
-            <q-btn-dropdown outline v-if="assets(currentBlockchain.id)" size="xs" no-caps label="Smart Digital Assets">
+            <q-btn-dropdown color="accent" outline v-if="assets(currentBlockchain.id)" size="xs" no-caps label="Smart Digital Assets">
                 <div class="q-pa-md">
                   <small><img src="~assets/coins.svg" id="small-logo">Assets on {{ currentBlockchain.name }}</small>
                   <q-separator />
@@ -43,9 +43,17 @@
       </div>
       <div class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md">NETWORK</div>
-        <small>Connected with</small>
-        <div class="text-h7 q-pb-md text-orange" >
-          {{ networkEndpoint }}
+        <div class="row">
+          <div class="col">
+            <small>Connected with</small>
+            <div class="text-h7 q-pb-md text-orange" >
+              {{ networkEndpoint }}
+            </div>
+          </div>
+        <div class="q-pl-md q-pt-xs col">
+          <q-btn color="accent" no-caps outline size="xs" label="Check Health" @click="onOpenHealth"/>
+          <node-health-dialog ref="nodeHealthDialog" />
+        </div>
         </div>
         <div id="f-size12">Node ID <div class="text-grey">{{ nodeID }}</div></div>
       </div>
@@ -60,23 +68,29 @@
 import { mapGetters } from 'vuex'
 
 import AssetInfoItem from './../asset-info-item'
+import NodeHealthDialog from './../node-health-dialog'
 
 export default {
   name: 'BlockchainItem',
   components: {
-    AssetInfoItem
+    AssetInfoItem,
+    NodeHealthDialog
   },
   computed: {
     ...mapGetters([
-      'currentBlockchain',
-      'networkEndpoint',
       'assets',
-      'nodeID'
+      'nodeID',
+      'nodeHealth',
+      'networkEndpoint',
+      'currentBlockchain'
     ])
   },
   methods: {
     onOpenAssetInfo (asset) {
       this.$refs.assetDialog.open({ asset })
+    },
+    onOpenHealth () {
+      this.$refs.nodeHealthDialog.open()
     }
   }
 }

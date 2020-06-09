@@ -43,3 +43,6 @@ export const SIGN_TX = 'SIGN_TX'
 export const CREATE_USER = 'CREATE_USER'
 export const LIST_ACCOUNTS = 'LIST_ACCOUNTS'
 export const SUBSCRIBE_TO_EVENT = 'SUBSCRIBE_TO_EVENT'
+
+export const GET_NODE_HEALTH = 'GET_NODE_HEALTH'
+export const SET_NODE_HEALTH = 'SET_NODE_HEALTH'

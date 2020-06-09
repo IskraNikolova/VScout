@@ -2,19 +2,26 @@ const { network } = require('./../../modules/config').default
 
 export default function () {
   return {
+    nodeID: '',
+    nodeHealth: {},
     validators: [],
-    pendingValidators: [],
-    endpointsMemory: [],
     blockchains: [],
-    assetsByChain: {},
-    currentBlockchain: {},
-    networkEndpoint: network.endpointUrls[0],
-    txsFor24H: { transactionCount: 0, transactionVolume: 0 },
-    prevTxsFor24H: { transactionCount: 0, transactionVolume: 0 },
-    totalTxsCount: 0,
     prevTotalTxs: 0,
-    txsHistoryState: {},
+    totalTxsCount: 0,
     txHKey: 'minute',
-    nodeID: ''
+    assetsByChain: {},
+    txsHistoryState: {},
+    endpointsMemory: [],
+    pendingValidators: [],
+    currentBlockchain: {},
+    txsFor24H: {
+      transactionCount: 0,
+      transactionVolume: 0
+    },
+    prevTxsFor24H: {
+      transactionCount: 0,
+      transactionVolume: 0
+    },
+    networkEndpoint: network.endpointUrls[0]
   }
 }

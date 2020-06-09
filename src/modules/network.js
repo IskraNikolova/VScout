@@ -132,3 +132,8 @@ export const _addDefaultSubnetValidator = async ({ endpoint, params }) => {
   const response = await request(endpoint + c.platform, body(c.addDefaultSubnetValidator, params))
   return response
 }
+
+export const _health = async ({ endpoint }) => {
+  const response = await request(endpoint + c.health, body(c.getLiveness))
+  return response
+}

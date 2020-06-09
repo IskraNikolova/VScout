@@ -8,7 +8,7 @@
       :filter="filter"
       :pagination="pagination"
       :grid="isGrid"
-      :class="getClass()"
+      class="light-background shadow-3"
       id="custom-table"
     >
       <template slot="top-left">
@@ -112,7 +112,6 @@
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
             <details-item
-              v-bind:img="props.row.monster"
               v-bind:identity="props.row.validator"
               v-bind:startTime="props.row.startTime"
               v-bind:endTime="props.row.endTime"
@@ -291,13 +290,6 @@ export default {
         openURL(props.row.link)
       } catch (err) {
       }
-    },
-    getClass () {
-      if (this.isGrid) {
-        return 'light-background-grid shadow-3'
-      }
-
-      return 'light-background shadow-3'
     },
     getLocalString (val) {
       if (!val) return val

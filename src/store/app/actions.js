@@ -4,35 +4,37 @@ import { Notify } from 'quasar'
 const BigNumber = require('bignumber.js')
 
 import {
-  INIT_APP,
   SIGN_TX,
-  CREATE_USER,
-  FUND_ACCOUNT,
-  GET_TOTAL_TXS,
-  SET_TOTAL_TXS,
-  SET_PREVIOUS_TOTAL_TXS,
-  INIT_VALIDATORS,
-  GET_VALIDATORS,
-  SET_VALIDATORS,
-  GET_PENDING_VALIDATORS,
-  SET_PENDING_VALIDATORS,
-  GET_BLOCKCHAINS,
-  SET_BLOCKCHAINS,
-  SET_CURRENT_BLOCKCHAIN,
-  GET_TX_FOR_24_HOURS,
-  SET_TX_FOR_24_HOURS,
-  SET_PREVIOUS_24_TXS,
-  GET_TXS_HISTORY,
-  SET_TXS_HISTORY,
-  GET_ASSETS_BY_BLOCKCHAINS,
-  SET_ASSETS_BY_BLOCKCHAINS,
+  INIT_APP,
   GET_NODE_ID,
   SET_NODE_ID,
   GET_ACCOUNT,
-  CREATE_ACCOUNT,
+  CREATE_USER,
+  FUND_ACCOUNT,
   LIST_ACCOUNTS,
-  ADD_VALIDATOR_TO_DEFAULT_SUBNET,
-  SUBSCRIBE_TO_EVENT
+  GET_TOTAL_TXS,
+  SET_TOTAL_TXS,
+  GET_VALIDATORS,
+  SET_VALIDATORS,
+  CREATE_ACCOUNT,
+  GET_NODE_HEALTH,
+  SET_NODE_HEALTH,
+  INIT_VALIDATORS,
+  GET_BLOCKCHAINS,
+  SET_BLOCKCHAINS,
+  GET_TXS_HISTORY,
+  SET_TXS_HISTORY,
+  SUBSCRIBE_TO_EVENT,
+  GET_TX_FOR_24_HOURS,
+  SET_TX_FOR_24_HOURS,
+  SET_PREVIOUS_24_TXS,
+  SET_PREVIOUS_TOTAL_TXS,
+  GET_PENDING_VALIDATORS,
+  SET_PENDING_VALIDATORS,
+  SET_CURRENT_BLOCKCHAIN,
+  GET_ASSETS_BY_BLOCKCHAINS,
+  SET_ASSETS_BY_BLOCKCHAINS,
+  ADD_VALIDATOR_TO_DEFAULT_SUBNET
 } from './types'
 
 import {
@@ -41,6 +43,7 @@ import {
 
 import {
   _sign,
+  _health,
   _issueTx,
   _exportAVA,
   _importAVA,
@@ -74,11 +77,16 @@ import { makeMD5, round } from './../../utils/commons'
 async function initApp ({ dispatch, getters }) {
   await Promise.all([
     dispatch(GET_TX_FOR_24_HOURS),
-    dispatch(GET_TXS_HISTORY, { txHKey: getters.txHKey }),
+    dispatch(GET_TXS_HISTORY, {
+      txHKey: getters.txHKey
+    }),
     dispatch(GET_BLOCKCHAINS),
-    dispatch(INIT_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID }),
+    dispatch(INIT_VALIDATORS, {
+      subnetID: getters.currentBlockchain.subnetID
+    }),
     dispatch(GET_ASSETS_BY_BLOCKCHAINS),
     dispatch(GET_NODE_ID),
+    dispatch(GET_NODE_HEALTH),
     dispatch(GET_TOTAL_TXS)
   ])
   // await _initializeNetwork()
@@ -87,9 +95,15 @@ async function initApp ({ dispatch, getters }) {
     await Promise.all([
       dispatch(GET_TX_FOR_24_HOURS),
       dispatch(GET_TXS_HISTORY, { txHKey: getters.txHKey }),
-      dispatch(GET_PENDING_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID }),
-      dispatch(GET_VALIDATORS, { subnetID: getters.currentBlockchain.subnetID, endpoint: getters.networkEndpoint }),
-      dispatch(GET_TOTAL_TXS)
+      dispatch(GET_PENDING_VALIDATORS, {
+        subnetID: getters.currentBlockchain.subnetID
+      }),
+      dispatch(GET_VALIDATORS, {
+        subnetID: getters.currentBlockchain.subnetID,
+        endpoint: getters.networkEndpoint
+      }),
+      dispatch(GET_TOTAL_TXS),
+      dispatch(GET_NODE_HEALTH)
     ])
   }, 6000)
 }
@@ -500,7 +514,6 @@ async function map (validators) {
     const MD5 = makeMD5()
     const hash = MD5.hex(val.id)
     const avatar = info.avatarUrl ? info.avatarUrl : `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150`
-    const monster = `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150`
     const name = info.name ? info.name : val.id.substr(0, 20) + '...'
 
     return {
@@ -514,13 +527,22 @@ async function map (validators) {
       endTime: val.endTime,
       fromNowST: fromNow(val.startTime),
       avatar,
-      monster,
       name,
       link: info.link
     }
   }))
 
   return vals
+}
+
+async function getNodeHealth ({ commit, getters }) {
+  const response = await _health({ endpoint: getters.networkEndpoint })
+
+  if (response.data.error) {
+    return null
+  }
+
+  commit(SET_NODE_HEALTH, { nodeID: getters.nodeID, nodeHealth: response.data.result })
 }
 
 function cumulativeStakeFunc (currentValidators) {
@@ -585,22 +607,22 @@ function subscribeToEvents ({ commit, dispatch }) {
 
 export default {
   [INIT_APP]: initApp,
-  [SIGN_TX]: signTransaction,
-  [FUND_ACCOUNT]: fundAccount,
-  [GET_VALIDATORS]: getValidators,
-  [INIT_VALIDATORS]: initValidators,
-  [GET_PENDING_VALIDATORS]: getPendingValidators,
-  [GET_BLOCKCHAINS]: getBlockchains,
-  [GET_TX_FOR_24_HOURS]: getTxsFor24H,
-  [GET_TOTAL_TXS]: getTotalTXs,
-  [GET_TXS_HISTORY]: getTxsHistory,
-  [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsByBlockchain,
   [GET_NODE_ID]: getNodeId,
   [GET_ACCOUNT]: getAccount,
-  [LIST_ACCOUNTS]: listAccounts,
-  [CREATE_ACCOUNT]: createAccount,
   [CREATE_USER]: createUser,
-  [ADD_VALIDATOR_TO_DEFAULT_SUBNET]: addValidatorToDefaultS,
-  [SUBSCRIBE_TO_EVENT]: subscribeToEvents
-
+  [SIGN_TX]: signTransaction,
+  [FUND_ACCOUNT]: fundAccount,
+  [GET_TOTAL_TXS]: getTotalTXs,
+  [LIST_ACCOUNTS]: listAccounts,
+  [GET_VALIDATORS]: getValidators,
+  [CREATE_ACCOUNT]: createAccount,
+  [GET_TXS_HISTORY]: getTxsHistory,
+  [GET_NODE_HEALTH]: getNodeHealth,
+  [GET_BLOCKCHAINS]: getBlockchains,
+  [INIT_VALIDATORS]: initValidators,
+  [GET_TX_FOR_24_HOURS]: getTxsFor24H,
+  [SUBSCRIBE_TO_EVENT]: subscribeToEvents,
+  [GET_PENDING_VALIDATORS]: getPendingValidators,
+  [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsByBlockchain,
+  [ADD_VALIDATOR_TO_DEFAULT_SUBNET]: addValidatorToDefaultS
 }

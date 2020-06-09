@@ -178,11 +178,11 @@ export default {
     ...mapGetters([
       'ui',
       'validators',
-      'pendingValidators',
       'blockchains',
-      'currentBlockchain',
       'networkEndpoint',
-      'endpointsMemory'
+      'endpointsMemory',
+      'pendingValidators',
+      'currentBlockchain'
     ])
   },
   data () {

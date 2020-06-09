@@ -7,6 +7,7 @@ export default function () {
     signTx: { isOpen: false, unsignedTx: null, signer: null, signedTx: null },
     pCreate: { isOpen: false, type: null },
     uCreate: { isOpen: false },
-    selectAccounts: { isOpen: false, accounts: null }
+    selectAccounts: { isOpen: false, accounts: null },
+    nodeHealth: { isOpen: false }
   }
 }
