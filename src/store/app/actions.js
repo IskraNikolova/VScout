@@ -81,16 +81,16 @@ import { fromNow } from './../../modules/time'
 import { makeMD5, round } from './../../utils/commons'
 
 async function initApp ({ dispatch, getters }) {
+  await dispatch(GET_BLOCKCHAINS)
+  await dispatch(GET_NODE_ID)
   await Promise.all([
     dispatch(GET_TX_FOR_24_HOURS),
     dispatch(GET_TXS_HISTORY, {
       txHKey: getters.txHKey
     }),
-    dispatch(GET_BLOCKCHAINS),
     dispatch(GET_SUBNETS),
-    dispatch(INIT_VALIDATORS, { subnetID: getters.subnetID }),
+    dispatch(INIT_VALIDATORS),
     dispatch(GET_ASSETS_BY_BLOCKCHAINS),
-    dispatch(GET_NODE_ID),
     dispatch(GET_NODE_HEALTH),
     dispatch(GET_TOTAL_TXS)
   ])
@@ -524,14 +524,14 @@ async function fundAccount ({ getters }, { amount, username, password, to, nonce
   }
 }
 
-async function initValidators ({ commit, getters }, { subnetID }) {
+async function initValidators ({ commit, getters }) {
   const response = await _getValidators({
-    subnetID,
+    subnetID: getters.subnetID,
     endpoint: getters.networkEndpoint
   })
 
   if (response.data.error) {
-    Notify.create(response.data.error.message)
+    console.log(response.data.error)
     return null
   }
 
@@ -546,7 +546,7 @@ async function getValidators ({ commit, getters }, { subnetID, endpoint }) {
     endpoint
   })
   if (response.data.error) {
-    Notify.create(response.data.error.message)
+    console.log(response.data.error)
     return null
   }
 

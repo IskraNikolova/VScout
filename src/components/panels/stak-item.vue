@@ -18,8 +18,8 @@
             <span class="text-orange"><small>{{stake().toLocaleString()}}</small> </span>
             <span style="font-size: 13px;">/360M</span>
         </div>
-        <!--todo dynamic take it-->
-        <div id="f-size12">Delinquent stake: <span class="text-accent">0%</span></div>
+        <!--todo dynamic take it
+        <div id="f-size12">Delinquent stake: <span class="text-accent">0%</span></div>-->
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/stake_amount.png" class="custom-icon">
