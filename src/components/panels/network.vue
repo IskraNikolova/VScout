@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="q-mt-md q-pt-md q-pl-xl"
+    class="q-mt-md q-pt-md q-pl-xl q-pb-md"
     id="custom-card"
     style="padding-top: 3%;"
   >
