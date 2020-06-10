@@ -61,23 +61,61 @@
           flat
           dropdown-icon="img:statics/blockchain-black.svg"
         >
-          <div class="no-wrap q-pa-md text-orange">Blockchains</div>
-          <q-list v-for="(blockchain, i) in blockchains" v-bind:key="i">
-            <q-item clickable v-close-popup @click="onSelectNetwork(blockchain)">
-              <q-item-section>
-                <q-item-label>
-                  <q-img src="statics/blockchain-black.svg" id="logo-xs"/>
-                  {{ blockchain.name }}
-                </q-item-label>
-                <q-item-label caption>
-                  <small>Subnet ID: </small>
-                  <span class="text-orange">
-                    {{ blockchain.subnetID.substr(0, 4)}}...{{ blockchain.subnetID.substr(30)}}
-                  </span>
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
+        <q-tabs
+          v-model="tab"
+          dense
+          class="text-grey"
+          active-color="orange"
+          indicator-color="accent"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab name="blockchains" label="Blockchains" />
+          <q-tab name="subnets" label="Subnets" />
+        </q-tabs>
+
+        <q-separator />
+
+          <q-tab-panels v-model="tab" animated>
+            <q-tab-panel name="blockchains">
+              <q-list v-for="(blockchain, i) in blockchains" v-bind:key="i">
+                <q-item clickable v-close-popup @click="onSelectBlockchain(blockchain)">
+                  <q-item-section>
+                    <q-item-label>
+                      <q-img src="statics/blockchain-black.svg" id="logo-xs"/>
+                      {{ blockchain.name }}
+                    </q-item-label>
+                    <q-item-label caption>
+                      <small>Subnet ID: </small>
+                      <span class="text-orange">
+                        {{ blockchain.subnetID.substr(0, 4)}}...{{ blockchain.subnetID.substr(30)}}
+                      </span>
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-tab-panel>
+
+            <q-tab-panel name="subnets">
+              <q-list v-for="(subnet, i) in subnets" v-bind:key="i">
+                <q-item clickable v-close-popup @click="onSelectSubnet(subnet)">
+                  <q-item-section>
+                    <q-item-label>
+                      <q-img src="~assets/computer-network.svg" id="logo-xs"/>
+                      {{ subnet.id.substr(0, 4)}}...{{ subnet.id.substr(30)}}
+                    </q-item-label>
+                    <q-item-label caption>
+                      <small v-if="subnet.blockchainsId">Validated Blockchains: </small>
+                      <div class="text-orange" v-for="(id, i) in subnet.blockchainsId" v-bind:key="i">
+                        {{ blockchainName(id) }}
+                      </div>
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-separator />
+              </q-list>
+            </q-tab-panel>
+          </q-tab-panels>
         </q-btn-dropdown>
         <q-btn-dropdown
           flat
@@ -123,12 +161,12 @@
         </q-tooltip>
       </div>
     </div>
-    <stak-item class="q-pa-md"/>
+    <network  class="q-pa-md"/>
     <transactions-item class="q-pa-md" />
-    <blockchain-item  class="q-pa-md"/>
-
+    <stak-item class="q-pa-md"/>
     <table-item @getValidators="getValidatorsV"/>
     <faqs-item class="q-pa-md" />
+
     <div class="flex flex-center q-mt-xl">
       <img src="~assets/ava-black.png" id="logo"/>
     </div>
@@ -144,24 +182,29 @@ import {
   mapActions
 } from 'vuex'
 
-const { network } = require('./../modules/config').default
+const {
+  network
+} = require('./../modules/config').default
 
-import { _getNodeId } from './../modules/network'
+import {
+  _getNodeId
+} from './../modules/network'
 
 import FaqsItem from './../components/panels/faqs-item'
 import StakItem from './../components/panels/stak-item'
-import BlockchainItem from './../components/panels/blockchain-item'
+import Network from './../components/panels/network'
 import TableItem from './../components/panels/table-item'
 import TransactionsItem from './../components/panels/transactions-item'
 
 import {
-  GET_VALIDATORS,
-  SET_ENDPOINT,
   SET_NODE_ID,
+  SET_ENDPOINT,
+  GET_VALIDATORS,
+  SET_CURRENT_SUBNET,
   SET_ENDPOINTS_MEMORY,
-  REMOVE_ENDPOINTS_MEMORY,
   GET_PENDING_VALIDATORS,
   SET_CURRENT_BLOCKCHAIN,
+  REMOVE_ENDPOINTS_MEMORY,
   GET_ASSETS_BY_BLOCKCHAINS
 } from '../store/app/types'
 
@@ -170,15 +213,19 @@ export default {
   components: {
     FaqsItem,
     StakItem,
-    BlockchainItem,
+    Network,
     TableItem,
     TransactionsItem
   },
   computed: {
     ...mapGetters([
       'ui',
+      'subnets',
+      'subnetID',
       'validators',
       'blockchains',
+      'currentSubnet',
+      'blockchainByID',
       'networkEndpoint',
       'endpointsMemory',
       'pendingValidators',
@@ -187,6 +234,7 @@ export default {
   },
   data () {
     return {
+      tab: 'blockchains',
       btnNetwork: false,
       stakeAmount: 2000,
       stakeTime: 2,
@@ -211,6 +259,13 @@ export default {
       getAssets: GET_ASSETS_BY_BLOCKCHAINS,
       getPendingValidators: GET_PENDING_VALIDATORS
     }),
+    blockchainName (id) {
+      if (!id) return
+      const blockchain = this.blockchainByID(id)
+      if (!blockchain) return
+
+      return blockchain.name
+    },
     onRemoveFromMem (endpoint, event) {
       event.stopImmediatePropagation()
       this.$store.commit(REMOVE_ENDPOINTS_MEMORY, { endpoint })
@@ -226,22 +281,35 @@ export default {
       this.monthly = (this.stakeAmount * (this.percentReward / 12)) / 100
       this.weekly = (this.stakeAmount * (this.percentReward / 52)) / 100
     },
-    async onSelectNetwork (blockchain) {
+    async onSelectBlockchain (blockchain) {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
       await Promise.all([
         this.getAssets(),
         this.getValidators({
           subnetID: blockchain.subnetID,
           endpoint: this.networkEndpoint
+        }),
+        this.getPendingValidators({
+          subnetID: blockchain.subnetID
         })
       ])
+    },
+    async onSelectSubnet (subnet) {
+      this.$store.commit(SET_CURRENT_SUBNET, { subnet })
+      await this.getValidators({
+        subnetID: subnet.id,
+        endpoint: this.networkEndpoint
+      })
+      this.getPendingValidators({
+        subnetID: subnet.id
+      })
     },
     async onSelectEndpoint (endpoint, isCustom) {
       try {
         const response = await _getNodeId({ endpoint })
         if (response.data.error) {
           const result = this.getValidators({
-            subnetID: this.currentBlockchain.subnetID,
+            subnetID: this.subnetID,
             endpoint
           })
           if (result) {
@@ -264,7 +332,7 @@ export default {
           this.customEndpoint = ''
         }
         this.getValidators({
-          subnetID: this.currentBlockchain.subnetID,
+          subnetID: this.subnetID,
           endpoint
         })
         this.onSuccess(endpoint)
@@ -294,11 +362,11 @@ export default {
     async getValidatorsV (type) {
       const temp = {
         active: async () => await this.getValidators({
-          subnetID: this.currentBlockchain.subnetID,
+          subnetID: this.subnetID,
           endpoint: this.networkEndpoint
         }),
         pending: async () => await this.getPendingValidators({
-          subnetID: this.currentBlockchain.subnetID
+          subnetID: this.subnetID
         })
       }
 
@@ -320,10 +388,5 @@ export default {
  #logo-s {
   width: 28vw;
   max-width: 28px;
- }
- #logo-xs {
-  width: 18vw;
-  max-width: 18px;
-  opacity: 0.3;
  }
 </style>

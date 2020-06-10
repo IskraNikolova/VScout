@@ -20,6 +20,18 @@ export const datePickerFormat = ({ value, label }) => {
   return date.format('YYYY-MM-DD HH:mm')
 }
 
+export const datePickerFormatStart = (time) => {
+  const now = moment()
+  let date = moment(Number(time) * 1000)
+  if (now > date) date = now
+  return date.format('YYYY-MM-DD HH:mm')
+}
+
+export const datePickerFormatEnd = (time) => {
+  const date = moment(Number(time) * 1000)
+  return date.format('YYYY-MM-DD HH:mm')
+}
+
 export const toUnix = (date) => {
   return moment(date).unix()
 }

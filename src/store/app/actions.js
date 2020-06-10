@@ -6,6 +6,8 @@ const BigNumber = require('bignumber.js')
 import {
   SIGN_TX,
   INIT_APP,
+  GET_SUBNETS,
+  SET_SUBNETS,
   GET_NODE_ID,
   SET_NODE_ID,
   GET_ACCOUNT,
@@ -29,6 +31,7 @@ import {
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
   SET_PREVIOUS_TOTAL_TXS,
+  DELEGATE_VALIDATOR,
   GET_PENDING_VALIDATORS,
   SET_PENDING_VALIDATORS,
   SET_CURRENT_BLOCKCHAIN,
@@ -45,28 +48,31 @@ import {
   _sign,
   _health,
   _issueTx,
+  _validates,
   _exportAVA,
   _importAVA,
-  _getBlockchains,
-  _getValidators,
-  _getPendingValidators,
-  _getAggregates,
-  _getAggregatesWithI,
+  _getSubnets,
   _getLastTx,
   _getTxStatus,
-  _getAssetsForChain,
   _getNodeId,
   _getAccount,
   _createAccount,
   _createUser,
   _createAddress,
   _listAccounts,
+  _getBlockchains,
+  _getValidators,
+  _getAggregates,
+  _getAssetsForChain,
+  _getAggregatesWithI,
+  _getPendingValidators,
+  _addDefaultSubnetDelegator,
   _addDefaultSubnetValidator
 } from './../../modules/network'
 
 import {
   // _initializeNetwork,
-  _getValidatorById,
+  // _getValidatorById,
   subscribeToContractEvents
 } from './../../modules/networkRpc'
 
@@ -81,9 +87,8 @@ async function initApp ({ dispatch, getters }) {
       txHKey: getters.txHKey
     }),
     dispatch(GET_BLOCKCHAINS),
-    dispatch(INIT_VALIDATORS, {
-      subnetID: getters.currentBlockchain.subnetID
-    }),
+    dispatch(GET_SUBNETS),
+    dispatch(INIT_VALIDATORS, { subnetID: getters.subnetID }),
     dispatch(GET_ASSETS_BY_BLOCKCHAINS),
     dispatch(GET_NODE_ID),
     dispatch(GET_NODE_HEALTH),
@@ -96,10 +101,10 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_TX_FOR_24_HOURS),
       dispatch(GET_TXS_HISTORY, { txHKey: getters.txHKey }),
       dispatch(GET_PENDING_VALIDATORS, {
-        subnetID: getters.currentBlockchain.subnetID
+        subnetID: getters.subnetID
       }),
       dispatch(GET_VALIDATORS, {
-        subnetID: getters.currentBlockchain.subnetID,
+        subnetID: getters.subnetID,
         endpoint: getters.networkEndpoint
       }),
       dispatch(GET_TOTAL_TXS),
@@ -121,6 +126,36 @@ async function getBlockchains ({ commit, getters }) {
   const { blockchains } = response.data.result
   commit(SET_BLOCKCHAINS, { blockchains })
   commit(SET_CURRENT_BLOCKCHAIN, { blockchain: blockchains[0] })
+}
+
+async function getSubnets ({ commit, getters }) {
+  const response = await _getSubnets({
+    endpoint: getters.networkEndpoint
+  })
+
+  if (response.data.error) {
+    Notify.create(response.data.error.message)
+    return null
+  }
+
+  const { subnets } = response.data.result
+  const result = Promise.all(subnets.map(async subnet => {
+    const response = await _validates({
+      endpoint: getters.networkEndpoint,
+      params: {
+        subnetID: subnet.id
+      }
+    })
+
+    if (response.data.error) return
+    const blockchainsId = response.data.result.blockchainIDs
+    return {
+      ...subnet,
+      blockchainsId
+    }
+  }))
+
+  commit(SET_SUBNETS, { subnets: await result })
 }
 
 async function getTxsFor24H ({ commit, getters }) {
@@ -389,6 +424,38 @@ async function addValidatorToDefaultS ({ getters }, { params, signer }) {
   }
 }
 
+async function addDefaultSubnetDelegator ({ getters }, { params, signer }) {
+  try {
+    const endpoint = getters.networkEndpoint
+    const res = await _getAccount({
+      endpoint,
+      params: { address: signer }
+    })
+
+    if (res.data.error) {
+      throw new Error(res.data.error.message)
+    }
+    const account = res.data.result
+    const nonce = Number(account.nonce) + 1
+    params.payerNonce = nonce
+    if (account.balance < params.stakeAmount) {
+      throw new Error('Insufficient funds!')
+    }
+
+    const response = await _addDefaultSubnetDelegator({
+      endpoint: getters.networkEndpoint,
+      params
+    })
+    if (response.data.error) {
+      throw new Error(response.data.error.message)
+    }
+
+    return response.data.result.unsignedTx
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
 async function signTransaction ({ getters }, { transaction, signer, username, password }) {
   try {
     const endpoint = getters.networkEndpoint
@@ -488,6 +555,7 @@ async function getValidators ({ commit, getters }, { subnetID, endpoint }) {
   if (validators.length === getters.validators.length) return
 
   const result = await getVal(validators)
+
   commit(SET_VALIDATORS, { validators: result })
   return true
 }
@@ -496,9 +564,7 @@ async function getVal (validators) {
   validators = validators
     .filter(i => i.endTime >= Date.now() / 1000)
     .sort(compare)
-
   const val = await map(validators)
-
   return val.map((v, i) => {
     const currentValidators = val.slice(0, i + 1)
     const cm = cumulativeStakeFunc(currentValidators)
@@ -509,12 +575,12 @@ async function getVal (validators) {
 
 async function map (validators) {
   const vals = Promise.all(validators.map(async (val, i) => {
-    const info = await _getValidatorById(val.id)
+    // const info = await _getValidatorById(val.id)
     const sa = val.stakeAmount ? val.stakeAmount : val.weight
     const MD5 = makeMD5()
     const hash = MD5.hex(val.id)
-    const avatar = info.avatarUrl ? info.avatarUrl : `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150`
-    const name = info.name ? info.name : val.id
+    const avatar = `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150` // info.avatarUrl ? info.avatarUrl : `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150`
+    const name = val.id // info.name ? info.name : val.id
 
     return {
       rank: i + 1,
@@ -527,8 +593,8 @@ async function map (validators) {
       endTime: val.endTime,
       fromNowST: fromNow(val.startTime),
       avatar,
-      name,
-      link: info.link
+      name
+      // link: info.link
     }
   }))
 
@@ -610,6 +676,7 @@ export default {
   [GET_NODE_ID]: getNodeId,
   [GET_ACCOUNT]: getAccount,
   [CREATE_USER]: createUser,
+  [GET_SUBNETS]: getSubnets,
   [SIGN_TX]: signTransaction,
   [FUND_ACCOUNT]: fundAccount,
   [GET_TOTAL_TXS]: getTotalTXs,
@@ -624,5 +691,6 @@ export default {
   [SUBSCRIBE_TO_EVENT]: subscribeToEvents,
   [GET_PENDING_VALIDATORS]: getPendingValidators,
   [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsByBlockchain,
+  [DELEGATE_VALIDATOR]: addDefaultSubnetDelegator,
   [ADD_VALIDATOR_TO_DEFAULT_SUBNET]: addValidatorToDefaultS
 }

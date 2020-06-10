@@ -61,7 +61,7 @@ export default {
       try {
         return this.nodeHealthInfo.healthy
       } catch (err) {
-        return ''
+        return true
       }
     },
     heartbeat: function () {

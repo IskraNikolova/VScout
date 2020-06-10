@@ -1,5 +1,51 @@
 [
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_admin",
+				"type": "address"
+			}
+		],
+		"name": "addAdmin",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_id",
+				"type": "string"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "_name",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_avatarUrl",
+				"type": "bytes"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_link",
+				"type": "bytes"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_code",
+				"type": "uint256"
+			}
+		],
+		"name": "setValidatorInfo",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
@@ -34,19 +80,6 @@
 		],
 		"name": "SetValidatorInfoEvent",
 		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_admin",
-				"type": "address"
-			}
-		],
-		"name": "addAdmin",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
 	},
 	{
 		"inputs": [],
@@ -88,39 +121,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_id",
-				"type": "string"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "_name",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bytes",
-				"name": "_avatarUrl",
-				"type": "bytes"
-			},
-			{
-				"internalType": "bytes",
-				"name": "_link",
-				"type": "bytes"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_code",
-				"type": "uint256"
-			}
-		],
-		"name": "setValidatorInfo",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]

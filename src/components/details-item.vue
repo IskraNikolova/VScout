@@ -2,7 +2,7 @@
 <div>
   <div class="row">
     <div class="col">
-      <div>Validator Id: <span id="identity">{{ identity }}</span></div>
+      <div>Validator ID: <span id="identity">{{ identity }}</span></div>
       <div>Start <span class="text-accent">{{ startDate }} </span><small>({{ fromNowGet }})</small></div>
       <div>End <span class="text-accent">{{ endDate }}</span></div>
     </div>
@@ -43,7 +43,6 @@ export default {
 </script>
 <style scoped>
   #identity {
-    color: #87C5D6;
-    font-size: 10px;
+    color: #ffa959;
   }
 </style>

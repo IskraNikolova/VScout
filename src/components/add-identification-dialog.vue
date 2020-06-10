@@ -51,7 +51,7 @@
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Please type your node ID!']"
             >
-              <template v-if="networkEndpoint.includes('http://127.0.0.1:')" v-slot:append>
+              <template v-slot:append>
                 <q-btn round dense @click="onGetNodeID" flat no-caps color="accent" icon="add"/>
               </template>
             </q-input>
@@ -234,11 +234,16 @@ export default {
           password: this.password
         })
         if (!res) return
+
         const accounts = res.accounts
         const isAuth = accounts.find(a => a.address === this.address)
         this.$store.commit(UPDATE_UI, { addIdentification: { isAuth } })
+
+        if (!isAuth) {
+          this.error = 'Authorization Failed!'
+        }
       } catch (err) {
-        this.err = err.message
+        this.error = err.message
       }
     },
     async onSubmit () {
@@ -257,7 +262,7 @@ export default {
         })
         this.closeAddId()
       } catch (err) {
-        this.err = err.message
+        this.error = err.message
       }
     },
     onGetNodeID () {

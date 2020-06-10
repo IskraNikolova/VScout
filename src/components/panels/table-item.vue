@@ -11,6 +11,11 @@
       class="light-background shadow-3"
       id="custom-table"
     >
+    <template v-slot:header-cell-delegate="props">
+      <q-th :props="props">
+        <q-icon name="img:statics/delegate.png" size="3.0em" />
+      </q-th>
+    </template>
       <template slot="top-left">
         <q-btn size="xs" flat icon="apps" @click="isGrid=true"/>
         <q-btn size="xs" flat icon="reorder" @click="isGrid=false"/>
@@ -52,7 +57,7 @@
             style="padding: 0px!important;margin:0px!important;"
           >
             <div v-if="col.name === 'validator'" class="row q-pl-md">
-              <!--<div :style="'border: solid 2px ' + border + ';border-radius: 50px;width: 24px;'">-->
+            <!--<div :style="'border: solid 2px ' + border + ';border-radius: 50px;width: 24px;'">-->
               <q-avatar size="25px">
                 <img :src="props.row.avatar" />
               </q-avatar>
@@ -60,8 +65,8 @@
                 style="cursor:pointer;font-size: 90%;"
                 class="q-pt-xs q-ml-md"
                 @click="onClick(props)"
-                @mouseover=" props.expand = true"
-                @mouseleave=" props.expand = false">
+                @mouseover="props.expand = true"
+                @mouseleave="props.expand = false">
                 {{ props.row.name}}
               </div>
             </div>
@@ -104,6 +109,12 @@
             </div>
             <div v-else-if="col.name === 'startTime'" class="q-pl-md">
               {{ formatDate(col.value) }}
+            </div>
+            <div v-else-if="col.name === 'delegate'">
+              <q-btn v-if="isDefaultSubnetID" no-caps flat @click="onDelegate(props.row)">
+                <small class="text-orange">Delegate</small>
+              </q-btn>
+              <div v-else> - </div>
             </div>
             <div v-else>{{ col.value }}</div>
           </q-td>
@@ -163,10 +174,13 @@
               </div>
               <q-separator class="q-mb-md"/>
               <div class="q-pl-xs">
-                <div >Staked by</div>
+                <div>Staked by</div>
                 <div class="text-accent">
                   <small>{{ props.row.fromNowST }}</small>
                 </div>
+              </div>
+              <div class="q-mt-md">
+                <q-btn size="xs" v-if="isDefaultSubnetID" color="orange" outline label="Delegate" @click="onDelegate(props.row)"/>
               </div>
               </q-card-section>
               <q-separator vertical />
@@ -204,28 +218,35 @@
         </div>
       </template>
     </q-table>
+    <delegate-validator-dialog ref="delegateValidatorDialog" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { copyToClipboard, openURL } from 'quasar'
+
+import {
+  copyToClipboard,
+  openURL
+} from 'quasar'
 
 import { date } from './../../modules/time'
 
 import DetailsItem from './../details-item'
-// import AddIdentificationDialog from './../add-identification-dialog'
 import AddValidatorDialog from './../add-validator-dialog'
 import CumulativeStakeChart from './../cumulative-stake-chart'
+import DelegateValidatorDialog from './../delegate-validator-dialog'
 import ProgressBarValidateSession from './../progress-bar-validatе-session'
+// import AddIdentificationDialog from './../add-identification-dialog'
 
 export default {
   name: 'TableItem',
   components: {
     DetailsItem,
-    // AddIdentificationDialog,
     AddValidatorDialog,
     CumulativeStakeChart,
+    DelegateValidatorDialog,
+    // AddIdentificationDialog,
     ProgressBarValidateSession
   },
   data () {
@@ -264,7 +285,8 @@ export default {
         },
         { name: 'precent', align: 'left', label: 'CUMULATIVE STAKE (%)', field: 'cumulativeStake' },
         { name: 'startTime', align: 'left', label: 'START TIME', field: 'startTime', sortable: true },
-        { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress' }
+        { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress' },
+        { name: 'delegate', align: 'center', label: 'DELEGATE', field: 'delegate' }
       ]
     }
   },
@@ -273,7 +295,8 @@ export default {
       'nodeID',
       'validators',
       'networkEndpoint',
-      'pendingValidators'
+      'pendingValidators',
+      'isDefaultSubnetID'
     ]),
     curentVal: {
       get: function () {
@@ -289,6 +312,9 @@ export default {
         openURL(props.row.link)
       } catch (err) {
       }
+    },
+    onDelegate (validator) {
+      this.$refs.delegateValidatorDialog.openDelegate(validator)
     },
     getLocalString (val) {
       if (!val) return val

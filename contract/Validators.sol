@@ -69,5 +69,4 @@ contract Validators {
     function random() private view returns (uint256) {
        return uint256(keccak256(abi.encodePacked(now, block.difficulty, msg.sender))) % 9999;
     }
-    
 }

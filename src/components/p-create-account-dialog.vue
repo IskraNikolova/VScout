@@ -152,8 +152,8 @@ export default {
 
         if (this.dismissFund) {
           await this.fundAccount({
-            to: this.ui.addValidatorDialog.payingAccount.address,
-            nonce: Number(this.ui.addValidatorDialog.payingAccount.nonce),
+            to: this.ui.formAccounts.payingAccount.address,
+            nonce: Number(this.ui.formAccounts.payingAccount.nonce),
             amount: this.fundAmount,
             username: this.username,
             password: this.password
@@ -182,14 +182,14 @@ export default {
       const temp = {
         paying: () => {
           this.$store.commit(UPDATE_UI, {
-            addValidatorDialog: {
+            formAccounts: {
               payingAccount: e
             }
           })
         },
         destination: () => {
           this.$store.commit(UPDATE_UI, {
-            addValidatorDialog: {
+            formAccounts: {
               destinationAccount: e
             }
           })
@@ -202,8 +202,8 @@ export default {
       if (this.dismissFund) {
         try {
           await this.fundAccount({
-            to: this.ui.addValidatorDialog.payingAccount.address,
-            nonce: Number(this.ui.addValidatorDialog.payingAccount.nonce),
+            to: this.ui.formAccounts.payingAccount.address,
+            nonce: Number(this.ui.formAccounts.payingAccount.nonce),
             amount: this.fundAmount,
             username: this.username,
             password: this.password

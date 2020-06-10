@@ -1,15 +1,31 @@
 <template>
   <q-dialog
-    v-model="ui.addValidatorDialog.isOpen"
+    v-model="ui.delegateValidatorDialog.isOpen"
     persistent
     transition-show="slide-up"
     transition-hide="slide-down"
   >
     <q-card class="custom-card">
       <q-card-section class="row q-mr-xl">
-        <div class="text-h6">Add a Validator to the Default Subnet</div>
-        <q-space />
-        <q-btn icon="close" flat round dense @click="close" />
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar>
+              <img src="./../statics/manage.svg" />
+            </q-avatar>
+            </q-item-section>
+            <q-item-section>
+            <q-item-label>
+              Delegate a Validator to the Default Subnet
+            </q-item-label>
+            <q-item-label caption>
+              A delegator stakes AVA and specifies a validator (the delegatee) to validate on their behalf. The delegatee has an increased probability of being sampled by other validators (weight) in proportion to the stake delegated to them.
+              The delegatee charges a fee to the delegator; the former receives a percentage of the delegator’s validation reward (if any.)
+              The delegation period must be a subset of the perdiod that the delegatee validates the Default Subnet.
+            </q-item-label>
+            </q-item-section>
+            <q-space />
+            <q-btn size="xs" icon="close" flat round dense @click="onClose" />
+        </q-item>
       </q-card-section>
       <div class="text-warning q-pl-md outlined" v-if="error">
         <q-icon name="report_problem" /> {{ error }}
@@ -26,18 +42,14 @@
                 color="accent"
                 outlined
                 clearable
+                readonly
                 label-color="orange"
-                v-model="nodeIDModel"
-                label="Your node ID *"
-                hint="Validators identify one another by their node IDs"
+                v-model="nodeID"
+                label="Node ID *"
+                hint="The node ID of the delegatee"
                 lazy-rules
                 :rules="[ val => val && val.length > 0 || 'Please type your node ID!']"
-              >
-                <template v-slot:append>
-                  <q-btn round dense @click="onGetNodeID" flat no-caps color="accent" icon="add"/>
-                </template>
-              </q-input>
-
+              />
               <q-input
                 class="q-mb-md q-pt-md"
                 color="accent"
@@ -46,7 +58,7 @@
                 label-color="orange"
                 v-model="destination"
                 label="Destination account *"
-                hint="The staked AVA tokens and rewards are sent to an account that is specified. The validation reward is also sent to the same account as the staked AVA."
+                hint="The address of the account the staked AVA and validation reward (if applicable) are sent to at endTime."
                 lazy-rules
                 :rules="[
                   val => val !== null && val !== '' || 'Please type your destination account!',
@@ -78,6 +90,23 @@
                   <p-create-account-dialog ref="pCreateAccount" />
                 </template>
               </q-input>
+            </div>
+            <q-separator vertical class="q-mr-xl" />
+            <div class="col-md-5 col-12 q-pr-xl q-pt-md">
+              <q-input
+                class="q-mb-md"
+                color="accent"
+                outlined
+                label-color="orange"
+                v-model="stakeAmount"
+                type="number"
+                label="Stake Amount *"
+                hint="The amount of nAVA the delegator is staking."
+                lazy-rules
+                :rules="[
+                  val => val !== null && val !== '' || 'Please type your stake amount'
+                ]"
+              />
               <q-input
                 color="accent"
                 class="q-pt-md"
@@ -85,7 +114,7 @@
                 label-color="orange"
                 label="Start Date"
                 v-model="startDate"
-                hint="The start time must be in the future relative to the time the transaction is issued."
+                hint="The Unix time when the delegator starts delegating."
                 lazy-rules
                 :rules="[
                   val => val !== null && val !== '' || 'Please type your start date!',
@@ -107,35 +136,6 @@
                   </q-icon>
                 </template>
               </q-input>
-            </div>
-            <q-separator vertical class="q-mr-xl" />
-            <div class="col-md-5 col-12 q-pr-xl q-pt-md">
-              <q-input
-                class="q-mb-md"
-                color="accent"
-                outlined
-                label-color="orange"
-                v-model="stakeAmount"
-                type="number"
-                label="Stake Amount *"
-                hint="In order to validate the Default Subnet one must stake AVA tokens. The minimum amount that one can stake is 10 μAVA."
-                lazy-rules
-                :rules="[
-                  val => val !== null && val !== '' || 'Please type your stake amount',
-                  val => val > 10000 && val < 35000000000 || 'Invalid amount!'
-                ]"
-              />
-              <q-input
-                color="accent"
-                class="q-mb-md q-pt-md"
-                clearable
-                outlined
-                type="number"
-                label-color="orange"
-                v-model="delegationFeeRate"
-                label="Delegation Fee"
-                hint="Percent fee this validator charges when others delegate stake to them, multiplied by 10,000."
-              />
               <q-input
                 color="accent"
                 class="q-mb-md q-pt-md"
@@ -143,7 +143,7 @@
                 label-color="orange"
                 v-model="endDate"
                 label="End Date"
-                hint="The minimum duration that one can validate the Default Subnet is 24 hours, and the maximum duration is one year."
+                hint="The Unix time when the delegator stops delegating (and staked AVA is returned)"
                 lazy-rules
                 :rules="[
                   val => val !== null && val !== '' || 'Please type your end date!',
@@ -169,7 +169,7 @@
           </div>
           <div class="row q-pr-xl">
             <q-space />
-            <q-btn size="md" label="Add Validator" type="submit" color="accent"/>
+            <q-btn size="md" label="Delegate" type="submit" color="accent"/>
             <q-btn size="md" label="Reset" type="reset" color="grey" flat class="q-ml-sm" />
           </div>
         </q-form>
@@ -189,26 +189,28 @@ import {
 import SignTxDialog from './sign-tx-dialog'
 import CreateUserDialog from './create-user-dialog'
 import PCreateAccountDialog from './p-create-account-dialog'
-import { datePickerFormat, toUnix } from './../modules/time'
 
 import {
-  GET_NODE_ID, GET_ACCOUNT,
-  ADD_VALIDATOR_TO_DEFAULT_SUBNET
+  datePickerFormatStart,
+  datePickerFormatEnd,
+  toUnix
+} from './../modules/time'
+
+import {
+  DELEGATE_VALIDATOR
 } from './../store/app/types'
 
 import {
   UPDATE_UI,
-  OPEN_ADD_VALIDATOR_DIALOG,
-  CLOSE_ADD_VALIDATOR_DIALOG
+  OPEN_DELEGATE_VALIDATOR_DIALOG,
+  CLOSE_DELEGATE_VALIDATOR_DIALOG
 } from './../store/ui/types'
 
 export default {
-  name: 'AddValidatorDialog',
+  name: 'DelegateValidatorDialog',
   computed: {
     ...mapGetters([
       'ui',
-      'nodeID',
-      'networkEndpoint',
       'currentBlockchain'
     ]),
     destination: {
@@ -244,6 +246,39 @@ export default {
           }
         })
       }
+    },
+    startDate: {
+      get: function () {
+        let val
+        if (!this.s) {
+          val = this.ui.delegateValidatorDialog
+          return datePickerFormatStart(val.validator.startTime)
+        }
+        return this.s
+      },
+      set: function (value) {
+        this.s = value
+      }
+    },
+    endDate: {
+      get: function () {
+        let val
+        if (!this.e) {
+          val = this.ui.delegateValidatorDialog
+          return datePickerFormatEnd(val.validator.endTime)
+        }
+        return this.e
+      },
+      set: function (value) {
+        this.e = value
+      }
+    },
+    nodeID: {
+      get: function () {
+        const val = this.ui.delegateValidatorDialog
+        if (!val) return ''
+        return val.validator.validator
+      }
     }
   },
   components: {
@@ -253,37 +288,25 @@ export default {
   },
   data () {
     return {
+      s: null,
+      e: null,
       error: null,
-      endDate: null,
-      startDate: null,
-      stakeAmount: null,
-      nodeIDModel: null,
-      delegationFeeRate: null
+      stakeAmount: null
     }
-  },
-  created () {
-    this.setInitDates()
-    this.error = null
   },
   methods: {
     ...mapActions({
-      getNodeId: GET_NODE_ID,
-      getAccount: GET_ACCOUNT,
-      open: OPEN_ADD_VALIDATOR_DIALOG,
-      close: CLOSE_ADD_VALIDATOR_DIALOG,
-      addValidatorToDef: ADD_VALIDATOR_TO_DEFAULT_SUBNET
+      addDefaultSubnetDelegator: DELEGATE_VALIDATOR,
+      openDelegate: OPEN_DELEGATE_VALIDATOR_DIALOG,
+      closeDelegate: CLOSE_DELEGATE_VALIDATOR_DIALOG
     }),
-    setInitDates () {
-      this.endDate = datePickerFormat({ value: 2, label: 'd' })
-      this.startDate = datePickerFormat({ value: 10, label: 'm' })
+    onClose () {
+      this.err = null
+      this.closeDelegate()
     },
     onCreatePAccount (type) {
-      this.$refs.pCreateAccount.openP({ type })
-    },
-    async onGetNodeID () {
-      this.error = null
-      await this.getNodeId()
-      this.nodeIDModel = this.nodeID
+      this.$refs
+        .pCreateAccount.openP({ type })
     },
     async onSubmit () {
       this.error = null
@@ -300,11 +323,8 @@ export default {
         stakeAmount: this.stakeAmount,
         payerNonce: 0
       }
-      if (this.delegationFeeRate) {
-        params.delegationFeeRate = this.delegationFeeRate
-      }
       try {
-        const unsignedTx = await this.addValidatorToDef({
+        const unsignedTx = await this.addDefaultSubnetDelegator({
           params,
           signer: this.payingAccount
         })
@@ -319,11 +339,9 @@ export default {
     },
     onReset () {
       this.error = null
-      this.setInitDates()
+      this.payingAccount = null
       this.destination = null
-      this.nodeIDModel = null
       this.stakeAmount = null
-      this.delegationFeeRate = null
     }
   }
 }

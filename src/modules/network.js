@@ -63,6 +63,16 @@ export const _getBlockchains = async ({ endpoint }) => {
   return response
 }
 
+export const _getSubnets = async ({ endpoint }) => {
+  const response = await request(endpoint + c.platform, body(c.getSubnets))
+  return response
+}
+
+export const _validates = async ({ endpoint, params }) => {
+  const response = await request(endpoint + c.platform, body(c.validates, params))
+  return response
+}
+
 export const _getValidators = async ({ subnetID, endpoint }) => {
   const response = await request(endpoint + c.platform, body(c.getCurrentValidators, { subnetID }))
   return response
@@ -130,6 +140,11 @@ export const _getNodeId = async ({ endpoint }) => {
 
 export const _addDefaultSubnetValidator = async ({ endpoint, params }) => {
   const response = await request(endpoint + c.platform, body(c.addDefaultSubnetValidator, params))
+  return response
+}
+
+export const _addDefaultSubnetDelegator = async ({ endpoint, params }) => {
+  const response = await request(endpoint + c.platform, body(c.addDefaultSubnetDelegator, params))
   return response
 }
 

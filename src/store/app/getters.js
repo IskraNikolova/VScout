@@ -3,7 +3,9 @@ export function validators (state) {
 }
 
 export function validatorById (state) {
-  return (id) => state.validators.find(val => val.validator === id)
+  return (id) => state
+    .validators
+    .find(val => val.validator === id)
 }
 
 export function pendingValidators (state) {
@@ -14,8 +16,34 @@ export function blockchains (state) {
   return state.blockchains
 }
 
+export function blockchainByID (state) {
+  return (id) => state
+    .blockchains
+    .find(b => b.id === id)
+}
+
+export function subnets (state) {
+  return state.subnets
+}
+
+export function currentSubnet (state) {
+  return state.currentSubnet
+}
+
 export function currentBlockchain (state) {
   return state.currentBlockchain
+}
+
+export function subnetID (state) {
+  return state.subnetID
+}
+
+export function isDefaultSubnetID (state) {
+  return state.subnetID === '11111111111111111111111111111111LpoYY'
+}
+
+export function isBlockchainView (state) {
+  return state.isBlockchainView
 }
 
 export function networkEndpoint (state) {

@@ -15,7 +15,9 @@ import {
   OPEN_ADD_IDENTIFICATION,
   CLOSE_ADD_IDENTIFICATION,
   OPEN_ADD_VALIDATOR_DIALOG,
-  CLOSE_ADD_VALIDATOR_DIALOG
+  CLOSE_ADD_VALIDATOR_DIALOG,
+  OPEN_DELEGATE_VALIDATOR_DIALOG,
+  CLOSE_DELEGATE_VALIDATOR_DIALOG
 } from './types'
 
 const updateUi = ({ commit }, data) => {
@@ -27,12 +29,18 @@ const openSignTx = ({ commit }, { unsignedTx, signer }) => {
 }
 
 const closeSignTx = ({ commit }, signedTx) => {
-  commit(UPDATE_UI, { signTx: { isOpen: false, unsignedTx: null, signer: null, signedTx } })
+  commit(UPDATE_UI, {
+    signTx: {
+      isOpen: false,
+      unsignedTx: null,
+      signer: null,
+      signedTx
+    }
+  })
 }
 
-const openPCreate = ({ commit, getters }, { type }) => {
+const openPCreate = ({ commit }, { type }) => {
   commit(UPDATE_UI, { pCreate: { isOpen: true, type } })
-  console.log(getters.ui)
 }
 
 const closePCreate = ({ commit }) => {
@@ -80,11 +88,37 @@ const closeAddIdentification = ({ commit }) => {
 }
 
 const openAddValidatorDialog = ({ commit }) => {
-  commit(UPDATE_UI, { addValidatorDialog: { isOpen: true, destinationAccount: { address: null }, payingAccount: { address: null } } })
+  commit(UPDATE_UI, {
+    addValidatorDialog: {
+      isOpen: true
+    }
+  })
 }
 
 const closeAddValidatorDialog = ({ commit }) => {
-  commit(UPDATE_UI, { addValidatorDialog: { isOpen: false, destinationAccount: { address: null }, payingAccount: { address: null } } })
+  commit(UPDATE_UI, {
+    addValidatorDialog: {
+      isOpen: false
+    }
+  })
+}
+
+const openDelegateValidator = ({ commit }, validator) => {
+  commit(UPDATE_UI, {
+    delegateValidatorDialog: {
+      isOpen: true,
+      validator
+    }
+  })
+}
+
+const closeDelegateValidator = ({ commit }) => {
+  commit(UPDATE_UI, {
+    delegateValidatorDialog: {
+      isOpen: false,
+      validator: {}
+    }
+  })
 }
 
 export default {
@@ -104,5 +138,7 @@ export default {
   [OPEN_ADD_IDENTIFICATION]: openAddIdentification,
   [CLOSE_ADD_IDENTIFICATION]: closeAddIdentification,
   [OPEN_ADD_VALIDATOR_DIALOG]: openAddValidatorDialog,
-  [CLOSE_ADD_VALIDATOR_DIALOG]: closeAddValidatorDialog
+  [CLOSE_ADD_VALIDATOR_DIALOG]: closeAddValidatorDialog,
+  [OPEN_DELEGATE_VALIDATOR_DIALOG]: openDelegateValidator,
+  [CLOSE_DELEGATE_VALIDATOR_DIALOG]: closeDelegateValidator
 }

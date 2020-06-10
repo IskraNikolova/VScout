@@ -1,13 +1,28 @@
 
 export default function () {
   return {
-    assetInfo: { isOpen: false, asset: {} },
-    addValidatorDialog: { isOpen: false, destinationAccount: { address: null }, payingAccount: { address: null } },
-    addIdentification: { isOpen: false, isAuth: false },
-    signTx: { isOpen: false, unsignedTx: null, signer: null, signedTx: null },
-    pCreate: { isOpen: false, type: null },
+    signTx: {
+      isOpen: false,
+      unsignedTx: null,
+      signer: null,
+      signedTx: null
+    },
+    addValidatorDialog: {
+      isOpen: false
+    },
+    delegateValidatorDialog: {
+      isOpen: false,
+      validator: {}
+    },
+    formAccounts: {
+      destinationAccount: { address: null },
+      payingAccount: { address: null }
+    },
     uCreate: { isOpen: false },
+    nodeHealth: { isOpen: false },
+    pCreate: { isOpen: false, type: null },
+    assetInfo: { isOpen: false, asset: {} },
     selectAccounts: { isOpen: false, accounts: null },
-    nodeHealth: { isOpen: false }
+    addIdentification: { isOpen: false, isAuth: false }
   }
 }
