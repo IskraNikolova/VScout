@@ -2,7 +2,6 @@
   <div>
     <div id="f-size12" class="q-pb-md">SUBNETWORK</div>
     <div>
-      <small>Subntet ID</small>
       <div class="text-h6 q-pb-md text-orange" v-if="isDefaultSubnetID">
         Default Subnet
       </div>
@@ -10,9 +9,23 @@
         <small>{{ currentSubnet.id }}</small>
       </div>
     </div>
-    <div id="f-size12">
-      Threshold:
-      <span class="text-h7 text-grey"> {{ currentSubnet.threshold }}</span>
+    <div class="row">
+      <div class="col-4 q-mt-xs" id="f-size12">
+        Threshold:
+        <span class="text-h7 text-grey"> {{ currentSubnet.threshold }}</span>
+      </div>
+      <div class="col">
+        <q-btn-dropdown flat color="accent" v-if="currentSubnet.threshold > 0" size="xs" no-caps label="Control Keys">
+          <q-list v-for="key in currentSubnet.controlKeys" v-bind:key="key">
+            <q-item>
+              <q-item-section><span>{{ key }}</span></q-item-section>
+              <q-item-section side>
+              <q-icon size="xs" name="img:statics/key.svg" color="grey" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
+      </div>
     </div>
   </div>
 </template>

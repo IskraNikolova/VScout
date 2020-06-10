@@ -69,14 +69,8 @@ export default {
     ...mapActions({
       getValidators: GET_VALIDATORS
     }),
-    async onSelectBlockchain (blockchain) {
+    onSelectBlockchain (blockchain) {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
-      await Promise.all([
-        this.getValidators({
-          subnetID: blockchain.subnetID,
-          endpoint: this.networkEndpoint
-        })
-      ])
     }
   }
 }

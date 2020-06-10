@@ -7,18 +7,18 @@
       <div class="text-h6 text-orange q-pb-md">{{ currentBlockchain.name }}</div>
       <div class="q-pl-md q-pt-xs">
         <q-btn-dropdown color="accent" outline v-if="assets(currentBlockchain.id)" size="xs" no-caps label="Smart Digital Assets">
-            <div class="q-pa-md">
-            <small><img src="~assets/coins.svg" id="small-logo">Assets on {{ currentBlockchain.name }}</small>
-            <q-separator />
-            </div>
-            <q-list v-for="asset in assets(currentBlockchain.id)" v-bind:key="asset.id">
+          <div class="q-pa-md">
+           <small><img src="~assets/coins.svg" id="small-logo">Assets on {{ currentBlockchain.name }}</small>
+           <q-separator />
+          </div>
+          <q-list v-for="asset in assets(currentBlockchain.id)" v-bind:key="asset.id">
             <q-item clickable v-close-popup @click="onOpenAssetInfo(asset)">
-                <q-item-section><span>{{ asset.symbol }}</span></q-item-section>
-                <q-item-section side>
-                <q-icon size="xs" name="info" color="grey" />
-                </q-item-section>
+              <q-item-section><span>{{ asset.symbol }}</span></q-item-section>
+              <q-item-section side>
+              <q-icon size="xs" name="info" color="grey" />
+              </q-item-section>
             </q-item>
-            </q-list>
+          </q-list>
         </q-btn-dropdown>
         <asset-info-item ref="assetDialog"/>
       </div>
