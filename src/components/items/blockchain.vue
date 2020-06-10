@@ -4,8 +4,8 @@
       BLOCKCHAIN
     </div>
     <div class="row q-mb-md">
-      <div class="text-h6 text-orange q-pb-md">{{ currentBlockchain.name }}</div>
-      <div class="q-pl-md q-pt-xs">
+      <div class="text-h6 text-orange q-pb-md q-pr-md ">{{ currentBlockchain.name }}</div>
+      <div class="q-pt-xs">
         <q-btn-dropdown color="accent" outline v-if="assets(currentBlockchain.id)" size="xs" no-caps label="Smart Digital Assets">
           <div class="q-pa-md">
            <small><img src="~assets/coins.svg" id="small-logo">Assets on {{ currentBlockchain.name }}</small>
