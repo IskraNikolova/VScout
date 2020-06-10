@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf" >
-    <q-header reveal class="bg-white text-black q-pt-md q-pr-xl">
+    <q-header reveal class="bg-white text-black q-pt-md q-pr-xl" style="z-index: 0;">
       <q-toolbar>
       <q-img class="md background-img-s" src="./../statics/img/background.png"/>
       <q-img class="xl background-img-s" src="./../statics/img/background.png"/>
@@ -163,7 +163,7 @@
         </q-btn-dropdown>
         </q-toolbar>
     </q-header>
-    <q-page-container>
+    <q-page-container style="z-index: 10;">
       <router-view />
     </q-page-container>
   </q-layout>
