@@ -161,17 +161,19 @@
         </q-tooltip>
       </div>
     </div>
-    <network  class="q-pa-md"/>
-    <transactions-item class="q-pa-md" />
-    <stak-item class="q-pa-md"/>
-    <table-item @getValidators="getValidatorsV"/>
-    <faqs-item class="q-pa-md" />
+    <div style="background: white;">
+      <network  class="q-pa-md"/>
+      <transactions-item class="q-pa-md" />
+      <stak-item class="q-pa-md"/>
+      <table-item @getValidators="getValidatorsV"/>
+      <faqs-item class="q-pa-md" />
 
-    <div class="flex flex-center q-mt-xl">
-      <img src="~assets/ava-black.png" id="logo"/>
-    </div>
-    <div class="flex flex-center q-mt-xl">
-      Made with ❤️ for builders everywhere.
+      <div class="flex flex-center q-mt-xl">
+        <img src="~assets/ava-black.png" id="logo"/>
+      </div>
+      <div class="flex flex-center q-mt-xl">
+        Made with ❤️ for builders everywhere.
+      </div>
     </div>
   </q-page>
 </template>
