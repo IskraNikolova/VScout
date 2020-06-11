@@ -13,10 +13,10 @@
       <subnet v-if="isBlockchainView" class="col-md-3 col-xs-10"/>
       <subnet-2 v-else class="col-md-3 col-xs-10" />
       <div v-if="isBlockchainView" class="col-1 q-pt-md">
-        <img src="~assets/computer-network.svg" id="logo">
+        <img src="~assets/network-grey.svg" id="logo2">
       </div>
       <div v-else class="col-2 q-pt-md">
-        <img src="~assets/computer-network.svg" id="logo">
+        <img src="~assets/network-grey.svg" id="logo2">
       </div>
       <node-connection class="col-md-3 col-xs-10" />
       <div class="col-1 q-pt-md">

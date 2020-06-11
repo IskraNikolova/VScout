@@ -11,11 +11,11 @@
       class="light-background shadow-3"
       id="custom-table"
     >
-    <template v-slot:header-cell-delegate="props">
-      <q-th :props="props">
-        <q-icon name="img:statics/delegate.png" size="3.0em" />
-      </q-th>
-    </template>
+      <template v-slot:header-cell-delegate="props">
+        <q-th :props="props">
+          <q-icon name="img:statics/delegate.png" size="3.0em" />
+        </q-th>
+      </template>
       <template slot="top-left">
         <q-btn size="xs" flat icon="apps" @click="isGrid=true"/>
         <q-btn size="xs" flat icon="reorder" @click="isGrid=false"/>
@@ -30,8 +30,19 @@
             {label: 'Pending', value: 'pending'}
           ]"
         />
-        <q-btn size="xs" outline label="Add Validator" icon="add" @click.native="onAddValidator" class="q-mr-md"/>
+        <q-btn size="xs" outline label="Add Validator" icon="add" @click.native="onAddValidator" class="q-mr-md q-ml-md"/>
         <add-validator-dialog ref="addValidatorDialog" />
+        <q-btn-toggle
+          v-model="type2"
+          flat
+          size="xs"
+          toggle-color="orange"
+          @click.native="onSwitchAccounts"
+          :options="[
+            {label: 'Validators', value: 'validators'},
+            {label: 'Delegators', value: 'delegators'}
+          ]"
+        />
         <!--<q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
         <add-identification-dialog ref="addIdentificationRef" />-->
       </template>
@@ -232,6 +243,7 @@ import {
 } from 'quasar'
 
 import { date } from './../../modules/time'
+import { UPDATE_UI } from './../../store/ui/types'
 
 import DetailsItem from './../details-item'
 import AddValidatorDialog from './../add-validator-dialog'
@@ -252,11 +264,11 @@ export default {
   },
   data () {
     return {
+      filter: '',
       type: 'active',
-      curentValidators: [],
+      type2: 'validators',
       isGrid: false,
       isActive: true,
-      filter: '',
       pagination: {
         rowsPerPage: 20
       },
@@ -274,7 +286,7 @@ export default {
         {
           name: 'validator',
           align: 'left',
-          label: 'VALIDATOR',
+          label: 'VALIDATOR (Node ID)',
           field: 'name'
         },
         {
@@ -288,7 +300,8 @@ export default {
         { name: 'startTime', align: 'left', label: 'START TIME', field: 'startTime', sortable: true },
         { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress' },
         { name: 'delegate', align: 'center', label: 'DELEGATE', field: 'delegate' }
-      ]
+      ],
+      curentValidators: []
     }
   },
   computed: {
@@ -315,7 +328,9 @@ export default {
       }
     },
     onDelegate (validator) {
-      this.$refs.delegateValidatorDialog.openDelegate(validator)
+      this.$refs
+        .delegateValidatorDialog
+        .openDelegate(validator)
     },
     getLocalString (val) {
       if (!val) return val
@@ -346,6 +361,17 @@ export default {
       }
       temp[this.type]()
       this.$emit('getValidators', this.type)
+    },
+    onSwitchAccounts () {
+      const temp = {
+        validators: true,
+        delegators: false
+      }
+      this.$store.commit(UPDATE_UI, {
+        typeAccount: {
+          isValidators: temp[this.type2]
+        }
+      })
     },
     formatDate (time) {
       if (!time) return

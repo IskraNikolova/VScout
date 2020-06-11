@@ -77,7 +77,7 @@
         <q-separator class="q-mt-xl"/>
         <div class="flex flex-center q-pt-xs">
           <small class="text-grey">Don't have an account?</small>
-          <q-btn @click="onOpenCreateUserD" size="xs" flat color="accent" label="Sign Up" />
+          <q-btn @click="onOpenCreateUserD" size="xs" flat color="accent" label="Create" />
         </div>
       </q-card-section>
     </q-card>

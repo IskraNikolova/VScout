@@ -154,7 +154,7 @@
                 <template v-slot:prepend>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy transition-show="scale" transition-hide="scale">
-                      <q-date v-model="endDate" mask="YYYY-MM-DD HH:mm" />
+                      <q-date v-model="endDate" mask="YYYY-MM-DD HH:mm" color="accent" />
                     </q-popup-proxy>
                   </q-icon>
                 </template>
@@ -162,7 +162,7 @@
                 <template v-slot:append>
                   <q-icon name="access_time" class="cursor-pointer">
                     <q-popup-proxy transition-show="scale" transition-hide="scale">
-                      <q-time v-model="endDate" mask="YYYY-MM-DD HH:mm" format24h />
+                      <q-time v-model="endDate" mask="YYYY-MM-DD HH:mm" format24h color="accent" />
                     </q-popup-proxy>
                   </q-icon>
                 </template>

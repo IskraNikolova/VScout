@@ -26,7 +26,23 @@
             {label: 'Active', value: 'active'},
             {label: 'Pending', value: 'pending'}
           ]"
+        />|
+        <q-btn-toggle
+          v-model="type2"
+          flat
+          size="xs"
+          toggle-color="orange"
+          @click.native="onSwitchAccounts"
+          :options="[
+            {label: 'Validators', value: 'validators'},
+            {label: 'Delegators', value: 'delegators'}
+          ]"
         />
+      </template>
+      <template v-slot:header-cell-index="props">
+        <q-th :props="props">
+          <q-icon name="img:statics/delegate.png" class="q-pl-xs" size="2.0em" />
+        </q-th>
       </template>
       <template slot="top-right" v-if="!isGrid">
         <q-input
@@ -72,10 +88,13 @@
               />
             </div>
             <div v-else-if="col.name === 'startTime'" class="q-pl-md">
-              {{ formatDate(col.value) }}
+              <small>{{ formatDate(col.value) }}</small>
             </div>
             <div v-else-if="col.name === 'endTime'" class="q-pl-md">
-              {{ formatDate(col.value) }}
+              <small>{{ formatDate(col.value) }}</small>
+            </div>
+            <div v-else-if="col.name === 'index'">
+              {{ col.value }}
             </div>
             <div v-else class="q-pl-md"><small>{{ col.value }}</small></div>
           </q-td>
@@ -88,10 +107,9 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import { copyToClipboard, openURL } from 'quasar'
-
 import { date } from './../../modules/time'
-
+import { copyToClipboard, openURL } from 'quasar'
+import { UPDATE_UI } from './../../store/ui/types'
 import ProgressBarValidateSession from './../progress-bar-validatе-session'
 
 export default {
@@ -102,6 +120,7 @@ export default {
   data () {
     return {
       type: 'active',
+      type2: 'delegators',
       curentValidators: [],
       isGrid: false,
       isActive: true,
@@ -116,9 +135,7 @@ export default {
           name: 'index',
           label: '#',
           align: 'center',
-          field: row => row.index,
-          sortable: true,
-          style: 'width: 50px'
+          field: row => row.index
         },
         {
           name: 'pAccount',
@@ -191,6 +208,17 @@ export default {
       }
       temp[this.type]()
       this.$emit('getDelegators', this.type)
+    },
+    onSwitchAccounts () {
+      const temp = {
+        validators: true,
+        delegators: false
+      }
+      this.$store.commit(UPDATE_UI, {
+        typeAccount: {
+          isValidators: temp[this.type2]
+        }
+      })
     },
     formatDate (time) {
       if (!time) return

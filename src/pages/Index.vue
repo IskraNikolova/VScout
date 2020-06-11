@@ -3,8 +3,8 @@
     <network  class="q-pr-md"/>
     <transactions-item class="q-pa-md" />
     <stak-item class="q-pr-md"/>
-    <table-validators @getValidators="getValidatorsV"/>
-    <table-delegators @getDelegators="getValidatorsV"/>
+    <table-validators v-if="ui.typeAccount.isValidators" @getValidators="getValidatorsV"/>
+    <table-delegators v-else @getDelegators="getValidatorsV"/>
     <faqs-item class="q-pr-md" />
 
     <div class="flex flex-center q-mt-xl">

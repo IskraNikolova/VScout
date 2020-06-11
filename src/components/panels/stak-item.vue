@@ -9,6 +9,9 @@
         </div>
         <div id="f-size12">Pending Valitarors: <span class="text-accent">{{ pendingValidators.length }}</span></div>
       </div>
+      <div class="col-1 q-pt-md">
+        <img src="~assets/validators-grey.png" class="custom-icon">
+      </div>
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md">DELEGATORS</div>
         <div class="text-h5 text-orange q-pb-md">
@@ -17,7 +20,7 @@
         <div id="f-size12">Pending Delegators: <span class="text-accent">{{ pendingDelegators.length }}</span></div>
       </div>
       <div class="col-1 q-pt-md">
-        <img src="~assets/validators-grey.png" class="custom-icon">
+        <img src="~assets/manage.svg" class="custom-icon">
       </div>
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md">STAKED AVA</div>
@@ -40,11 +43,6 @@
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/ava_price.png" class="custom-icon">
-      </div>
-      <div class="col-md-1 col-xs-10">
-       <div id="f-size12" class="q-pb-md">PRICE</div>
-       <div class="text-h5 text-orange q-pb-md"><small>$0.00<span style="font-size: 13px;"> /AVA</span></small></div>
-       <div id="f-size12">Market Capitalization: <span class="text-accent">N/A</span></div>
       </div>
     </div>
   </q-card>

@@ -176,7 +176,8 @@ export default {
       const volumesData = {
         label: `Tx Volume  - ${data.label} Ø`,
         data: data.intervals.map(a => a.transactionCount),
-        borderColor: 'black'
+        borderColor: 'black',
+        backgroundColor: 'black'
       }
 
       return {
@@ -193,7 +194,8 @@ export default {
           const sec = this.getSec(a.endTime, a.startTime)
           return (a.transactionCount / sec).toFixed(2)
         }),
-        borderColor: '#87C5D6'
+        borderColor: '#87C5D6',
+        backgroundColor: '#87C5D6'
       }
 
       return {
@@ -204,7 +206,7 @@ export default {
     getVolumeChart () {
       const ctx = window.document.getElementById('chartVol').getContext('2d')
       this.chartVol = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: this.getVolChartData(),
         options: this.options()
       })
@@ -212,7 +214,7 @@ export default {
     getTpsChart () {
       const ctx = window.document.getElementById('chartTps').getContext('2d')
       this.chartTps = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: this.getTpsChartData(),
         options: this.options()
       })
