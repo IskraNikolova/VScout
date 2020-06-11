@@ -2,6 +2,10 @@ export function validators (state) {
   return state.validators
 }
 
+export function delegators (state) {
+  return state.delegators
+}
+
 export function validatorById (state) {
   return (id) => state
     .validators
@@ -10,6 +14,10 @@ export function validatorById (state) {
 
 export function pendingValidators (state) {
   return state.pendingValidators
+}
+
+export function pendingDelegators (state) {
+  return state.pendingDelegators
 }
 
 export function blockchains (state) {

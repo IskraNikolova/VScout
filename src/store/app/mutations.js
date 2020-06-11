@@ -7,6 +7,7 @@ import {
   SET_ENDPOINT,
   SET_TOTAL_TXS,
   SET_VALIDATORS,
+  SET_DELEGATORS,
   SET_BLOCKCHAINS,
   SET_TXS_HISTORY,
   SET_NODE_HEALTH,
@@ -14,6 +15,7 @@ import {
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
   SET_ENDPOINTS_MEMORY,
+  SET_PENDING_DELEGATORS,
   SET_PENDING_VALIDATORS,
   SET_CURRENT_BLOCKCHAIN,
   SET_PREVIOUS_TOTAL_TXS,
@@ -36,6 +38,9 @@ const mutations = {
   },
   [SET_VALIDATORS]: (state, { validators }) => {
     state.validators = validators
+  },
+  [SET_DELEGATORS]: (state, { delegators }) => {
+    state.delegators = delegators
   },
   [SET_BLOCKCHAINS]: (state, { blockchains }) => {
     state.blockchains = blockchains
@@ -67,6 +72,9 @@ const mutations = {
   },
   [SET_PENDING_VALIDATORS]: (state, { validators }) => {
     state.pendingValidators = validators
+  },
+  [SET_PENDING_DELEGATORS]: (state, { delegators }) => {
+    state.pendingDelegators = delegators
   },
   [SET_CURRENT_BLOCKCHAIN]: (state, { blockchain }) => {
     state.currentBlockchain = blockchain

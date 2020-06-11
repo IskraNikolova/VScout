@@ -122,6 +122,7 @@
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
             <details-item
+              v-bind:address="props.row.address"
               v-bind:identity="props.row.validator"
               v-bind:startTime="props.row.startTime"
               v-bind:endTime="props.row.endTime"

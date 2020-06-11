@@ -3,7 +3,8 @@
     <network  class="q-pr-md"/>
     <transactions-item class="q-pa-md" />
     <stak-item class="q-pr-md"/>
-    <table-item @getValidators="getValidatorsV"/>
+    <table-validators @getValidators="getValidatorsV"/>
+    <table-delegators @getDelegators="getValidatorsV"/>
     <faqs-item class="q-pr-md" />
 
     <div class="flex flex-center q-mt-xl">
@@ -24,7 +25,8 @@ import {
 import FaqsItem from './../components/panels/faqs-item'
 import StakItem from './../components/panels/stak-item'
 import Network from './../components/panels/network'
-import TableItem from './../components/panels/table-item'
+import TableValidators from './../components/panels/table-validators'
+import TableDelegators from './../components/panels/table-delegators'
 import TransactionsItem from './../components/panels/transactions-item'
 
 import {
@@ -38,7 +40,8 @@ export default {
     FaqsItem,
     StakItem,
     Network,
-    TableItem,
+    TableValidators,
+    TableDelegators,
     TransactionsItem
   },
   computed: {
@@ -46,6 +49,7 @@ export default {
       'ui',
       'subnetID',
       'validators',
+      'delegators',
       'networkEndpoint',
       'pendingValidators'
     ])

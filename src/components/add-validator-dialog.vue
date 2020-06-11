@@ -7,7 +7,9 @@
   >
     <q-card class="custom-card">
       <q-card-section class="row q-mr-xl">
-        <div class="text-h6">Add a Validator to the Default Subnet</div>
+        <div class="text-h6">
+          Add a Validator to the Default Subnet
+        </div>
         <q-space />
         <q-btn icon="close" flat round dense @click="close" />
       </q-card-section>
@@ -209,7 +211,9 @@ export default {
       'ui',
       'nodeID',
       'networkEndpoint',
-      'currentBlockchain'
+      'currentBlockchain',
+      'isDefaultSubnetID',
+      'subnetID'
     ]),
     destination: {
       get: function () {

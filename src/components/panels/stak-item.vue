@@ -3,11 +3,18 @@
     class="q-mt-md q-pt-md q-pl-xl q-pr-xl q-pb-md" id="custom-card" >
     <div class="row">
       <div class="col-md-2 col-xs-10">
-        <div id="f-size12" class="q-pb-md">NUMBERS OF VALIDATORS</div>
+        <div id="f-size12" class="q-pb-md">VALIDATORS</div>
         <div class="text-h5 text-orange q-pb-md">
           {{ validators.length }}
         </div>
         <div id="f-size12">Pending Valitarors: <span class="text-accent">{{ pendingValidators.length }}</span></div>
+      </div>
+      <div class="col-md-2 col-xs-10">
+        <div id="f-size12" class="q-pb-md">DELEGATORS</div>
+        <div class="text-h5 text-orange q-pb-md">
+          {{ delegators.length }}
+        </div>
+        <div id="f-size12">Pending Delegators: <span class="text-accent">{{ pendingDelegators.length }}</span></div>
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/validators-grey.png" class="custom-icon">
@@ -34,7 +41,7 @@
       <div class="col-1 q-pt-md">
         <img src="~assets/ava_price.png" class="custom-icon">
       </div>
-      <div class="col-md-2 col-xs-10">
+      <div class="col-md-1 col-xs-10">
        <div id="f-size12" class="q-pb-md">PRICE</div>
        <div class="text-h5 text-orange q-pb-md"><small>$0.00<span style="font-size: 13px;"> /AVA</span></small></div>
        <div id="f-size12">Market Capitalization: <span class="text-accent">N/A</span></div>
@@ -51,7 +58,9 @@ export default {
   computed: {
     ...mapGetters([
       'validators',
+      'delegators',
       'pendingValidators',
+      'pendingDelegators',
       'txsFor24H'
     ])
   },

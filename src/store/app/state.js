@@ -6,6 +6,7 @@ export default function () {
     subnets: [],
     nodeHealth: {},
     validators: [],
+    delegators: [],
     blockchains: [],
     prevTotalTxs: 0,
     totalTxsCount: 0,
@@ -17,6 +18,7 @@ export default function () {
     txsHistoryState: {},
     endpointsMemory: [],
     pendingValidators: [],
+    pendingDelegators: [],
     currentBlockchain: {},
     txsFor24H: {
       transactionCount: 0,

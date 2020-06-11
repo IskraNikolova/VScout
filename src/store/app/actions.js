@@ -17,6 +17,7 @@ import {
   GET_TOTAL_TXS,
   SET_TOTAL_TXS,
   GET_VALIDATORS,
+  SET_DELEGATORS,
   SET_VALIDATORS,
   CREATE_ACCOUNT,
   GET_NODE_HEALTH,
@@ -34,6 +35,7 @@ import {
   DELEGATE_VALIDATOR,
   GET_PENDING_VALIDATORS,
   SET_PENDING_VALIDATORS,
+  SET_PENDING_DELEGATORS,
   SET_CURRENT_BLOCKCHAIN,
   GET_ASSETS_BY_BLOCKCHAINS,
   SET_ASSETS_BY_BLOCKCHAINS,
@@ -269,13 +271,28 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
     return null
   }
 
-  let { validators } = response.data.result
-  if (validators.length === getters.pendingValidators.length) return
+  const { validators } = response.data.result
 
-  validators = validators.filter(i => i.endTime >= Date.now() / 1000)
-  validators.sort(compare)
-  const val = await map(validators)
+  let { v, d } = splitPendingAccounts(validators, getters.validators)
+  commit(SET_PENDING_DELEGATORS, { delegators: mapDelegators(d) })
+
+  v = v.filter(i => i.endTime >= Date.now() / 1000)
+  v.sort(compare)
+  const val = mapValidators(v)
   commit(SET_PENDING_VALIDATORS, { validators: val })
+}
+
+function splitPendingAccounts (validators, existValidators) {
+  const v = []
+  const d = []
+  for (let i = 0; i < validators.length; i++) {
+    if (existValidators.find(v => v.validator === validators[i].id)) {
+      d.push(validators[i])
+    } else {
+      v.push(validators[i])
+    }
+  }
+  return { v, d }
 }
 
 async function getNodeId ({ getters, commit }) {
@@ -531,13 +548,14 @@ async function initValidators ({ commit, getters }) {
   })
 
   if (response.data.error) {
-    console.log(response.data.error)
     return null
   }
 
   const { validators } = response.data.result
-  const result = await getVal(validators)
-  commit(SET_VALIDATORS, { validators: result })
+  const { v, d } = splitAccounts(validators)
+  const delegators = mapDelegators(d)
+  commit(SET_DELEGATORS, { delegators })
+  commit(SET_VALIDATORS, { validators: getVal(v) })
 }
 
 async function getValidators ({ commit, getters }, { subnetID, endpoint }) {
@@ -546,7 +564,6 @@ async function getValidators ({ commit, getters }, { subnetID, endpoint }) {
     endpoint
   })
   if (response.data.error) {
-    console.log(response.data.error)
     return null
   }
 
@@ -554,17 +571,39 @@ async function getValidators ({ commit, getters }, { subnetID, endpoint }) {
 
   if (validators.length === getters.validators.length) return
 
-  const result = await getVal(validators)
-
-  commit(SET_VALIDATORS, { validators: result })
+  const { v, d } = splitAccounts(validators)
+  const delegators = mapDelegators(d)
+  commit(SET_DELEGATORS, { delegators })
+  commit(SET_VALIDATORS, { validators: getVal(v) })
   return true
 }
 
-async function getVal (validators) {
+function splitAccounts (validators) {
+  const grouped = groupBy(validators, 'id')
+  const v = []
+  const d = []
+  const keys = Object.keys(grouped)
+  for (let i = 0; i < keys.length; i++) {
+    grouped[keys[i]].sort((a, b) => a.startTime - b.startTime)
+    v.push(grouped[keys[i]].shift())
+    d.push(...grouped[keys[i]])
+  }
+
+  return { v, d }
+}
+
+const groupBy = function (xs, key) {
+  return xs.reduce(function (rv, x) {
+    (rv[x[key]] = rv[x[key]] || []).push(x)
+    return rv
+  }, {})
+}
+
+function getVal (validators) {
   validators = validators
     .filter(i => i.endTime >= Date.now() / 1000)
     .sort(compare)
-  const val = await map(validators)
+  const val = mapValidators(validators)
   return val.map((v, i) => {
     const currentValidators = val.slice(0, i + 1)
     const cm = cumulativeStakeFunc(currentValidators)
@@ -573,8 +612,8 @@ async function getVal (validators) {
   })
 }
 
-async function map (validators) {
-  const vals = Promise.all(validators.map(async (val, i) => {
+function mapValidators (validators) {
+  const vals = validators.map((val, i) => {
     // const info = await _getValidatorById(val.id)
     const sa = val.stakeAmount ? val.stakeAmount : val.weight
     const MD5 = makeMD5()
@@ -596,9 +635,32 @@ async function map (validators) {
       name
       // link: info.link
     }
-  }))
+  })
 
   return vals
+}
+
+function mapDelegators (delegators) {
+  const result = delegators.map((delegator, i) => {
+    const sa = delegator.stakeAmount
+    const MD5 = makeMD5()
+    const hash = MD5.hex(delegator.id)
+    const avatar = 'http://www.gravatar.com/avatar/' + hash + '?d=identicon&s=150'
+    const nodeId = delegator.id
+
+    return {
+      index: i + 1,
+      pAccount: delegator.address,
+      stake: getAvaFromnAva(sa),
+      stakenAva: parseFloat(sa),
+      startTime: delegator.startTime,
+      endTime: delegator.endTime,
+      fromNowST: fromNow(delegator.startTime),
+      avatar,
+      nodeId
+    }
+  })
+  return result
 }
 
 async function getNodeHealth ({ commit, getters }) {
@@ -639,7 +701,6 @@ function getAvaFromnAva (v) {
   return Number(v) / 10 ** 9
 }
 
-// todo opt
 function compare (a, b) {
   const get = (a, b) => { return b - a }
   if (Number(b.stakeAmount) < Number(a.stakeAmount)) {
