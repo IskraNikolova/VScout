@@ -85,17 +85,22 @@ import { makeMD5, round } from './../../utils/commons'
 async function initApp ({ dispatch, getters }) {
   await dispatch(GET_BLOCKCHAINS)
   await dispatch(GET_NODE_ID)
-  await Promise.all([
-    dispatch(GET_TX_FOR_24_HOURS),
-    dispatch(GET_TXS_HISTORY, {
-      txHKey: getters.txHKey
-    }),
-    dispatch(GET_SUBNETS),
-    dispatch(INIT_VALIDATORS),
-    dispatch(GET_ASSETS_BY_BLOCKCHAINS),
-    dispatch(GET_NODE_HEALTH),
-    dispatch(GET_TOTAL_TXS)
-  ])
+  try {
+    Promise.all([
+      dispatch(GET_TX_FOR_24_HOURS),
+      dispatch(GET_TXS_HISTORY, {
+        txHKey: getters.txHKey
+      }),
+      dispatch(GET_SUBNETS),
+      dispatch(INIT_VALIDATORS),
+      dispatch(GET_ASSETS_BY_BLOCKCHAINS),
+      dispatch(GET_NODE_HEALTH),
+      dispatch(GET_TOTAL_TXS)
+    ])
+  } catch (err) {
+    console.log(err)
+  }
+
   // await _initializeNetwork()
   // dispatch(SUBSCRIBE_TO_EVENT)
   setInterval(async () => {
@@ -112,7 +117,7 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_TOTAL_TXS),
       dispatch(GET_NODE_HEALTH)
     ])
-  }, 6000)
+  }, 4000)
 }
 
 async function getBlockchains ({ commit, getters }) {
