@@ -46,7 +46,11 @@ export const _getAggregates = async (s, e) => {
 
 export const _getAggregatesWithI = async (s, e, intervalSize) => {
   try {
-    const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.aggregatesWInt(s, e, intervalSize))
+    const endpoint = network.explorerApiBaseUrl +
+      c.tx +
+      c.aggregatesWInt(s, e, intervalSize)
+
+    const req = await axios.get(endpoint)
     return req.data
   } catch (err) {
     return null

@@ -155,6 +155,7 @@ export default {
       this.chartVol.data = this.getVolChartData()
       this.chartTps.data = this.getTpsChartData()
       if (!this.chartVol.data) return
+
       this.chartVol.update()
       this.chartTps.update()
     },

@@ -105,8 +105,6 @@ async function initApp ({ dispatch, getters }) {
   // dispatch(SUBSCRIBE_TO_EVENT)
   setInterval(async () => {
     await Promise.all([
-      dispatch(GET_TX_FOR_24_HOURS),
-      dispatch(GET_TXS_HISTORY, { txHKey: getters.txHKey }),
       dispatch(GET_PENDING_VALIDATORS, {
         subnetID: getters.subnetID
       }),
@@ -117,7 +115,17 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_TOTAL_TXS),
       dispatch(GET_NODE_HEALTH)
     ])
-  }, 4000)
+    if (getters.prevTotalTxs < getters.totalTxsCount) {
+      await dispatch(GET_TX_FOR_24_HOURS)
+    }
+  }, 6000)
+
+  setInterval(() => {
+    dispatch(GET_TX_FOR_24_HOURS)
+    dispatch(GET_TXS_HISTORY, {
+      txHKey: getters.txHKey
+    })
+  }, 60000)
 }
 
 async function getBlockchains ({ commit, getters }) {
@@ -230,11 +238,12 @@ async function getTxsHistory ({ commit }, { txHKey }) {
   if (!t) return
 
   const { sub, interval, label } = t
-  const minAgo = moment().subtract(sub.value, sub.label)
+  const minAgo = moment(new Date())
+    .subtract(sub.value, sub.label)
 
   const aggregates = await _getAggregatesWithI(
     minAgo.toISOString(),
-    moment().toISOString(),
+    moment(new Date()).toISOString(),
     `${interval.value}${interval.label}`
   )
 
