@@ -158,8 +158,10 @@ export default {
       this.chartTps.update()
     },
     getSec (e, s) {
-      const duration = moment.duration(moment(e).diff(moment(s)))
-      return duration.asSeconds()
+      const seconds = moment
+        .duration(moment(e).diff(moment(s)))
+        .asSeconds()
+      return seconds
     },
     getLabels () {
       const data = this.txsHistory(this.interval)
@@ -167,7 +169,9 @@ export default {
         this.labels = []
         return
       }
-      this.labels = data.intervals.map(a => getChartLabel(a, data.key))
+      this.labels = data
+        .intervals
+        .map(a => getChartLabel(a, data.key))
     },
     getVolChartData () {
       let data = this.txsHistory(this.interval)

@@ -92,9 +92,9 @@ async function initApp ({ dispatch, getters }) {
         txHKey: getters.txHKey
       }),
       dispatch(GET_SUBNETS),
-      dispatch(INIT_VALIDATORS),
-      dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(GET_NODE_HEALTH),
+      dispatch(GET_ASSETS_BY_BLOCKCHAINS),
+      dispatch(INIT_VALIDATORS),
       dispatch(GET_TOTAL_TXS)
     ])
   } catch (err) {
@@ -103,29 +103,34 @@ async function initApp ({ dispatch, getters }) {
 
   // await _initializeNetwork()
   // dispatch(SUBSCRIBE_TO_EVENT)
-  setInterval(async () => {
-    await Promise.all([
-      dispatch(GET_PENDING_VALIDATORS, {
-        subnetID: getters.subnetID
-      }),
-      dispatch(GET_VALIDATORS, {
-        subnetID: getters.subnetID,
-        endpoint: getters.networkEndpoint
-      }),
-      dispatch(GET_TOTAL_TXS),
-      dispatch(GET_NODE_HEALTH)
-    ])
-    if (getters.prevTotalTxs < getters.totalTxsCount) {
-      await dispatch(GET_TX_FOR_24_HOURS)
-    }
-  }, 6000)
 
   setInterval(() => {
     dispatch(GET_TX_FOR_24_HOURS)
     dispatch(GET_TXS_HISTORY, {
       txHKey: getters.txHKey
     })
-  }, 60000)
+  }, 30000)
+  setInterval(async () => {
+    await Promise.all([
+      dispatch(GET_TOTAL_TXS),
+      dispatch(GET_NODE_HEALTH),
+      dispatch(GET_PENDING_VALIDATORS, {
+        subnetID: getters.subnetID
+      }),
+      dispatch(GET_VALIDATORS, {
+        subnetID: getters.subnetID,
+        endpoint: getters.networkEndpoint
+      })
+    ])
+    if (getters.prevTotalTxs < getters.totalTxsCount) {
+      await Promise.all([
+        dispatch(GET_TX_FOR_24_HOURS),
+        dispatch(GET_TXS_HISTORY, {
+          txHKey: getters.txHKey
+        })
+      ])
+    }
+  }, 6000)
 }
 
 async function getBlockchains ({ commit, getters }) {
