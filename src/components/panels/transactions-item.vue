@@ -79,17 +79,15 @@ export default {
       return t.toFixed(2)
     }
   },
-  async mounted () {
+  mounted () {
     this.interval = this.txHKey
     this.initCharts()
     this.$store.subscribe(async (mutation, state) => {
-      if (mutation.type === 'SET_TOTAL_TXS') {
-        if (this.prevTotalTxs < this.totalTxsCount ||
-        moment().seconds() % 59 === 0) {
-          await this.update()
-        }
+      if (mutation.type === 'SET_TOTAL_TXS' &&
+        this.prevTotalTxs < this.totalTxsCount) {
+        await this.onGetData()
       } else if (mutation.type === 'SET_TXS_HISTORY') {
-        await this.update()
+        this.update()
       }
     })
   },
