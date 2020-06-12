@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pr-xl q-pl-xl">
+  <q-page class="q-pr-xl q-pl-xl" style="background-color: white;">
     <network  class="q-pr-md"/>
     <transactions-item class="q-pa-md" />
     <stak-item class="q-pr-md"/>
