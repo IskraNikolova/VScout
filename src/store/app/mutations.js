@@ -7,6 +7,7 @@ import {
   SET_ENDPOINT,
   SET_TOTAL_TXS,
   SET_VALIDATORS,
+  SET_STAKED_AVA,
   SET_DELEGATORS,
   SET_BLOCKCHAINS,
   SET_TXS_HISTORY,
@@ -38,6 +39,14 @@ const mutations = {
   },
   [SET_VALIDATORS]: (state, { validators }) => {
     state.validators = validators
+  },
+  [SET_STAKED_AVA]: (state, { validators }) => {
+    let stake = validators.reduce((a, b) => {
+      if (!b.stakenAva) return
+      return a + (parseFloat(b.stakenAva) / 10 ** 9)
+    }, 0.0)
+    if (!stake) stake = 0
+    state.stakedAVA = stake
   },
   [SET_DELEGATORS]: (state, { delegators }) => {
     state.delegators = delegators

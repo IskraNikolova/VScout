@@ -25,7 +25,7 @@
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md">STAKED AVA</div>
         <div class="text-h5 q-pb-md">
-            <span class="text-orange"><small>{{stake().toLocaleString()}}</small> </span>
+            <span class="text-orange"><small>{{stakedAVA}}</small> </span>
             <span style="font-size: 13px;">/360M</span>
         </div>
         <!--todo dynamic take it
@@ -57,20 +57,11 @@ export default {
     ...mapGetters([
       'validators',
       'delegators',
+      'stakedAVA',
+      'txsFor24H',
       'pendingValidators',
-      'pendingDelegators',
-      'txsFor24H'
+      'pendingDelegators'
     ])
-  },
-  methods: {
-    stake () {
-      const stake = this.validators.reduce((a, b) => {
-        if (!b.stakenAva) return
-        return a + (parseFloat(b.stakenAva) / 10 ** 9)
-      }, 0.0)
-      if (!stake) return 0
-      return stake
-    }
   }
 }
 </script>

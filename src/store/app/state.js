@@ -6,6 +6,7 @@ export default function () {
     subnets: [],
     nodeHealth: {},
     validators: [],
+    stakedAVA: 0,
     delegators: [],
     blockchains: [],
     prevTotalTxs: 0,

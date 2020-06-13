@@ -63,105 +63,46 @@
           </q-banner>
         </q-popup-proxy>
       </q-btn>
-        <q-btn-dropdown
-          flat
-          dropdown-icon="img:statics/blockchain-black.svg"
+      <select-network-dropdown />
+      <q-btn-dropdown
+        flat
+        dropdown-icon="img:statics/node.svg"
+        id="target-el"
+      >
+        <div class="no-wrap q-pa-md text-orange">Switch To Endpoint</div>
+        <q-list v-for="(endpoint, i) in endpoints" v-bind:key="i">
+          <q-item clickable v-close-popup @click="onSelectEndpoint(endpoint, false)">
+            <q-item-section>
+              <q-item-label>{{ endpoint }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+        <q-input
+          borderless
+          clearable
+          class="q-pl-md q-pr-md"
+          label="http(s)://yourAddress/"
+          v-model="customEndpoint"
+          @input="takeSuggestion"
         >
-        <q-tabs
-          v-model="tab"
-          dense
-          class="text-grey"
-          active-color="orange"
-          indicator-color="accent"
-          align="justify"
-          narrow-indicator
+          <template v-slot:after>
+            <q-btn round dense flat icon="send" @click="onSelectEndpoint(customEndpoint, true)"/>
+          </template>
+        </q-input>
+        <div
+          style="cursor: pointer;"
+          class="q-pl-md q-pb-xs"
+          v-for="s in suggestions"
+          v-bind:key="s"
+          @click="customEndpoint = s; suggestions = [];"
         >
-          <q-tab name="blockchains" label="Blockchains" />
-          <q-tab name="subnets" label="Subnets" />
-        </q-tabs>
-
-        <q-separator />
-
-          <q-tab-panels v-model="tab" animated>
-            <q-tab-panel name="blockchains">
-              <q-list v-for="(blockchain, i) in blockchains" v-bind:key="i">
-                <q-item clickable v-close-popup @click="onSelectBlockchain(blockchain)">
-                  <q-item-section>
-                    <q-item-label>
-                      <q-img src="statics/blockchain-black.svg" id="logo-xs"/>
-                      {{ blockchain.name }}
-                    </q-item-label>
-                    <q-item-label caption>
-                      <small>Subnet ID: </small>
-                      <span class="text-orange">
-                        {{ blockchain.subnetID.substr(0, 4)}}...{{ blockchain.subnetID.substr(30)}}
-                      </span>
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-tab-panel>
-
-            <q-tab-panel name="subnets">
-              <q-list v-for="(subnet, i) in subnets" v-bind:key="i">
-                <q-item clickable v-close-popup @click="onSelectSubnet(subnet)">
-                  <q-item-section>
-                    <q-item-label>
-                      <q-img src="~assets/network-grey.svg" id="logo-xs"/>
-                      {{ subnet.id.substr(0, 4)}}...{{ subnet.id.substr(30)}}
-                    </q-item-label>
-                    <q-item-label caption>
-                      <small v-if="subnet.blockchainsId">Validated Blockchains: </small>
-                      <div class="text-orange" v-for="(id, i) in subnet.blockchainsId" v-bind:key="i">
-                        {{ blockchainName(id) }}
-                      </div>
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-separator />
-              </q-list>
-            </q-tab-panel>
-          </q-tab-panels>
-        </q-btn-dropdown>
-        <q-btn-dropdown
-          flat
-          dropdown-icon="img:statics/node.svg"
-          id="target-el"
-        >
-          <div class="no-wrap q-pa-md text-orange">Switch To Endpoint</div>
-          <q-list v-for="(endpoint, i) in endpoints" v-bind:key="i">
-            <q-item clickable v-close-popup @click="onSelectEndpoint(endpoint, false)">
-              <q-item-section>
-                <q-item-label>{{ endpoint }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-          <q-input
-            borderless
-            clearable
-            class="q-pl-md q-pr-md"
-            label="http(s)://yourAddress/"
-            v-model="customEndpoint"
-            @input="takeSuggestion"
-          >
-            <template v-slot:after>
-              <q-btn round dense flat icon="send" @click="onSelectEndpoint(customEndpoint, true)"/>
-            </template>
-          </q-input>
-          <div
-            style="cursor: pointer;"
-            class="q-pl-md q-pb-xs"
-            v-for="s in suggestions"
-            v-bind:key="s"
-            @click="customEndpoint = s; suggestions = [];"
-          >
-            <q-badge color="grey">
-              <span class="q-pr-xs">{{ s }}</span>
-              <q-icon @click="onRemoveFromMem(s, $event)" name="clear" color="white" />
-            </q-badge>
-          </div>
-        </q-btn-dropdown>
-        </q-toolbar>
+          <q-badge color="grey">
+            <span class="q-pr-xs">{{ s }}</span>
+            <q-icon @click="onRemoveFromMem(s, $event)" name="clear" color="white" />
+          </q-badge>
+        </div>
+      </q-btn-dropdown>
+    </q-toolbar>
     </q-header>
     <q-page-container style="z-index: 10;">
       <router-view />
@@ -184,34 +125,32 @@ import {
   SET_NODE_ID,
   SET_ENDPOINT,
   GET_VALIDATORS,
-  SET_CURRENT_SUBNET,
   SET_ENDPOINTS_MEMORY,
   GET_PENDING_VALIDATORS,
-  SET_CURRENT_BLOCKCHAIN,
-  REMOVE_ENDPOINTS_MEMORY,
-  GET_ASSETS_BY_BLOCKCHAINS
+  REMOVE_ENDPOINTS_MEMORY
 } from '../store/app/types'
+
+import SelectNetworkDropdown from './../components/items/select-network-dropdown'
 
 export default {
   name: 'MainLayout',
   computed: {
     ...mapGetters([
       'ui',
-      'subnets',
       'subnetID',
       'validators',
       'blockchains',
-      'currentSubnet',
       'blockchainByID',
       'networkEndpoint',
       'endpointsMemory',
-      'pendingValidators',
-      'currentBlockchain'
+      'pendingValidators'
     ])
+  },
+  components: {
+    SelectNetworkDropdown
   },
   data () {
     return {
-      tab: 'blockchains',
       btnNetwork: false,
       stakeAmount: 2000,
       stakeTime: 2,
@@ -233,16 +172,8 @@ export default {
   methods: {
     ...mapActions({
       getValidators: GET_VALIDATORS,
-      getAssets: GET_ASSETS_BY_BLOCKCHAINS,
       getPendingValidators: GET_PENDING_VALIDATORS
     }),
-    blockchainName (id) {
-      if (!id) return
-      const blockchain = this.blockchainByID(id)
-      if (!blockchain) return
-
-      return blockchain.name
-    },
     onRemoveFromMem (endpoint, event) {
       event.stopImmediatePropagation()
       this.$store.commit(REMOVE_ENDPOINTS_MEMORY, { endpoint })
@@ -257,29 +188,6 @@ export default {
       this.yearly = (this.stakeAmount * this.percentReward) / 100
       this.monthly = (this.stakeAmount * (this.percentReward / 12)) / 100
       this.weekly = (this.stakeAmount * (this.percentReward / 52)) / 100
-    },
-    async onSelectBlockchain (blockchain) {
-      this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
-      await Promise.all([
-        this.getAssets(),
-        this.getValidators({
-          subnetID: blockchain.subnetID,
-          endpoint: this.networkEndpoint
-        }),
-        this.getPendingValidators({
-          subnetID: blockchain.subnetID
-        })
-      ])
-    },
-    async onSelectSubnet (subnet) {
-      this.$store.commit(SET_CURRENT_SUBNET, { subnet })
-      await this.getValidators({
-        subnetID: subnet.id,
-        endpoint: this.networkEndpoint
-      })
-      this.getPendingValidators({
-        subnetID: subnet.id
-      })
     },
     async onSelectEndpoint (endpoint, isCustom) {
       try {

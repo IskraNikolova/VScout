@@ -46,6 +46,10 @@ export function subnetID (state) {
   return state.subnetID
 }
 
+export function stakedAVA (state) {
+  return state.stakedAVA.toLocaleString()
+}
+
 export function isDefaultSubnetID (state) {
   return state.subnetID === '11111111111111111111111111111111LpoYY'
 }

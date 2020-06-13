@@ -1,7 +1,7 @@
 <template>
   <div class="q-mt-md">
     <q-table
-      :data="curentVal"
+      :data="curentValidators"
       :columns="columns"
       row-key="rank"
       :separator="separator"
@@ -10,6 +10,7 @@
       :grid="isGrid"
       class="light-background shadow-3"
       id="custom-table"
+      :visible-columns="visibleColumns"
     >
       <template v-slot:header-cell-delegate="props">
         <q-th :props="props">
@@ -19,6 +20,7 @@
       <template slot="top-left">
         <q-btn size="xs" flat icon="apps" @click="isGrid=true"/>
         <q-btn size="xs" flat icon="reorder" @click="isGrid=false"/>
+        <select-network-dropdown />
         <q-btn-toggle
           v-model="type"
           flat
@@ -260,6 +262,7 @@ import AddValidatorDialog from './../add-validator-dialog'
 import CumulativeStakeChart from './../cumulative-stake-chart'
 import DelegateValidatorDialog from './../delegate-validator-dialog'
 import ProgressBarValidateSession from './../progress-bar-validatе-session'
+import SelectNetworkDropdown from './../items/select-network-dropdown'
 // import AddIdentificationDialog from './../add-identification-dialog'
 
 export default {
@@ -268,6 +271,7 @@ export default {
     DetailsItem,
     AddValidatorDialog,
     CumulativeStakeChart,
+    SelectNetworkDropdown,
     DelegateValidatorDialog,
     // AddIdentificationDialog,
     ProgressBarValidateSession
@@ -315,8 +319,7 @@ export default {
         { name: 'startTime', align: 'left', label: 'START TIME', field: 'startTime', sortable: true },
         { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress' },
         { name: 'delegate', align: 'center', label: 'DELEGATE', field: 'delegate' }
-      ],
-      curentValidators: []
+      ]
     }
   },
   computed: {
@@ -327,11 +330,18 @@ export default {
       'pendingValidators',
       'isDefaultSubnetID'
     ]),
-    curentVal: {
+    curentValidators: {
       get: function () {
         if (this.isActive) return this.validators
         return this.pendingValidators
       }
+    },
+    visibleColumns: function () {
+      const columns = this.columns.map(c => c.name)
+      if (this.curentValidators.find(a => a.precent === 'NaN')) {
+        return columns.filter(c => c !== 'precent')
+      }
+      return columns
     }
   },
   methods: {

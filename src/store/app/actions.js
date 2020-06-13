@@ -17,6 +17,7 @@ import {
   SET_TOTAL_TXS,
   GET_VALIDATORS,
   SET_DELEGATORS,
+  SET_STAKED_AVA,
   SET_VALIDATORS,
   CREATE_ACCOUNT,
   GET_NODE_HEALTH,
@@ -269,9 +270,13 @@ async function initValidators ({ commit, getters }) {
 
   const { validators } = response.data.result
   const { v, d } = splitAccounts(validators)
+
   const delegators = mapDelegators(d)
+  const resultValidators = getVal(v, getters.validators)
+
   commit(SET_DELEGATORS, { delegators })
-  commit(SET_VALIDATORS, { validators: getVal(v, getters.validators) })
+  commit(SET_VALIDATORS, { validators: resultValidators })
+  commit(SET_STAKED_AVA, { validators: resultValidators })
 }
 
 async function getValidators (
@@ -292,7 +297,10 @@ async function getValidators (
   const { v, d } = splitAccounts(validators)
   const delegators = mapDelegators(d)
   commit(SET_DELEGATORS, { delegators })
-  commit(SET_VALIDATORS, { validators: getVal(v, getters.validators) })
+
+  const resultValidators = getVal(v, getters.validators)
+  commit(SET_VALIDATORS, { validators: resultValidators })
+  commit(SET_STAKED_AVA, { validators: resultValidators })
   return true
 }
 
