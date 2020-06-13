@@ -171,6 +171,21 @@
                     />
                   </small>
                 </q-item-label>
+                <q-item-label v-if="props.row.address">
+                  <small class="text-grey">
+                    P-Chain Account ( {{ props.row.address.substr(0, 12)}} ... {{ props.row.address.substr(22) }} )
+                    <q-icon
+                      @click="copyToClipboard(props.row.address)"
+                      color="grey"
+                      name="file_copy"
+                    />
+                  </small>
+                </q-item-label>
+                <q-item-label v-else>
+                  <small class="text-grey">
+                    Weight: <span class="text-accent">{{ props.row.weight }}</span>
+                  </small>
+                </q-item-label>
               </q-item-section>
             </q-item>
 
@@ -185,7 +200,7 @@
                 <small style="color: grey;">
                   ({{ getLocalString(props.row.stakenAva) }} nAva)
                 </small>
-              <div class="q-mb-md" >
+              <div class="q-mb-md" v-if="props.row.precent !== 'NaN'">
                 <small style="color: grey;">{{ props.row.precent }} %</small>
               </div>
               <q-separator class="q-mb-md"/>
