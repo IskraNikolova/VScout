@@ -25,7 +25,7 @@ const updateUi = ({ commit }, data) => {
 }
 
 const openSignTx = ({ commit }, { unsignedTx, signer }) => {
-  commit(UPDATE_UI, { signTx: { isOpen: true, unsignedTx, signer } })
+  commit(UPDATE_UI, { signTx: { isOpen: true, unsignedTx, signer, signedTx: null } })
 }
 
 const closeSignTx = ({ commit }, signedTx) => {

@@ -86,10 +86,10 @@
                 {{ col.value }}
                 <small style="color: grey;">({{ getLocalString(props.row.stakenAva)}} nAva)</small>
               </div>
-              <div><small style="color: grey;">{{ props.row.precent }} %</small></div>
+              <div v-if="props.row.cumulativeStake"><small style="color: grey;">{{ props.row.precent }} %</small></div>
             </div>
             <div v-else-if="col.name === 'precent'">
-              <div class="container_row">
+              <div class="container_row" v-if="props.row.cumulativeStake">
                 <div class="layer1">
                   <q-linear-progress
                     size="50px"
@@ -111,6 +111,7 @@
                   </q-linear-progress>
                 </div>
               </div>
+              <div v-else></div>
             </div>
             <div v-else-if="col.name === 'progress'">
               <progress-bar-validate-session
@@ -133,7 +134,8 @@
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
             <details-item
-              v-bind:address="props.row.address"
+              v-bind:weight="props.row.weight ? props.row.weight : ''"
+              v-bind:address="props.row.address ? props.row.address : ''"
               v-bind:identity="props.row.validator"
               v-bind:startTime="props.row.startTime"
               v-bind:endTime="props.row.endTime"
@@ -192,16 +194,24 @@
                 </div>
               </div>
               <div class="q-mt-md">
-                <q-btn size="xs" v-if="isDefaultSubnetID" color="orange" outline label="Delegate" @click="onDelegate(props.row)"/>
+                <q-btn
+                  outline
+                  size="xs"
+                  color="orange"
+                  label="Delegate"
+                  v-if="isDefaultSubnetID"
+                  @click="onDelegate(props.row)"
+                />
               </div>
               </q-card-section>
               <q-separator vertical />
               <q-card-section class="col-7">
                 <cumulative-stake-chart
+                  v-if="props.row.cumulativeStake"
                   v-bind:name="props.row.validator"
                   v-bind:percent="props.row.precent"
                   v-bind:percentAll="props.row.cumulativeStake ? props.row.cumulativeStake : NaN"
-                />
+                /><div v-else> - </div>
               </q-card-section>
 
             </q-card-section>
@@ -296,7 +306,12 @@ export default {
           field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
           sortable: true
         },
-        { name: 'precent', align: 'left', label: 'CUMULATIVE STAKE (%)', field: 'cumulativeStake' },
+        {
+          name: 'precent',
+          align: 'left',
+          label: 'CUMULATIVE STAKE (%)',
+          field: 'cumulativeStake'
+        },
         { name: 'startTime', align: 'left', label: 'START TIME', field: 'startTime', sortable: true },
         { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress' },
         { name: 'delegate', align: 'center', label: 'DELEGATE', field: 'delegate' }

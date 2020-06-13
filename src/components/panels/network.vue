@@ -53,6 +53,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
   #custom-card {
     border-right: 2px solid #ffa959;

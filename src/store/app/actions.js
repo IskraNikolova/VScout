@@ -1,7 +1,6 @@
 import moment from 'moment'
 
 import { Notify } from 'quasar'
-const BigNumber = require('bignumber.js')
 
 import {
   SIGN_TX,
@@ -78,9 +77,15 @@ import {
   subscribeToContractEvents
 } from './../../modules/networkRpc'
 
-import { fromNow } from './../../modules/time'
-
-import { makeMD5, round } from './../../utils/commons'
+import {
+  temp,
+  getVal,
+  compare,
+  splitAccounts,
+  mapDelegators,
+  mapValidators,
+  splitPendingAccounts
+} from './../../utils/validators'
 
 async function initApp ({ dispatch, getters }) {
   await dispatch(GET_BLOCKCHAINS)
@@ -139,13 +144,14 @@ async function getBlockchains ({ commit, getters }) {
   })
 
   if (response.data.error) {
-    Notify.create(response.data.error.message)
     return null
   }
 
   const { blockchains } = response.data.result
   commit(SET_BLOCKCHAINS, { blockchains })
-  commit(SET_CURRENT_BLOCKCHAIN, { blockchain: blockchains[0] })
+  commit(SET_CURRENT_BLOCKCHAIN, {
+    blockchain: blockchains[0]
+  })
 }
 
 async function getSubnets ({ commit, getters }) {
@@ -154,7 +160,6 @@ async function getSubnets ({ commit, getters }) {
   })
 
   if (response.data.error) {
-    Notify.create(response.data.error.message)
     return null
   }
 
@@ -168,7 +173,8 @@ async function getSubnets ({ commit, getters }) {
     })
 
     if (response.data.error) return
-    const blockchainsId = response.data.result.blockchainIDs
+    const blockchainsId = response
+      .data.result.blockchainIDs
     return {
       ...subnet,
       blockchainsId
@@ -201,41 +207,10 @@ async function getTotalTXs ({ commit, getters }) {
   if (response === null) return
 
   const totalTxsCount = response.count
-  commit(SET_PREVIOUS_TOTAL_TXS, { prevTotalTxs: getters.totalTxsCount })
+  commit(SET_PREVIOUS_TOTAL_TXS, {
+    prevTotalTxs: getters.totalTxsCount
+  })
   commit(SET_TOTAL_TXS, { totalTxsCount })
-}
-
-const temp = {
-  minute: {
-    sub: { value: 30, label: 'minute' },
-    interval: { value: 60, label: 's' },
-    label: '60 seconds'
-  },
-  hourTwo: {
-    sub: { value: 2, label: 'hour' },
-    interval: { value: 5, label: 'm' },
-    label: '5 minutes'
-  },
-  day: {
-    sub: { value: 1, label: 'day' },
-    interval: { value: '', label: 'hour' },
-    label: '1 hour'
-  },
-  week: {
-    sub: { value: 7, label: 'days' },
-    interval: { value: '', label: 'day' },
-    label: '24 hours'
-  },
-  month: {
-    sub: { value: 1, label: 'months' },
-    interval: { value: '', label: 'day' },
-    label: '1 day'
-  },
-  year: {
-    sub: { value: 1, label: 'years' },
-    interval: { value: '', label: 'month' },
-    label: '1 month'
-  }
 }
 
 async function getTxsHistory ({ commit }, { txHKey }) {
@@ -268,7 +243,10 @@ async function getTxsHistory ({ commit }, { txHKey }) {
   aggregates.label = label
   aggregates.key = txHKey
 
-  commit(SET_TXS_HISTORY, { key: txHKey, txsHistory: aggregates })
+  commit(SET_TXS_HISTORY, {
+    key: txHKey,
+    txsHistory: aggregates
+  })
   return true
 }
 
@@ -277,6 +255,45 @@ async function getAssetsByBlockchain ({ commit }) {
   if (assetsByChain === null) return
 
   commit(SET_ASSETS_BY_BLOCKCHAINS, { assetsByChain })
+}
+
+async function initValidators ({ commit, getters }) {
+  const response = await _getValidators({
+    subnetID: getters.subnetID,
+    endpoint: getters.networkEndpoint
+  })
+
+  if (response.data.error) {
+    return null
+  }
+
+  const { validators } = response.data.result
+  const { v, d } = splitAccounts(validators)
+  const delegators = mapDelegators(d)
+  commit(SET_DELEGATORS, { delegators })
+  commit(SET_VALIDATORS, { validators: getVal(v, getters.validators) })
+}
+
+async function getValidators (
+  { commit, getters },
+  { subnetID, endpoint }) {
+  const response = await _getValidators({
+    subnetID,
+    endpoint
+  })
+  if (response.data.error) {
+    return null
+  }
+
+  const { validators } = response.data.result
+
+  if (validators.length === getters.validators.length) return
+
+  const { v, d } = splitAccounts(validators)
+  const delegators = mapDelegators(d)
+  commit(SET_DELEGATORS, { delegators })
+  commit(SET_VALIDATORS, { validators: getVal(v, getters.validators) })
+  return true
 }
 
 async function getPendingValidators ({ commit, getters }, { subnetID }) {
@@ -301,19 +318,6 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
   commit(SET_PENDING_VALIDATORS, { validators: val })
 }
 
-function splitPendingAccounts (validators, existValidators) {
-  const v = []
-  const d = []
-  for (let i = 0; i < validators.length; i++) {
-    if (existValidators.find(v => v.validator === validators[i].id)) {
-      d.push(validators[i])
-    } else {
-      v.push(validators[i])
-    }
-  }
-  return { v, d }
-}
-
 async function getNodeId ({ getters, commit }) {
   const response = await _getNodeId({ endpoint: getters.networkEndpoint })
   if (response.data.error) {
@@ -324,7 +328,9 @@ async function getNodeId ({ getters, commit }) {
   commit(SET_NODE_ID, { nodeID: response.data.result.nodeID })
 }
 
-async function getAccount ({ commit, getters }, { address, type }) {
+async function getAccount (
+  { commit, getters },
+  { address, type }) {
   try {
     const res = await _getAccount({
       endpoint: getters.networkEndpoint,
@@ -363,7 +369,9 @@ async function getAccount ({ commit, getters }, { address, type }) {
   }
 }
 
-async function createAccount ({ dispatch, getters }, { username, password, type }) {
+async function createAccount (
+  { dispatch, getters },
+  { username, password, type }) {
   try {
     const params = { username, password }
     const response = await _createAccount({
@@ -492,15 +500,28 @@ async function addDefaultSubnetDelegator ({ getters }, { params, signer }) {
   }
 }
 
-async function signTransaction ({ getters }, { transaction, signer, username, password }) {
+async function signTransaction (
+  { getters },
+  { transaction, signer, username, password }) {
   try {
     const endpoint = getters.networkEndpoint
-    const response = await _sign({ endpoint, params: { tx: transaction, signer, username, password } })
+    const response = await _sign({
+      endpoint,
+      params: {
+        tx: transaction,
+        signer,
+        username,
+        password
+      }
+    })
     if (response.data.error) {
       throw new Error(response.data.error.message)
     }
 
-    const res = await _issueTx({ endpoint, params: response.data.result })
+    const res = await _issueTx({
+      endpoint,
+      params: response.data.result
+    })
     if (res.data.error) {
       throw new Error(res.data.error.message)
     }
@@ -511,7 +532,9 @@ async function signTransaction ({ getters }, { transaction, signer, username, pa
   }
 }
 
-async function fundAccount ({ getters }, { amount, username, password, to, nonce }) {
+async function fundAccount (
+  { getters },
+  { amount, username, password, to, nonce }) {
   try {
     const payerNonce = nonce + 1
     const endpoint = getters.networkEndpoint
@@ -548,7 +571,11 @@ async function fundAccount ({ getters }, { amount, username, password, to, nonce
           throw new Error(r.data.error.message)
         }
         // issueTx
-        const res = await _issueTx({ endpoint, params: r.data.result })
+        const res = await _issueTx({
+          endpoint,
+          params: r.data.result
+        })
+
         if (res.data.error) {
           console.log(res.data.error.message)
         }
@@ -560,128 +587,6 @@ async function fundAccount ({ getters }, { amount, username, password, to, nonce
   }
 }
 
-async function initValidators ({ commit, getters }) {
-  const response = await _getValidators({
-    subnetID: getters.subnetID,
-    endpoint: getters.networkEndpoint
-  })
-
-  if (response.data.error) {
-    return null
-  }
-
-  const { validators } = response.data.result
-  const { v, d } = splitAccounts(validators)
-  const delegators = mapDelegators(d)
-  commit(SET_DELEGATORS, { delegators })
-  commit(SET_VALIDATORS, { validators: getVal(v) })
-}
-
-async function getValidators ({ commit, getters }, { subnetID, endpoint }) {
-  const response = await _getValidators({
-    subnetID,
-    endpoint
-  })
-  if (response.data.error) {
-    return null
-  }
-
-  const { validators } = response.data.result
-
-  if (validators.length === getters.validators.length) return
-
-  const { v, d } = splitAccounts(validators)
-  const delegators = mapDelegators(d)
-  commit(SET_DELEGATORS, { delegators })
-  commit(SET_VALIDATORS, { validators: getVal(v) })
-  return true
-}
-
-function splitAccounts (validators) {
-  const grouped = groupBy(validators, 'id')
-  const v = []
-  const d = []
-  const keys = Object.keys(grouped)
-  for (let i = 0; i < keys.length; i++) {
-    grouped[keys[i]].sort((a, b) => a.startTime - b.startTime)
-    v.push(grouped[keys[i]].shift())
-    d.push(...grouped[keys[i]])
-  }
-
-  return { v, d }
-}
-
-const groupBy = function (xs, key) {
-  return xs.reduce(function (rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x)
-    return rv
-  }, {})
-}
-
-function getVal (validators) {
-  validators = validators
-    .filter(i => i.endTime >= Date.now() / 1000)
-    .sort(compare)
-  const val = mapValidators(validators)
-  return val.map((v, i) => {
-    const currentValidators = val.slice(0, i + 1)
-    const cm = cumulativeStakeFunc(currentValidators)
-    v.cumulativeStake = cm
-    return v
-  })
-}
-
-function mapValidators (validators) {
-  const vals = validators.map((val, i) => {
-    // const info = await _getValidatorById(val.id)
-    const sa = val.stakeAmount ? val.stakeAmount : val.weight
-    const MD5 = makeMD5()
-    const hash = MD5.hex(val.id)
-    const avatar = `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150` // info.avatarUrl ? info.avatarUrl : `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150`
-    const name = val.id // info.name ? info.name : val.id
-
-    return {
-      rank: i + 1,
-      address: val.address,
-      precent: getPrecent(sa, stake(validators)),
-      validator: val.id,
-      stake: getAvaFromnAva(sa),
-      stakenAva: parseFloat(sa),
-      startTime: val.startTime,
-      endTime: val.endTime,
-      fromNowST: fromNow(val.startTime),
-      avatar,
-      name
-      // link: info.link
-    }
-  })
-
-  return vals
-}
-
-function mapDelegators (delegators) {
-  const result = delegators.map((delegator, i) => {
-    const sa = delegator.stakeAmount
-    const MD5 = makeMD5()
-    const hash = MD5.hex(delegator.id)
-    const avatar = 'http://www.gravatar.com/avatar/' + hash + '?d=identicon&s=150'
-    const nodeId = delegator.id
-
-    return {
-      index: i + 1,
-      pAccount: delegator.address,
-      stake: getAvaFromnAva(sa),
-      stakenAva: parseFloat(sa),
-      startTime: delegator.startTime,
-      endTime: delegator.endTime,
-      fromNowST: fromNow(delegator.startTime),
-      avatar,
-      nodeId
-    }
-  })
-  return result
-}
-
 async function getNodeHealth ({ commit, getters }) {
   const response = await _health({ endpoint: getters.networkEndpoint })
 
@@ -690,51 +595,6 @@ async function getNodeHealth ({ commit, getters }) {
   }
 
   commit(SET_NODE_HEALTH, { nodeID: getters.nodeID, nodeHealth: response.data.result })
-}
-
-function cumulativeStakeFunc (currentValidators) {
-  return currentValidators.reduce((result, item) => {
-    result += parseFloat(item.precent)
-    return round(result, 1000)
-  }, 0)
-}
-
-function getPrecent (v, s) {
-  v = new BigNumber(getAvaFromnAva(v))
-  const allStake = new BigNumber(s)
-  const y = new BigNumber(100)
-  const res = v.multipliedBy(y)
-
-  const result = res.dividedBy(allStake)
-  return result.toFixed(8)
-}
-
-function stake (validators) {
-  return validators.reduce((a, b) => {
-    if (!b.stakeAmount) return
-    return a + (parseFloat(b.stakeAmount) / 10 ** 9)
-  }, 0.0)
-}
-
-function getAvaFromnAva (v) {
-  return Number(v) / 10 ** 9
-}
-
-function compare (a, b) {
-  const get = (a, b) => { return b - a }
-  if (Number(b.stakeAmount) < Number(a.stakeAmount)) {
-    return -1
-  } else if (Number(b.stakeAmount) > Number(a.stakeAmount)) {
-    return 1
-  } else {
-    if (get(a.startTime, a.endTime) > get(b.startTime, b.endTime)) {
-      return -1
-    } else if (get(a.startTime, a.endTime) < get(b.startTime, b.endTime)) {
-      return 1
-    }
-
-    return 0
-  }
 }
 
 function subscribeToEvents ({ commit, dispatch }) {

@@ -64,10 +64,12 @@ export default {
   },
   methods: {
     stake () {
-      return this.validators.reduce((a, b) => {
+      const stake = this.validators.reduce((a, b) => {
         if (!b.stakenAva) return
         return a + (parseFloat(b.stakenAva) / 10 ** 9)
       }, 0.0)
+      if (!stake) return 0
+      return stake
     }
   }
 }

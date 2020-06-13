@@ -127,6 +127,12 @@ export default {
           username: this.username,
           password: this.password
         })
+        this.$q.notify({
+          message: `Transaction hash is ${signedTx}.Your transaction is being broadcasted to the blockchain!`,
+          color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
+          position: 'center',
+          timeout: 3000
+        })
         this.closeS(signedTx)
       } catch (err) {
         this.error = err.message
