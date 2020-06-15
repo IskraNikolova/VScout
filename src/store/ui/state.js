@@ -7,7 +7,10 @@ export default function () {
       signer: null,
       signedTx: null
     },
-    typeAccount: { isValidators: true },
+    isConnected: false,
+    typeAccount: {
+      isValidators: true
+    },
     addValidatorDialog: {
       isOpen: false
     },

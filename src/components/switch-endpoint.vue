@@ -60,6 +60,10 @@ import {
   REMOVE_ENDPOINTS_MEMORY
 } from '../store/app/types'
 
+import {
+  UPDATE_UI
+} from '../store/ui/types'
+
 import { _getNodeId } from './../modules/network'
 
 const {
@@ -99,6 +103,7 @@ export default {
     },
     async onSelectEndpoint (endpoint, isCustom) {
       try {
+        this.$store.commit(UPDATE_UI, { isConnected: true })
         const response = await _getNodeId({ endpoint })
         if (response.data.error) {
           const result = this.getValidators({
@@ -134,6 +139,7 @@ export default {
       }
     },
     onSuccess (endpoint) {
+      this.$store.commit(UPDATE_UI, { isConnected: false })
       this.$q.notify({
         textColor: 'black',
         color: 'white',
@@ -144,6 +150,7 @@ export default {
       })
     },
     onError (message) {
+      this.$store.commit(UPDATE_UI, { isConnected: false })
       this.$q.notify({
         message,
         color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',

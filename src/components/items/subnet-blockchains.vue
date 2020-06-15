@@ -6,7 +6,12 @@
     <div class="row q-pb-xs">
       <div class="col">
         <div class="q-pb-md q-pt-xs" >
-        <span v-if="currentSubnet.blockchainsId" class="text-h6 q-pb-md q-pt-xs text-orange">{{ currentSubnet.blockchainsId.length }} </span>
+        <span
+          v-if="currentSubnet.blockchainsId"
+          class="text-h6 q-pb-md q-pt-xs text-orange"
+        >
+          {{ currentSubnet.blockchainsId.length }}
+        </span>
         <span v-else class="text-h6 text-orange">None <br /></span>
         <small class="text-grey">Validated by this subnet</small>
         </div>
@@ -26,7 +31,11 @@
         <q-separator />
         </div>
         <q-list v-for="id in currentSubnet.blockchainsId" v-bind:key="id">
-          <q-item clickable v-close-popup @click="onSelectBlockchain(blockchainByID(id))">
+          <q-item
+            clickable
+            v-close-popup
+            @click="onSelectBlockchain(blockchainByID(id))"
+          >
             <q-item-section>
               <q-item-label>
                 <q-img src="statics/blockchain-black.svg" id="logo-xs"/>
