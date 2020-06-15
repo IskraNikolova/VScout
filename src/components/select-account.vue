@@ -17,31 +17,31 @@
         </q-item>
         <q-space />
         <q-btn
-           class="q-ml-xl"
-           icon="close"
-           flat round dense
-           @click="closeSelectAccounts"
-         />
+          class="q-ml-xl"
+          icon="close"
+          flat round dense
+          @click="closeSelectAccounts"
+        />
       </q-card-section>
       <q-list bordered>
         <q-item
-            v-for="account in ui.selectAccounts.accounts"
-            :key="account.address"
-            class="q-my-sm"
-            @click.native="onSelectClick(account)"
-            clickable
-            v-ripple
+          v-for="account in ui.selectAccounts.accounts"
+          :key="account.address"
+          class="q-my-sm"
+          @click.native="onSelectClick(account)"
+          clickable
+          v-ripple
         >
-            <q-item-section avatar>
+          <q-item-section avatar>
             <q-avatar color="accent" text-color="white">
-                {{ account.address.substr(0, 1) }}
+              {{ account.address.substr(0, 1) }}
             </q-avatar>
-            </q-item-section>
+          </q-item-section>
 
-            <q-item-section>
+          <q-item-section>
             <q-item-label>{{ account.address }}</q-item-label>
             <q-item-label caption lines="1">Balance: {{ account.balance }}</q-item-label>
-            </q-item-section>
+          </q-item-section>
         </q-item>
       </q-list>
     </q-card>

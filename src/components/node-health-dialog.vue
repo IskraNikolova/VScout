@@ -17,7 +17,7 @@
             <q-item-label caption>
               Health check on this node
             </q-item-label>
-            </q-item-section>
+          </q-item-section>
         </q-item>
         <q-space />
         <q-btn icon="close" flat round dense @click="close" />

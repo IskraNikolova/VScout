@@ -66,11 +66,43 @@
             />
           </div>
           <div>
-            <q-btn label="Create" class="full-width" type="submit" size="10px" color="accent"/>
+            <q-btn
+              label="Create"
+              class="full-width"
+              type="submit"
+              size="10px"
+              color="accent"
+              :loading="progressCreate"
+            >
+              <template v-slot:loading>
+                <q-spinner-ball class="on-left" />
+                Connecting to the node
+              </template>
+            </q-btn>
             <div class="row q-pt-md q-pl-xl q-pr-xl">
-              <div class="col-5"><q-separator class="q-mt-md"/></div> <div style="margin-left: 20px;" class="col q-mt-xs q-ml-xs"><small>OR</small></div> <div class="col-5"><q-separator class="q-mt-md"/></div>
+              <div class="col-5">
+                <q-separator class="q-mt-md"/>
+              </div>
+              <div style="margin-left: 20px;" class="col q-mt-xs q-ml-xs">
+                <small>OR</small>
+              </div>
+              <div class="col-5">
+                <q-separator class="q-mt-md"/>
+              </div>
             </div>
-            <q-btn label="Select" class="full-width q-mt-md" @click="onSelect" size="10px" color="accent"/>
+            <q-btn
+              label="Select"
+              :loading="progressSelect"
+              class="full-width q-mt-md"
+              @click="onSelect"
+              size="10px"
+              color="accent"
+            >
+              <template v-slot:loading>
+                <q-spinner-ball class="on-left" />
+                Connecting to the node
+              </template>
+            </q-btn>
             <select-account ref="selectAccount" @select="onSelectItem"/>
           </div>
         </q-form>
@@ -118,7 +150,9 @@ export default {
       password: null,
       fundAmount: null,
       dismissFund: false,
-      error: null
+      error: null,
+      progressSelect: false,
+      progressCreate: false
     }
   },
   created () {
@@ -142,6 +176,7 @@ export default {
       this.closeP()
     },
     async onSubmit () {
+      this.progressCreate = true
       this.error = null
       try {
         await this.createAccount({
@@ -160,12 +195,15 @@ export default {
           })
           this.dismissFund = false
         }
+        this.progressCreate = false
         this.closeP()
       } catch (err) {
+        this.progressCreate = false
         this.error = err.message
       }
     },
     async onSelect () {
+      this.progressSelect = true
       this.error = null
       try {
         const { accounts } = await this.listAccounts({
@@ -174,7 +212,9 @@ export default {
         })
 
         this.$refs.selectAccount.openSelectAccounts({ accounts })
+        this.progressSelect = false
       } catch (err) {
+        this.progressSelect = false
         this.error = err.message
       }
     },

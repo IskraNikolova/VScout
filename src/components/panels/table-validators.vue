@@ -20,7 +20,7 @@
       <template slot="top-left">
         <q-btn size="xs" flat icon="apps" @click="isGrid=true"/>
         <q-btn size="xs" flat icon="reorder" @click="isGrid=false"/>
-        <select-network-dropdown />
+        <settings />
         <q-btn-toggle
           v-model="type"
           flat
@@ -32,7 +32,14 @@
             {label: 'Pending', value: 'pending'}
           ]"
         />
-        <q-btn size="xs" outline label="Add Validator" icon="add" @click.native="onAddValidator" class="q-mr-md q-ml-md"/>
+        <q-btn
+          size="xs"
+          outline
+          icon="add"
+          label="Add Validator"
+          @click.native="onAddValidator"
+          class="q-mr-md q-ml-md"
+        />
         <add-validator-dialog ref="addValidatorDialog" />
         <q-btn-toggle
           v-model="type2"
@@ -272,21 +279,21 @@ import {
 import { date } from './../../modules/time'
 import { UPDATE_UI } from './../../store/ui/types'
 
+import Settings from './settings'
 import DetailsItem from './../details-item'
 import AddValidatorDialog from './../add-validator-dialog'
 import CumulativeStakeChart from './../cumulative-stake-chart'
 import DelegateValidatorDialog from './../delegate-validator-dialog'
 import ProgressBarValidateSession from './../progress-bar-validatе-session'
-import SelectNetworkDropdown from './../items/select-network-dropdown'
 // import AddIdentificationDialog from './../add-identification-dialog'
 
 export default {
   name: 'TableItem',
   components: {
+    Settings,
     DetailsItem,
     AddValidatorDialog,
     CumulativeStakeChart,
-    SelectNetworkDropdown,
     DelegateValidatorDialog,
     // AddIdentificationDialog,
     ProgressBarValidateSession
