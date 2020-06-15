@@ -12,8 +12,7 @@
             <q-icon name="keyboard_arrow_right" />
           </q-item-section>
           <q-menu anchor="top right" self="top left">
-            <div class="q-pa-md">
-              <q-icon name="img:statics/blockchain-black.svg" />
+            <div class="q-pa-md text-grey">
               Blockchains
             </div>
             <q-separator color="orange" />
@@ -26,8 +25,7 @@
             <q-icon name="keyboard_arrow_right" />
           </q-item-section>
           <q-menu anchor="top right" self="top left">
-            <div class="q-pa-md">
-              <q-icon name="img:statics/network.svg" />
+            <div class="q-pa-md text-grey">
               Subnets
             </div>
             <q-separator color="orange"/>
@@ -37,12 +35,12 @@
         <q-separator />
         <q-item clickable>
           <q-item-section>
-            Switch Network Endpoints
+            Network Endpoints
           </q-item-section>
           <q-menu anchor="top right" self="top left">
-            <div class="q-pa-md">
+            <div class="q-pa-md text-grey">
               <q-icon name="img:statics/node.svg" />
-              Switch To Enpoint
+              Switch To Endpoint
             </div>
             <q-separator color="orange" />
             <switch-endpoint />
