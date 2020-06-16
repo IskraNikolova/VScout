@@ -269,6 +269,7 @@ async function initValidators ({ commit, getters }) {
   }
 
   const { validators } = response.data.result
+
   const { v, d } = splitAccounts(validators)
 
   const delegators = mapDelegators(d)

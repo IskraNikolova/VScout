@@ -1,6 +1,7 @@
-import { groupBy, round, makeMD5 } from './commons'
 const BigNumber = require('bignumber.js')
+
 import { fromNow } from './../modules/time'
+import { groupBy, round, makeMD5 } from './commons'
 
 /**
 * @param {Array} array of accounts for split
@@ -11,6 +12,7 @@ export function splitAccounts (validators) {
   const v = []
   const d = []
   const keys = Object.keys(grouped)
+
   for (let i = 0; i < keys.length; i++) {
     grouped[keys[i]]
       .sort((a, b) => a.startTime - b.startTime)
@@ -38,6 +40,7 @@ export function cumulativeStake (currentValidators) {
     return round(result, 1000)
   }, 0)
 }
+
 export function compare (a, b) {
   const get = (a, b) => { return b - a }
   if (Number(b.stakeAmount) < Number(a.stakeAmount)) {
@@ -84,7 +87,6 @@ export function mapValidators (validators, defaultValidators) {
 
     return vals
   } catch (err) {
-    console.log(err)
     return {}
   }
 }

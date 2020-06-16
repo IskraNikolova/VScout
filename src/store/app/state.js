@@ -4,9 +4,10 @@ export default function () {
   return {
     nodeID: '',
     subnets: [],
+    subnetID: '',
+    stakedAVA: 0,
     nodeHealth: {},
     validators: [],
-    stakedAVA: 0,
     delegators: [],
     blockchains: [],
     prevTotalTxs: 0,
@@ -14,8 +15,6 @@ export default function () {
     txHKey: 'minute',
     currentSubnet: {},
     assetsByChain: {},
-    subnetID: '',
-    isBlockchainView: true,
     txsHistoryState: {},
     endpointsMemory: [],
     pendingValidators: [],
@@ -29,6 +28,7 @@ export default function () {
       transactionCount: 0,
       transactionVolume: 0
     },
+    isBlockchainView: true,
     networkEndpoint: network.endpointUrls[0]
   }
 }
