@@ -23,7 +23,7 @@ export function splitAccounts (validators) {
   return { v, d }
 }
 
-export function getVal (validators, defaultValidators) {
+export function validatorProcessing (validators, defaultValidators) {
   validators = validators
     .sort(compare)
   const val = mapValidators(validators, defaultValidators)
@@ -34,7 +34,7 @@ export function getVal (validators, defaultValidators) {
   })
 }
 
-export function cumulativeStake (currentValidators) {
+function cumulativeStake (currentValidators) {
   return currentValidators.reduce((result, item) => {
     result += parseFloat(item.precent)
     return round(result, 1000)

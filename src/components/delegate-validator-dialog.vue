@@ -305,19 +305,25 @@ export default {
       this.closeDelegate()
     },
     onCreatePAccount (type) {
-      this.$refs
-        .pCreateAccount.openP({ type })
+      this.$refs.pCreateAccount.openP({ type })
     },
     async onSubmit () {
       this.error = null
-      const destination = this.ui
+
+      const payingAccountBalance = this.ui
         .formAccounts
-        .destinationAccount
-        .address
+        .payingAccount
+        .balance
+      console.log(payingAccountBalance)
+      console.log(this.stakeAmount)
+      if (payingAccountBalance < this.stakeAmount) {
+        this.error = 'Insufficient funds!'
+        return
+      }
 
       const params = {
         id: this.nodeID,
-        destination,
+        destination: this.destination,
         startTime: toUnix(this.startDate),
         endTime: toUnix(this.endDate),
         stakeAmount: this.stakeAmount,

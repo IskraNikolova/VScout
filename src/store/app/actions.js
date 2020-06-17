@@ -74,17 +74,16 @@ import {
 
 import {
   // _initializeNetwork,
-  // _getValidatorById,
   subscribeToContractEvents
 } from './../../modules/networkRpc'
 
 import {
   temp,
-  getVal,
   compare,
   splitAccounts,
   mapDelegators,
   mapValidators,
+  validatorProcessing,
   splitPendingAccounts
 } from './../../utils/validators'
 
@@ -149,6 +148,9 @@ async function getBlockchains ({ commit, getters }) {
   }
 
   const { blockchains } = response.data.result
+  if (typeof blockchains === 'undefined' ||
+    blockchains === null) return
+
   commit(SET_BLOCKCHAINS, { blockchains })
   commit(SET_CURRENT_BLOCKCHAIN, {
     blockchain: blockchains[0]
@@ -165,6 +167,9 @@ async function getSubnets ({ commit, getters }) {
   }
 
   const { subnets } = response.data.result
+  if (typeof subnets === 'undefined' ||
+    subnets === null) return
+
   const result = Promise.all(subnets.map(async subnet => {
     const response = await _validates({
       endpoint: getters.networkEndpoint,
@@ -191,7 +196,9 @@ async function getTxsFor24H ({ commit, getters }) {
     minAgo.toISOString(),
     moment().toISOString()
   )
-  if (response === null) return
+
+  if (typeof response === 'undefined' ||
+    response === null) return
 
   const { transactionCount, transactionVolume } = response
   commit(SET_PREVIOUS_24_TXS, { prevTxsFor24H: getters.txsFor24H })
@@ -205,7 +212,8 @@ async function getTxsFor24H ({ commit, getters }) {
 
 async function getTotalTXs ({ commit, getters }) {
   const response = await _getLastTx()
-  if (response === null) return
+  if (typeof response === 'undefined' ||
+    response === null) return
 
   const totalTxsCount = response.count
   commit(SET_PREVIOUS_TOTAL_TXS, {
@@ -253,7 +261,8 @@ async function getTxsHistory ({ commit }, { txHKey }) {
 
 async function getAssetsByBlockchain ({ commit }) {
   const assetsByChain = await _getAssetsForChain()
-  if (assetsByChain === null) return
+  if (typeof assetsByChain === 'undefined' ||
+    assetsByChain === null) return
 
   commit(SET_ASSETS_BY_BLOCKCHAINS, { assetsByChain })
 }
@@ -269,11 +278,13 @@ async function initValidators ({ commit, getters }) {
   }
 
   const { validators } = response.data.result
+  if (typeof validators === 'undefined' ||
+    validators === null) return
 
   const { v, d } = splitAccounts(validators)
 
   const delegators = mapDelegators(d)
-  const resultValidators = getVal(v, getters.validators)
+  const resultValidators = validatorProcessing(v, getters.validators)
 
   commit(SET_DELEGATORS, { delegators })
   commit(SET_VALIDATORS, { validators: resultValidators })
@@ -292,6 +303,8 @@ async function getValidators (
   }
 
   const { validators } = response.data.result
+  if (typeof validators === 'undefined' ||
+    validators === null) return
 
   if (validators.length === getters.validators.length) return
 
@@ -299,7 +312,7 @@ async function getValidators (
   const delegators = mapDelegators(d)
   commit(SET_DELEGATORS, { delegators })
 
-  const resultValidators = getVal(v, getters.validators)
+  const resultValidators = validatorProcessing(v, getters.validators)
   commit(SET_VALIDATORS, { validators: resultValidators })
   commit(SET_STAKED_AVA, { validators: resultValidators })
   return true
@@ -317,6 +330,8 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
   }
 
   const { validators } = response.data.result
+  if (typeof validators === 'undefined' ||
+      validators === null) return
 
   let { v, d } = splitPendingAccounts(validators, getters.validators)
   commit(SET_PENDING_DELEGATORS, { delegators: mapDelegators(d) })
@@ -333,6 +348,8 @@ async function getNodeId ({ getters, commit }) {
     Notify.create(response.data.error.message)
     return
   }
+  if (typeof response === 'undefined' ||
+    response === null) return
 
   commit(SET_NODE_ID, { nodeID: response.data.result.nodeID })
 }
@@ -349,6 +366,8 @@ async function getAccount (
       throw new Error(res.data.error.message)
     }
     const account = res.data.result
+    if (typeof account === 'undefined' ||
+      account === null) return
     if (type === 'destination') {
       commit(UPDATE_UI, {
         addValidatorDialog: {
@@ -393,6 +412,7 @@ async function createAccount (
     }
 
     const account = response.data.result
+
     await dispatch(GET_ACCOUNT, { address: account.address, type })
   } catch (err) {
     throw new Error(err.message)
@@ -421,7 +441,6 @@ async function createUser ({ getters }, { username, password, withAddress }) {
       }
       return res.data.result
     }
-
     return response.data.result
   } catch (err) {
     throw new Error(err.message)
@@ -438,7 +457,6 @@ async function listAccounts ({ getters }, { username, password }) {
     if (response.data.error) {
       throw new Error(response.data.error.message)
     }
-
     return response.data.result
   } catch (err) {
     throw new Error(err.message)
@@ -457,6 +475,7 @@ async function addValidatorToDefaultS ({ getters }, { params, signer }) {
       throw new Error(res.data.error.message)
     }
     const account = res.data.result
+
     const nonce = Number(account.nonce) + 1
     params.payerNonce = nonce
     if (account.balance < params.stakeAmount) {
@@ -598,6 +617,8 @@ async function fundAccount (
 
 async function getNodeHealth ({ commit, getters }) {
   const response = await _health({ endpoint: getters.networkEndpoint })
+  if (typeof response === 'undefined' ||
+    response === null) return
 
   if (response.data.error) {
     return null
