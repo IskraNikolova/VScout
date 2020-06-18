@@ -33,8 +33,7 @@
                 <q-input
                   color="accent"
                   class="q-mb-xs"
-                  outlined
-                  clearable
+                  outlined clearable
                   label-color="orange"
                   v-model="username"
                   label="Username *"
@@ -45,8 +44,7 @@
                 <q-input
                   color="accent"
                   class="q-mb-xs"
-                  outlined
-                  clearable
+                  outlined clearable
                   type="password"
                   label-color="orange"
                   v-model="password"

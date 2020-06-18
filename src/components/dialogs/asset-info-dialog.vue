@@ -26,8 +26,7 @@
 
         <q-card-actions align="right">
           <q-btn
-            flat
-            color="orange"
+            flat color="orange"
             @click="toUrl(ui.assetInfo.asset.id)"
             no-caps
             label="Asset Genesis"

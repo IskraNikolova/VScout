@@ -48,8 +48,7 @@
             <q-input
               v-if="dismissFund"
               color="accent"
-              outlined
-              clearable
+              outlined clearable
               label-color="orange"
               v-model="fundAmount"
               suffix="$nAVA"
@@ -111,8 +110,7 @@
           <small class="text-grey">Don't have an account?</small>
           <q-btn
             @click="onOpenCreateUserD"
-            size="xs"
-            flat
+            size="xs" flat
             color="accent"
             label="Create"
           />

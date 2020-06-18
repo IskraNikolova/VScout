@@ -1,8 +1,7 @@
 <template>
   <q-dialog
-    no-focus
+    no-focus persistent
     v-model="ui.signTx.isOpen"
-    persistent
   >
     <q-card style="min-width: 380px!important;">
       <q-card-section class="row items-center">
@@ -29,20 +28,17 @@
             class="q-gutter-md"
           >
             <q-input
-              readonly
-              autogrow
               color="accent"
               class="q-mb-xs"
-              outlined
               label="Unsigned Tx"
               label-color="orange"
+              outlined readonly autogrow
               v-model="ui.signTx.unsignedTx"
             />
             <q-input
-              readonly
               color="accent"
               class="q-mb-xs"
-              outlined
+              outlined readonly
               label-color="orange"
               label="Signer"
               v-model="ui.signTx.signer"
@@ -52,8 +48,7 @@
             <q-input
               color="accent"
               class="q-mb-xs"
-              outlined
-              clearable
+              outlined clearable
               label-color="orange"
               v-model="username"
               label="Username *"
@@ -64,8 +59,7 @@
             <q-input
               color="accent"
               class="q-mb-xs"
-              outlined
-              clearable
+              outlined clearable
               type="password"
               label-color="orange"
               v-model="password"

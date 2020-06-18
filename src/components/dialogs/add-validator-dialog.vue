@@ -26,8 +26,7 @@
               <q-input
                 class="q-mb-md"
                 color="accent"
-                outlined
-                clearable
+                outlined clearable
                 label-color="orange"
                 v-model="nodeIDModel"
                 label="Your node ID *"
@@ -43,8 +42,7 @@
               <q-input
                 class="q-mb-md q-pt-md"
                 color="accent"
-                outlined
-                clearable
+                outlined clearable
                 label-color="orange"
                 v-model="destination"
                 label="Destination account *"
@@ -63,8 +61,7 @@
               <q-input
                 class="q-mb-md q-pt-md"
                 color="accent"
-                outlined
-                clearable
+                outlined clearable
                 label-color="orange"
                 v-model="payingAccount"
                 label="Paying account *"
@@ -83,12 +80,11 @@
               <q-input
                 color="accent"
                 class="q-pt-md"
-                outlined
                 label-color="orange"
                 label="Start Date"
                 v-model="startDate"
                 hint="The start time must be in the future relative to the time the transaction is issued."
-                lazy-rules
+                lazy-rules outlined
                 :rules="[
                   val => val !== null && val !== '' || 'Please type your start date!',
                 ]"
@@ -115,13 +111,12 @@
               <q-input
                 class="q-mb-md"
                 color="accent"
-                outlined
                 label-color="orange"
                 v-model="stakeAmount"
                 type="number"
                 label="Stake Amount *"
                 hint="In order to validate the Default Subnet one must stake AVA tokens. The minimum amount that one can stake is 10 μAVA."
-                lazy-rules
+                lazy-rules outlined
                 :rules="[
                   val => val !== null && val !== '' || 'Please type your stake amount',
                   val => val > 10000 && val < 35000000000 || 'Invalid amount!'
@@ -130,8 +125,7 @@
               <q-input
                 color="accent"
                 class="q-mb-md q-pt-md"
-                clearable
-                outlined
+                clearable outlined
                 type="number"
                 label-color="orange"
                 v-model="delegationFeeRate"
@@ -141,12 +135,11 @@
               <q-input
                 color="accent"
                 class="q-mb-md q-pt-md"
-                outlined
                 label-color="orange"
                 v-model="endDate"
                 label="End Date"
                 hint="The minimum duration that one can validate the Default Subnet is 24 hours, and the maximum duration is one year."
-                lazy-rules
+                lazy-rules outlined
                 :rules="[
                   val => val !== null && val !== '' || 'Please type your end date!',
                 ]"

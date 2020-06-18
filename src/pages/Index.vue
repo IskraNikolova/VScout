@@ -1,10 +1,19 @@
 <template>
-  <q-page class="q-pr-xl q-pl-xl" style="background-color: white;">
+  <q-page
+    class="q-pr-xl q-pl-xl"
+    style="background-color: white;"
+  >
     <network class="q-pr-md"/>
     <transactions class="q-pa-md" />
     <stake class="q-pr-md"/>
-    <table-validators v-if="ui.typeAccount.isValidators" @getValidators="getValidatorsV"/>
-    <table-delegators v-else @getDelegators="getValidatorsV"/>
+    <table-validators
+      v-if="ui.typeAccount.isValidators"
+      @getValidators="getValidatorsV"
+    />
+    <table-delegators
+      v-else
+      @getDelegators="getValidatorsV"
+    />
     <faqs class="q-pr-md" />
 
     <div class="flex flex-center q-mt-xl">

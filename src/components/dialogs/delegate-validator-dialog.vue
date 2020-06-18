@@ -40,21 +40,18 @@
               <q-input
                 class="q-mb-md"
                 color="accent"
-                outlined
-                clearable
-                readonly
                 label-color="orange"
                 v-model="nodeID"
                 label="Node ID *"
                 hint="The node ID of the delegatee"
                 lazy-rules
+                outlined clearable readonly
                 :rules="[ val => val && val.length > 0 || 'Please type your node ID!']"
               />
               <q-input
                 class="q-mb-md q-pt-md"
                 color="accent"
-                outlined
-                clearable
+                outlined clearable
                 label-color="orange"
                 v-model="destination"
                 label="Destination account *"
@@ -73,8 +70,7 @@
               <q-input
                 class="q-mb-md q-pt-md"
                 color="accent"
-                outlined
-                clearable
+                outlined clearable
                 label-color="orange"
                 v-model="payingAccount"
                 label="Paying account *"
@@ -96,13 +92,12 @@
               <q-input
                 class="q-mb-md"
                 color="accent"
-                outlined
                 label-color="orange"
                 v-model="stakeAmount"
                 type="number"
                 label="Stake Amount *"
                 hint="The amount of nAVA the delegator is staking."
-                lazy-rules
+                lazy-rules outlined
                 :rules="[
                   val => val !== null && val !== '' || 'Please type your stake amount'
                 ]"
@@ -110,12 +105,11 @@
               <q-input
                 color="accent"
                 class="q-pt-md"
-                outlined
                 label-color="orange"
                 label="Start Date"
                 v-model="startDate"
                 hint="The Unix time when the delegator starts delegating."
-                lazy-rules
+                lazy-rules outlined
                 :rules="[
                   val => val !== null && val !== '' || 'Please type your start date!',
                 ]"
@@ -139,12 +133,11 @@
               <q-input
                 color="accent"
                 class="q-mb-md q-pt-md"
-                outlined
                 label-color="orange"
                 v-model="endDate"
                 label="End Date"
                 hint="The Unix time when the delegator stops delegating (and staked AVA is returned)"
-                lazy-rules
+                lazy-rules outlined
                 :rules="[
                   val => val !== null && val !== '' || 'Please type your end date!',
                 ]"

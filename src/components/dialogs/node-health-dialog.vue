@@ -1,8 +1,7 @@
 <template>
   <q-dialog
-    no-focus
+    no-focus persistent
     v-model="ui.nodeHealth.isOpen"
-    persistent
   >
     <q-card style="min-width: 30%!important;">
       <q-card-section class="row items-center">

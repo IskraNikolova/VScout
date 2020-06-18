@@ -9,7 +9,9 @@
             </q-avatar>
           </q-item-section>
           <q-item-section>
-            <q-item-label>Platform Accounts</q-item-label>
+            <q-item-label>
+              Platform Accounts
+            </q-item-label>
             <q-item-label caption>
               The accounts controlled by this user.
             </q-item-label>
@@ -17,20 +19,19 @@
         </q-item>
         <q-space />
         <q-btn
-          class="q-ml-xl"
           icon="close"
+          class="q-ml-xl"
           flat round dense
           @click="closeSelectAccounts"
         />
       </q-card-section>
       <q-list bordered>
         <q-item
-          v-for="account in ui.selectAccounts.accounts"
-          :key="account.address"
           class="q-my-sm"
+          v-ripple clickable
+          :key="account.address"
           @click.native="onSelectClick(account)"
-          clickable
-          v-ripple
+          v-for="account in ui.selectAccounts.accounts"
         >
           <q-item-section avatar>
             <q-avatar color="accent" text-color="white">
@@ -39,8 +40,12 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>{{ account.address }}</q-item-label>
-            <q-item-label caption lines="1">Balance: {{ account.balance }}</q-item-label>
+            <q-item-label>
+              {{ account.address }}
+            </q-item-label>
+            <q-item-label caption lines="1">
+              Balance: {{ account.balance }}
+            </q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
