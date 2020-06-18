@@ -11,7 +11,7 @@
         <img src="~assets/network-nodes.svg" id="logo">
       </div>
       <subnet v-if="isBlockchainView" class="col-md-3 col-xs-10"/>
-      <subnet-2 v-else class="col-md-3 col-xs-10" />
+      <subnetwork v-else class="col-md-3 col-xs-10" />
       <div v-if="isBlockchainView" class="col-1 q-pt-md">
         <img src="~assets/network-grey.svg" id="logo2">
       </div>
@@ -31,24 +31,24 @@ import { mapGetters } from 'vuex'
 
 import Subnet from './../items/subnet'
 import Blockchain from './../items/blockchain'
-import Subnet2 from './../items/subnet-2'
-import SubnetBlockchains from './../items/subnet-blockchains'
+import Subnetwork from './../items/subnetwork'
 import NodeConnection from './../items/node-connection'
+import SubnetBlockchains from './../items/subnet-blockchains'
 
 export default {
   name: 'Network',
   components: {
     Subnet,
-    Subnet2,
+    Subnetwork,
     Blockchain,
     NodeConnection,
     SubnetBlockchains
   },
   computed: {
     ...mapGetters([
-      'currentBlockchain',
       'currentSubnet',
-      'isBlockchainView'
+      'isBlockchainView',
+      'currentBlockchain'
     ])
   }
 }

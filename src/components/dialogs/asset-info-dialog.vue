@@ -25,7 +25,13 @@
         <q-separator />
 
         <q-card-actions align="right">
-          <q-btn flat color="orange" @click="toUrl(ui.assetInfo.asset.id)" no-caps label="Asset Genesis" />
+          <q-btn
+            flat
+            color="orange"
+            @click="toUrl(ui.assetInfo.asset.id)"
+            no-caps
+            label="Asset Genesis"
+          />
           <q-btn @click="close()" color="orange" flat icon="close" />
         </q-card-actions>
       </q-card>
@@ -33,13 +39,16 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
 import { openURL } from 'quasar'
+import { mapGetters, mapActions } from 'vuex'
 
-import { CLOSE_ASSET_INFO, OPEN_ASSET_INFO } from './../store/ui/types'
+import {
+  CLOSE_ASSET_INFO,
+  OPEN_ASSET_INFO
+} from './../../store/ui/types'
 
 export default {
-  name: 'AssetInfoItem',
+  name: 'AssetInfoDialog',
   computed: {
     ...mapGetters([
       'ui'

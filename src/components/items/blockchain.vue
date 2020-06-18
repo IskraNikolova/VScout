@@ -4,14 +4,29 @@
       BLOCKCHAIN
     </div>
     <div class="row q-mb-md">
-      <div class="text-h6 text-orange q-pb-md q-pr-md ">{{ currentBlockchain.name }}</div>
+      <div class="text-h6 text-orange q-pb-md q-pr-md ">
+        {{ currentBlockchain.name }}
+      </div>
       <div class="q-pt-xs">
-        <q-btn-dropdown color="accent" outline v-if="assets(currentBlockchain.id)" size="xs" no-caps label="Smart Digital Assets">
+        <q-btn-dropdown
+          color="accent"
+          outline
+          size="xs"
+          no-caps
+          v-if="assets(currentBlockchain.id)"
+          label="Smart Digital Assets"
+        >
           <div class="q-pa-md">
-           <small><img src="~assets/coins.svg" id="small-logo">Assets on {{ currentBlockchain.name }}</small>
+            <small>
+              <img src="~assets/coins.svg" id="small-logo">
+              Assets on {{ currentBlockchain.name }}
+            </small>
            <q-separator />
           </div>
-          <q-list v-for="asset in assets(currentBlockchain.id)" v-bind:key="asset.id">
+          <q-list
+            v-for="asset in assets(currentBlockchain.id)"
+            v-bind:key="asset.id"
+          >
             <q-item clickable v-close-popup @click="onOpenAssetInfo(asset)">
               <q-item-section><span>{{ asset.symbol }}</span></q-item-section>
               <q-item-section side>
@@ -20,22 +35,27 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
-        <asset-info-item ref="assetDialog"/>
+        <asset-info-dialog ref="assetDialog"/>
       </div>
     </div>
-    <div id="f-size12">Blockchain ID <div class="text-grey">{{ currentBlockchain.id }}</div></div>
+    <div id="f-size12">
+      Blockchain ID
+      <div class="text-grey">
+        {{ currentBlockchain.id }}
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 
-import AssetInfoItem from './../asset-info-item'
+import AssetInfoDialog from './../dialogs/asset-info-dialog'
 
 export default {
   name: 'Blockchain',
   components: {
-    AssetInfoItem
+    AssetInfoDialog
   },
   computed: {
     ...mapGetters([

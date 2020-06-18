@@ -89,12 +89,12 @@ import { mapActions, mapGetters } from 'vuex'
 
 import {
   SIGN_TX
-} from './../store/app/types'
+} from './../../store/app/types'
 
 import {
   OPEN_SIGN_TX,
   CLOSE_SIGN_TX
-} from './../store/ui/types'
+} from './../../store/ui/types'
 
 export default {
   name: 'SignTxDialog',

@@ -12,7 +12,10 @@
     >
     <template v-slot:header-cell-delegate="props">
       <q-th :props="props">
-        <q-icon name="img:statics/delegate.png" size="3.0em" />
+        <q-icon
+          size="3.0em"
+          name="img:statics/delegate.png"
+        />
       </q-th>
     </template>
       <template slot="top-left">
@@ -41,7 +44,11 @@
       </template>
       <template v-slot:header-cell-index="props">
         <q-th :props="props">
-          <q-icon name="img:statics/delegate.png" class="q-pl-xs" size="2.0em" />
+          <q-icon
+            size="2.0em"
+            class="q-pl-xs"
+            name="img:statics/delegate.png"
+          />
         </q-th>
       </template>
       <template slot="top-right" v-if="!isGrid">
@@ -75,11 +82,8 @@
                 {{ props.row.pAccount}}
               </div>
             </div>
-            <div v-else-if="col.name === 'stake'" class="q-pl-md">
-              <div>
-                {{ col.value }}
-                <small style="color: grey;">({{ getLocalString(props.row.stakenAva)}} nAva)</small>
-              </div>
+            <div v-else-if="col.name === 'index'">
+              {{ col.value }}
             </div>
             <div v-else-if="col.name === 'progress'">
               <progress-bar-validate-session
@@ -87,16 +91,23 @@
                 v-bind:endTime="props.row.endTime"
               />
             </div>
+            <div v-else-if="col.name === 'stake'" class="q-pl-md">
+              <div>
+                {{ col.value }}
+                <small style="color: grey;">
+                  ({{ getLocalString(props.row.stakenAva)}} nAva)
+                </small>
+              </div>
+            </div>
             <div v-else-if="col.name === 'startTime'" class="q-pl-md">
               <small>{{ formatDate(col.value) }}</small>
             </div>
             <div v-else-if="col.name === 'endTime'" class="q-pl-md">
               <small>{{ formatDate(col.value) }}</small>
             </div>
-            <div v-else-if="col.name === 'index'">
-              {{ col.value }}
+            <div v-else class="q-pl-md">
+              <small>{{ col.value }}</small>
             </div>
-            <div v-else class="q-pl-md"><small>{{ col.value }}</small></div>
           </q-td>
         </q-tr>
       </template>

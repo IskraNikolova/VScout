@@ -52,7 +52,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'StakeItem',
+  name: 'Stake',
   computed: {
     ...mapGetters([
       'validators',

@@ -61,19 +61,13 @@ function cumulativeStake (currentValidators) {
 
 export function compare (a, b) {
   const get = (a, b) => { return b - a }
-  if (Number(b.stakeAmount) < Number(a.stakeAmount)) {
-    return -1
-  } else if (Number(b.stakeAmount) > Number(a.stakeAmount)) {
-    return 1
-  } else {
-    if (get(a.startTime, a.endTime) > get(b.startTime, b.endTime)) {
-      return -1
-    } else if (get(a.startTime, a.endTime) < get(b.startTime, b.endTime)) {
-      return 1
-    }
-
-    return 0
+  const compareStake = Number(b.stakeAmount) - Number(a.stakeAmount)
+  const temp = {
+    false: compareStake,
+    true: get(b.startTime, b.endTime) - get(a.startTime, a.endTime)
   }
+
+  return temp[compareStake === 0]
 }
 
 export function mapValidators (validators, defaultValidators) {

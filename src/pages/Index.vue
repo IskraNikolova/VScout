@@ -1,11 +1,11 @@
 <template>
   <q-page class="q-pr-xl q-pl-xl" style="background-color: white;">
     <network class="q-pr-md"/>
-    <transactions-item class="q-pa-md" />
-    <stak-item class="q-pr-md"/>
+    <transactions class="q-pa-md" />
+    <stake class="q-pr-md"/>
     <table-validators v-if="ui.typeAccount.isValidators" @getValidators="getValidatorsV"/>
     <table-delegators v-else @getDelegators="getValidatorsV"/>
-    <faqs-item class="q-pr-md" />
+    <faqs class="q-pr-md" />
 
     <div class="flex flex-center q-mt-xl">
       <img src="~assets/ava-black.png" id="logo"/>
@@ -22,12 +22,12 @@ import {
   mapActions
 } from 'vuex'
 
-import FaqsItem from './../components/panels/faqs-item'
-import StakItem from './../components/panels/stak-item'
+import Faqs from './../components/panels/faqs'
+import Stake from './../components/panels/stake'
 import Network from './../components/panels/network'
 import TableValidators from './../components/panels/table-validators'
 import TableDelegators from './../components/panels/table-delegators'
-import TransactionsItem from './../components/panels/transactions-item'
+import Transactions from './../components/panels/transactions'
 
 import {
   GET_VALIDATORS,
@@ -37,12 +37,12 @@ import {
 export default {
   name: 'PageIndex',
   components: {
-    FaqsItem,
-    StakItem,
+    Faqs,
+    Stake,
     Network,
+    Transactions,
     TableValidators,
-    TableDelegators,
-    TransactionsItem
+    TableDelegators
   },
   computed: {
     ...mapGetters([

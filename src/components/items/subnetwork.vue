@@ -34,7 +34,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'Subnet2',
+  name: 'Subnetwork',
   computed: {
     ...mapGetters([
       'currentSubnet',

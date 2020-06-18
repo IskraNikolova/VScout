@@ -38,7 +38,7 @@
 <script>
 
 export default {
-  name: 'FaqsItem',
+  name: 'Faqs',
   data () {
     return {
       visible: false,

@@ -1,21 +1,22 @@
 <template>
-<div>
-  <div class="row">
-    <div class="col">
-      <div>Validator ID: <span id="identity">{{ identity }}</span></div>
-      <div v-if="address">P-Chain Account (staker) <span id="identity">{{ address }}</span></div>
-      <div v-else>Weight <span id="identity">{{ weight }}</span></div>
-      <div>Start <span class="text-accent">{{ startDate }} </span><small>({{ fromNowGet }})</small></div>
-      <div>End <span class="text-accent">{{ endDate }}</span></div>
+  <div>
+    <div class="row">
+      <div class="col">
+        <div>Validator ID: <span id="identity">{{ identity }}</span></div>
+        <div v-if="address">P-Chain Account (staker) <span id="identity">{{ address }}</span></div>
+        <div v-else>Weight <span id="identity">{{ weight }}</span></div>
+        <div>Start <span class="text-accent">{{ startDate }} </span><small>({{ fromNowGet }})</small></div>
+        <div>End <span class="text-accent">{{ endDate }}</span></div>
+      </div>
     </div>
   </div>
-</div></template>
+</template>
 
 <script>
 import { date, fromNow } from './../modules/time'
 
 export default {
-  name: 'DetailsItem',
+  name: 'DetailsValidator',
   props: {
     identity: {
       type: String,

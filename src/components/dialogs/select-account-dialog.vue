@@ -54,10 +54,10 @@ import { mapActions, mapGetters } from 'vuex'
 import {
   OPEN_SELECT_ACCOUNTS,
   CLOSE_SELECT_ACCOUNTS
-} from './../store/ui/types'
+} from './../../store/ui/types'
 
 export default {
-  name: 'SelectAccount',
+  name: 'SelectAccountDialog',
   computed: {
     ...mapGetters([
       'ui'

@@ -10,7 +10,7 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar>
-              <img src="./../statics/manage.svg" />
+              <img src="./../../statics/manage.svg" />
             </q-avatar>
             </q-item-section>
             <q-item-section>
@@ -194,17 +194,17 @@ import {
   datePickerFormatStart,
   datePickerFormatEnd,
   toUnix
-} from './../modules/time'
+} from './../../modules/time'
 
 import {
   DELEGATE_VALIDATOR
-} from './../store/app/types'
+} from './../../store/app/types'
 
 import {
   UPDATE_UI,
   OPEN_DELEGATE_VALIDATOR_DIALOG,
   CLOSE_DELEGATE_VALIDATOR_DIALOG
-} from './../store/ui/types'
+} from './../../store/ui/types'
 
 export default {
   name: 'DelegateValidatorDialog',

@@ -23,7 +23,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import NodeHealthDialog from './../node-health-dialog'
+import NodeHealthDialog from './../dialogs/node-health-dialog'
 
 export default {
   name: 'NodeConnection',

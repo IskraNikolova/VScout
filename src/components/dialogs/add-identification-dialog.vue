@@ -166,18 +166,18 @@
 import { mapActions, mapGetters } from 'vuex'
 import DOMPurify from 'dompurify'
 
-import { _setValidatorInfo } from './../modules/networkRpc'
+import { _setValidatorInfo } from './../../modules/networkRpc'
 
 import {
   GET_NODE_ID,
   LIST_ACCOUNTS
-} from './../store/app/types'
+} from './../../store/app/types'
 
 import {
   UPDATE_UI,
   OPEN_ADD_IDENTIFICATION,
   CLOSE_ADD_IDENTIFICATION
-} from './../store/ui/types'
+} from './../../store/ui/types'
 
 export default {
   name: 'AddIdentificationDialog',

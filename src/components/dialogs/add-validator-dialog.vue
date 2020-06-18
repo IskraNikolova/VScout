@@ -191,18 +191,18 @@ import {
 import SignTxDialog from './sign-tx-dialog'
 import CreateUserDialog from './create-user-dialog'
 import PCreateAccountDialog from './p-create-account-dialog'
-import { datePickerFormat, toUnix } from './../modules/time'
+import { datePickerFormat, toUnix } from './../../modules/time'
 
 import {
   GET_NODE_ID, GET_ACCOUNT,
   ADD_VALIDATOR_TO_DEFAULT_SUBNET
-} from './../store/app/types'
+} from './../../store/app/types'
 
 import {
   UPDATE_UI,
   OPEN_ADD_VALIDATOR_DIALOG,
   CLOSE_ADD_VALIDATOR_DIALOG
-} from './../store/ui/types'
+} from './../../store/ui/types'
 
 export default {
   name: 'AddValidatorDialog',

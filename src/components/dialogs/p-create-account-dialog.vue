@@ -103,13 +103,19 @@
                 Connecting to the node
               </template>
             </q-btn>
-            <select-account ref="selectAccount" @select="onSelectItem"/>
+            <select-account-dialog ref="selectAccount" @select="onSelectItem"/>
           </div>
         </q-form>
         <q-separator class="q-mt-xl"/>
         <div class="flex flex-center q-pt-xs">
           <small class="text-grey">Don't have an account?</small>
-          <q-btn @click="onOpenCreateUserD" size="xs" flat color="accent" label="Create" />
+          <q-btn
+            @click="onOpenCreateUserD"
+            size="xs"
+            flat
+            color="accent"
+            label="Create"
+          />
         </div>
       </q-card-section>
     </q-card>
@@ -119,25 +125,25 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
-import SelectAccount from './select-account'
+import SelectAccountDialog from './select-account-dialog'
 
 import {
   CREATE_ACCOUNT,
   FUND_ACCOUNT,
   LIST_ACCOUNTS
-} from './../store/app/types'
+} from './../../store/app/types'
 
 import {
   OPEN_P_CREATE,
   CLOSE_P_CREATE,
   OPEN_CREATE_USER,
   UPDATE_UI
-} from './../store/ui/types'
+} from './../../store/ui/types'
 
 export default {
   name: 'PCreateAccountDialog',
   components: {
-    SelectAccount
+    SelectAccountDialog
   },
   computed: {
     ...mapGetters([

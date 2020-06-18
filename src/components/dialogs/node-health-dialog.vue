@@ -9,7 +9,7 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar>
-              <img src="./../statics/blockchain.svg" />
+              <img src="./../../statics/blockchain.svg" />
             </q-avatar>
             </q-item-section>
             <q-item-section>
@@ -39,12 +39,12 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { datePickerFormat } from './../modules/time'
+import { datePickerFormat } from './../../modules/time'
 
 import {
   OPEN_NODE_HEALTH,
   CLOSE_NODE_HEALTH
-} from './../store/ui/types'
+} from './../../store/ui/types'
 
 export default {
   name: 'NodeHealthDialog',

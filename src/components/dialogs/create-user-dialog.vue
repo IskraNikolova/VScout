@@ -92,12 +92,12 @@ var QRCode = require('qrcode')
 
 import {
   CREATE_USER
-} from './../store/app/types'
+} from './../../store/app/types'
 
 import {
   OPEN_CREATE_USER,
   CLOSE_CREATE_USER
-} from './../store/ui/types'
+} from './../../store/ui/types'
 
 export default {
   name: 'CreateUserDialog',

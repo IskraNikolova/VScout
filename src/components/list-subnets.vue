@@ -10,7 +10,7 @@
         <q-item-label caption>
         <small v-if="subnet.blockchainsId">Validated Blockchains: </small>
         <div class="text-orange" v-for="(id, i) in subnet.blockchainsId" v-bind:key="i">
-            {{ blockchainName(id) }}
+          {{ blockchainName(id) }}
         </div>
         </q-item-label>
       </q-item-section>

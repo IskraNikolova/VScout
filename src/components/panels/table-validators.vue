@@ -142,7 +142,7 @@
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
-            <details-item
+            <details-validator
               v-bind:weight="props.row.weight ? props.row.weight : ''"
               v-bind:address="props.row.address ? props.row.address : ''"
               v-bind:identity="props.row.validator"
@@ -278,20 +278,19 @@ import {
 
 import { date } from './../../modules/time'
 import { UPDATE_UI } from './../../store/ui/types'
-
+import DetailsValidator from './../details-validator'
 import Settings from './settings'
-import DetailsItem from './../details-item'
-import AddValidatorDialog from './../add-validator-dialog'
 import CumulativeStakeChart from './../cumulative-stake-chart'
-import DelegateValidatorDialog from './../delegate-validator-dialog'
+import AddValidatorDialog from './../dialogs/add-validator-dialog'
 import ProgressBarValidateSession from './../progress-bar-validatе-session'
+import DelegateValidatorDialog from './../dialogs/delegate-validator-dialog'
 // import AddIdentificationDialog from './../add-identification-dialog'
 
 export default {
   name: 'TableItem',
   components: {
     Settings,
-    DetailsItem,
+    DetailsValidator,
     AddValidatorDialog,
     CumulativeStakeChart,
     DelegateValidatorDialog,
