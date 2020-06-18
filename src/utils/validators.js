@@ -4,25 +4,43 @@ import { fromNow } from './../modules/time'
 import { groupBy, round, makeMD5 } from './commons'
 
 /**
-* @param {Array} array of accounts for split
-* @returns {object} two types of accounts
+* @param {Array} Array of validators and delegators for split
+* @returns {Object} Object of two arrays - current validators and delegators
 */
 export function splitAccounts (validators) {
   const grouped = groupBy(validators, 'id')
-  const v = []
-  const d = []
   const keys = Object.keys(grouped)
-
-  for (let i = 0; i < keys.length; i++) {
-    grouped[keys[i]]
+  return keys.reduce((result, key) => {
+    grouped[key]
       .sort((a, b) => a.startTime - b.startTime)
-    v.push(grouped[keys[i]].shift())
-    d.push(...grouped[keys[i]])
-  }
-
-  return { v, d }
+    result.v.push(grouped[key].shift())
+    result.d.push(...grouped[key])
+    return result
+  }, { v: [], d: [] })
 }
 
+/**
+* @param {Array} Array of validators and delegators for split
+* @param {Array} Array of existing validators and delegators
+* @returns {Object} Object of current validators and delegators
+*/
+export function splitPendingAccounts (validators, existValidators) {
+  return validators.reduce((result, val) => {
+    if (existValidators
+      .find(v => v.validator === val.id)) {
+      result.d.push(val)
+    } else {
+      result.v.push(val)
+    }
+    return result
+  }, { v: [], d: [] })
+}
+
+/**
+* @param {Array} Array of validators
+* @param {Array} Array of current validators on Default Subnet
+* @returns {Array} Array with processing validators
+*/
 export function validatorProcessing (validators, defaultValidators) {
   validators = validators
     .sort(compare)
@@ -91,11 +109,10 @@ export function mapValidators (validators, defaultValidators) {
   }
 }
 
-function stakeAndWeight (validator, defaultValidators) {
+export function stakeAndWeight (validator, defaultValidators) {
   if (validator.weight) {
     const currentValidator = defaultValidators
       .find(v => v.validator === validator.id)
-    if (!currentValidator) return
 
     return {
       stakeAmount: currentValidator.stakenAva,
@@ -104,7 +121,7 @@ function stakeAndWeight (validator, defaultValidators) {
   }
 
   return {
-    stakeAmount: validator.stakeAmount ? validator.stakeAmount : validator.weight,
+    stakeAmount: validator.stakeAmount,
     weight: 0
   }
 }
@@ -151,19 +168,6 @@ export function mapDelegators (delegators) {
     }
   })
   return result
-}
-
-export function splitPendingAccounts (validators, existValidators) {
-  const v = []
-  const d = []
-  for (let i = 0; i < validators.length; i++) {
-    if (existValidators.find(v => v.validator === validators[i].id)) {
-      d.push(validators[i])
-    } else {
-      v.push(validators[i])
-    }
-  }
-  return { v, d }
 }
 
 export const temp = {

@@ -314,8 +314,7 @@ export default {
         .formAccounts
         .payingAccount
         .balance
-      console.log(payingAccountBalance)
-      console.log(this.stakeAmount)
+
       if (payingAccountBalance < this.stakeAmount) {
         this.error = 'Insufficient funds!'
         return

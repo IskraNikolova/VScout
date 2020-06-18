@@ -312,6 +312,7 @@ async function getValidators (
   const delegators = mapDelegators(d)
   commit(SET_DELEGATORS, { delegators })
 
+  if (getters.validators.length < 1) return
   const resultValidators = validatorProcessing(v, getters.validators)
   commit(SET_VALIDATORS, { validators: resultValidators })
   commit(SET_STAKED_AVA, { validators: resultValidators })
