@@ -7,7 +7,7 @@ export default function () {
       signer: null,
       signedTx: null
     },
-    isConnected: false,
+    doesItConnect: false,
     typeAccount: {
       isValidators: true
     },

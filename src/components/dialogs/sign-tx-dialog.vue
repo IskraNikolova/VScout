@@ -54,7 +54,9 @@
               label="Username *"
               lazy-rules
               @focus="error=null"
-              :rules="[ val => val && val.length > 0 || 'Please type your username!']"
+              :rules="[
+                val => val && val.length > 0 ||
+                'Please type your username!']"
             />
             <q-input
               color="accent"
@@ -66,11 +68,22 @@
               @focus="error=null"
               label="Password *"
               lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Please type your password!']"
+              :rules="[
+                val => val && val.length > 0 ||
+                'Please type your password!']"
             />
             <div>
-              <q-btn label="Sign" outline type="submit" color="accent"/>
-              <q-btn label="Cancel" color="grey" flat class="q-ml-sm" @click="closeS"/>
+              <q-btn
+                label="Sign"
+                outline type="submit"
+                color="accent"
+              />
+              <q-btn
+                label="Cancel"
+                color="grey"
+                flat class="q-ml-sm"
+                @click="closeS"
+              />
             </div>
           </q-form>
       </q-card-section>
@@ -127,6 +140,7 @@ export default {
           position: 'center',
           timeout: 3000
         })
+        this.$emit('txSend')
         this.closeS(signedTx)
       } catch (err) {
         this.error = err.message

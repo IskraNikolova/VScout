@@ -103,7 +103,7 @@ export default {
     },
     async onSelectEndpoint (endpoint, isCustom) {
       try {
-        this.$store.commit(UPDATE_UI, { isConnected: true })
+        this.$store.commit(UPDATE_UI, { doesItConnect: true })
         const response = await _getNodeId({ endpoint })
         if (response.data.error) {
           const result = this.getValidators({
@@ -140,7 +140,7 @@ export default {
       }
     },
     onSuccess (endpoint) {
-      this.$store.commit(UPDATE_UI, { isConnected: false })
+      this.$store.commit(UPDATE_UI, { doesItConnect: false })
       this.$q.notify({
         textColor: 'black',
         color: 'white',
@@ -151,7 +151,7 @@ export default {
       })
     },
     onError (message) {
-      this.$store.commit(UPDATE_UI, { isConnected: false })
+      this.$store.commit(UPDATE_UI, { doesItConnect: false })
       this.$q.notify({
         message,
         color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',

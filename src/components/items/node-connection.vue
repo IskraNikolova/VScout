@@ -1,6 +1,9 @@
 <template>
   <div class="col-md-3 col-xs-10">
-    <div id="f-size12" class="q-pb-md">NETWORK ENDPOINT <q-spinner-ball v-if="ui.isConnected" color="orange" /></div>
+    <div id="f-size12" class="q-pb-md">
+      NETWORK ENDPOINT
+      <q-spinner-ball v-if="ui.doesItConnect" />
+    </div>
     <div class="row">
       <div class="col">
         <small>Connected with</small>

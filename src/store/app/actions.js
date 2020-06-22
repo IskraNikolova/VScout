@@ -331,8 +331,9 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
   }
 
   const { validators } = response.data.result
+
   if (typeof validators === 'undefined' ||
-      validators === null) return
+      validators === null || validators.length === 0) return
 
   let { v, d } = splitPendingAccounts(validators, getters.validators)
   commit(SET_PENDING_DELEGATORS, { delegators: mapDelegators(d) })

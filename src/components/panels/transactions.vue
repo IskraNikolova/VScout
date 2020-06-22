@@ -102,7 +102,9 @@ export default {
     },
     async onGetData () {
       this.update()
-      const response = await this.getTxHistory({ txHKey: this.interval })
+      const response = await this.getTxHistory({
+        txHKey: this.interval
+      })
       if (response === null) return
 
       this.update()
@@ -135,7 +137,11 @@ export default {
         tooltips: {
           callbacks: {
             label: function (tooltipItem, data) {
-              if (!data || !data.datasets || !data.datasets[tooltipItem.datasetIndex]) return
+              if (
+                !data ||
+                !data.datasets ||
+                !data.datasets[tooltipItem.datasetIndex]) return
+
               let label = data.datasets[tooltipItem.datasetIndex].label || ''
 
               if (label) {
@@ -207,7 +213,11 @@ export default {
       }
     },
     getVolumeChart () {
-      const ctx = window.document.getElementById('chartVol').getContext('2d')
+      const ctx = window
+        .document
+        .getElementById('chartVol')
+        .getContext('2d')
+
       this.chartVol = new Chart(ctx, {
         type: 'bar',
         data: this.getVolChartData(),
@@ -215,7 +225,11 @@ export default {
       })
     },
     getTpsChart () {
-      const ctx = window.document.getElementById('chartTps').getContext('2d')
+      const ctx = window
+        .document
+        .getElementById('chartTps')
+        .getContext('2d')
+
       this.chartTps = new Chart(ctx, {
         type: 'bar',
         data: this.getTpsChartData(),

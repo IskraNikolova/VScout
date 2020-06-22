@@ -23,7 +23,7 @@ export const datePickerFormat = ({ value, label }) => {
 export const datePickerFormatStart = (time) => {
   const now = moment()
   let date = moment(Number(time) * 1000)
-  if (now > date) date = now
+  if (now > date) date = now.add(5, 'minute')
   return date.format('YYYY-MM-DD HH:mm')
 }
 

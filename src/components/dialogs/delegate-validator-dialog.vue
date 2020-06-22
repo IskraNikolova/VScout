@@ -62,9 +62,7 @@
                 lazy-rules
                 :rules="[
                   val => val !== null && val !== '' ||
-                  'Please type your destination account!',
-                  val => val.length === 33 ||
-                  'Invalid account!'
+                  'Please type your destination account!'
                 ]"
               >
                 <template v-slot:append>
@@ -83,9 +81,7 @@
                 lazy-rules
                 :rules="[
                   val => val !== null && val !== '' ||
-                  'Please type your paying account!',
-                  val => val.length === 33 ||
-                  'Invalid account!'
+                  'Please type your paying account!'
                 ]"
               >
                 <template v-slot:append>
@@ -176,7 +172,7 @@
             <q-btn size="md" label="Reset" type="reset" color="grey" flat class="q-ml-sm" />
           </div>
         </q-form>
-        <sign-tx-dialog ref="signTxDialog" />
+        <sign-tx-dialog ref="signTxDialog" @txSend="closeDelegate"/>
         <create-user-dialog ref="createUserDialog"/>
       </q-card-section>
     </q-card>
