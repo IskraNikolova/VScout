@@ -49,7 +49,10 @@
               label="Your node ID *"
               hint="Enter validator ID or load it from '+' button if you use it for network connection."
               lazy-rules
-              :rules="[ val => val && val.length > 0 || 'Please type your node ID!']"
+              :rules="[
+                val => val && val.length > 0 ||
+                'Please type your node ID!'
+              ]"
             >
               <template v-slot:append>
                 <q-btn round dense @click="onGetNodeID" flat no-caps color="accent" icon="add"/>
@@ -125,7 +128,10 @@
                 label="Username *"
                 lazy-rules
                 @focus="error=null"
-                :rules="[ val => val && val.length > 0 || 'Please type your username!']"
+                :rules="[
+                  val => val && val.length > 0 ||
+                  'Please type your username!'
+                ]"
               />
               <q-input
                 color="accent"
@@ -138,7 +144,10 @@
                 @focus="error=null"
                 label="Password *"
                 lazy-rules
-                :rules="[ val => val && val.length > 0 || 'Please type your password!']"
+                :rules="[
+                  val => val && val.length > 0 ||
+                  'Please type your password!'
+                ]"
               />
               <div class="row q-pr-xl">
                 <q-space />

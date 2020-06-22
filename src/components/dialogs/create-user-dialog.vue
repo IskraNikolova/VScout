@@ -39,7 +39,10 @@
                   label="Username *"
                   lazy-rules
                   @focus="error=null"
-                  :rules="[ val => val && val.length > 0 || 'Please type your username!']"
+                  :rules="[
+                    val => val && val.length > 0 ||
+                    'Please type your username!'
+                  ]"
                 />
                 <q-input
                   color="accent"
@@ -51,22 +54,35 @@
                   @focus="error=null"
                   label="Password *"
                   lazy-rules
-                  :rules="[ val => val && val.length > 0 || 'Please type your password!']"
+                  :rules="[
+                    val => val && val.length > 0 ||
+                    'Please type your password!'
+                  ]"
                 />
                 </div>
                 <!-- Create address, QR Code Panel -->
                 <div class="col-md-6 col-xs-12">
                   <q-card-section>
-                    <div v-if="!hasQr" class="qr"><small>QR Code</small></div>
+                    <div v-if="!hasQr" class="qr">
+                      <small>QR Code</small>
+                    </div>
                     <div v-else>
-                      <div style="text-align: center;"><canvas id="qr-code"></canvas></div>
-                      <div><small>{{ address }}</small></div>
+                      <div style="text-align: center;">
+                        <canvas id="qr-code"></canvas>
+                      </div>
+                      <div>
+                        <small>{{ address }}</small>
+                      </div>
                     </div>
                     <q-inner-loading :showing="visible">
                       <q-spinner-tail size="50px" color="orange" />
                     </q-inner-loading>
                     <div class="text-grey">
-                      <q-checkbox keep-color color="accent" v-model="createAddress" label="Create a new address controlled by the given user." />
+                      <q-checkbox
+                        keep-color color="accent"
+                        v-model="createAddress"
+                        label="Create a new address controlled by the given user."
+                      />
                     </div>
                   </q-card-section>
                 </div>

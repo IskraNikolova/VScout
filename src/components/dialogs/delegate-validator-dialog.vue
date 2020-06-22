@@ -46,7 +46,10 @@
                 hint="The node ID of the delegatee"
                 lazy-rules
                 outlined clearable readonly
-                :rules="[ val => val && val.length > 0 || 'Please type your node ID!']"
+                :rules="[
+                  val => val && val.length > 0 ||
+                  'Please type your node ID!'
+                ]"
               />
               <q-input
                 class="q-mb-md q-pt-md"
@@ -58,8 +61,10 @@
                 hint="The address of the account the staked AVA and validation reward (if applicable) are sent to at endTime."
                 lazy-rules
                 :rules="[
-                  val => val !== null && val !== '' || 'Please type your destination account!',
-                  val => val.length === 33 || 'Invalid account!'
+                  val => val !== null && val !== '' ||
+                  'Please type your destination account!',
+                  val => val.length === 33 ||
+                  'Invalid account!'
                 ]"
               >
                 <template v-slot:append>
@@ -77,8 +82,10 @@
                 hint="The account that is paying the transaction fee and providing the staked tokens."
                 lazy-rules
                 :rules="[
-                  val => val !== null && val !== '' || 'Please type your paying account!',
-                  val => val.length === 33 || 'Invalid account!'
+                  val => val !== null && val !== '' ||
+                  'Please type your paying account!',
+                  val => val.length === 33 ||
+                  'Invalid account!'
                 ]"
               >
                 <template v-slot:append>
@@ -99,7 +106,8 @@
                 hint="The amount of nAVA the delegator is staking."
                 lazy-rules outlined
                 :rules="[
-                  val => val !== null && val !== '' || 'Please type your stake amount'
+                  val => val !== null && val !== '' ||
+                  'Please type your stake amount'
                 ]"
               />
               <q-input
@@ -111,7 +119,8 @@
                 hint="The Unix time when the delegator starts delegating."
                 lazy-rules outlined
                 :rules="[
-                  val => val !== null && val !== '' || 'Please type your start date!',
+                  val => val !== null && val !== '' ||
+                  'Please type your start date!',
                 ]"
               >
                 <template v-slot:prepend>
@@ -139,7 +148,8 @@
                 hint="The Unix time when the delegator stops delegating (and staked AVA is returned)"
                 lazy-rules outlined
                 :rules="[
-                  val => val !== null && val !== '' || 'Please type your end date!',
+                  val => val !== null && val !== '' ||
+                  'Please type your end date!',
                 ]"
               >
                 <template v-slot:prepend>

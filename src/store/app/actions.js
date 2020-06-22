@@ -346,7 +346,6 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
 async function getNodeId ({ getters, commit }) {
   const response = await _getNodeId({ endpoint: getters.networkEndpoint })
   if (response.data.error) {
-    Notify.create(response.data.error.message)
     return
   }
   if (typeof response === 'undefined' ||

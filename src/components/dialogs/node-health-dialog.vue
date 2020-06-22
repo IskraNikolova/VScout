@@ -12,7 +12,9 @@
             </q-avatar>
             </q-item-section>
             <q-item-section>
-            <q-item-label>Node ID <small class="text-orange">{{ nodeID }}</small></q-item-label>
+            <q-item-label>
+              Node ID <small class="text-orange">{{ nodeID }}</small>
+            </q-item-label>
             <q-item-label caption>
               Health check on this node
             </q-item-label>
@@ -24,11 +26,27 @@
       <q-card-section>
         <q-item>
           <q-item-section>
-            <div><small>Heartbeat: </small> <span>{{ heartbeat }}</span></div>
-            <div><small>Healthy: </small><span v-if="healthy" class="text-accent"> Yes</span><span v-else class="text-negative"> No</span></div>
-            <div><small>Duration: </small> <span>{{ duration }}</span></div>
-            <div v-if="timeOfFirstFailure"><small>Time Of First Failure: </small> <span>{{ timeOfFirstFailure }}</span></div>
-            <div><small>Contiguous Failures: </small> <span>{{ contiguousFailures }}</span></div>
+            <div>
+              <small>Heartbeat: </small>
+              <span>{{ heartbeat }}</span>
+            </div>
+            <div>
+              <small>Healthy: </small>
+              <span v-if="healthy" class="text-accent"> Yes</span>
+              <span v-else class="text-negative"> No</span>
+            </div>
+            <div>
+              <small>Duration: </small>
+              <span>{{ duration }}</span>
+            </div>
+            <div v-if="timeOfFirstFailure">
+              <small>Time Of First Failure: </small>
+              <span>{{ timeOfFirstFailure }}</span>
+            </div>
+            <div>
+              <small>Contiguous Failures: </small>
+              <span>{{ contiguousFailures }}</span>
+            </div>
           </q-item-section>
         </q-item>
       </q-card-section>
@@ -65,7 +83,10 @@ export default {
     },
     heartbeat: function () {
       try {
-        const h = this.nodeHealthInfo.checks['network.validators.heartbeat'].message.heartbeat
+        const h = this.nodeHealthInfo
+          .checks['network.validators.heartbeat']
+          .message
+          .heartbeat
         return datePickerFormat(h)
       } catch (err) {
         return ''
@@ -73,7 +94,9 @@ export default {
     },
     duration: function () {
       try {
-        const h = this.nodeHealthInfo.checks['network.validators.heartbeat'].duration
+        const h = this.nodeHealthInfo
+          .checks['network.validators.heartbeat']
+          .duration
         return h
       } catch (err) {
         return ''
@@ -81,7 +104,9 @@ export default {
     },
     timeOfFirstFailure: function () {
       try {
-        const h = this.nodeHealthInfo.checks['network.validators.heartbeat'].timeOfFirstFailure
+        const h = this.nodeHealthInfo
+          .checks['network.validators.heartbeat']
+          .timeOfFirstFailure
         return h
       } catch (err) {
         return ''
@@ -89,7 +114,9 @@ export default {
     },
     contiguousFailures: function () {
       try {
-        const h = this.nodeHealthInfo.checks['network.validators.heartbeat'].contiguousFailures
+        const h = this.nodeHealthInfo
+          .checks['network.validators.heartbeat']
+          .contiguousFailures
         return h
       } catch (err) {
         return ''

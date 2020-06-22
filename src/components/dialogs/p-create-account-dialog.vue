@@ -29,7 +29,10 @@
             hint="Use exist user on this node."
             lazy-rules
             @focus="error=null"
-            :rules="[ val => val && val.length > 0 || 'Please type your username!']"
+            :rules="[
+              val => val && val.length > 0 ||
+              'Please type your username!'
+            ]"
           />
           <q-input
             color="accent"
@@ -42,7 +45,10 @@
             @focus="error=null"
             label="Password *"
             lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Please type your password!']"
+            :rules="[
+              val => val && val.length > 0 ||
+              'Please type your password!'
+            ]"
           />
           <div v-if="ui.pCreate.type === 'paying'" >
             <q-input
@@ -55,7 +61,10 @@
               label="Fund Amount *"
               hint="The minimum stake amount is 10,000 nAVA, so make sure you have at least this much AVA in your X-Chain addresses"
               lazy-rules
-              :rules="[ val => val && val >= 10000 || 'Amount must be least 10,000 nAVA']"
+              :rules="[
+                val => val && val >= 10000 ||
+                'Amount must be least 10,000 nAVA'
+              ]"
             />
             <q-toggle
               class="q-pt-md"

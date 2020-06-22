@@ -1,5 +1,6 @@
 export const c = {
   // enpoints
+  cChainWs: 'ext/C/ws',
   tx: 'x/transactions',
   listAssests: 'x/assets',
   timestamp: 'ext/bc/timestamp',

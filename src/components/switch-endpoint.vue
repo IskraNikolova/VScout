@@ -121,6 +121,7 @@ export default {
           } else {
             this.onError(response.data.error.message)
           }
+          return
         }
         const nodeID = response.data.result.nodeID
         this.$store.commit(SET_ENDPOINT, { endpoint })

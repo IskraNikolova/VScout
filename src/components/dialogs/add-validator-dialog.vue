@@ -49,8 +49,10 @@
                 hint="The staked AVA tokens and rewards are sent to an account that is specified. The validation reward is also sent to the same account as the staked AVA."
                 lazy-rules
                 :rules="[
-                  val => val !== null && val !== '' || 'Please type your destination account!',
-                  val => val.length === 33 || 'Invalid account!'
+                  val => val !== null && val !== '' ||
+                  'Please type your destination account!',
+                  val => val.length === 33 ||
+                  'Invalid account!'
                 ]"
               >
                 <template v-slot:append>
@@ -68,8 +70,10 @@
                 hint="The account that is paying the transaction fee and providing the staked tokens."
                 lazy-rules
                 :rules="[
-                  val => val !== null && val !== '' || 'Please type your paying account!',
-                  val => val.length === 33 || 'Invalid account!'
+                  val => val !== null && val !== '' ||
+                  'Please type your paying account!',
+                  val => val.length === 33 ||
+                  'Invalid account!'
                 ]"
               >
                 <template v-slot:append>
@@ -86,7 +90,8 @@
                 hint="The start time must be in the future relative to the time the transaction is issued."
                 lazy-rules outlined
                 :rules="[
-                  val => val !== null && val !== '' || 'Please type your start date!',
+                  val => val !== null && val !== '' ||
+                  'Please type your start date!',
                 ]"
               >
                 <template v-slot:prepend>
@@ -118,8 +123,10 @@
                 hint="In order to validate the Default Subnet one must stake AVA tokens. The minimum amount that one can stake is 10 μAVA."
                 lazy-rules outlined
                 :rules="[
-                  val => val !== null && val !== '' || 'Please type your stake amount',
-                  val => val > 10000 && val < 35000000000 || 'Invalid amount!'
+                  val => val !== null && val !== '' ||
+                  'Please type your stake amount',
+                  val => val > 10000 && val < 35000000000 ||
+                  'Invalid amount!'
                 ]"
               />
               <q-input
@@ -141,7 +148,8 @@
                 hint="The minimum duration that one can validate the Default Subnet is 24 hours, and the maximum duration is one year."
                 lazy-rules outlined
                 :rules="[
-                  val => val !== null && val !== '' || 'Please type your end date!',
+                  val => val !== null && val !== '' ||
+                  'Please type your end date!',
                 ]"
               >
                 <template v-slot:prepend>
@@ -203,10 +211,10 @@ export default {
     ...mapGetters([
       'ui',
       'nodeID',
+      'subnetID',
       'networkEndpoint',
       'currentBlockchain',
-      'isDefaultSubnetID',
-      'subnetID'
+      'isDefaultSubnetID'
     ]),
     destination: {
       get: function () {
