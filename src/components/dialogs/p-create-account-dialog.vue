@@ -159,11 +159,11 @@ export default {
   },
   data () {
     return {
+      error: null,
       username: null,
       password: null,
       fundAmount: null,
       dismissFund: false,
-      error: null,
       progressSelect: false,
       progressCreate: false
     }
@@ -175,10 +175,10 @@ export default {
     ...mapActions({
       openP: OPEN_P_CREATE,
       closeP: CLOSE_P_CREATE,
-      createAccount: CREATE_ACCOUNT,
+      openU: OPEN_CREATE_USER,
       fundAccount: FUND_ACCOUNT,
       listAccounts: LIST_ACCOUNTS,
-      openU: OPEN_CREATE_USER
+      createAccount: CREATE_ACCOUNT
     }),
     onOpenCreateUserD () {
       this.onClose()
@@ -189,8 +189,8 @@ export default {
       this.closeP()
     },
     async onSubmit () {
-      this.progressCreate = true
       this.error = null
+      this.progressCreate = true
       try {
         await this.createAccount({
           username: this.username,
@@ -199,13 +199,7 @@ export default {
         })
 
         if (this.dismissFund) {
-          await this.fundAccount({
-            to: this.ui.formAccounts.payingAccount.address,
-            nonce: Number(this.ui.formAccounts.payingAccount.nonce),
-            amount: this.fundAmount,
-            username: this.username,
-            password: this.password
-          })
+          await this.fund()
           this.dismissFund = false
         }
         this.progressCreate = false
@@ -231,6 +225,15 @@ export default {
         this.error = err.message
       }
     },
+    async fund () {
+      await this.fundAccount({
+        amount: this.fundAmount,
+        username: this.username,
+        password: this.password,
+        to: this.ui.formAccounts.payingAccount.address,
+        nonce: Number(this.ui.formAccounts.payingAccount.nonce)
+      })
+    },
     async onSelectItem (e) {
       const temp = {
         paying: () => {
@@ -254,13 +257,7 @@ export default {
       this.closeP()
       if (this.dismissFund) {
         try {
-          await this.fundAccount({
-            to: this.ui.formAccounts.payingAccount.address,
-            nonce: Number(this.ui.formAccounts.payingAccount.nonce),
-            amount: this.fundAmount,
-            username: this.username,
-            password: this.password
-          })
+          await this.fund()
           this.dismissFund = false
           this.closeP()
         } catch (err) {

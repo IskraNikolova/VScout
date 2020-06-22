@@ -112,9 +112,9 @@ export default {
   },
   data () {
     return {
+      error: null,
       username: null,
-      password: null,
-      error: null
+      password: null
     }
   },
   created () {
@@ -122,17 +122,17 @@ export default {
   },
   methods: {
     ...mapActions({
+      signTx: SIGN_TX,
       openS: OPEN_SIGN_TX,
-      closeS: CLOSE_SIGN_TX,
-      signTx: SIGN_TX
+      closeS: CLOSE_SIGN_TX
     }),
     async onSubmit () {
       try {
         const signedTx = await this.signTx({
-          transaction: this.ui.signTx.unsignedTx,
-          signer: this.ui.signTx.signer,
           username: this.username,
-          password: this.password
+          password: this.password,
+          signer: this.ui.signTx.signer,
+          transaction: this.ui.signTx.unsignedTx
         })
         this.$q.notify({
           message: `Transaction hash is ${signedTx}.Your transaction is being broadcasted to the blockchain!`,

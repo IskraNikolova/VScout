@@ -51,6 +51,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import moment from 'moment'
 import Chart from 'chart.js'
+
 import { getChartLabel } from './../../utils/commons'
 
 import { GET_TXS_HISTORY } from './../../store/app/types'
@@ -67,12 +68,12 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'txsFor24H',
-      'totalTxsCount',
-      'txsHistory',
       'txHKey',
+      'txsFor24H',
+      'txsHistory',
       'prevTotalTxs',
-      'prevTxsFor24H'
+      'prevTxsFor24H',
+      'totalTxsCount'
     ]),
     tps: function () {
       const t = this.txsFor24H.transactionCount / (24 * 60 * 60)
@@ -115,8 +116,8 @@ export default {
           duration: 0
         },
         hover: { mode: null },
-        mousemove: { mode: null },
         mouseout: { mode: null },
+        mousemove: { mode: null },
         scales: {
           yAxes: [{
             ticks: {

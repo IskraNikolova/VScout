@@ -7,7 +7,10 @@
         <div class="text-h5 text-orange q-pb-md">
           {{ validators.length }}
         </div>
-        <div id="f-size12">Pending Valitarors: <span class="text-accent">{{ pendingValidators.length }}</span></div>
+        <div id="f-size12">
+          Pending Valitarors:
+          <span class="text-accent"> {{ pendingValidators.length }}</span>
+        </div>
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/validators-grey.png" class="custom-icon">
@@ -17,7 +20,10 @@
         <div class="text-h5 text-orange q-pb-md">
           {{ delegators.length }}
         </div>
-        <div id="f-size12">Pending Delegators: <span class="text-accent">{{ pendingDelegators.length }}</span></div>
+        <div id="f-size12">
+          Pending Delegators:
+          <span class="text-accent"> {{ pendingDelegators.length }}</span>
+        </div>
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/manage.svg" class="custom-icon">
@@ -25,11 +31,11 @@
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md">STAKED AVA</div>
         <div class="text-h5 q-pb-md">
-            <span class="text-orange"><small>{{stakedAVA}}</small> </span>
+            <span class="text-orange">
+              <small>{{stakedAVA}}</small>
+            </span>
             <span style="font-size: 13px;">/360M</span>
         </div>
-        <!--todo dynamic take it
-        <div id="f-size12">Delinquent stake: <span class="text-accent">0%</span></div>-->
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/stake_amount.png" class="custom-icon">
@@ -37,7 +43,11 @@
       <div class="col-md-2 col-xs-10">
        <div id="f-size12" class="q-pb-md">AVA VOLUME (24h)</div>
        <div class="text-h5 q-pb-md">
-            <span class="text-orange"><small>{{ txsFor24H.transactionVolume.toLocaleString() }}</small></span>
+            <span class="text-orange">
+              <small>
+                {{ txsFor24H.transactionVolume.toLocaleString() }}
+              </small>
+            </span>
             <span style="font-size: 13px;"> AVA</span>
         </div>
       </div>
@@ -55,10 +65,10 @@ export default {
   name: 'Stake',
   computed: {
     ...mapGetters([
-      'validators',
-      'delegators',
       'stakedAVA',
       'txsFor24H',
+      'validators',
+      'delegators',
       'pendingValidators',
       'pendingDelegators'
     ])

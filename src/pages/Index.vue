@@ -34,9 +34,9 @@ import {
 import Faqs from './../components/panels/faqs'
 import Stake from './../components/panels/stake'
 import Network from './../components/panels/network'
+import Transactions from './../components/panels/transactions'
 import TableValidators from './../components/panels/table-validators'
 import TableDelegators from './../components/panels/table-delegators'
-import Transactions from './../components/panels/transactions'
 
 import {
   GET_VALIDATORS,

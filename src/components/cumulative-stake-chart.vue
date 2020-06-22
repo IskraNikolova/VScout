@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="q-ml-xs q-mb-md">
-      Cumulative stake:  <span class="text-accent">{{ 100 - Math.round(100 - (percentAll), 2) }} %</span>
+      Cumulative stake:
+      <span class="text-accent">
+        {{ 100 - Math.round(100 - (percentAll), 2) }} %
+      </span>
     </div>
    <canvas :id="name" width="400px" height="400px"></canvas>
   </div>

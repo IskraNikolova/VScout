@@ -15,10 +15,17 @@
         <span class="text-h7 text-grey"> {{ currentSubnet.threshold }}</span>
       </div>
       <div class="col">
-        <q-btn-dropdown flat color="accent" v-if="currentSubnet.threshold > 0" size="xs" no-caps label="Control Keys">
+        <q-btn-dropdown
+         flat color="accent"
+         v-if="currentSubnet.threshold > 0"
+         size="xs" no-caps
+         label="Control Keys"
+        >
           <q-list v-for="key in currentSubnet.controlKeys" v-bind:key="key">
             <q-item>
-              <q-item-section><span>{{ key }}</span></q-item-section>
+              <q-item-section>
+                <span>{{ key }}</span>
+              </q-item-section>
               <q-item-section side>
               <q-icon size="xs" name="img:statics/key.svg" color="grey" />
               </q-item-section>

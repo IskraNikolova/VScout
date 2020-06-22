@@ -1,6 +1,7 @@
 import axios from 'axios'
-import { groupBy } from './../utils/commons'
+
 import { c } from './../utils/constants'
+import { groupBy } from './../utils/commons'
 const { network } = require('./config').default
 
 let id = 1
@@ -17,7 +18,8 @@ const body = (method, params = {}) => {
 
 export const _getLastTx = async () => {
   try {
-    const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.getLast)
+    const req = await axios
+      .get(network.explorerApiBaseUrl + c.tx + c.getLast)
     return req.data
   } catch (err) {
     return null
@@ -26,7 +28,8 @@ export const _getLastTx = async () => {
 
 export const _getAssetsForChain = async () => {
   try {
-    const req = await axios.get(network.explorerApiBaseUrl + c.listAssests)
+    const req = await axios
+      .get(network.explorerApiBaseUrl + c.listAssests)
     if (!req.data.assets) return
 
     return groupBy(req.data.assets, 'chainID')
@@ -37,7 +40,8 @@ export const _getAssetsForChain = async () => {
 
 export const _getAggregates = async (s, e) => {
   try {
-    const req = await axios.get(network.explorerApiBaseUrl + c.tx + c.aggregates(s, e))
+    const req = await axios
+      .get(network.explorerApiBaseUrl + c.tx + c.aggregates(s, e))
     return req.data.aggregates
   } catch (err) {
     return null

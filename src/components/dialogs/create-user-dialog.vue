@@ -122,13 +122,13 @@ export default {
   },
   data () {
     return {
+      error: null,
+      hasQr: false,
+      address: null,
       username: null,
       password: null,
-      error: null,
-      createAddress: true,
-      hasQr: false,
       visible: false,
-      address: null
+      createAddress: true
     }
   },
   mounted () {
@@ -136,19 +136,22 @@ export default {
   },
   methods: {
     ...mapActions({
+      createUser: CREATE_USER,
       openU: OPEN_CREATE_USER,
-      closeU: CLOSE_CREATE_USER,
-      createUser: CREATE_USER
+      closeU: CLOSE_CREATE_USER
     }),
     setQrCode (text) {
       if (!text) return
-      QRCode.toCanvas(document.getElementById('qr-code'), text, function (error) {
-        if (error) console.error(error)
-      })
+      QRCode.toCanvas(
+        document.getElementById('qr-code'),
+        text,
+        function (error) {
+          if (error) console.error(error)
+        })
     },
     onClose () {
-      this.error = null
       this.closeU()
+      this.error = null
     },
     async onSubmit () {
       this.error = null
@@ -170,12 +173,12 @@ export default {
       }
     },
     onReset () {
+      this.error = null
+      this.hasQr = null
+      this.address = null
       this.username = null
       this.password = null
       this.createAddress = false
-      this.error = null
-      this.address = null
-      this.hasQr = null
     }
   }
 }

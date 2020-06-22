@@ -1,8 +1,9 @@
 import Web3 from 'web3'
 const abiDecoder = require('abi-decoder')
-import contractAbi from './../../builds/contract.json'
+
 import config from './config'
 import { Notify } from 'quasar'
+import contractAbi from './../../builds/contract.json'
 
 import {
   hexStringToAsciiString
@@ -49,10 +50,15 @@ export const _initializeNetwork = async () => {
 
 const getEstimatedGas = async ({ data, from }) => {
   try {
-    const gas = await window.web3.eth.estimateGas({ to: config.network.contract, from, data })
+    const gas = await window
+      .web3.eth
+      .estimateGas({
+        to: config.network.contract,
+        from,
+        data
+      })
     return gas
   } catch (err) {
-    console.log(err)
     return 500000
   }
 }

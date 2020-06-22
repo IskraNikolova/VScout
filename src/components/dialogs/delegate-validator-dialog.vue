@@ -295,8 +295,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      addDefaultSubnetDelegator: DELEGATE_VALIDATOR,
       openDelegate: OPEN_DELEGATE_VALIDATOR_DIALOG,
+      addDefaultSubnetDelegator: DELEGATE_VALIDATOR,
       closeDelegate: CLOSE_DELEGATE_VALIDATOR_DIALOG
     }),
     onClose () {

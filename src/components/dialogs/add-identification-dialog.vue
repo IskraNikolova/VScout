@@ -192,22 +192,22 @@ export default {
   name: 'AddIdentificationDialog',
   data () {
     return {
+      name: null,
+      link: null,
+      error: null,
+      avatar: null,
+      notify: null,
       username: null,
       password: null,
-      name: null,
-      avatar: null,
-      link: null,
-      nodeIDModel: null,
-      error: null,
-      notify: null
+      nodeIDModel: null
     }
   },
   computed: {
     ...mapGetters([
       'ui',
       'nodeID',
-      'networkEndpoint',
-      'validatorById'
+      'validatorById',
+      'networkEndpoint'
     ]),
     address: function () {
       const validator = this.validatorById(this.nodeIDModel)
@@ -220,18 +220,18 @@ export default {
       return {
         errors: {
           name: DOMPurify.sanitize(this.name) !== this.name,
-          avatar: DOMPurify.sanitize(inputAvatar) !== inputAvatar,
-          link: DOMPurify.sanitize(inputLink) !== inputLink
+          link: DOMPurify.sanitize(inputLink) !== inputLink,
+          avatar: DOMPurify.sanitize(inputAvatar) !== inputAvatar
         }
       }
     }
   },
   methods: {
     ...mapActions({
-      openAddId: OPEN_ADD_IDENTIFICATION,
-      closeAddId: CLOSE_ADD_IDENTIFICATION,
+      getNodeId: GET_NODE_ID,
       listAccounts: LIST_ACCOUNTS,
-      getNodeId: GET_NODE_ID
+      openAddId: OPEN_ADD_IDENTIFICATION,
+      closeAddId: CLOSE_ADD_IDENTIFICATION
     }),
     onClose () {
       this.closeAddId()
@@ -244,8 +244,8 @@ export default {
         })
         if (!res) return
 
-        const accounts = res.accounts
-        const isAuth = accounts.find(a => a.address === this.address)
+        const isAuth = res.accounts
+          .find(a => a.address === this.address)
         this.$store.commit(UPDATE_UI, { addIdentification: { isAuth } })
 
         if (!isAuth) {
@@ -258,16 +258,16 @@ export default {
     async onSubmit () {
       try {
         const txHash = await _setValidatorInfo({
-          id: this.nodeIDModel,
+          link: this.link,
           name: this.name,
           avatar: this.avatar,
-          link: this.link
+          id: this.nodeIDModel
         })
         this.$q.notify({
-          message: `Transaction hash is ${txHash}.Your transaction is being broadcasted to the blockchain! Please hold on!`,
-          color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
+          timeout: 3000,
           position: 'center',
-          timeout: 3000
+          color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
+          message: `Transaction hash is ${txHash}.Your transaction is being broadcasted to the blockchain! Please hold on!`
         })
         this.closeAddId()
       } catch (err) {
@@ -281,9 +281,9 @@ export default {
     onReset () {
       this.name = null
       this.link = null
-      this.avatar = null
       this.error = null
       this.notify = null
+      this.avatar = null
     }
   }
 }

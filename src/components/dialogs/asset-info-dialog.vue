@@ -42,8 +42,8 @@ import { openURL } from 'quasar'
 import { mapGetters, mapActions } from 'vuex'
 
 import {
-  CLOSE_ASSET_INFO,
-  OPEN_ASSET_INFO
+  OPEN_ASSET_INFO,
+  CLOSE_ASSET_INFO
 } from './../../store/ui/types'
 
 export default {

@@ -367,7 +367,11 @@ export default {
   },
   methods: {
     onClick (props) {
-      if (!props.row.link) return
+      if (!props.row.link) {
+        this.filter = props.row.name
+        this.isGrid = true
+        return
+      }
       try {
         openURL(props.row.link)
       } catch (err) {
