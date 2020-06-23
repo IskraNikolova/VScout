@@ -84,18 +84,22 @@
               <div
                 style="cursor:pointer;font-size: 90%;"
                 class="q-pt-xs q-ml-md"
-                @click="onClick(props)"
-                @mouseover="props.expand = true"
-                @mouseleave="props.expand = false">
+                @click="props.expand=!props.expand">
                 {{ props.row.name}}
               </div>
             </div>
             <div v-else-if="col.name === 'stake'" class="q-pl-md">
               <div>
                 {{ col.value }}
-                <small style="color: grey;">({{ getLocalString(props.row.stakenAva)}} nAva)</small>
+                <small style="color: grey;">
+                  ({{ getLocalString(props.row.stakenAva)}} nAva)
+                </small>
               </div>
-              <div v-if="props.row.cumulativeStake"><small style="color: grey;">{{ props.row.precent }} %</small></div>
+              <div v-if="props.row.cumulativeStake">
+                <small style="color: grey;">
+                  {{ props.row.precent }} %
+                </small>
+              </div>
             </div>
             <div v-else-if="col.name === 'precent'">
               <div class="container_row" v-if="props.row.cumulativeStake">
@@ -114,7 +118,10 @@
                     :value="(props.row.cumulativeStake - props.row.precent) / 100"
                     :buffer="(props.row.cumulativeStake - props.row.precent) / 100"
                     color="blue-grey-5">
-                    <div class="absolute-full text-black q-ml-xs" style="font-size: 15px;margin-top: 6%;">
+                    <div
+                      class="absolute-full text-black q-ml-xs"
+                      style="font-size: 15px;margin-top: 6%;"
+                    >
                       {{props.row.cumulativeStake}} %
                     </div>
                   </q-linear-progress>
