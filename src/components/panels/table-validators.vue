@@ -149,7 +149,7 @@
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
             <details-validator
-              v-bind:delegatorsCount="props.row.delegatorsCount"
+              v-bind:delegatorsCount="props.row.delegatorsCount ? props.row.delegatorsCount : NaN"
               v-bind:weight="props.row.weight ? props.row.weight : ''"
               v-bind:address="props.row.address ? props.row.address : ''"
               v-bind:identity="props.row.validator"

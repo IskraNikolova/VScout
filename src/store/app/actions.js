@@ -100,6 +100,9 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(INIT_VALIDATORS),
+      dispatch(GET_PENDING_VALIDATORS, {
+        subnetID: getters.subnetID
+      }),
       dispatch(GET_TOTAL_TXS)
     ])
   } catch (err) {
@@ -117,7 +120,6 @@ async function initApp ({ dispatch, getters }) {
   }, 30000)
   setInterval(async () => {
     await Promise.all([
-      dispatch(GET_TOTAL_TXS),
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_PENDING_VALIDATORS, {
         subnetID: getters.subnetID
@@ -127,6 +129,7 @@ async function initApp ({ dispatch, getters }) {
         endpoint: getters.networkEndpoint
       })
     ])
+    dispatch(GET_TOTAL_TXS)
     if (getters.prevTotalTxs < getters.totalTxsCount) {
       await Promise.all([
         dispatch(GET_TX_FOR_24_HOURS),
@@ -333,11 +336,11 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
   const { validators } = response.data.result
 
   if (typeof validators === 'undefined' ||
-      validators === null || validators.length === 0) return
+      validators === null) return
 
   let { v, d } = splitPendingAccounts(validators, getters.validators)
-  commit(SET_PENDING_DELEGATORS, { delegators: mapDelegators(d) })
 
+  commit(SET_PENDING_DELEGATORS, { delegators: mapDelegators(d) })
   v = v.filter(i => i.endTime >= Date.now() / 1000)
   v.sort(compare)
   const val = mapValidators(v)
