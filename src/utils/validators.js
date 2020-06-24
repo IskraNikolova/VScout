@@ -41,12 +41,16 @@ export function splitPendingAccounts (validators, existValidators) {
 * @param {Array} Array of current validators on Default Subnet
 * @returns {Array} Array with processing validators
 */
-export function validatorProcessing (validators, defaultValidators) {
-  validators = validators
-    .sort(compare)
-  const val = mapValidators(validators, defaultValidators)
-  return val.map((v, i) => {
-    const currentValidators = val.slice(0, i + 1)
+export function validatorProcessing (validators, delegators, defaultValidators) {
+  const val = mapValidators(validators, delegators, defaultValidators)
+  let newVal = val.map((v) => {
+    v.precent = getPrecent(v.total, stake(val))
+    return v
+  })
+  newVal = newVal.sort(compare)
+  return newVal.map((v, i) => {
+    v.rank = i + 1
+    const currentValidators = newVal.slice(0, i + 1)
     v.cumulativeStake = cumulativeStake(currentValidators)
     return v
   })
@@ -61,7 +65,7 @@ function cumulativeStake (currentValidators) {
 
 export function compare (a, b) {
   const get = (a, b) => { return b - a }
-  const compareStake = Number(b.stakeAmount) - Number(a.stakeAmount)
+  const compareStake = Number(b.total) - Number(a.total)
   const temp = {
     false: compareStake,
     true: get(b.startTime, b.endTime) - get(a.startTime, a.endTime)
@@ -70,29 +74,39 @@ export function compare (a, b) {
   return temp[compareStake === 0]
 }
 
-export function mapValidators (validators, defaultValidators) {
+export function mapValidators (validators, delegators, defaultValidators) {
   try {
-    const vals = validators.map((val, i) => {
+    const vals = validators.map((val) => {
       // const info = await _getValidatorById(val.id)
-      const { stakeAmount, weight } = stakeAndWeight(val, defaultValidators)
+      const {
+        stakeAmount,
+        delegateStake,
+        delegatorsCount,
+        weight
+      } = stakeAndWeight(val, delegators, defaultValidators)
+
       const MD5 = makeMD5()
       const hash = MD5.hex(val.id)
       const avatar = `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150` // info.avatarUrl ? info.avatarUrl : `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150`
       const name = val.id // info.name ? info.name : val.id
+      const total = Number(stakeAmount) + Number(delegateStake)
 
       return {
         name,
         avatar,
         weight,
-        rank: i + 1,
+        delegatorsCount,
         validator: val.id,
         address: val.address ? val.address : '',
         endTime: val.endTime,
         startTime: val.startTime,
         stake: getAvaFromnAva(stakeAmount),
         stakenAva: parseFloat(stakeAmount),
-        fromNowST: fromNow(val.startTime),
-        precent: getPrecent(stakeAmount, stake(validators))
+        delegateStake: getAvaFromnAva(delegateStake),
+        delegateStakenAva: delegateStake,
+        totalnAva: total,
+        total: getAvaFromnAva(total),
+        fromNowST: fromNow(val.startTime)
         // link: info.link
       }
     })
@@ -103,18 +117,35 @@ export function mapValidators (validators, defaultValidators) {
   }
 }
 
-export function stakeAndWeight (validator, defaultValidators) {
+export function stakeAndWeight (validator, delegators, defaultValidators) {
   if (validator.weight) {
     const currentValidator = defaultValidators
       .find(v => v.validator === validator.id)
 
     return {
+      delegateStake: 0,
       stakeAmount: currentValidator.stakenAva,
       weight: validator.weight
     }
   }
 
+  const currentDelegators = delegators
+    .filter(d => d.id === validator.id)
+  let delegateStake = 0
+  try {
+    delegateStake = currentDelegators
+      .reduce((a, b) => {
+        return Number(a.stakeAmount) + Number(b.stakeAmount)
+      })
+    if (typeof delegateStake === 'object') {
+      delegateStake = Number(delegateStake.stakeAmount)
+    }
+  } catch (err) {
+  }
+
   return {
+    delegateStake,
+    delegatorsCount: currentDelegators.length,
     stakeAmount: validator.stakeAmount,
     weight: 0
   }
@@ -132,8 +163,8 @@ export function getPrecent (v, s) {
 
 export function stake (validators) {
   return validators.reduce((a, b) => {
-    if (!b.stakeAmount) return
-    return a + (parseFloat(b.stakeAmount) / 10 ** 9)
+    if (!b.total) return
+    return a + (parseFloat(b.total) / 10 ** 9)
   }, 0.0)
 }
 

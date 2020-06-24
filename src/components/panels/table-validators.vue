@@ -90,15 +90,14 @@
             </div>
             <div v-else-if="col.name === 'stake'" class="q-pl-md">
               <div>
-                {{ col.value }}
-                <small style="color: grey;">
-                  ({{ getLocalString(props.row.stakenAva)}} nAva)
-                </small>
-              </div>
-              <div v-if="props.row.cumulativeStake">
-                <small style="color: grey;">
+                <small class="text-grey">Total</small> {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
+                <small class="text-orange">
                   {{ props.row.precent }} %
                 </small>
+              </div>
+              <div>
+                <small class="text-grey">Own</small> {{ col.value }}
+                <small class="text-grey">Delegated</small> {{ props.row.delegateStake }}
               </div>
             </div>
             <div v-else-if="col.name === 'precent'">
@@ -150,6 +149,7 @@
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
             <details-validator
+              v-bind:delegatorsCount="props.row.delegatorsCount"
               v-bind:weight="props.row.weight ? props.row.weight : ''"
               v-bind:address="props.row.address ? props.row.address : ''"
               v-bind:identity="props.row.validator"
@@ -334,7 +334,7 @@ export default {
         {
           name: 'stake',
           align: 'left',
-          label: 'STAKE (AVA / nAva)',
+          label: 'STAKE (AVA)',
           field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
           sortable: true
         },

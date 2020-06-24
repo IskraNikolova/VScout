@@ -284,7 +284,7 @@ async function initValidators ({ commit, getters }) {
   const { v, d } = splitAccounts(validators)
 
   const delegators = mapDelegators(d)
-  const resultValidators = validatorProcessing(v, getters.validators)
+  const resultValidators = validatorProcessing(v, d, getters.validators)
 
   commit(SET_DELEGATORS, { delegators })
   commit(SET_VALIDATORS, { validators: resultValidators })
@@ -313,7 +313,7 @@ async function getValidators (
   commit(SET_DELEGATORS, { delegators })
 
   if (getters.validators.length < 1) return
-  const resultValidators = validatorProcessing(v, getters.validators)
+  const resultValidators = validatorProcessing(v, d, getters.validators)
   commit(SET_VALIDATORS, { validators: resultValidators })
   commit(SET_STAKED_AVA, { validators: resultValidators })
   return true
