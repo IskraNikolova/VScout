@@ -136,7 +136,21 @@ export default {
         })
         this.onSuccess(endpoint)
       } catch (err) {
-        this.onError(err.message)
+        const result = this.getValidators({
+          subnetID: this.subnetID,
+          endpoint
+        })
+        if (result) {
+          this.$store.commit(SET_NODE_ID, { nodeID: '' })
+          this.$store.commit(SET_ENDPOINT, { endpoint })
+          if (isCustom) {
+            this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
+            this.customEndpoint = ''
+          }
+          this.onSuccess(endpoint)
+        } else {
+          this.onError(err.message)
+        }
       }
     },
     onSuccess (endpoint) {

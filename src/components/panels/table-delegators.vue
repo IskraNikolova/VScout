@@ -95,7 +95,7 @@
               <div>
                 {{ col.value }}
                 <small style="color: grey;">
-                  ({{ getLocalString(props.row.stakenAva)}} nAva)
+                  ({{ getLocalString(props.row.stakenAva)}} nAvax)
                 </small>
               </div>
             </div>
@@ -163,7 +163,7 @@ export default {
         {
           name: 'stake',
           align: 'left',
-          label: 'STAKE (AVA / nAva)',
+          label: 'STAKE (AVAX / nAvax)',
           field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
           sortable: true
         },
