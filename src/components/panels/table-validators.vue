@@ -207,12 +207,12 @@
 
             <q-card-section horizontal>
               <q-card-section class="col-5 q-mb-xl">
-                <div class="q-mb-md">Stake (AVA / nAva)</div>
+                <div class="q-mb-md">Stake (AVAX)</div>
                 {{ props.row.stake > 1 ? getLocalString(props.row.stake) : props.row.stake }}
-                <span class="text-accent">$AVA</span>
+                <span class="text-accent">$AVAX</span>
                 <br />
                 <small style="color: grey;">
-                  ({{ getLocalString(props.row.stakenAva) }} nAva)
+                  ({{ getLocalString(props.row.stakenAva) }} nAvax)
                 </small>
               <div class="q-mb-md" v-if="props.row.precent !== 'NaN'">
                 <small style="color: grey;">{{ props.row.precent }} %</small>
@@ -334,7 +334,7 @@ export default {
         {
           name: 'stake',
           align: 'left',
-          label: 'STAKE (AVA)',
+          label: 'STAKE (AVAX)',
           field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
           sortable: true
         },

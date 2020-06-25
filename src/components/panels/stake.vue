@@ -29,7 +29,7 @@
         <img src="~assets/manage.svg" class="custom-icon">
       </div>
       <div class="col-md-2 col-xs-10">
-        <div id="f-size12" class="q-pb-md">STAKED AVA</div>
+        <div id="f-size12" class="q-pb-md">STAKED AVAX</div>
         <div class="text-h5 q-pb-md">
             <span class="text-orange">
               <small>{{stakedAVA}}</small>
@@ -41,14 +41,14 @@
         <img src="~assets/stake_amount.png" class="custom-icon">
       </div>
       <div class="col-md-2 col-xs-10">
-       <div id="f-size12" class="q-pb-md">AVA VOLUME (24h)</div>
+       <div id="f-size12" class="q-pb-md">AVAX VOLUME (24h)</div>
        <div class="text-h5 q-pb-md">
             <span class="text-orange">
               <small>
                 {{ txsFor24H.transactionVolume.toLocaleString() }}
               </small>
             </span>
-            <span style="font-size: 13px;"> AVA</span>
+            <span style="font-size: 13px;"> AVAX</span>
         </div>
       </div>
       <div class="col-1 q-pt-md">
