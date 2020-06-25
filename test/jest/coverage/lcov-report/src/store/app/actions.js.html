@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/228</span>
+                <span class='fraction'>0/233</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/116</span>
+                <span class='fraction'>0/118</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/221</span>
+                <span class='fraction'>0/226</span>
             </div>
         
             
@@ -724,7 +724,16 @@
 <a name='L665'></a><a href='#L665'>665</a>
 <a name='L666'></a><a href='#L666'>666</a>
 <a name='L667'></a><a href='#L667'>667</a>
-<a name='L668'></a><a href='#L668'>668</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L668'></a><a href='#L668'>668</a>
+<a name='L669'></a><a href='#L669'>669</a>
+<a name='L670'></a><a href='#L670'>670</a>
+<a name='L671'></a><a href='#L671'>671</a>
+<a name='L672'></a><a href='#L672'>672</a>
+<a name='L673'></a><a href='#L673'>673</a>
+<a name='L674'></a><a href='#L674'>674</a>
+<a name='L675'></a><a href='#L675'>675</a>
+<a name='L676'></a><a href='#L676'>676</a>
+<a name='L677'></a><a href='#L677'>677</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -829,10 +838,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -852,7 +864,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1057,20 +1069,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1466,7 +1484,7 @@ import {
 } from './../../modules/network'
 &nbsp;
 import {
-  // _initializeNetwork,
+  _initializeNetwork,
   subscribeToContractEvents
 } from './../../modules/networkRpc'
 &nbsp;
@@ -1493,13 +1511,16 @@ async function <span class="fstat-no" title="function not covered" >initApp </sp
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(INIT_VALIDATORS),
+      dispatch(GET_PENDING_VALIDATORS, {
+        subnetID: getters.subnetID
+      }),
       dispatch(GET_TOTAL_TXS)
     ])
   } catch (err) {
 <span class="cstat-no" title="statement not covered" >    console.log(err)</span>
   }
 &nbsp;
-  // await _initializeNetwork()
+<span class="cstat-no" title="statement not covered" >  await _initializeNetwork()</span>
   // dispatch(SUBSCRIBE_TO_EVENT)
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  setInterval(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
@@ -1510,7 +1531,6 @@ async function <span class="fstat-no" title="function not covered" >initApp </sp
   }, 30000)
 <span class="cstat-no" title="statement not covered" >  setInterval(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    await Promise.all([</span>
-      dispatch(GET_TOTAL_TXS),
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_PENDING_VALIDATORS, {
         subnetID: getters.subnetID
@@ -1520,6 +1540,7 @@ async function <span class="fstat-no" title="function not covered" >initApp </sp
         endpoint: getters.networkEndpoint
       })
     ])
+<span class="cstat-no" title="statement not covered" >    dispatch(GET_TOTAL_TXS)</span>
 <span class="cstat-no" title="statement not covered" >    if (getters.prevTotalTxs &lt; getters.totalTxsCount) {</span>
 <span class="cstat-no" title="statement not covered" >      await Promise.all([</span>
         dispatch(GET_TX_FOR_24_HOURS),
@@ -1677,7 +1698,7 @@ async function <span class="fstat-no" title="function not covered" >initValidato
   const { v, d } = <span class="cstat-no" title="statement not covered" >splitAccounts(validators)</span>
 &nbsp;
   const delegators = <span class="cstat-no" title="statement not covered" >mapDelegators(d)</span>
-  const resultValidators = <span class="cstat-no" title="statement not covered" >validatorProcessing(v, getters.validators)</span>
+  const resultValidators = <span class="cstat-no" title="statement not covered" >validatorProcessing(v, d, getters.validators)</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  commit(SET_DELEGATORS, { delegators })</span>
 <span class="cstat-no" title="statement not covered" >  commit(SET_VALIDATORS, { validators: resultValidators })</span>
@@ -1706,7 +1727,7 @@ async function <span class="fstat-no" title="function not covered" >getValidator
 <span class="cstat-no" title="statement not covered" >  commit(SET_DELEGATORS, { delegators })</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (getters.validators.length &lt; 1) <span class="cstat-no" title="statement not covered" >return</span></span>
-  const resultValidators = <span class="cstat-no" title="statement not covered" >validatorProcessing(v, getters.validators)</span>
+  const resultValidators = <span class="cstat-no" title="statement not covered" >validatorProcessing(v, d, getters.validators)</span>
 <span class="cstat-no" title="statement not covered" >  commit(SET_VALIDATORS, { validators: resultValidators })</span>
 <span class="cstat-no" title="statement not covered" >  commit(SET_STAKED_AVA, { validators: resultValidators })</span>
 <span class="cstat-no" title="statement not covered" >  return true</span>
@@ -1724,12 +1745,19 @@ async function <span class="fstat-no" title="function not covered" >getPendingVa
   }
 &nbsp;
   const { validators } = <span class="cstat-no" title="statement not covered" >response.data.result</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >  if (typeof validators === 'undefined' ||</span>
       validators === null) <span class="cstat-no" title="statement not covered" >return</span>
 &nbsp;
-  let { v, d } = <span class="cstat-no" title="statement not covered" >splitPendingAccounts(validators, getters.validators)</span>
-<span class="cstat-no" title="statement not covered" >  commit(SET_PENDING_DELEGATORS, { delegators: mapDelegators(d) })</span>
+<span class="cstat-no" title="statement not covered" >  if (validators.length &lt; 1) {</span>
+<span class="cstat-no" title="statement not covered" >    commit(SET_PENDING_DELEGATORS, { delegators: [] })</span>
+<span class="cstat-no" title="statement not covered" >    commit(SET_PENDING_VALIDATORS, { validators: [] })</span>
+<span class="cstat-no" title="statement not covered" >    return</span>
+  }
 &nbsp;
+  let { v, d } = <span class="cstat-no" title="statement not covered" >splitPendingAccounts(validators, getters.validators)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  commit(SET_PENDING_DELEGATORS, { delegators: mapDelegators(d) })</span>
 <span class="cstat-no" title="statement not covered" >  v = v.filter(<span class="fstat-no" title="function not covered" >i </span>=&gt; <span class="cstat-no" title="statement not covered" >i.endTime &gt;= Date.now() / 1000)</span></span>
 <span class="cstat-no" title="statement not covered" >  v.sort(compare)</span>
   const val = <span class="cstat-no" title="statement not covered" >mapValidators(v)</span>
@@ -1739,7 +1767,6 @@ async function <span class="fstat-no" title="function not covered" >getPendingVa
 async function <span class="fstat-no" title="function not covered" >getNodeId </span>({ getters, commit }) {
   const response = <span class="cstat-no" title="statement not covered" >await _getNodeId({ endpoint: getters.networkEndpoint })</span>
 <span class="cstat-no" title="statement not covered" >  if (response.data.error) {</span>
-<span class="cstat-no" title="statement not covered" >    Notify.create(response.data.error.message)</span>
 <span class="cstat-no" title="statement not covered" >    return</span>
   }
 <span class="cstat-no" title="statement not covered" >  if (typeof response === 'undefined' ||</span>
@@ -2065,7 +2092,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jun 18 2020 13:04:20 GMT+0300 (Eastern European Summer Time)
+                at Thu Jun 25 2020 21:28:00 GMT+0300 (Eastern European Summer Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

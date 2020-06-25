@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/components/items/blockchain.vue</title>
+    <title>Code coverage report for src/components/dialogs/select-account-dialog.vue</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/items</a> blockchain.vue</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/dialogs</a> select-account-dialog.vue</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -136,7 +136,9 @@
 <a name='L77'></a><a href='#L77'>77</a>
 <a name='L78'></a><a href='#L78'>78</a>
 <a name='L79'></a><a href='#L79'>79</a>
-<a name='L80'></a><a href='#L80'>80</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -169,6 +171,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -187,113 +215,91 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
-  &lt;div&gt;
-    &lt;div id="f-size12" class="q-pb-md"&gt;
-      BLOCKCHAIN
-    &lt;/div&gt;
-    &lt;div class="row q-mb-md"&gt;
-      &lt;div class="text-h6 text-orange q-pb-md q-pr-md "&gt;
-        {{ currentBlockchain.name }}
-      &lt;/div&gt;
-      &lt;div class="q-pt-xs"&gt;
-        &lt;q-btn-dropdown
-          color="accent"
-          outline
-          size="xs"
-          no-caps
-          v-if="assets(currentBlockchain.id)"
-          label="Smart Digital Assets"
+  &lt;q-dialog v-model="ui.selectAccounts.isOpen" persistent&gt;
+    &lt;q-card class="select-account-card"&gt;
+      &lt;q-card-section class="row items-center"&gt;
+        &lt;q-item&gt;
+          &lt;q-item-section avatar&gt;
+            &lt;q-avatar&gt;
+              &lt;img src="~assets/choose.svg" /&gt;
+            &lt;/q-avatar&gt;
+          &lt;/q-item-section&gt;
+          &lt;q-item-section&gt;
+            &lt;q-item-label&gt;
+              Platform Accounts
+            &lt;/q-item-label&gt;
+            &lt;q-item-label caption&gt;
+              The accounts controlled by this user.
+            &lt;/q-item-label&gt;
+          &lt;/q-item-section&gt;
+        &lt;/q-item&gt;
+        &lt;q-space /&gt;
+        &lt;q-btn
+          icon="close"
+          class="q-ml-xl"
+          flat round dense
+          @click="closeSelectAccounts"
+        /&gt;
+      &lt;/q-card-section&gt;
+      &lt;q-list bordered&gt;
+        &lt;q-item
+          class="q-my-sm"
+          v-ripple clickable
+          :key="account.address"
+          @click.native="onSelectClick(account)"
+          v-for="account in ui.selectAccounts.accounts"
         &gt;
-          &lt;div class="q-pa-md"&gt;
-            &lt;small&gt;
-              &lt;img src="~assets/coins.svg" id="small-logo"&gt;
-              Assets on {{ currentBlockchain.name }}
-            &lt;/small&gt;
-           &lt;q-separator /&gt;
-          &lt;/div&gt;
-          &lt;q-list
-            v-for="asset in assets(currentBlockchain.id)"
-            v-bind:key="asset.id"
-          &gt;
-            &lt;q-item clickable v-close-popup @click="onOpenAssetInfo(asset)"&gt;
-              &lt;q-item-section&gt;&lt;span&gt;{{ asset.symbol }}&lt;/span&gt;&lt;/q-item-section&gt;
-              &lt;q-item-section side&gt;
-              &lt;q-icon size="xs" name="info" color="grey" /&gt;
-              &lt;/q-item-section&gt;
-            &lt;/q-item&gt;
-          &lt;/q-list&gt;
-        &lt;/q-btn-dropdown&gt;
-        &lt;asset-info-dialog ref="assetDialog"/&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div id="f-size12"&gt;
-      Blockchain ID
-      &lt;div class="text-grey"&gt;
-        {{ currentBlockchain.id }}
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
+          &lt;q-item-section avatar&gt;
+            &lt;q-avatar color="accent" text-color="white"&gt;
+              {{ account.address.substr(0, 1) }}
+            &lt;/q-avatar&gt;
+          &lt;/q-item-section&gt;
+&nbsp;
+          &lt;q-item-section&gt;
+            &lt;q-item-label&gt;
+              {{ account.address }}
+            &lt;/q-item-label&gt;
+            &lt;q-item-label caption lines="1"&gt;
+              Balance: {{ account.balance }}
+            &lt;/q-item-label&gt;
+          &lt;/q-item-section&gt;
+        &lt;/q-item&gt;
+      &lt;/q-list&gt;
+    &lt;/q-card&gt;
+  &lt;/q-dialog&gt;
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-<span class="cstat-no" title="statement not covered" >import { mapGetters } from 'vuex'</span>
+<span class="cstat-no" title="statement not covered" >import { mapActions, mapGetters } from 'vuex'</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import AssetInfoDialog from './../dialogs/asset-info-dialog'</span>
+<span class="cstat-no" title="statement not covered" >import {</span>
+  OPEN_SELECT_ACCOUNTS,
+  CLOSE_SELECT_ACCOUNTS
+} from './../../store/ui/types'
 &nbsp;
 export default {
-  name: 'Blockchain',
-  components: {
-    AssetInfoDialog
-  },
+  name: 'SelectAccountDialog',
   computed: {
     ...mapGetters([
-      'assets',
-      'currentBlockchain'
+      'ui'
     ])
   },
   methods: {
-<span class="fstat-no" title="function not covered" >    onOpenAssetInfo (asset) {</span>
-<span class="cstat-no" title="statement not covered" >      this.$refs.assetDialog.open({ asset })</span>
+    ...mapActions({
+      openSelectAccounts: OPEN_SELECT_ACCOUNTS,
+      closeSelectAccounts: CLOSE_SELECT_ACCOUNTS
+    }),
+<span class="fstat-no" title="function not covered" >    onSelectClick (account) {</span>
+<span class="cstat-no" title="statement not covered" >      this.$emit('select', account)</span>
     }
   }
 }
 &lt;/script&gt;
-&nbsp;
-&lt;style scoped&gt;
-  #small-logo {
-    width:15vw;
-    max-width:15px;
-  }
-&lt;/style&gt;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

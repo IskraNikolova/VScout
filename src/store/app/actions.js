@@ -73,7 +73,7 @@ import {
 } from './../../modules/network'
 
 import {
-  // _initializeNetwork,
+  _initializeNetwork,
   subscribeToContractEvents
 } from './../../modules/networkRpc'
 
@@ -109,7 +109,7 @@ async function initApp ({ dispatch, getters }) {
     console.log(err)
   }
 
-  // await _initializeNetwork()
+  await _initializeNetwork()
   // dispatch(SUBSCRIBE_TO_EVENT)
 
   setInterval(() => {
@@ -347,8 +347,7 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
   let { v, d } = splitPendingAccounts(validators, getters.validators)
 
   commit(SET_PENDING_DELEGATORS, { delegators: mapDelegators(d) })
-  v = v.filter(i => i.endTime >= Date.now() / 1000)
-  v.sort(compare)
+
   const val = mapValidators(v)
   commit(SET_PENDING_VALIDATORS, { validators: val })
 }

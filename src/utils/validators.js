@@ -124,6 +124,7 @@ export function stakeAndWeight (validator, delegators, defaultValidators) {
 
     return {
       delegateStake: 0,
+      delegatorsCount: 0,
       stakeAmount: currentValidator.stakenAva,
       weight: validator.weight
     }
@@ -145,7 +146,7 @@ export function stakeAndWeight (validator, delegators, defaultValidators) {
 
   return {
     delegateStake,
-    delegatorsCount: currentDelegators.length,
+    delegatorsCount: currentDelegators ? currentDelegators.length : 0,
     stakeAmount: validator.stakeAmount,
     weight: 0
   }

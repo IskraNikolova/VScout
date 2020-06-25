@@ -9,44 +9,36 @@ import {
   hexStringToAsciiString
 } from './string-conversion'
 
-// let web3
+let web3
 let contract
 abiDecoder.addABI(contractAbi)
 const addr = config.network.address
 
 export const _initializeNetwork = async () => {
-  const ethEnabled = () => {
-    if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider)
-      window.ethereum.enable()
-      window.ethereum.autoRefreshOnNetworkChange = false
-      return true
-    }
-    return false
+  if (window.web3) {
+    window.web3 = new Web3(window.web3.currentProvider)
+    window.ethereum.enable()
+    window.ethereum.autoRefreshOnNetworkChange = false
   }
 
-  if (ethEnabled()) {
-    contract = await new window.web3.eth.Contract(contractAbi, config.network.contract)
-  }
-
-  // todo when C-Chain is available
-  // web3 = new Web3(getProvider({ endpoint: `wss://${config.network.endpointCChain}` }))
+  web3 = new Web3(getProvider({ endpoint: `ws://${config.network.endpointCChainWs}` }))
+  contract = await new web3.eth.Contract(contractAbi, config.network.contract)
 }
 
-// const getProvider = ({ endpoint }) => {
-//   const provider = new Web3.providers.WebsocketProvider(endpoint)
-//   provider.on('connect', async () => {
-//     console.log('WS Connected')
-//   })
-//   provider.on('error', e => {
-//     console.error('WS Error' + e)
-//     web3.setProvider(getProvider({ endpoint }))
-//   })
-//   provider.on('end', e => {
-//     console.error('WS End' + e)
-//   })
-//   return provider
-// }
+const getProvider = ({ endpoint }) => {
+  const provider = new Web3.providers.WebsocketProvider(endpoint)
+  provider.on('connect', async () => {
+    console.log('WS Connected')
+  })
+  provider.on('error', e => {
+    console.error('WS Error' + e)
+    web3.setProvider(getProvider({ endpoint }))
+  })
+  provider.on('end', e => {
+    console.error('WS End' + e)
+  })
+  return provider
+}
 
 const getEstimatedGas = async ({ data, from }) => {
   try {
@@ -174,9 +166,9 @@ export const _setValidatorInfo = async ({ id, name, avatar, link }) => {
   }
 }
 
-export const stringToHex = input => window.web3.utils.asciiToHex(input)
+export const stringToHex = input => web3.utils.asciiToHex(input)
 
-export const utf8StringToHex = input => window.web3.utils.utf8ToHex(input).padEnd(66, '0')
+export const utf8StringToHex = input => web3.utils.utf8ToHex(input).padEnd(66, '0')
 
 export const subscribeToContractEvents = ({ eventName, filters, handler }) => {
   if (!contract) return
@@ -185,13 +177,13 @@ export const subscribeToContractEvents = ({ eventName, filters, handler }) => {
   const eventInterface = {
     ...ev
   }
-  window.web3.eth.subscribe('logs', {
+  web3.eth.subscribe('logs', {
     address: config.network.contract,
     topics: [eventInterface.signature]
   }, (error, result) => {
     if (error) return handler(error)
 
-    const event = window.web3.eth.abi.decodeLog(
+    const event = web3.eth.abi.decodeLog(
       eventInterface.inputs,
       result.data,
       result.topics.slice(1)

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/components/items/blockchain.vue</title>
+    <title>Code coverage report for src/components/dialogs/asset-info-dialog.vue</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/items</a> blockchain.vue</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/dialogs</a> asset-info-dialog.vue</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
@@ -135,18 +135,7 @@
 <a name='L76'></a><a href='#L76'>76</a>
 <a name='L77'></a><a href='#L77'>77</a>
 <a name='L78'></a><a href='#L78'>78</a>
-<a name='L79'></a><a href='#L79'>79</a>
-<a name='L80'></a><a href='#L80'>80</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L79'></a><a href='#L79'>79</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -187,6 +176,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -203,97 +193,104 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
-  &lt;div&gt;
-    &lt;div id="f-size12" class="q-pb-md"&gt;
-      BLOCKCHAIN
-    &lt;/div&gt;
-    &lt;div class="row q-mb-md"&gt;
-      &lt;div class="text-h6 text-orange q-pb-md q-pr-md "&gt;
-        {{ currentBlockchain.name }}
-      &lt;/div&gt;
-      &lt;div class="q-pt-xs"&gt;
-        &lt;q-btn-dropdown
-          color="accent"
-          outline
-          size="xs"
-          no-caps
-          v-if="assets(currentBlockchain.id)"
-          label="Smart Digital Assets"
-        &gt;
-          &lt;div class="q-pa-md"&gt;
-            &lt;small&gt;
-              &lt;img src="~assets/coins.svg" id="small-logo"&gt;
-              Assets on {{ currentBlockchain.name }}
-            &lt;/small&gt;
-           &lt;q-separator /&gt;
+    &lt;q-dialog v-model="ui.assetInfo.isOpen" persistent&gt;
+      &lt;q-card class="my-card"&gt;
+        &lt;q-card-section&gt;
+          &lt;div class="row no-wrap items-center"&gt;
+            &lt;div class="col text-h6 ellipsis"&gt;
+              {{ ui.assetInfo.asset.name }} ({{ ui.assetInfo.asset.symbol}})
+            &lt;/div&gt;
           &lt;/div&gt;
-          &lt;q-list
-            v-for="asset in assets(currentBlockchain.id)"
-            v-bind:key="asset.id"
-          &gt;
-            &lt;q-item clickable v-close-popup @click="onOpenAssetInfo(asset)"&gt;
-              &lt;q-item-section&gt;&lt;span&gt;{{ asset.symbol }}&lt;/span&gt;&lt;/q-item-section&gt;
-              &lt;q-item-section side&gt;
-              &lt;q-icon size="xs" name="info" color="grey" /&gt;
-              &lt;/q-item-section&gt;
-            &lt;/q-item&gt;
-          &lt;/q-list&gt;
-        &lt;/q-btn-dropdown&gt;
-        &lt;asset-info-dialog ref="assetDialog"/&gt;
-      &lt;/div&gt;
-    &lt;/div&gt;
-    &lt;div id="f-size12"&gt;
-      Blockchain ID
-      &lt;div class="text-grey"&gt;
-        {{ currentBlockchain.id }}
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
+        &lt;/q-card-section&gt;
+&nbsp;
+        &lt;q-card-section class="q-pt-none"&gt;
+          &lt;div class="text-subtitle1"&gt;
+            $・Current Supply {{ getCurrentSupply(ui.assetInfo.asset.currentSupply, ui.assetInfo.asset.denomination) }} {{ ui.assetInfo.asset.symbol}}
+          &lt;/div&gt;
+          &lt;div class="text-caption text-grey"&gt;
+            - Denomination {{ ui.assetInfo.asset.denomination }}
+            &lt;br /&gt;
+            - Alias {{ ui.assetInfo.asset.alias }}
+            &lt;br /&gt;
+            -Asset ID {{ ui.assetInfo.asset.id }}
+          &lt;/div&gt;
+        &lt;/q-card-section&gt;
+&nbsp;
+        &lt;q-separator /&gt;
+&nbsp;
+        &lt;q-card-actions align="right"&gt;
+          &lt;q-btn
+            flat color="orange"
+            @click="toUrl(ui.assetInfo.asset.id)"
+            no-caps
+            label="Asset Genesis"
+          /&gt;
+          &lt;q-btn @click="close()" color="orange" flat icon="close" /&gt;
+        &lt;/q-card-actions&gt;
+      &lt;/q-card&gt;
+    &lt;/q-dialog&gt;
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-<span class="cstat-no" title="statement not covered" >import { mapGetters } from 'vuex'</span>
+<span class="cstat-no" title="statement not covered" >import { openURL } from 'quasar'</span>
+<span class="cstat-no" title="statement not covered" >import { mapGetters, mapActions } from 'vuex'</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import AssetInfoDialog from './../dialogs/asset-info-dialog'</span>
+<span class="cstat-no" title="statement not covered" >import {</span>
+  OPEN_ASSET_INFO,
+  CLOSE_ASSET_INFO
+} from './../../store/ui/types'
 &nbsp;
 export default {
-  name: 'Blockchain',
-  components: {
-    AssetInfoDialog
-  },
+  name: 'AssetInfoDialog',
   computed: {
     ...mapGetters([
-      'assets',
-      'currentBlockchain'
+      'ui'
     ])
   },
   methods: {
-<span class="fstat-no" title="function not covered" >    onOpenAssetInfo (asset) {</span>
-<span class="cstat-no" title="statement not covered" >      this.$refs.assetDialog.open({ asset })</span>
+    ...mapActions({
+      open: OPEN_ASSET_INFO,
+      close: CLOSE_ASSET_INFO
+    }),
+<span class="fstat-no" title="function not covered" >    toUrl (url) {</span>
+<span class="cstat-no" title="statement not covered" >      this.close()</span>
+<span class="cstat-no" title="statement not covered" >      openURL('https://ava-explorer.herokuapp.com/tx/' + url)</span>
+    },
+<span class="fstat-no" title="function not covered" >    getCurrentSupply (value, denomination) {</span>
+<span class="cstat-no" title="statement not covered" >      let returnValue = Number(value)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (denomination &gt; 0 &amp;&amp; value &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >        returnValue = value / 10 ** denomination</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (!returnValue) return</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      return returnValue.toLocaleString()</span>
     }
   }
 }
 &lt;/script&gt;
-&nbsp;
-&lt;style scoped&gt;
-  #small-logo {
-    width:15vw;
-    max-width:15px;
-  }
-&lt;/style&gt;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
