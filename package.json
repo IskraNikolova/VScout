@@ -1,8 +1,8 @@
 {
   "name": "chain-ex",
   "version": "0.0.1",
-  "description": "AVA chains validator explorer",
-  "productName": "AVA Validator Explorer",
+  "description": "Avalanche chains validator explorer",
+  "productName": "Avalanche Validator Explorer",
   "cordovaId": "io.ava.explorer.app",
   "capacitorId": "",
   "author": "Iskra Nikolova airiskra@gmail.com",

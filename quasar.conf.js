@@ -104,9 +104,9 @@ module.exports = function (ctx) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'AVA Validator Explorer',
-        short_name: 'AVAPChainEx',
-        description: 'AVA chains validator explorer',
+        name: 'Avalanche Validator Explorer',
+        short_name: 'AvalanchePChainEx',
+        description: 'Avalanche chains validator explorer',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -144,7 +144,7 @@ module.exports = function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
     cordova: {
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
-      id: 'io.ava.explorer.app'
+      id: 'io.avalanche.explorer.app'
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-capacitor-apps/configuring-capacitor
