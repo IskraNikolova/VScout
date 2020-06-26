@@ -214,8 +214,16 @@
                 <small style="color: grey;">
                   ({{ getLocalString(props.row.stakenAva) }} nAvax)
                 </small>
-              <div class="q-mb-md" v-if="props.row.precent !== 'NaN'">
-                <small style="color: grey;">{{ props.row.precent }} %</small>
+                <div>
+                <small class="text-orange" v-if="props.row.precent !== 'NaN'">
+                  {{ props.row.precent }} %
+                </small>
+              </div>
+              <div>
+                <small class="text-grey">Delegated</small> {{ props.row.delegateStake }}
+              </div>
+              <div>
+                <small class="text-grey">Total</small> {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
               </div>
               <q-separator class="q-mb-md"/>
               <div class="q-pl-xs">

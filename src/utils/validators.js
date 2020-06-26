@@ -130,25 +130,32 @@ export function stakeAndWeight (validator, delegators, defaultValidators) {
     }
   }
 
-  const currentDelegators = delegators
-    .filter(d => d.id === validator.id)
-  let delegateStake = 0
   try {
-    delegateStake = currentDelegators
+    const currentDelegators = delegators
+      .filter(d => d.id === validator.id)
+
+    let delegateStake = currentDelegators
       .reduce((a, b) => {
         return Number(a.stakeAmount) + Number(b.stakeAmount)
       })
+
     if (typeof delegateStake === 'object') {
       delegateStake = Number(delegateStake.stakeAmount)
     }
-  } catch (err) {
-  }
 
-  return {
-    delegateStake,
-    delegatorsCount: currentDelegators ? currentDelegators.length : 0,
-    stakeAmount: validator.stakeAmount,
-    weight: 0
+    return {
+      delegateStake,
+      delegatorsCount: currentDelegators.length,
+      stakeAmount: validator.stakeAmount,
+      weight: 0
+    }
+  } catch (err) {
+    return {
+      delegateStake: 0,
+      delegatorsCount: 0,
+      stakeAmount: validator.stakeAmount,
+      weight: 0
+    }
   }
 }
 

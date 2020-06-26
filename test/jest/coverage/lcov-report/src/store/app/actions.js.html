@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/233</span>
+                <span class='fraction'>0/227</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/118</span>
+                <span class='fraction'>0/116</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/28</span>
+                <span class='fraction'>0/27</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/226</span>
+                <span class='fraction'>0/222</span>
             </div>
         
             
@@ -730,10 +730,7 @@
 <a name='L671'></a><a href='#L671'>671</a>
 <a name='L672'></a><a href='#L672'>672</a>
 <a name='L673'></a><a href='#L673'>673</a>
-<a name='L674'></a><a href='#L674'>674</a>
-<a name='L675'></a><a href='#L675'>675</a>
-<a name='L676'></a><a href='#L676'>676</a>
-<a name='L677'></a><a href='#L677'>677</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L674'></a><a href='#L674'>674</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -822,7 +819,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -844,7 +840,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1054,7 +1050,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1081,9 +1076,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1484,13 +1478,12 @@ import {
 } from './../../modules/network'
 &nbsp;
 import {
-  _initializeNetwork,
+  // _initializeNetwork,
   subscribeToContractEvents
 } from './../../modules/networkRpc'
 &nbsp;
 import {
   temp,
-  compare,
   splitAccounts,
   mapDelegators,
   mapValidators,
@@ -1520,7 +1513,7 @@ async function <span class="fstat-no" title="function not covered" >initApp </sp
 <span class="cstat-no" title="statement not covered" >    console.log(err)</span>
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  await _initializeNetwork()</span>
+  // await _initializeNetwork()
   // dispatch(SUBSCRIBE_TO_EVENT)
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  setInterval(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
@@ -1726,7 +1719,6 @@ async function <span class="fstat-no" title="function not covered" >getValidator
   const delegators = <span class="cstat-no" title="statement not covered" >mapDelegators(d)</span>
 <span class="cstat-no" title="statement not covered" >  commit(SET_DELEGATORS, { delegators })</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (getters.validators.length &lt; 1) <span class="cstat-no" title="statement not covered" >return</span></span>
   const resultValidators = <span class="cstat-no" title="statement not covered" >validatorProcessing(v, d, getters.validators)</span>
 <span class="cstat-no" title="statement not covered" >  commit(SET_VALIDATORS, { validators: resultValidators })</span>
 <span class="cstat-no" title="statement not covered" >  commit(SET_STAKED_AVA, { validators: resultValidators })</span>
@@ -1755,11 +1747,10 @@ async function <span class="fstat-no" title="function not covered" >getPendingVa
 <span class="cstat-no" title="statement not covered" >    return</span>
   }
 &nbsp;
-  let { v, d } = <span class="cstat-no" title="statement not covered" >splitPendingAccounts(validators, getters.validators)</span>
+  const { v, d } = <span class="cstat-no" title="statement not covered" >splitPendingAccounts(validators, getters.validators)</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  commit(SET_PENDING_DELEGATORS, { delegators: mapDelegators(d) })</span>
-<span class="cstat-no" title="statement not covered" >  v = v.filter(<span class="fstat-no" title="function not covered" >i </span>=&gt; <span class="cstat-no" title="statement not covered" >i.endTime &gt;= Date.now() / 1000)</span></span>
-<span class="cstat-no" title="statement not covered" >  v.sort(compare)</span>
+&nbsp;
   const val = <span class="cstat-no" title="statement not covered" >mapValidators(v)</span>
 <span class="cstat-no" title="statement not covered" >  commit(SET_PENDING_VALIDATORS, { validators: val })</span>
 }
@@ -2092,7 +2083,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jun 25 2020 21:28:00 GMT+0300 (Eastern European Summer Time)
+                at Fri Jun 26 2020 16:01:32 GMT+0300 (Eastern European Summer Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

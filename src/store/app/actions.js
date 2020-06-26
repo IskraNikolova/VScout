@@ -96,12 +96,8 @@ async function initApp ({ dispatch, getters }) {
         txHKey: getters.txHKey
       }),
       dispatch(GET_SUBNETS),
-      dispatch(GET_NODE_HEALTH),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(INIT_VALIDATORS),
-      dispatch(GET_PENDING_VALIDATORS, {
-        subnetID: getters.subnetID
-      }),
       dispatch(GET_TOTAL_TXS)
     ])
   } catch (err) {
@@ -111,12 +107,6 @@ async function initApp ({ dispatch, getters }) {
   // await _initializeNetwork()
   // dispatch(SUBSCRIBE_TO_EVENT)
 
-  setInterval(() => {
-    dispatch(GET_TX_FOR_24_HOURS)
-    dispatch(GET_TXS_HISTORY, {
-      txHKey: getters.txHKey
-    })
-  }, 30000)
   setInterval(async () => {
     await Promise.all([
       dispatch(GET_NODE_HEALTH),
@@ -126,16 +116,14 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_VALIDATORS, {
         subnetID: getters.subnetID,
         endpoint: getters.networkEndpoint
+      }),
+      dispatch(GET_TXS_HISTORY, {
+        txHKey: getters.txHKey
       })
     ])
     dispatch(GET_TOTAL_TXS)
     if (getters.prevTotalTxs < getters.totalTxsCount) {
-      await Promise.all([
-        dispatch(GET_TX_FOR_24_HOURS),
-        dispatch(GET_TXS_HISTORY, {
-          txHKey: getters.txHKey
-        })
-      ])
+      await dispatch(GET_TX_FOR_24_HOURS)
     }
   }, 6000)
 }
@@ -314,7 +302,6 @@ async function getValidators (
   const delegators = mapDelegators(d)
   commit(SET_DELEGATORS, { delegators })
 
-  if (getters.validators.length < 1) return
   const resultValidators = validatorProcessing(v, d, getters.validators)
   commit(SET_VALIDATORS, { validators: resultValidators })
   commit(SET_STAKED_AVA, { validators: resultValidators })
@@ -381,14 +368,20 @@ async function getAccount (
         addValidatorDialog: {
           isOpen: true,
           destinationAccount: account,
-          payingAccount: getters.ui.addValidatorDialog.payingAccount
+          payingAccount: getters
+            .ui
+            .addValidatorDialog
+            .payingAccount
         }
       })
     } else {
       commit(UPDATE_UI, {
         addValidatorDialog: {
           isOpen: true,
-          destinationAccount: getters.ui.addValidatorDialog.destinationAccount,
+          destinationAccount: getters
+            .ui
+            .addValidatorDialog
+            .destinationAccount,
           payingAccount: account
         }
       })
