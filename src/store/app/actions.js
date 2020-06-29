@@ -122,7 +122,7 @@ async function initApp ({ dispatch, getters }) {
       })
     ])
     dispatch(GET_TOTAL_TXS)
-    if (getters.prevTotalTxs < getters.totalTxsCount) {
+    if (getters.prevTotalTxs !== getters.totalTxsCount) {
       await dispatch(GET_TX_FOR_24_HOURS)
     }
   }, 6000)
