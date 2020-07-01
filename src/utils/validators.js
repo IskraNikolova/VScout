@@ -48,6 +48,7 @@ export function validatorProcessing (validators, delegators, defaultValidators) 
     return v
   })
   newVal = newVal.sort(compare)
+
   return newVal.map((v, i) => {
     v.rank = i + 1
     const currentValidators = newVal.slice(0, i + 1)
@@ -130,32 +131,20 @@ export function stakeAndWeight (validator, delegators, defaultValidators) {
     }
   }
 
-  try {
-    const currentDelegators = delegators
-      .filter(d => d.id === validator.id)
+  const currentDelegators = delegators
+    .filter(d => d.id === validator.id)
 
-    let delegateStake = currentDelegators
-      .reduce((a, b) => {
-        return Number(a.stakeAmount) + Number(b.stakeAmount)
-      })
+  const delegateStake = currentDelegators
+    .reduce((a, b) => {
+      const bStake = parseFloat(b.stakeAmount) ? parseFloat(b.stakeAmount) : 0
+      return a + bStake
+    }, 0.0)
 
-    if (typeof delegateStake === 'object') {
-      delegateStake = Number(delegateStake.stakeAmount)
-    }
-
-    return {
-      delegateStake,
-      delegatorsCount: currentDelegators.length,
-      stakeAmount: validator.stakeAmount,
-      weight: 0
-    }
-  } catch (err) {
-    return {
-      delegateStake: 0,
-      delegatorsCount: 0,
-      stakeAmount: validator.stakeAmount,
-      weight: 0
-    }
+  return {
+    delegateStake,
+    delegatorsCount: currentDelegators.length,
+    stakeAmount: validator.stakeAmount,
+    weight: 0
   }
 }
 
@@ -166,6 +155,7 @@ export function getPrecent (v, s) {
   const res = v.multipliedBy(y)
 
   const result = res.dividedBy(allStake)
+
   return result.toFixed(8)
 }
 
