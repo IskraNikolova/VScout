@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/227</span>
+                <span class='fraction'>0/224</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/27</span>
+                <span class='fraction'>0/26</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/222</span>
+                <span class='fraction'>0/219</span>
             </div>
         
             
@@ -724,13 +724,7 @@
 <a name='L665'></a><a href='#L665'>665</a>
 <a name='L666'></a><a href='#L666'>666</a>
 <a name='L667'></a><a href='#L667'>667</a>
-<a name='L668'></a><a href='#L668'>668</a>
-<a name='L669'></a><a href='#L669'>669</a>
-<a name='L670'></a><a href='#L670'>670</a>
-<a name='L671'></a><a href='#L671'>671</a>
-<a name='L672'></a><a href='#L672'>672</a>
-<a name='L673'></a><a href='#L673'>673</a>
-<a name='L674'></a><a href='#L674'>674</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L668'></a><a href='#L668'>668</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -833,10 +827,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -845,12 +835,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -863,16 +850,11 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1109,6 +1091,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1116,7 +1099,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1501,12 +1489,8 @@ async function <span class="fstat-no" title="function not covered" >initApp </sp
         txHKey: getters.txHKey
       }),
       dispatch(GET_SUBNETS),
-      dispatch(GET_NODE_HEALTH),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(INIT_VALIDATORS),
-      dispatch(GET_PENDING_VALIDATORS, {
-        subnetID: getters.subnetID
-      }),
       dispatch(GET_TOTAL_TXS)
     ])
   } catch (err) {
@@ -1516,12 +1500,6 @@ async function <span class="fstat-no" title="function not covered" >initApp </sp
   // await _initializeNetwork()
   // dispatch(SUBSCRIBE_TO_EVENT)
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  setInterval(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    dispatch(GET_TX_FOR_24_HOURS)</span>
-<span class="cstat-no" title="statement not covered" >    dispatch(GET_TXS_HISTORY, {</span>
-      txHKey: getters.txHKey
-    })
-  }, 30000)
 <span class="cstat-no" title="statement not covered" >  setInterval(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    await Promise.all([</span>
       dispatch(GET_NODE_HEALTH),
@@ -1531,16 +1509,14 @@ async function <span class="fstat-no" title="function not covered" >initApp </sp
       dispatch(GET_VALIDATORS, {
         subnetID: getters.subnetID,
         endpoint: getters.networkEndpoint
+      }),
+      dispatch(GET_TXS_HISTORY, {
+        txHKey: getters.txHKey
       })
     ])
 <span class="cstat-no" title="statement not covered" >    dispatch(GET_TOTAL_TXS)</span>
-<span class="cstat-no" title="statement not covered" >    if (getters.prevTotalTxs &lt; getters.totalTxsCount) {</span>
-<span class="cstat-no" title="statement not covered" >      await Promise.all([</span>
-        dispatch(GET_TX_FOR_24_HOURS),
-        dispatch(GET_TXS_HISTORY, {
-          txHKey: getters.txHKey
-        })
-      ])
+<span class="cstat-no" title="statement not covered" >    if (getters.prevTotalTxs !== getters.totalTxsCount) {</span>
+<span class="cstat-no" title="statement not covered" >      await dispatch(GET_TX_FOR_24_HOURS)</span>
     }
   }, 6000)
 }
@@ -1691,11 +1667,11 @@ async function <span class="fstat-no" title="function not covered" >initValidato
   const { v, d } = <span class="cstat-no" title="statement not covered" >splitAccounts(validators)</span>
 &nbsp;
   const delegators = <span class="cstat-no" title="statement not covered" >mapDelegators(d)</span>
-  const resultValidators = <span class="cstat-no" title="statement not covered" >validatorProcessing(v, d, getters.validators)</span>
-&nbsp;
 <span class="cstat-no" title="statement not covered" >  commit(SET_DELEGATORS, { delegators })</span>
-<span class="cstat-no" title="statement not covered" >  commit(SET_VALIDATORS, { validators: resultValidators })</span>
-<span class="cstat-no" title="statement not covered" >  commit(SET_STAKED_AVA, { validators: resultValidators })</span>
+&nbsp;
+  const res = <span class="cstat-no" title="statement not covered" >validatorProcessing(v, d, getters.validators)</span>
+<span class="cstat-no" title="statement not covered" >  commit(SET_VALIDATORS, { validators: res.validators })</span>
+<span class="cstat-no" title="statement not covered" >  commit(SET_STAKED_AVA, { stakedAva: res.allStake })</span>
 }
 &nbsp;
 async function <span class="fstat-no" title="function not covered" >getValidators </span>(
@@ -1719,9 +1695,9 @@ async function <span class="fstat-no" title="function not covered" >getValidator
   const delegators = <span class="cstat-no" title="statement not covered" >mapDelegators(d)</span>
 <span class="cstat-no" title="statement not covered" >  commit(SET_DELEGATORS, { delegators })</span>
 &nbsp;
-  const resultValidators = <span class="cstat-no" title="statement not covered" >validatorProcessing(v, d, getters.validators)</span>
-<span class="cstat-no" title="statement not covered" >  commit(SET_VALIDATORS, { validators: resultValidators })</span>
-<span class="cstat-no" title="statement not covered" >  commit(SET_STAKED_AVA, { validators: resultValidators })</span>
+  const res = <span class="cstat-no" title="statement not covered" >validatorProcessing(v, d, getters.validators)</span>
+<span class="cstat-no" title="statement not covered" >  commit(SET_VALIDATORS, { validators: res.validators })</span>
+<span class="cstat-no" title="statement not covered" >  commit(SET_STAKED_AVA, { stakedAva: res.allStake })</span>
 <span class="cstat-no" title="statement not covered" >  return true</span>
 }
 &nbsp;
@@ -1785,14 +1761,20 @@ async function <span class="fstat-no" title="function not covered" >getAccount <
         addValidatorDialog: {
           isOpen: true,
           destinationAccount: account,
-          payingAccount: getters.ui.addValidatorDialog.payingAccount
+          payingAccount: getters
+            .ui
+            .addValidatorDialog
+            .payingAccount
         }
       })
     } else {
 <span class="cstat-no" title="statement not covered" >      commit(UPDATE_UI, {</span>
         addValidatorDialog: {
           isOpen: true,
-          destinationAccount: getters.ui.addValidatorDialog.destinationAccount,
+          destinationAccount: getters
+            .ui
+            .addValidatorDialog
+            .destinationAccount,
           payingAccount: account
         }
       })
@@ -2083,7 +2065,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Jun 26 2020 16:01:32 GMT+0300 (Eastern European Summer Time)
+                at Thu Jul 02 2020 11:31:55 GMT+0300 (Eastern European Summer Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

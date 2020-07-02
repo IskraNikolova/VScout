@@ -87,10 +87,11 @@ import {
 } from './../../utils/validators'
 
 async function initApp ({ dispatch, getters }) {
-  await dispatch(GET_BLOCKCHAINS)
-  await dispatch(GET_NODE_ID)
   try {
     Promise.all([
+      dispatch(GET_NODE_HEALTH),
+      dispatch(GET_BLOCKCHAINS),
+      dispatch(GET_NODE_ID),
       dispatch(GET_TX_FOR_24_HOURS),
       dispatch(GET_TXS_HISTORY, {
         txHKey: getters.txHKey
@@ -110,12 +111,12 @@ async function initApp ({ dispatch, getters }) {
   setInterval(async () => {
     await Promise.all([
       dispatch(GET_NODE_HEALTH),
-      dispatch(GET_PENDING_VALIDATORS, {
-        subnetID: getters.subnetID
-      }),
       dispatch(GET_VALIDATORS, {
         subnetID: getters.subnetID,
         endpoint: getters.networkEndpoint
+      }),
+      dispatch(GET_PENDING_VALIDATORS, {
+        subnetID: getters.subnetID
       }),
       dispatch(GET_TXS_HISTORY, {
         txHKey: getters.txHKey
@@ -274,11 +275,11 @@ async function initValidators ({ commit, getters }) {
   const { v, d } = splitAccounts(validators)
 
   const delegators = mapDelegators(d)
-  const resultValidators = validatorProcessing(v, d, getters.validators)
-
   commit(SET_DELEGATORS, { delegators })
-  commit(SET_VALIDATORS, { validators: resultValidators })
-  commit(SET_STAKED_AVA, { validators: resultValidators })
+
+  const res = validatorProcessing(v, d, getters.validators)
+  commit(SET_VALIDATORS, { validators: res.validators })
+  commit(SET_STAKED_AVA, { stakedAva: res.allStake })
 }
 
 async function getValidators (
@@ -302,9 +303,9 @@ async function getValidators (
   const delegators = mapDelegators(d)
   commit(SET_DELEGATORS, { delegators })
 
-  const resultValidators = validatorProcessing(v, d, getters.validators)
-  commit(SET_VALIDATORS, { validators: resultValidators })
-  commit(SET_STAKED_AVA, { validators: resultValidators })
+  const res = validatorProcessing(v, d, getters.validators)
+  commit(SET_VALIDATORS, { validators: res.validators })
+  commit(SET_STAKED_AVA, { stakedAva: res.allStake })
   return true
 }
 

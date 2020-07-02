@@ -1,4 +1,5 @@
 import { stakeAndWeight, compare, validatorProcessing, mapValidators } from './../../../src/utils/validators'
+import { fromNow } from './../../../src/modules/time'
 
 const validators = [
     {"startTime":"1590999695","endTime":"1592295095", "total": "10000009", "stakeAmount":"10000000","stakenAva":"10000000","address":"AtR9rdf3UsXMiCfHxaAjjkkjrpVCqV7mbaE","id":"CbUD998mP1YrLTgSjaXwU3cSK1FFne9rj","validator":"CbUD998mP1YrLTgSjaXwU3cSK1FFne9rj"},
@@ -41,10 +42,10 @@ test('processing validators with null/undefined/empty array delegators and defau
             "delegateStakenAva": 0,
             "delegatorsCount": 0,
             "name": "CbUD998mP1YrLTgSjaXwU3cSK1FFne9rj",
-            "precent": "97.84735812",
+            "percent": "97.84735812",
             "rank": 1,
             "stake": 0.01,
-            "fromNowST": "25 days ago",
+            "fromNowST": fromNow("1590999695"),
             "startTime":"1590999695",
             "endTime":"1592295095",
             "total": 0.01,
@@ -65,20 +66,20 @@ test('processing validators with null/undefined/empty array delegators and defau
           "address":"GzHPgDc1LursjhjgAoFA4huVP76QPR37U",
           "avatar": "http://www.gravatar.com/avatar/ae392857f83fd357a33563383631c57c?d=monsterid&s=150",
           "cumulativeStake": 100,
-          "fromNowST": "15 days ago",
+          "fromNowST": fromNow("1591865787"),
           "rank": 2,
           "stake": 0.00022,
           "stakenAva": 220000,
           "weight": 0,
           "name": "4mt0k4iA86kbrbxm7CmJAc5hC9HiuW762",
-          "precent": "2.15264188",
+          "percent": "2.15264188",
           "validator":"4mt0k4iA86kbrbxm7CmJAc5hC9HiuW762"
         }
     ]
 
-    expect(result).toEqual(expectResult)
-    expect(result2).toEqual(expectResult)
-    expect(result3).toEqual(expectResult)
+    expect(result.validators).toEqual(expectResult)
+    expect(result2.validators).toEqual(expectResult)
+    expect(result3.validators).toEqual(expectResult)
 })
 
 test('processing pending validators', () => {
@@ -92,7 +93,7 @@ test('processing pending validators', () => {
             "delegatorsCount": 0,
             "name": "llUD998mP1YrLTgSjaXwU3cSK1FFne9rj",
             "stake": 0.01,
-            "fromNowST": "25 days ago",
+            "fromNowST": fromNow("1590999695"),
             "startTime":"1590999695",
             "endTime":"1592295095",
             "total": 0.01,
@@ -112,7 +113,7 @@ test('processing pending validators', () => {
           "delegatorsCount": 0,
           "address":"GzHPgDc1Lu78jhjgAoFA4huVP76QPR37U",
           "avatar": "http://www.gravatar.com/avatar/13cbec372f73b2c1a76540c6776a682d?d=monsterid&s=150",
-          "fromNowST": "15 days ago",
+          "fromNowST": fromNow("1591865787"),
           "stake": 0.00022,
           "stakenAva": 220000,
           "weight": 0,

@@ -26,10 +26,6 @@ describe('Mount Quasar', () => {
   })
   const vm = wrapper.vm
 
-  it('passes the sanity check and creates a wrapper', () => {
-    expect(wrapper.isVueInstance()).toBe(true)
-  })
-
   it('has a created hook', () => {
     expect(typeof vm.increment).toBe('function')
   })

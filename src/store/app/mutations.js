@@ -40,13 +40,8 @@ const mutations = {
   [SET_VALIDATORS]: (state, { validators }) => {
     state.validators = validators
   },
-  [SET_STAKED_AVA]: (state, { validators }) => {
-    let stake = validators.reduce((a, b) => {
-      if (!b.stakenAva) return
-      return a + (parseFloat(b.stakenAva) / 10 ** 9)
-    }, 0.0)
-    if (!stake) stake = 0
-    state.stakedAVA = stake
+  [SET_STAKED_AVA]: (state, { stakedAva }) => {
+    state.stakedAVA = stakedAva
   },
   [SET_DELEGATORS]: (state, { delegators }) => {
     state.delegators = delegators

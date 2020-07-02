@@ -22,7 +22,7 @@
         </small>
       </div>
       <div v-else>Weight <span id="identity">{{ weight }}</span></div>
-      <div>Delegators <span class="text-orange">{{ delegatorsCount }}</span></div>
+      <div v-if="delegatorsCount" >Delegators <span class="text-orange">{{ delegatorsCount }}</span></div>
       <div>Start <span class="text-accent">{{ startDate }} </span><small>({{ fromNowGet }})</small></div>
       <div>End <span class="text-accent">{{ endDate }}</span></div>
     </div>

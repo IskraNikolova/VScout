@@ -43,30 +43,34 @@ export function splitPendingAccounts (validators, existValidators) {
 */
 export function validatorProcessing (validators, delegators, defaultValidators) {
   const val = mapValidators(validators, delegators, defaultValidators)
-  let newVal = val.map((v) => {
-    v.precent = getPrecent(v.total, stake(val))
+
+  // get all staked AVAX
+  const allStake = val.reduce((a, b) => {
+    return a + parseFloat(b.totalnAva)
+  }, 0.0)
+
+  // get and set percent for total stake (own and delegated)
+  let validatorsResult = val.map((v) => {
+    v.percent = getPercent(v.totalnAva, allStake)
     return v
   })
-  newVal = newVal.sort(compare)
 
-  return newVal.map((v, i) => {
+  // sort validators by total stake and duration
+  validatorsResult = validatorsResult.sort(compare)
+
+  // set rank of validators
+  const result = validatorsResult.map((v, i) => {
     v.rank = i + 1
-    const currentValidators = newVal.slice(0, i + 1)
+    const currentValidators = validatorsResult.slice(0, i + 1)
     v.cumulativeStake = cumulativeStake(currentValidators)
     return v
   })
-}
-
-function cumulativeStake (currentValidators) {
-  return currentValidators.reduce((result, item) => {
-    result += parseFloat(item.precent)
-    return round(result, 1000)
-  }, 0)
+  return { allStake, validators: result }
 }
 
 export function compare (a, b) {
   const get = (a, b) => { return b - a }
-  const compareStake = Number(b.total) - Number(a.total)
+  const compareStake = parseFloat(b.total) - parseFloat(a.total)
   const temp = {
     false: compareStake,
     true: get(b.startTime, b.endTime) - get(a.startTime, a.endTime)
@@ -90,7 +94,7 @@ export function mapValidators (validators, delegators, defaultValidators) {
       const hash = MD5.hex(val.id)
       const avatar = `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150` // info.avatarUrl ? info.avatarUrl : `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150`
       const name = val.id // info.name ? info.name : val.id
-      const total = Number(stakeAmount) + Number(delegateStake)
+      const total = parseFloat(stakeAmount) + parseFloat(delegateStake)
 
       return {
         name,
@@ -119,55 +123,42 @@ export function mapValidators (validators, delegators, defaultValidators) {
 }
 
 export function stakeAndWeight (validator, delegators, defaultValidators) {
-  if (validator.weight) {
-    const currentValidator = defaultValidators
-      .find(v => v.validator === validator.id)
+  try {
+    if (validator.weight) {
+      const currentValidator = defaultValidators
+        .find(v => v.validator === validator.id)
 
+      return {
+        delegateStake: 0,
+        delegatorsCount: 0,
+        stakeAmount: currentValidator.stakenAva,
+        weight: validator.weight
+      }
+    }
+
+    const currentDelegators = delegators
+      .filter(d => d.id === validator.id)
+
+    const delegateStake = currentDelegators
+      .reduce((a, b) => {
+        const bStake = parseFloat(b.stakeAmount) ? parseFloat(b.stakeAmount) : 0
+        return a + bStake
+      }, 0.0)
+
+    return {
+      delegateStake,
+      delegatorsCount: currentDelegators.length,
+      stakeAmount: validator.stakeAmount,
+      weight: 0
+    }
+  } catch (err) {
     return {
       delegateStake: 0,
       delegatorsCount: 0,
-      stakeAmount: currentValidator.stakenAva,
-      weight: validator.weight
+      stakeAmount: validator.stakeAmount,
+      weight: 0
     }
   }
-
-  const currentDelegators = delegators
-    .filter(d => d.id === validator.id)
-
-  const delegateStake = currentDelegators
-    .reduce((a, b) => {
-      const bStake = parseFloat(b.stakeAmount) ? parseFloat(b.stakeAmount) : 0
-      return a + bStake
-    }, 0.0)
-
-  return {
-    delegateStake,
-    delegatorsCount: currentDelegators.length,
-    stakeAmount: validator.stakeAmount,
-    weight: 0
-  }
-}
-
-export function getPrecent (v, s) {
-  v = new BigNumber(getAvaFromnAva(v))
-  const allStake = new BigNumber(s)
-  const y = new BigNumber(100)
-  const res = v.multipliedBy(y)
-
-  const result = res.dividedBy(allStake)
-
-  return result.toFixed(8)
-}
-
-export function stake (validators) {
-  return validators.reduce((a, b) => {
-    if (!b.total) return
-    return a + (parseFloat(b.total) / 10 ** 9)
-  }, 0.0)
-}
-
-function getAvaFromnAva (v) {
-  return Number(v) / 10 ** 9
 }
 
 export function mapDelegators (delegators) {
@@ -224,4 +215,26 @@ export const temp = {
     interval: { value: '', label: 'month' },
     label: '1 month'
   }
+}
+
+function cumulativeStake (currentValidators) {
+  return currentValidators.reduce((result, item) => {
+    result += parseFloat(item.percent)
+    return round(result, 1000)
+  }, 0.0)
+}
+
+function getPercent (v, s) {
+  v = new BigNumber(v)
+  const allStake = new BigNumber(s)
+  const y = new BigNumber(100)
+  const res = v.multipliedBy(y)
+
+  const result = res.dividedBy(allStake)
+
+  return result.toFixed(8)
+}
+
+function getAvaFromnAva (v) {
+  return parseFloat(v) / 10 ** 9
 }

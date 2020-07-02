@@ -510,7 +510,47 @@
 <a name='L451'></a><a href='#L451'>451</a>
 <a name='L452'></a><a href='#L452'>452</a>
 <a name='L453'></a><a href='#L453'>453</a>
-<a name='L454'></a><a href='#L454'>454</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L454'></a><a href='#L454'>454</a>
+<a name='L455'></a><a href='#L455'>455</a>
+<a name='L456'></a><a href='#L456'>456</a>
+<a name='L457'></a><a href='#L457'>457</a>
+<a name='L458'></a><a href='#L458'>458</a>
+<a name='L459'></a><a href='#L459'>459</a>
+<a name='L460'></a><a href='#L460'>460</a>
+<a name='L461'></a><a href='#L461'>461</a>
+<a name='L462'></a><a href='#L462'>462</a>
+<a name='L463'></a><a href='#L463'>463</a>
+<a name='L464'></a><a href='#L464'>464</a>
+<a name='L465'></a><a href='#L465'>465</a>
+<a name='L466'></a><a href='#L466'>466</a>
+<a name='L467'></a><a href='#L467'>467</a>
+<a name='L468'></a><a href='#L468'>468</a>
+<a name='L469'></a><a href='#L469'>469</a>
+<a name='L470'></a><a href='#L470'>470</a>
+<a name='L471'></a><a href='#L471'>471</a>
+<a name='L472'></a><a href='#L472'>472</a>
+<a name='L473'></a><a href='#L473'>473</a>
+<a name='L474'></a><a href='#L474'>474</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1044,7 +1084,13 @@
             &lt;div v-if="col.name === 'validator'" class="row q-pl-md"&gt;
             &lt;!--&lt;div :style="'border: solid 2px ' + border + ';border-radius: 50px;width: 24px;'"&gt;--&gt;
               &lt;q-avatar size="25px"&gt;
-                &lt;img :src="props.row.avatar" /&gt;
+                &lt;q-img :src="props.row.avatar"&gt;
+                  &lt;template v-slot:error&gt;
+                    &lt;div class="bg-negative text-white"&gt;
+                      ?
+                    &lt;/div&gt;
+                &lt;/template&gt;
+                &lt;/q-img&gt;
               &lt;/q-avatar&gt;
               &lt;div
                 style="cursor:pointer;font-size: 90%;"
@@ -1057,7 +1103,7 @@
               &lt;div&gt;
                 &lt;small class="text-grey"&gt;Total&lt;/small&gt; {{ props.row.total &gt; 1 ? props.row.total.toLocaleString() : props.row.total }}
                 &lt;small class="text-orange"&gt;
-                  {{ props.row.precent }} %
+                  {{ props.row.percent }} %
                 &lt;/small&gt;
               &lt;/div&gt;
               &lt;div&gt;
@@ -1065,7 +1111,7 @@
                 &lt;small class="text-grey"&gt;Delegated&lt;/small&gt; {{ props.row.delegateStake }}
               &lt;/div&gt;
             &lt;/div&gt;
-            &lt;div v-else-if="col.name === 'precent'"&gt;
+            &lt;div v-else-if="col.name === 'percent'"&gt;
               &lt;div class="container_row" v-if="props.row.cumulativeStake"&gt;
                 &lt;div class="layer1"&gt;
                   &lt;q-linear-progress
@@ -1079,8 +1125,8 @@
                 &lt;div class="layer2"&gt;
                   &lt;q-linear-progress
                     size="50px"
-                    :value="(props.row.cumulativeStake - props.row.precent) / 100"
-                    :buffer="(props.row.cumulativeStake - props.row.precent) / 100"
+                    :value="(props.row.cumulativeStake - props.row.percent) / 100"
+                    :buffer="(props.row.cumulativeStake - props.row.percent) / 100"
                     color="blue-grey-5"&gt;
                     &lt;div
                       class="absolute-full text-black q-ml-xs"
@@ -1130,7 +1176,13 @@
             &lt;q-item&gt;
               &lt;q-item-section avatar&gt;
                 &lt;q-avatar&gt;
-                  &lt;img :src="props.row.avatar"&gt;
+                  &lt;q-img :src="props.row.avatar"&gt;
+                    &lt;template v-slot:error&gt;
+                      &lt;div&gt;
+                        ?
+                      &lt;/div&gt;
+                    &lt;/template&gt;
+                  &lt;/q-img&gt;
                 &lt;/q-avatar&gt;
               &lt;/q-item-section&gt;
               &lt;q-item-section&gt;
@@ -1179,8 +1231,16 @@
                 &lt;small style="color: grey;"&gt;
                   ({{ getLocalString(props.row.stakenAva) }} nAvax)
                 &lt;/small&gt;
-              &lt;div class="q-mb-md" v-if="props.row.precent !== 'NaN'"&gt;
-                &lt;small style="color: grey;"&gt;{{ props.row.precent }} %&lt;/small&gt;
+                &lt;div&gt;
+                &lt;small class="text-orange" v-if="props.row.percent !== 'NaN'"&gt;
+                  {{ props.row.percent }} %
+                &lt;/small&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;small class="text-grey"&gt;Delegated&lt;/small&gt; {{ props.row.delegateStake }}
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;small class="text-grey"&gt;Total&lt;/small&gt; {{ props.row.total &gt; 1 ? props.row.total.toLocaleString() : props.row.total }}
               &lt;/div&gt;
               &lt;q-separator class="q-mb-md"/&gt;
               &lt;div class="q-pl-xs"&gt;
@@ -1205,7 +1265,7 @@
                 &lt;cumulative-stake-chart
                   v-if="props.row.cumulativeStake"
                   v-bind:name="props.row.validator"
-                  v-bind:percent="props.row.precent"
+                  v-bind:percent="props.row.percent"
                   v-bind:percentAll="props.row.cumulativeStake ? props.row.cumulativeStake : NaN"
                 /&gt;&lt;div v-else&gt; - &lt;/div&gt;
               &lt;/q-card-section&gt;
@@ -1304,7 +1364,7 @@ export default {
           sortable: true
         },
         {
-          name: 'precent',
+          name: 'percent',
           align: 'left',
           label: 'CUMULATIVE STAKE (%)',
           field: 'cumulativeStake'
@@ -1331,8 +1391,8 @@ export default {
     },
 <span class="fstat-no" title="function not covered" >    visibleColumns: function () {</span>
 <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      const columns = this.columns.map(c =&gt; c.name)</span></span>
-<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      if (this.curentValidators.find(a =&gt; a.precent === 'NaN')) {</span></span></span>
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        return columns.filter(c =&gt; c !== 'precent')</span></span>
+<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >      if (this.curentValidators.find(a =&gt; a.percent === 'NaN')) {</span></span></span>
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >        return columns.filter(c =&gt; c !== 'percent')</span></span>
       }
 <span class="cstat-no" title="statement not covered" >      return columns</span>
     }
@@ -1423,7 +1483,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Jun 26 2020 16:01:32 GMT+0300 (Eastern European Summer Time)
+                at Thu Jul 02 2020 11:31:55 GMT+0300 (Eastern European Summer Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

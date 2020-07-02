@@ -79,7 +79,13 @@
             <div v-if="col.name === 'validator'" class="row q-pl-md">
             <!--<div :style="'border: solid 2px ' + border + ';border-radius: 50px;width: 24px;'">-->
               <q-avatar size="25px">
-                <img :src="props.row.avatar" />
+                <q-img :src="props.row.avatar">
+                  <template v-slot:error>
+                    <div class="bg-negative text-white">
+                      ?
+                    </div>
+                </template>
+                </q-img>
               </q-avatar>
               <div
                 style="cursor:pointer;font-size: 90%;"
@@ -92,7 +98,7 @@
               <div>
                 <small class="text-grey">Total</small> {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
                 <small class="text-orange">
-                  {{ props.row.precent }} %
+                  {{ props.row.percent }} %
                 </small>
               </div>
               <div>
@@ -100,7 +106,7 @@
                 <small class="text-grey">Delegated</small> {{ props.row.delegateStake }}
               </div>
             </div>
-            <div v-else-if="col.name === 'precent'">
+            <div v-else-if="col.name === 'percent'">
               <div class="container_row" v-if="props.row.cumulativeStake">
                 <div class="layer1">
                   <q-linear-progress
@@ -114,8 +120,8 @@
                 <div class="layer2">
                   <q-linear-progress
                     size="50px"
-                    :value="(props.row.cumulativeStake - props.row.precent) / 100"
-                    :buffer="(props.row.cumulativeStake - props.row.precent) / 100"
+                    :value="(props.row.cumulativeStake - props.row.percent) / 100"
+                    :buffer="(props.row.cumulativeStake - props.row.percent) / 100"
                     color="blue-grey-5">
                     <div
                       class="absolute-full text-black q-ml-xs"
@@ -165,7 +171,13 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar>
-                  <img :src="props.row.avatar">
+                  <q-img :src="props.row.avatar">
+                    <template v-slot:error>
+                      <div>
+                        ?
+                      </div>
+                    </template>
+                  </q-img>
                 </q-avatar>
               </q-item-section>
               <q-item-section>
@@ -215,8 +227,8 @@
                   ({{ getLocalString(props.row.stakenAva) }} nAvax)
                 </small>
                 <div>
-                <small class="text-orange" v-if="props.row.precent !== 'NaN'">
-                  {{ props.row.precent }} %
+                <small class="text-orange" v-if="props.row.percent !== 'NaN'">
+                  {{ props.row.percent }} %
                 </small>
               </div>
               <div>
@@ -248,7 +260,7 @@
                 <cumulative-stake-chart
                   v-if="props.row.cumulativeStake"
                   v-bind:name="props.row.validator"
-                  v-bind:percent="props.row.precent"
+                  v-bind:percent="props.row.percent"
                   v-bind:percentAll="props.row.cumulativeStake ? props.row.cumulativeStake : NaN"
                 /><div v-else> - </div>
               </q-card-section>
@@ -347,7 +359,7 @@ export default {
           sortable: true
         },
         {
-          name: 'precent',
+          name: 'percent',
           align: 'left',
           label: 'CUMULATIVE STAKE (%)',
           field: 'cumulativeStake'
@@ -374,8 +386,8 @@ export default {
     },
     visibleColumns: function () {
       const columns = this.columns.map(c => c.name)
-      if (this.curentValidators.find(a => a.precent === 'NaN')) {
-        return columns.filter(c => c !== 'precent')
+      if (this.curentValidators.find(a => a.percent === 'NaN')) {
+        return columns.filter(c => c !== 'percent')
       }
       return columns
     }
