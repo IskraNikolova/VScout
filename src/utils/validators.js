@@ -65,7 +65,7 @@ export function validatorProcessing (validators, delegators, defaultValidators) 
     v.cumulativeStake = cumulativeStake(currentValidators)
     return v
   })
-  return { allStake, validators: result }
+  return { allStake: getAvaFromnAva(allStake), validators: result }
 }
 
 export function compare (a, b) {

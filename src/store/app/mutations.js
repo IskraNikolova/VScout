@@ -1,5 +1,7 @@
-const { network } = require('./../../modules/config').default
 import Vue from 'vue'
+import { round } from './../../utils/commons'
+
+const { network } = require('./../../modules/config').default
 
 import {
   SET_NODE_ID,
@@ -41,7 +43,7 @@ const mutations = {
     state.validators = validators
   },
   [SET_STAKED_AVA]: (state, { stakedAva }) => {
-    state.stakedAVA = stakedAva
+    state.stakedAVA = round(stakedAva, 100)
   },
   [SET_DELEGATORS]: (state, { delegators }) => {
     state.delegators = delegators
