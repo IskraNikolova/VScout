@@ -11,7 +11,7 @@
         <q-toolbar-title></q-toolbar-title>
         <q-img class="xs" src="~assets/AVAVE.png" id="toolbar-logo"/>
         <q-img class="sm" src="~assets/AVAVE.png" id="toolbar-logo"/>
-        <q-btn push no-caps flat id="logo-sim" icon="img:statics/rwc.svg">
+        <!--<q-btn push no-caps flat id="logo-sim" icon="img:statics/rwc.svg">
           <q-popup-proxy>
             <q-banner class="q-pa-md" dense style="width: 430px;">
               <div class="q-pb-md">Reward Calculator</div>
@@ -79,6 +79,70 @@
               </div>
             </q-banner>
           </q-popup-proxy>
+        </q-btn>-->
+        <q-btn push no-caps flat id="logo-sim" icon="img:statics/rwc.svg">
+          <q-popup-proxy>
+            <q-banner class="q-pa-md" dense style="width: 430px;">
+              <div class="q-pb-md">Reward Calculator</div>
+              <div class="q-pa-md absolute-top-right">
+                <q-badge outline size="xs" color="accent" :label="percentReward.toFixed(2) + '%'" />
+                </div>
+              <q-input
+                label-color="orange"
+                outlined
+                v-model="stakeAmount"
+                label="Staking Amount"
+                mask="#"
+                input-class="text-right"
+                suffix="$AVAX"
+                precision= '2'
+                reverse-fill-mask
+                color="accent"
+                @input="calculate"
+                class="q-pb-xl"
+                :rules="[value => value >= 2000 || 'Stake Amount must be greater or equal to 2000 $AVAX']"
+              />
+              <q-slider
+                class="q-ml-xs q-mr-xs"
+                v-model="stakeTime"
+                :min="2"
+                :max="52"
+                :step="1"
+                :label-value="'Staking Time ' + stakeTime + ' weeks'"
+                label-always
+                @input="calculate"
+                label-text-color="orange"
+                label-color="white"
+                color="orange"
+              />
+              <div class="row">
+                <div class="col-4">
+                  <small>Weekly Earning  </small>
+                  <div>
+                    <span class="text-accent">
+                      {{ weekly.toFixed(2) }}
+                    </span> $AVAX&nbsp;
+                  </div>
+                </div>
+                <div class="col-4 q-pl-xs">
+                  <small>{{ stakeTime }} Weeks Earnings </small>
+                  <div>
+                    <span class="text-accent">
+                      {{ (weekly * stakeTime).toFixed(2) }}
+                    </span> $AVAX
+                  </div>
+                </div>
+                <div class="col-4 q-pl-md">
+                  <small>Yearly Earning </small>
+                  <div>
+                    <span class="text-accent">
+                      {{ result.toFixed(2) }}
+                    </span> $AVAX
+                  </div>
+                  </div>
+                </div>
+            </q-banner>
+          </q-popup-proxy>
         </q-btn>
         <select-network-dropdown />
         <q-btn-dropdown
@@ -109,16 +173,28 @@ export default {
     SwitchEndpoint,
     SelectNetworkDropdown
   },
+  // data () {
+  //   return {
+  //     stakeTime: 2,
+  //     result: 0.00,
+  //     yearly: 0.00,
+  //     weekly: 0.00,
+  //     monthly: 0.00,
+  //     btnNetwork: false,
+  //     stakeAmount: 2000,
+  //     percentReward: 12,
+  //     switchNet: '#target-el'
+  //   }
+  // },
   data () {
     return {
+      stakeAmount: 2000,
       stakeTime: 2,
       result: 0.00,
       yearly: 0.00,
       weekly: 0.00,
-      monthly: 0.00,
+      percentReward: 4,
       btnNetwork: false,
-      stakeAmount: 2000,
-      percentReward: 12,
       switchNet: '#target-el'
     }
   },
@@ -126,11 +202,25 @@ export default {
     this.calculate()
   },
   methods: {
+    // calculate () {
+    //   this.stakeTime = Math.round(this.stakeTime)
+    //   this.yearly = (this.stakeAmount * this.percentReward) / 100
+    //   this.monthly = (this.stakeAmount * (this.percentReward / 12)) / 100
+    //   this.weekly = (this.stakeAmount * (this.percentReward / 52)) / 100
+    // },
     calculate () {
       this.stakeTime = Math.round(this.stakeTime)
-      this.yearly = (this.stakeAmount * this.percentReward) / 100
-      this.monthly = (this.stakeAmount * (this.percentReward / 12)) / 100
-      this.weekly = (this.stakeAmount * (this.percentReward / 52)) / 100
+      const basePercY = 4
+      if (this.stakeTime > 2) {
+        //  additional percent reward; calculate 11.11%  bonus devide 52 weeks
+        const bonusPercentPerWeek = 0.2136538461538462
+        this.percentReward = (this.stakeTime * bonusPercentPerWeek) + basePercY
+        this.result = (this.stakeAmount * this.percentReward) / 100
+      } else {
+        this.percentReward = basePercY
+        this.result = (this.stakeAmount * basePercY) / 100
+      }
+      this.weekly = this.result / 52
     }
   }
 }
