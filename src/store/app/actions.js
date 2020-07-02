@@ -78,13 +78,16 @@ import {
 } from './../../modules/networkRpc'
 
 import {
-  temp,
   splitAccounts,
   mapDelegators,
   mapValidators,
   validatorProcessing,
   splitPendingAccounts
 } from './../../utils/validators'
+
+import {
+  temp
+} from './../../utils/constants'
 
 async function initApp ({ dispatch, getters }) {
   try {
@@ -109,22 +112,25 @@ async function initApp ({ dispatch, getters }) {
   // dispatch(SUBSCRIBE_TO_EVENT)
 
   setInterval(async () => {
-    await Promise.all([
-      dispatch(GET_NODE_HEALTH),
-      dispatch(GET_VALIDATORS, {
-        subnetID: getters.subnetID,
-        endpoint: getters.networkEndpoint
-      }),
-      dispatch(GET_PENDING_VALIDATORS, {
-        subnetID: getters.subnetID
-      }),
-      dispatch(GET_TXS_HISTORY, {
-        txHKey: getters.txHKey
-      })
-    ])
-    dispatch(GET_TOTAL_TXS)
-    if (getters.prevTotalTxs !== getters.totalTxsCount) {
-      await dispatch(GET_TX_FOR_24_HOURS)
+    try {
+      await Promise.all([
+        dispatch(GET_NODE_HEALTH),
+        dispatch(GET_VALIDATORS, {
+          subnetID: getters.subnetID,
+          endpoint: getters.networkEndpoint
+        }),
+        dispatch(GET_PENDING_VALIDATORS, {
+          subnetID: getters.subnetID
+        }),
+        dispatch(GET_TXS_HISTORY, {
+          txHKey: getters.txHKey
+        })
+      ])
+      dispatch(GET_TOTAL_TXS)
+      if (getters.prevTotalTxs !== getters.totalTxsCount) {
+        await dispatch(GET_TX_FOR_24_HOURS)
+      }
+    } catch (err) {
     }
   }, 6000)
 }

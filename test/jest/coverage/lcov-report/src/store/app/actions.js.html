@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/224</span>
+                <span class='fraction'>0/223</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/219</span>
+                <span class='fraction'>0/218</span>
             </div>
         
             
@@ -724,7 +724,11 @@
 <a name='L665'></a><a href='#L665'>665</a>
 <a name='L666'></a><a href='#L666'>666</a>
 <a name='L667'></a><a href='#L667'>667</a>
-<a name='L668'></a><a href='#L668'>668</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L668'></a><a href='#L668'>668</a>
+<a name='L669'></a><a href='#L669'>669</a>
+<a name='L670'></a><a href='#L670'>670</a>
+<a name='L671'></a><a href='#L671'>671</a>
+<a name='L672'></a><a href='#L672'>672</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -815,26 +819,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -848,8 +833,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1480,10 +1488,11 @@ import {
 } from './../../utils/validators'
 &nbsp;
 async function <span class="fstat-no" title="function not covered" >initApp </span>({ dispatch, getters }) {
-<span class="cstat-no" title="statement not covered" >  await dispatch(GET_BLOCKCHAINS)</span>
-<span class="cstat-no" title="statement not covered" >  await dispatch(GET_NODE_ID)</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
 <span class="cstat-no" title="statement not covered" >    Promise.all([</span>
+      dispatch(GET_NODE_HEALTH),
+      dispatch(GET_BLOCKCHAINS),
+      dispatch(GET_NODE_ID),
       dispatch(GET_TX_FOR_24_HOURS),
       dispatch(GET_TXS_HISTORY, {
         txHKey: getters.txHKey
@@ -1501,22 +1510,25 @@ async function <span class="fstat-no" title="function not covered" >initApp </sp
   // dispatch(SUBSCRIBE_TO_EVENT)
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  setInterval(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    await Promise.all([</span>
-      dispatch(GET_NODE_HEALTH),
-      dispatch(GET_PENDING_VALIDATORS, {
-        subnetID: getters.subnetID
-      }),
-      dispatch(GET_VALIDATORS, {
-        subnetID: getters.subnetID,
-        endpoint: getters.networkEndpoint
-      }),
-      dispatch(GET_TXS_HISTORY, {
-        txHKey: getters.txHKey
-      })
-    ])
-<span class="cstat-no" title="statement not covered" >    dispatch(GET_TOTAL_TXS)</span>
-<span class="cstat-no" title="statement not covered" >    if (getters.prevTotalTxs !== getters.totalTxsCount) {</span>
-<span class="cstat-no" title="statement not covered" >      await dispatch(GET_TX_FOR_24_HOURS)</span>
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >      await Promise.all([</span>
+        dispatch(GET_NODE_HEALTH),
+        dispatch(GET_VALIDATORS, {
+          subnetID: getters.subnetID,
+          endpoint: getters.networkEndpoint
+        }),
+        dispatch(GET_PENDING_VALIDATORS, {
+          subnetID: getters.subnetID
+        }),
+        dispatch(GET_TXS_HISTORY, {
+          txHKey: getters.txHKey
+        })
+      ])
+<span class="cstat-no" title="statement not covered" >      dispatch(GET_TOTAL_TXS)</span>
+<span class="cstat-no" title="statement not covered" >      if (getters.prevTotalTxs !== getters.totalTxsCount) {</span>
+<span class="cstat-no" title="statement not covered" >        await dispatch(GET_TX_FOR_24_HOURS)</span>
+      }
+    } catch (err) {
     }
   }, 6000)
 }
@@ -2065,7 +2077,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jul 02 2020 11:31:55 GMT+0300 (Eastern European Summer Time)
+                at Thu Jul 02 2020 15:30:03 GMT+0300 (Eastern European Summer Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

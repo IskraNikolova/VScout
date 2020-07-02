@@ -40,3 +40,36 @@ export const c = {
   contentTypeValue: 'application/json',
   contentTypeHeader: 'content-type'
 }
+
+export const temp = {
+  minute: {
+    sub: { value: 30, label: 'minute' },
+    interval: { value: 60, label: 's' },
+    label: '60 seconds'
+  },
+  hourTwo: {
+    sub: { value: 2, label: 'hour' },
+    interval: { value: 5, label: 'm' },
+    label: '5 minutes'
+  },
+  day: {
+    sub: { value: 1, label: 'day' },
+    interval: { value: '', label: 'hour' },
+    label: '1 hour'
+  },
+  week: {
+    sub: { value: 7, label: 'days' },
+    interval: { value: '', label: 'day' },
+    label: '24 hours'
+  },
+  month: {
+    sub: { value: 1, label: 'months' },
+    interval: { value: '', label: 'day' },
+    label: '1 day'
+  },
+  year: {
+    sub: { value: 1, label: 'years' },
+    interval: { value: '', label: 'month' },
+    label: '1 month'
+  }
+}

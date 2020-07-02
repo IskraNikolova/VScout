@@ -1,4 +1,11 @@
-import { stakeAndWeight, compare, validatorProcessing, mapValidators } from './../../../src/utils/validators'
+import {
+  compare,
+  mapValidators,
+  mapDelegators,
+  validatorProcessing,
+  getDelegatorsForNode
+} from './../../../src/utils/validators'
+
 import { fromNow } from './../../../src/modules/time'
 
 const validators = [
@@ -29,10 +36,13 @@ const sortedValidators = [
     {"startTime":"1591292875","endTime":"1592329075","total":"10000","stakeAmount":"10000","stakenAva":"10000","address":"PKk3UYUYcuEXZw6Py5z66chBJKa817BVi","id":"4iiG6ppZDUdbFuSFKn5sf7ZQ1zgYRm14m","validator":"4iiG6ppZDUdbFuSFKn5sf7ZQ1zgYRm14m"},
     {"startTime":"1591999695","endTime":"1592299095","total":"6000","stakeAmount":"6000","stakenAva":"6000","address":"OKk3UYUYcuEXZw6Py5z66chBJKa817BVi","id":"CbUDnz0000YooTgSjaXwU3cSK1FFne9rj","validator":"CbUDnz0000YooTgSjaXwU3cSK1FFne9rj"},
     {"startTime":"1591999695","endTime":"1592297095","total":"6000","stakeAmount":"6000","stakenAva":"6000","address":"OKk3UYUYcuEXZw6Py5z66chBJKa817BVi","id":"CbUDnz0000YooTgSjaXwU3cSK1FFne9rj","validator":"CbUDnz0000YooTgSjaXwU3cSK1FFne9rj"}]
-test('processing validators with null/undefined/empty array delegators and default validators', () => {
+
+test('processing validators with null/undefined/empty array validators, delegators and default validators', () => {
     const result = validatorProcessing(validatorsForProcess, null, null)
     const result2 = validatorProcessing(validatorsForProcess, [], [])
     const result3 = validatorProcessing(validatorsForProcess, undefined, undefined)
+    const result4 = validatorProcessing(undefined, undefined, undefined)
+
 
     const expectResult =  [
         {
@@ -80,6 +90,7 @@ test('processing validators with null/undefined/empty array delegators and defau
     expect(result.validators).toEqual(expectResult)
     expect(result2.validators).toEqual(expectResult)
     expect(result3.validators).toEqual(expectResult)
+    expect(result4.validators).toEqual([])
 })
 
 test('processing pending validators', () => {
@@ -125,6 +136,16 @@ test('processing pending validators', () => {
     expect(result).toEqual(expectResult)
 })
 
+test('map delegators with undefined/null/empty array for delegators', () => {
+    const result = mapDelegators(undefined)
+    const result2 = mapDelegators(null)
+    const result3 = mapDelegators([])
+
+    expect(result).toEqual([])
+    expect(result2).toEqual([])
+    expect(result3).toEqual([])
+})
+
 test('take stake amount', () => {
     const validator =  {
         "startTime":"1590999695",
@@ -136,33 +157,10 @@ test('take stake amount', () => {
 
     const expectResult = {
       "delegateStake": 1000,
-      "delegatorsCount": 1,
-      "stakeAmount":"10000000",
-      "weight": 0
+      "delegatorsCount": 1
     }
 
-    const result = stakeAndWeight(validator, delegators, validators)
-
-    expect(result).toEqual(expectResult)
-})
-
-test('take weight', () => {
-    const validator =  {
-        "startTime":"1590999695",
-        "endTime":"1592295095",
-        "weight": 1,
-        "address":"AtR9rdf3UsXMiCfHxaAjjkkjrpVCqV7mbaE",
-        "id":"CbUD998mP1YrLTgSjaXwU3cSK1FFne9rj"
-    }
-
-    const expectResult = {
-      "delegateStake": 0,
-      "delegatorsCount": 0,
-      "stakeAmount": "10000000",
-      "weight": 1
-    }
-
-    const result = stakeAndWeight(validator, delegators, validators)
+    const result = getDelegatorsForNode(validator, delegators)
 
     expect(result).toEqual(expectResult)
 })
@@ -178,14 +176,12 @@ test('take stake amount with empty array of delegators', () => {
 
     const expectResult = {
       "delegateStake": 0,
-      "delegatorsCount": 0,
-      "stakeAmount":"10000000",
-      "weight": 0
+      "delegatorsCount": 0
     }
 
-    const result = stakeAndWeight(validator, [], validators)
-    const result2 = stakeAndWeight(validator, null, validators)
-    const result3 = stakeAndWeight(validator, undefined, validators)
+    const result = getDelegatorsForNode(validator, [], validators)
+    const result2 = getDelegatorsForNode(validator, null, validators)
+    const result3 = getDelegatorsForNode(validator, undefined, validators)
 
     expect(result).toEqual(expectResult)
     expect(result2).toEqual(expectResult)

@@ -340,3 +340,12 @@ export function makeMD5 () {
     }
   }
 }
+
+export function getAvatar (id) {
+  const Md5 = makeMD5()
+  const hash = Md5.hex(id)
+  return {
+    monster: `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150`,
+    avatar: `http://www.gravatar.com/avatar/${hash}?d=identicon&s=150`
+  }
+}

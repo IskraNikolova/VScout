@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js')
 
 import { fromNow } from './../modules/time'
-import { groupBy, round, makeMD5 } from './commons'
+import { groupBy, round, getAvatar } from './commons'
 
 /**
 * @param {Array} Array of validators and delegators for split
@@ -80,141 +80,96 @@ export function compare (a, b) {
 }
 
 export function mapValidators (validators, delegators, defaultValidators) {
-  try {
-    const vals = validators.map((val) => {
-      // const info = await _getValidatorById(val.id)
-      const {
-        stakeAmount,
-        delegateStake,
-        delegatorsCount,
-        weight
-      } = stakeAndWeight(val, delegators, defaultValidators)
+  if (!validators) return []
 
-      const MD5 = makeMD5()
-      const hash = MD5.hex(val.id)
-      const avatar = `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150` // info.avatarUrl ? info.avatarUrl : `http://www.gravatar.com/avatar/${hash}?d=monsterid&s=150`
-      const name = val.id // info.name ? info.name : val.id
-      const total = parseFloat(stakeAmount) + parseFloat(delegateStake)
+  return validators.map((val) => {
+    // const info = await _getValidatorById(val.id)
+    let address = ''
+    let delegateStake = 0
+    let delegatorsCount = 0
+    let weight = 0
+    let stakeAmount = 0
+    if (val.weight) {
+      weight = val.weight
 
-      return {
-        name,
-        avatar,
-        weight,
-        delegatorsCount,
-        validator: val.id,
-        address: val.address ? val.address : '',
-        endTime: val.endTime,
-        startTime: val.startTime,
-        stake: getAvaFromnAva(stakeAmount),
-        stakenAva: parseFloat(stakeAmount),
-        delegateStake: getAvaFromnAva(delegateStake),
-        delegateStakenAva: delegateStake,
-        totalnAva: total,
-        total: getAvaFromnAva(total),
-        fromNowST: fromNow(val.startTime)
-        // link: info.link
-      }
-    })
+      const currentValidator = defaultValidators
+        .find(v => v.validator === val.id)
+      stakeAmount = currentValidator.stakenAva
+    } else {
+      address = val.address
+      stakeAmount = val.stakeAmount
 
-    return vals
-  } catch (err) {
-    return {}
-  }
+      const props = getDelegatorsForNode(val, delegators)
+      delegateStake = props.delegateStake
+      delegatorsCount = props.delegatorsCount
+    }
+
+    const avatar = getAvatar(val.id)
+      .monster // info.avatarUrl ? info.avatarUrl : getAvatar(val.id).monster
+    const name = val.id // info.name ? info.name : val.id
+    const total = parseFloat(stakeAmount) + parseFloat(delegateStake)
+
+    return {
+      name,
+      avatar,
+      weight,
+      address,
+      delegatorsCount,
+      totalnAva: total,
+      validator: val.id,
+      endTime: val.endTime,
+      startTime: val.startTime,
+      total: getAvaFromnAva(total),
+      fromNowST: fromNow(val.startTime),
+      delegateStakenAva: delegateStake,
+      stake: getAvaFromnAva(stakeAmount),
+      stakenAva: parseFloat(stakeAmount),
+      delegateStake: getAvaFromnAva(delegateStake)
+      // link: info.link
+    }
+  })
 }
 
-export function stakeAndWeight (validator, delegators, defaultValidators) {
-  try {
-    if (validator.weight) {
-      const currentValidator = defaultValidators
-        .find(v => v.validator === validator.id)
-
-      return {
-        delegateStake: 0,
-        delegatorsCount: 0,
-        stakeAmount: currentValidator.stakenAva,
-        weight: validator.weight
-      }
-    }
-
-    const currentDelegators = delegators
-      .filter(d => d.id === validator.id)
-
-    const delegateStake = currentDelegators
-      .reduce((a, b) => {
-        const bStake = parseFloat(b.stakeAmount) ? parseFloat(b.stakeAmount) : 0
-        return a + bStake
-      }, 0.0)
-
-    return {
-      delegateStake,
-      delegatorsCount: currentDelegators.length,
-      stakeAmount: validator.stakeAmount,
-      weight: 0
-    }
-  } catch (err) {
+export function getDelegatorsForNode (validator, delegators) {
+  if (!delegators) {
     return {
       delegateStake: 0,
-      delegatorsCount: 0,
-      stakeAmount: validator.stakeAmount,
-      weight: 0
+      delegatorsCount: 0
     }
+  }
+
+  const currentDelegators = delegators
+    .filter(d => d.id === validator.id)
+
+  const delegateStake = currentDelegators
+    .reduce((a, b) => {
+      return a + parseFloat(b.stakeAmount)
+    }, 0.0)
+
+  return {
+    delegateStake,
+    delegatorsCount: currentDelegators.length
   }
 }
 
 export function mapDelegators (delegators) {
-  const result = delegators.map((delegator, i) => {
-    const sa = delegator.stakeAmount
-    const MD5 = makeMD5()
-    const hash = MD5.hex(delegator.id)
-    const avatar = 'http://www.gravatar.com/avatar/' + hash + '?d=identicon&s=150'
+  if (!delegators) return []
+  return delegators.map((delegator, i) => {
+    const { avatar } = getAvatar(delegator.id)
     const nodeId = delegator.id
 
     return {
-      index: i + 1,
-      pAccount: delegator.address,
-      stake: getAvaFromnAva(sa),
-      stakenAva: parseFloat(sa),
-      startTime: delegator.startTime,
-      endTime: delegator.endTime,
-      fromNowST: fromNow(delegator.startTime),
       avatar,
-      nodeId
+      nodeId,
+      index: i + 1,
+      endTime: delegator.endTime,
+      pAccount: delegator.address,
+      startTime: delegator.startTime,
+      fromNowST: fromNow(delegator.startTime),
+      stake: getAvaFromnAva(delegator.stakeAmount),
+      stakenAva: parseFloat(delegator.stakeAmount)
     }
   })
-  return result
-}
-
-export const temp = {
-  minute: {
-    sub: { value: 30, label: 'minute' },
-    interval: { value: 60, label: 's' },
-    label: '60 seconds'
-  },
-  hourTwo: {
-    sub: { value: 2, label: 'hour' },
-    interval: { value: 5, label: 'm' },
-    label: '5 minutes'
-  },
-  day: {
-    sub: { value: 1, label: 'day' },
-    interval: { value: '', label: 'hour' },
-    label: '1 hour'
-  },
-  week: {
-    sub: { value: 7, label: 'days' },
-    interval: { value: '', label: 'day' },
-    label: '24 hours'
-  },
-  month: {
-    sub: { value: 1, label: 'months' },
-    interval: { value: '', label: 'day' },
-    label: '1 day'
-  },
-  year: {
-    sub: { value: 1, label: 'years' },
-    interval: { value: '', label: 'month' },
-    label: '1 month'
-  }
 }
 
 function cumulativeStake (currentValidators) {
