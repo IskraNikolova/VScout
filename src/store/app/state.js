@@ -29,6 +29,12 @@ export default function () {
       transactionVolume: 0
     },
     isBlockchainView: true,
-    networkEndpoint: network.endpointUrls[0]
+    networkEndpoint: network.endpointUrls[0],
+    nodeInfo: {
+      networkID: '',
+      networkName: '',
+      nodeVersion: '',
+      peers: []
+    }
   }
 }

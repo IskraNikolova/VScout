@@ -18,19 +18,27 @@
     </div>
     <div id="f-size12">
       Node ID
-      <div class="text-grey">{{ nodeID }}</div>
+      <div class="text-grey">
+        {{ nodeID }}
+        <q-btn class="text-accent" size="xs" flat icon="info" @click="onOpenNodeInfo"/>
+        <node-info-dialog ref="nodeInfoDialog" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+
+import { GET_NODE_INFO } from './../../store/app/types'
 
 import NodeHealthDialog from './../dialogs/node-health-dialog'
+import NodeInfoDialog from './../dialogs/node-info-dialog'
 
 export default {
   name: 'NodeConnection',
   components: {
+    NodeInfoDialog,
     NodeHealthDialog
   },
   computed: {
@@ -56,8 +64,15 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      getNodeInfo: GET_NODE_INFO
+    }),
     onOpenHealth () {
       this.$refs.nodeHealthDialog.open()
+    },
+    async onOpenNodeInfo () {
+      await this.getNodeInfo()
+      this.$refs.nodeInfoDialog.open()
     }
   }
 }

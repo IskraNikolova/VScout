@@ -24,6 +24,7 @@ export default function () {
     },
     uCreate: { isOpen: false },
     nodeHealth: { isOpen: false },
+    nodeInfo: { isOpen: false },
     pCreate: { isOpen: false, type: null },
     assetInfo: { isOpen: false, asset: {} },
     selectAccounts: { isOpen: false, accounts: null },

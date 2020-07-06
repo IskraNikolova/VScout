@@ -154,6 +154,26 @@ export const _getNodeId = async ({ endpoint }) => {
   return response
 }
 
+export const _getNetworkID = async ({ endpoint }) => {
+  const response = await request(endpoint + c.info, body(c.getNetworkID))
+  return response
+}
+
+export const _getNetworkName = async ({ endpoint }) => {
+  const response = await request(endpoint + c.info, body(c.getNetworkName))
+  return response
+}
+
+export const _getNodeVersion = async ({ endpoint }) => {
+  const response = await request(endpoint + c.info, body(c.getNodeVersion))
+  return response
+}
+
+export const _getPeers = async ({ endpoint }) => {
+  const response = await request(endpoint + c.info, body(c.peers))
+  return response
+}
+
 export const _addDefaultSubnetValidator = async ({ endpoint, params }) => {
   const response = await request(endpoint + c.platform, body(c.addDefaultSubnetValidator, params))
   return response

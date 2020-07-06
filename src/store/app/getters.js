@@ -111,6 +111,10 @@ export function nodeID (state) {
   return state.nodeID
 }
 
+export function nodeInfo (state) {
+  return state.nodeInfo
+}
+
 export function nodeHealth (state) {
   return (id) => state.nodeHealth[id]
 }

@@ -15,6 +15,8 @@ import {
   LIST_ACCOUNTS,
   GET_TOTAL_TXS,
   SET_TOTAL_TXS,
+  GET_NODE_INFO,
+  SET_NODE_INFO,
   GET_VALIDATORS,
   SET_DELEGATORS,
   SET_STAKED_AVA,
@@ -56,6 +58,10 @@ import {
   _getLastTx,
   _getTxStatus,
   _getNodeId,
+  _getNetworkID,
+  _getNetworkName,
+  _getNodeVersion,
+  _getPeers,
   _getAccount,
   _createAccount,
   _createUser,
@@ -350,6 +356,36 @@ async function getNodeId ({ getters, commit }) {
     response === null) return
 
   commit(SET_NODE_ID, { nodeID: response.data.result.nodeID })
+}
+
+async function getNodeInfo ({ getters, commit }) {
+  const resNetworkID = await _getNetworkID({ endpoint: getters.networkEndpoint })
+  if (resNetworkID.data.error) {
+    return
+  }
+
+  const resNetworkName = await _getNetworkName({ endpoint: getters.networkEndpoint })
+  if (resNetworkName.data.error) {
+    return
+  }
+
+  const resNodeVersion = await _getNodeVersion({ endpoint: getters.networkEndpoint })
+  if (resNodeVersion.data.error) {
+    return
+  }
+
+  const resNodePeers = await _getPeers({ endpoint: getters.networkEndpoint })
+  if (resNodePeers.data.error) {
+    return
+  }
+  const nodeInfo = {
+    networkID: resNetworkID.data.result.networkID,
+    networkName: resNetworkName.data.result.networkName,
+    nodeVersion: resNodeVersion.data.result.version,
+    peers: resNodePeers.data.result.peers
+  }
+
+  commit(SET_NODE_INFO, { nodeInfo })
 }
 
 async function getAccount (
@@ -654,6 +690,7 @@ export default {
   [SIGN_TX]: signTransaction,
   [FUND_ACCOUNT]: fundAccount,
   [GET_TOTAL_TXS]: getTotalTXs,
+  [GET_NODE_INFO]: getNodeInfo,
   [LIST_ACCOUNTS]: listAccounts,
   [GET_VALIDATORS]: getValidators,
   [CREATE_ACCOUNT]: createAccount,

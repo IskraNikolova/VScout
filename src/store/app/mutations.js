@@ -7,6 +7,7 @@ import {
   SET_NODE_ID,
   SET_SUBNETS,
   SET_ENDPOINT,
+  SET_NODE_INFO,
   SET_TOTAL_TXS,
   SET_VALIDATORS,
   SET_STAKED_AVA,
@@ -31,6 +32,9 @@ const mutations = {
   },
   [SET_SUBNETS]: (state, { subnets }) => {
     state.subnets = subnets
+  },
+  [SET_NODE_INFO]: (state, { nodeInfo }) => {
+    state.nodeInfo = nodeInfo
   },
   [SET_ENDPOINT]: (state, { endpoint }) => {
     state.networkEndpoint = endpoint

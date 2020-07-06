@@ -38,6 +38,9 @@ export const REMOVE_ENDPOINTS_MEMORY = 'REMOVE_ENDPOINTS_MEMORY'
 export const GET_NODE_ID = 'GET_NODE_ID'
 export const SET_NODE_ID = 'SET_NODE_ID'
 
+export const GET_NODE_INFO = 'GET_NODE_INFO'
+export const SET_NODE_INFO = 'SET_NODE_INFO'
+
 export const GET_ACCOUNT = 'GET_ACCOUNT'
 export const FUND_ACCOUNT = 'FUND_ACCOUNT'
 

@@ -4,6 +4,8 @@ import {
   CLOSE_SIGN_TX,
   OPEN_P_CREATE,
   CLOSE_P_CREATE,
+  OPEN_NODE_INFO,
+  CLOSE_NODE_INFO,
   OPEN_ASSET_INFO,
   CLOSE_ASSET_INFO,
   OPEN_CREATE_USER,
@@ -71,6 +73,14 @@ const closeSelectAccounts = ({ commit }) => {
   commit(UPDATE_UI, { selectAccounts: { isOpen: false, accounts: null } })
 }
 
+const openNodeInfo = ({ commit }) => {
+  commit(UPDATE_UI, { nodeInfo: { isOpen: true } })
+}
+
+const closeNodeInfo = ({ commit }) => {
+  commit(UPDATE_UI, { nodeInfo: { isOpen: false } })
+}
+
 const openNodeHealth = ({ commit }) => {
   commit(UPDATE_UI, { nodeHealth: { isOpen: true } })
 }
@@ -126,6 +136,8 @@ export default {
   [OPEN_SIGN_TX]: openSignTx,
   [CLOSE_SIGN_TX]: closeSignTx,
   [OPEN_P_CREATE]: openPCreate,
+  [OPEN_NODE_INFO]: openNodeInfo,
+  [CLOSE_NODE_INFO]: closeNodeInfo,
   [CLOSE_P_CREATE]: closePCreate,
   [OPEN_CREATE_USER]: openCreateU,
   [CLOSE_CREATE_USER]: closeCreateU,
