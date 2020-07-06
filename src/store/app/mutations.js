@@ -21,7 +21,6 @@ import {
   SET_PENDING_DELEGATORS,
   SET_PENDING_VALIDATORS,
   SET_CURRENT_BLOCKCHAIN,
-  SET_PREVIOUS_TOTAL_TXS,
   REMOVE_ENDPOINTS_MEMORY,
   SET_ASSETS_BY_BLOCKCHAINS
 } from './types'
@@ -86,9 +85,6 @@ const mutations = {
     state.currentBlockchain = blockchain
     state.isBlockchainView = true
     state.subnetID = blockchain.subnetID
-  },
-  [SET_PREVIOUS_TOTAL_TXS]: (state, { prevTotalTxs }) => {
-    state.prevTotalTxs = prevTotalTxs
   },
   [REMOVE_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
     state.endpointsMemory = state.endpointsMemory.filter(a => a !== endpoint)

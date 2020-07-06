@@ -31,7 +31,6 @@ import {
   GET_TX_FOR_24_HOURS,
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
-  SET_PREVIOUS_TOTAL_TXS,
   DELEGATE_VALIDATOR,
   GET_PENDING_VALIDATORS,
   SET_PENDING_VALIDATORS,
@@ -124,12 +123,10 @@ async function initApp ({ dispatch, getters }) {
         }),
         dispatch(GET_TXS_HISTORY, {
           txHKey: getters.txHKey
-        })
+        }),
+        dispatch(GET_TOTAL_TXS),
+        dispatch(GET_TX_FOR_24_HOURS)
       ])
-      dispatch(GET_TOTAL_TXS)
-      if (getters.prevTotalTxs !== getters.totalTxsCount) {
-        await dispatch(GET_TX_FOR_24_HOURS)
-      }
     } catch (err) {
     }
   }, 6000)
@@ -213,9 +210,7 @@ async function getTotalTXs ({ commit, getters }) {
     response === null) return
 
   const totalTxsCount = response.count
-  commit(SET_PREVIOUS_TOTAL_TXS, {
-    prevTotalTxs: getters.totalTxsCount
-  })
+
   commit(SET_TOTAL_TXS, { totalTxsCount })
 }
 
