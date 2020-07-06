@@ -295,6 +295,7 @@ async function getValidators (
     subnetID,
     endpoint
   })
+
   if (response.data.error) {
     return null
   }

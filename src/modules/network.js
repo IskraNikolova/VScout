@@ -62,8 +62,16 @@ export const _getAggregatesWithI = async (s, e, intervalSize) => {
 }
 
 export const request = async (endpoint, body) => {
-  const response = await axios.post(endpoint, body)
-  return response
+  try {
+    const response = await axios.post(endpoint, body)
+    return response
+  } catch (err) {
+    return {
+      data: {
+        error: err
+      }
+    }
+  }
 }
 
 export const _getBlockchains = async ({ endpoint }) => {
@@ -142,7 +150,7 @@ export const _getTxStatus = async ({ endpoint, params }) => {
 }
 
 export const _getNodeId = async ({ endpoint }) => {
-  const response = await request(endpoint + c.admin, body(c.getNodeID))
+  const response = await request(endpoint + c.info, body(c.getNodeID))
   return response
 }
 

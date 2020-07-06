@@ -102,56 +102,21 @@ export default {
         .filter(a => a.includes(this.customEndpoint))
     },
     async onSelectEndpoint (endpoint, isCustom) {
-      try {
-        this.$store.commit(UPDATE_UI, { doesItConnect: true })
-        const response = await _getNodeId({ endpoint })
-        if (response.data.error) {
-          const result = this.getValidators({
-            subnetID: this.subnetID,
-            endpoint
-          })
-          if (result) {
-            this.$store.commit(SET_NODE_ID, { nodeID: '' })
-            this.$store.commit(SET_ENDPOINT, { endpoint })
-            if (isCustom) {
-              this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
-              this.customEndpoint = ''
-            }
-            this.onSuccess(endpoint)
-          } else {
-            this.onError(response.data.error.message)
-          }
-          return
-        }
-        const nodeID = response.data.result.nodeID
-        this.$store.commit(SET_ENDPOINT, { endpoint })
-        this.$store.commit(SET_NODE_ID, { nodeID })
-        if (isCustom) {
-          this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
-          this.customEndpoint = ''
-        }
-        this.getValidators({
-          subnetID: this.subnetID,
-          endpoint
-        })
-        this.onSuccess(endpoint)
-      } catch (err) {
-        const result = this.getValidators({
-          subnetID: this.subnetID,
-          endpoint
-        })
-        if (result) {
-          this.$store.commit(SET_NODE_ID, { nodeID: '' })
-          this.$store.commit(SET_ENDPOINT, { endpoint })
-          if (isCustom) {
-            this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
-            this.customEndpoint = ''
-          }
-          this.onSuccess(endpoint)
-        } else {
-          this.onError(err.message)
-        }
+      this.$store.commit(UPDATE_UI, { doesItConnect: true })
+      const response = await _getNodeId({ endpoint })
+      if (response.data.error) {
+        this.onError(response.data.error.message)
+        return
       }
+
+      const nodeID = response.data.result.nodeID
+      this.$store.commit(SET_ENDPOINT, { endpoint })
+      this.$store.commit(SET_NODE_ID, { nodeID })
+      if (isCustom) {
+        this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
+        this.customEndpoint = ''
+      }
+      this.onSuccess(endpoint)
     },
     onSuccess (endpoint) {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })
