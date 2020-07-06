@@ -59,7 +59,7 @@
                       <div><span class="text-grey">IP: </span> {{ peer.ip }}<q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.ip)"/></div>
                       <div><span class="text-grey">Public IP: </span> {{ peer.publicIP }}<q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.publicIP)"/></div>
                       <div><span class="text-grey">ID: </span> {{ peer.id }} <q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.id)"/></div>
-                      <div><span class="text-grey">Version: </span> <span class="text=accent">{{ peer.version }}</span></div>
+                      <div><span class="text-grey">Version: </span> <span class="text-accent">{{ peer.version }}</span></div>
                       <div><span class="text-grey">Last Sent: </span> {{ dateFormat(peer.lastSent) }}</div>
                       <div><span class="text-grey">Last Received: </span> {{ dateFormat(peer.lastReceived) }}</div>
                     </q-item-section>
