@@ -46,7 +46,7 @@
                 label-color="orange"
                 v-model="destination"
                 label="Destination account *"
-                hint="The staked AVA tokens and rewards are sent to an account that is specified. The validation reward is also sent to the same account as the staked AVA."
+                hint="The staked AVAX tokens and rewards are sent to an account that is specified. The validation reward is also sent to the same account as the staked AVA."
                 lazy-rules
                 :rules="[
                   val => val !== null && val !== '' ||
@@ -116,7 +116,7 @@
                 v-model="stakeAmount"
                 type="number"
                 label="Stake Amount *"
-                hint="In order to validate the Default Subnet one must stake AVA tokens. The minimum amount that one can stake is 10 μAVA."
+                hint="In order to validate the Default Subnet one must stake AVAX tokens. The minimum amount that one can stake is 10 μAVA."
                 lazy-rules outlined
                 :rules="[
                   val => val !== null && val !== '' ||

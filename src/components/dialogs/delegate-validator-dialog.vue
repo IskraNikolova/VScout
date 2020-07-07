@@ -18,7 +18,7 @@
               Delegate a Validator to the Default Subnet
             </q-item-label>
             <q-item-label caption>
-              A delegator stakes AVA and specifies a validator (the delegatee) to validate on their behalf. The delegatee has an increased probability of being sampled by other validators (weight) in proportion to the stake delegated to them.
+              A delegator stakes AVAX and specifies a validator (the delegatee) to validate on their behalf. The delegatee has an increased probability of being sampled by other validators (weight) in proportion to the stake delegated to them.
               The delegatee charges a fee to the delegator; the former receives a percentage of the delegator’s validation reward (if any.)
               The delegation period must be a subset of the perdiod that the delegatee validates the Default Subnet.
             </q-item-label>
@@ -58,7 +58,7 @@
                 label-color="orange"
                 v-model="destination"
                 label="Destination account *"
-                hint="The address of the account the staked AVA and validation reward (if applicable) are sent to at endTime."
+                hint="The address of the account the staked AVAX and validation reward (if applicable) are sent to at endTime."
                 lazy-rules
                 :rules="[
                   val => val !== null && val !== '' ||
@@ -99,7 +99,7 @@
                 v-model="stakeAmount"
                 type="number"
                 label="Stake Amount *"
-                hint="The amount of nAVA the delegator is staking."
+                hint="The amount of nAVAX the delegator is staking."
                 lazy-rules outlined
                 :rules="[
                   val => val !== null && val !== '' ||
@@ -141,7 +141,7 @@
                 label-color="orange"
                 v-model="endDate"
                 label="End Date"
-                hint="The Unix time when the delegator stops delegating (and staked AVA is returned)"
+                hint="The Unix time when the delegator stops delegating (and staked AVAX is returned)"
                 lazy-rules outlined
                 :rules="[
                   val => val !== null && val !== '' ||

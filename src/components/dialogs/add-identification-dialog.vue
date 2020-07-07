@@ -116,7 +116,7 @@
                 label-color="orange"
                 v-model="address"
                 label="P-Chain address "
-                hint="The account providing the staked AVA. Are You?"
+                hint="The account providing the staked AVAX. Are You?"
               />
               <q-input
                 color="accent"

@@ -187,7 +187,7 @@ function getPercent (v, s) {
 
   const result = res.dividedBy(allStake)
 
-  return result.toFixed(8)
+  return result.toFixed(9)
 }
 
 function getAvaFromnAva (v) {

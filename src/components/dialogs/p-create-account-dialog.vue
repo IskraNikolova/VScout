@@ -57,13 +57,13 @@
               outlined clearable
               label-color="orange"
               v-model="fundAmount"
-              suffix="$nAVA"
+              suffix="$nAVAX"
               label="Fund Amount *"
-              hint="The minimum stake amount is 10,000 nAVA, so make sure you have at least this much AVA in your X-Chain addresses"
+              hint="The minimum stake amount is 10,000 nAVAX, so make sure you have at least this much AVAX in your X-Chain addresses"
               lazy-rules
               :rules="[
                 val => val && val >= 10000 ||
-                'Amount must be least 10,000 nAVA'
+                'Amount must be least 10,000 nAVAX'
               ]"
             />
             <q-toggle

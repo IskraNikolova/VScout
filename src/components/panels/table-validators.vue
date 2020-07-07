@@ -97,7 +97,7 @@
             <div v-else-if="col.name === 'stake'" class="q-pl-md">
               <div>
                 <small class="text-grey">Total</small> {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
-                <small class="text-orange">
+                <small class="text-orange" v-if="props.row.percent">
                   {{ props.row.percent }} %
                 </small>
               </div>
@@ -386,8 +386,8 @@ export default {
     },
     visibleColumns: function () {
       const columns = this.columns.map(c => c.name)
-      if (this.curentValidators.find(a => a.percent === 'NaN')) {
-        return columns.filter(c => c !== 'percent')
+      if (this.curentValidators.find(a => a.precent === 'NAN')) {
+        return columns.filter(c => c !== 'precent')
       }
       return columns
     }

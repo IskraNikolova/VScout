@@ -42,7 +42,7 @@
               label-color="orange"
               label="Signer"
               v-model="ui.signTx.signer"
-              hint="The account providing the staked AVA and the fee."
+              hint="The account providing the staked AVAX and the fee."
             />
             <q-space />
             <q-input
