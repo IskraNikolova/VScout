@@ -1,7 +1,5 @@
 import moment from 'moment'
 
-import { Notify } from 'quasar'
-
 import {
   SIGN_TX,
   INIT_APP,
@@ -210,7 +208,7 @@ async function getTxsFor24H ({ commit, getters }) {
   })
 }
 
-async function getTotalTXs ({ commit, getters }) {
+async function getTotalTXs ({ commit }) {
   const response = await _getLastTx()
   if (typeof response === 'undefined' ||
     response === null) return
@@ -324,7 +322,6 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
   })
 
   if (response.data.error) {
-    Notify.create(response.data.error.message)
     return null
   }
 

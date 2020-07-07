@@ -10,8 +10,8 @@
             <q-avatar>
               <img src="./../../statics/blockchain.svg" />
             </q-avatar>
-            </q-item-section>
-            <q-item-section>
+          </q-item-section>
+          <q-item-section>
             <q-item-label>
               Node ID <small class="text-orange">{{ nodeID }}</small>
             </q-item-label>
@@ -48,20 +48,48 @@
                 :label="'Peers ' + nodeInfo.peers.length"
               >
                 <div class="q-pa-md">
-                  Peers
+                  <q-item>
+                    <q-item-section avatar>
+                      <q-avatar>
+                        <img src="~/assets/peers.svg" />
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label>
+                        Peers <small class="text-orange">{{ nodeInfo.peers.length}}</small>
+                      </q-item-label>
+                      <q-item-label caption>
+                        Description of peer connections
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
                 </div>
+                <q-item>
+                  <q-item-section caption>
+                    <q-input
+                      color="accent"
+                      label="Search by Node ID"
+                      v-model="filter"
+                    >
+                      <template v-slot:append>
+                        <q-icon name="search" color="accent" />
+                      </template>
+                    </q-input>
+                  </q-item-section>
+                  </q-item>
                 <q-list
-                  v-for="peer in nodeInfo.peers"
+                  v-for="peer in filterPeers"
                   v-bind:key="peer.id"
+                  class="q-pa-md"
                 >
                   <q-item v-close-popup>
                     <q-item-section>
-                      <div><span class="text-grey">IP: </span> {{ peer.ip }}<q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.ip)"/></div>
-                      <div><span class="text-grey">Public IP: </span> {{ peer.publicIP }}<q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.publicIP)"/></div>
-                      <div><span class="text-grey">ID: </span> {{ peer.id }} <q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.id)"/></div>
-                      <div><span class="text-grey">Version: </span> <span class="text-accent">{{ peer.version }}</span></div>
-                      <div><span class="text-grey">Last Sent: </span> {{ dateFormat(peer.lastSent) }}</div>
-                      <div><span class="text-grey">Last Received: </span> {{ dateFormat(peer.lastReceived) }}</div>
+                      <div><small class="text-grey">IP: </small> {{ peer.ip }}<q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.ip)"/></div>
+                      <div><small class="text-grey">Public IP: </small> {{ peer.publicIP }}<q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.publicIP)"/></div>
+                      <div><small class="text-grey">ID: </small> {{ peer.id }} <q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.id)"/></div>
+                      <div><small class="text-grey">Version: </small> <span class="text-accent">{{ peer.version }}</span></div>
+                      <div><small class="text-grey">Last Sent: </small> {{ dateFormat(peer.lastSent) }}</div>
+                      <div><small class="text-grey">Last Received: </small> {{ dateFormat(peer.lastReceived) }}</div>
                     </q-item-section>
                   </q-item>
                   <q-separator />
@@ -95,7 +123,15 @@ export default {
       'ui',
       'nodeID',
       'nodeInfo'
-    ])
+    ]),
+    filterPeers: function () {
+      return this.nodeInfo.peers.filter(a => a.id.toLowerCase().includes(this.filter.toLowerCase()))
+    }
+  },
+  data () {
+    return {
+      filter: ''
+    }
   },
   methods: {
     ...mapActions({
