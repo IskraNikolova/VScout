@@ -68,7 +68,7 @@
                   <q-item-section caption>
                     <q-input
                       color="accent"
-                      label="Search by Node ID"
+                      label="Search..."
                       v-model="filter"
                     >
                       <template v-slot:append>
@@ -125,7 +125,7 @@ export default {
       'nodeInfo'
     ]),
     filterPeers: function () {
-      return this.nodeInfo.peers.filter(a => a.id.toLowerCase().includes(this.filter.toLowerCase()))
+      return this.nodeInfo.peers.filter(a => a.id.toLowerCase().includes(this.filter.toLowerCase()) || a.ip.includes(this.filter))
     }
   },
   data () {
