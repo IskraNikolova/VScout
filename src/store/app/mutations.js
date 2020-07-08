@@ -15,6 +15,7 @@ import {
   SET_BLOCKCHAINS,
   SET_TXS_HISTORY,
   SET_NODE_HEALTH,
+  SET_NETWORK_STATUS,
   SET_CURRENT_SUBNET,
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
@@ -27,6 +28,9 @@ import {
 } from './types'
 
 const mutations = {
+  [SET_NETWORK_STATUS]: (state, { hasNetworkConnection }) => {
+    state.hasNetworkConnection = hasNetworkConnection
+  },
   [SET_NODE_ID]: (state, { nodeID }) => {
     state.nodeID = nodeID
   },

@@ -29,6 +29,7 @@ export default function () {
       transactionVolume: 0
     },
     isBlockchainView: true,
+    hasNetworkConnection: true,
     networkEndpoint: network.endpointUrls[0],
     nodeInfo: {
       networkID: '',

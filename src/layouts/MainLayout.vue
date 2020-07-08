@@ -89,12 +89,21 @@
       </q-toolbar>
     </q-header>
     <q-page-container style="z-index: 10;">
+      <q-page-sticky position="top" style="z-index: 11;" :offset="[0, 18]" v-if="!hasNetworkConnection">
+        <q-btn
+          round
+          icon="wifi_off"
+          size="lg"
+          color="accent"
+        />
+      </q-page-sticky>
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import SwitchEndpoint from './../components/switch-endpoint'
 import SelectNetworkDropdown from './../components/items/select-network-dropdown'
 
@@ -103,6 +112,9 @@ export default {
   components: {
     SwitchEndpoint,
     SelectNetworkDropdown
+  },
+  computed: {
+    ...mapGetters(['hasNetworkConnection'])
   },
   data () {
     return {

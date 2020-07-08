@@ -118,3 +118,7 @@ export function nodeInfo (state) {
 export function nodeHealth (state) {
   return (id) => state.nodeHealth[id]
 }
+
+export function hasNetworkConnection (state) {
+  return state.hasNetworkConnection
+}
