@@ -107,7 +107,7 @@ export default {
         const h = this.nodeHealthInfo
           .checks['network.validators.heartbeat']
           .timeOfFirstFailure
-        return h
+        return datePickerFormat(h)
       } catch (err) {
         return ''
       }
