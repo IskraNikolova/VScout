@@ -3,7 +3,7 @@
     no-focus persistent
     v-model="ui.nodeHealth.isOpen"
   >
-    <q-card style="min-width: 30%!important;">
+    <q-card style="min-width: 40%!important;">
       <q-card-section class="row items-center">
         <q-item>
           <q-item-section avatar>
@@ -27,25 +27,53 @@
         <q-item>
           <q-item-section>
             <div>
-              <small>Heartbeat: </small>
-              <span>{{ heartbeat }}</span>
-            </div>
-            <div>
-              <small>Healthy: </small>
+              Healthy:
               <span v-if="healthy" class="text-accent"> Yes</span>
               <span v-else class="text-negative"> No</span>
+            </div>
+          </q-item-section>
+        </q-item>
+        <q-separator />
+      </q-card-section>
+      <q-card-section>
+        <q-item>
+          <q-item-section>
+            Network Validators Heartbeat
+            <div class="q-pt-md">
+              <small>Heartbeat: </small>
+              <span>{{ heartbeat }}</span>
             </div>
             <div>
               <small>Duration: </small>
               <span>{{ duration }}</span>
             </div>
-            <div v-if="timeOfFirstFailure">
+            <div>
               <small>Time Of First Failure: </small>
               <span>{{ timeOfFirstFailure }}</span>
             </div>
             <div>
               <small>Contiguous Failures: </small>
               <span>{{ contiguousFailures }}</span>
+            </div>
+          </q-item-section>
+          <q-separator vertical />
+          <q-item-section class="q-pl-md">
+            <div class="q-mb-md">Chains Default Bootstrapped</div>
+            <div v-if="error">
+              <small>Error: </small>
+              <span class="text-negative">{{ error }}</span>
+            </div>
+             <div>
+              <small>Duration: </small>
+              <span>{{ duration2 }}</span>
+            </div>
+            <div>
+              <small>Time Of First Failure: </small>
+              <span>{{ timeOfFirstFailure2 }}</span>
+            </div>
+            <div>
+              <small>Contiguous Failures: </small>
+              <span>{{ contiguousFailures2 }}</span>
             </div>
           </q-item-section>
         </q-item>
@@ -81,6 +109,17 @@ export default {
         return true
       }
     },
+    error: function () {
+      try {
+        const error = this.nodeHealthInfo
+          .checks['chains.default.bootstrapped']
+          .error
+          .message
+        return error
+      } catch (err) {
+        return '-'
+      }
+    },
     heartbeat: function () {
       try {
         const h = this.nodeHealthInfo
@@ -89,7 +128,7 @@ export default {
           .heartbeat
         return datePickerFormat(h)
       } catch (err) {
-        return ''
+        return '-'
       }
     },
     duration: function () {
@@ -99,7 +138,7 @@ export default {
           .duration
         return h
       } catch (err) {
-        return ''
+        return '-'
       }
     },
     timeOfFirstFailure: function () {
@@ -109,7 +148,7 @@ export default {
           .timeOfFirstFailure
         return datePickerFormat(h)
       } catch (err) {
-        return ''
+        return '-'
       }
     },
     contiguousFailures: function () {
@@ -119,7 +158,37 @@ export default {
           .contiguousFailures
         return h
       } catch (err) {
-        return ''
+        return '-'
+      }
+    },
+    duration2: function () {
+      try {
+        const h = this.nodeHealthInfo
+          .checks['chains.default.bootstrapped']
+          .duration
+        return h
+      } catch (err) {
+        return '-'
+      }
+    },
+    timeOfFirstFailure2: function () {
+      try {
+        const h = this.nodeHealthInfo
+          .checks['chains.default.bootstrapped']
+          .timeOfFirstFailure
+        return datePickerFormat(h)
+      } catch (err) {
+        return '-'
+      }
+    },
+    contiguousFailures2: function () {
+      try {
+        const h = this.nodeHealthInfo
+          .checks['chains.default.bootstrapped']
+          .contiguousFailures
+        return h
+      } catch (err) {
+        return '-'
       }
     }
   },
