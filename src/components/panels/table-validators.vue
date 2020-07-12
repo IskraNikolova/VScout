@@ -338,7 +338,7 @@ export default {
       isGrid: false,
       isActive: true,
       pagination: {
-        rowsPerPage: 20
+        rowsPerPage: 21
       },
       border: '#87C5D6',
       separator: 'cell',

@@ -16,7 +16,7 @@
         <node-health-dialog ref="nodeHealthDialog" />
       </div>
     </div>
-    <div id="f-size12">
+    <div id="f-size12" v-if="nodeID">
       Node ID
       <div class="text-grey">
         {{ nodeID }}

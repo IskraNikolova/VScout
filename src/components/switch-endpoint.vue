@@ -64,7 +64,7 @@ import {
   UPDATE_UI
 } from '../store/ui/types'
 
-import { _getNodeId } from './../modules/network'
+import { _getNodeId, _getValidators } from './../modules/network'
 
 const {
   network
@@ -103,9 +103,21 @@ export default {
     },
     async onSelectEndpoint (endpoint, isCustom) {
       this.$store.commit(UPDATE_UI, { doesItConnect: true })
+
       const response = await _getNodeId({ endpoint })
       if (response.data.error) {
-        this.onError(response.data.error.message)
+        const test = await _getValidators({ endpoint })
+        if (test.data.error) {
+          this.onError(test.data.error.message)
+          return
+        }
+        this.$store.commit(SET_ENDPOINT, { endpoint })
+        this.$store.commit(SET_NODE_ID, { nodeID: '' })
+        if (isCustom) {
+          this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
+          this.customEndpoint = ''
+        }
+        this.onSuccess(endpoint)
         return
       }
 
