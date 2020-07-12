@@ -166,7 +166,7 @@
         </q-tr>
       </template>
       <template v-slot:item="props">
-        <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4">
+        <div class="q-pa-xs" style="width: 400px;margin:auto;">
           <q-card flat bordered>
             <q-item>
               <q-item-section avatar>
@@ -218,10 +218,10 @@
             <q-separator />
 
             <q-card-section horizontal>
-              <q-card-section class="col-5 q-mb-xl">
+              <q-card-section class="col-7 q-mb-xl">
                 <div class="q-mb-md">Stake (AVAX)</div>
                 {{ props.row.stake > 1 ? getLocalString(props.row.stake) : props.row.stake }}
-                <span class="text-accent">$AVAX</span>
+                <small class="text-accent">$AVAX</small>
                 <br />
                 <small style="color: grey;">
                   ({{ getLocalString(props.row.stakenAva) }} nAvax)
@@ -232,10 +232,14 @@
                 </small>
               </div>
               <div>
-                <small class="text-grey">Delegated</small> {{ props.row.delegateStake }}
+                <small class="text-grey">Delegated</small>
+                {{ props.row.delegateStake }}
+                <small class="text-accent">$AVAX</small>
               </div>
               <div>
-                <small class="text-grey">Total</small> {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
+                <small class="text-grey">Total</small>
+                {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
+                <small class="text-accent">$AVAX</small>
               </div>
               <q-separator class="q-mb-md"/>
               <div class="q-pl-xs">
@@ -256,7 +260,7 @@
               </div>
               </q-card-section>
               <q-separator vertical />
-              <q-card-section class="col-7">
+              <q-card-section class="col-5">
                 <cumulative-stake-chart
                   v-if="props.row.cumulativeStake"
                   v-bind:name="props.row.validator"
@@ -278,13 +282,15 @@
 
             <q-card-section horizontal>
               <q-card-section class="col-6">
-                <small>Start Time</small>
-                <div>{{ formatDate(props.row.startTime) }}</div>
+                <small class="text-grey">Start Time</small>
+                <br />
+                <small>{{ formatDate(props.row.startTime) }}</small>
               </q-card-section>
               <q-separator vertical/>
               <q-card-section class="col-6">
-                <small>End Time</small>
-                <div>{{ formatDate(props.row.endTime) }}</div>
+                <small class="text-grey">End Time</small>
+                <br />
+                <small>{{ formatDate(props.row.endTime) }}</small>
               </q-card-section>
             </q-card-section>
           </q-card>
