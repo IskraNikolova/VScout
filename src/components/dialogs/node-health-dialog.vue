@@ -42,18 +42,22 @@
             <div class="q-pt-md">
               <small>Heartbeat: </small>
               <span>{{ heartbeat }}</span>
+              <q-tooltip>Heartbeat is the unix timestamp of the last time the network handled a message.</q-tooltip>
             </div>
             <div>
               <small>Duration: </small>
               <span>{{ duration }}</span>
+              <q-tooltip>Duration is the execution duration of the last health check in milliseconds.</q-tooltip>
             </div>
-            <div>
+            <div  v-if="timeOfFirstFailure">
               <small>Time Of First Failure: </small>
               <span>{{ timeOfFirstFailure }}</span>
+              <q-tooltip>Time of first failure is the time of the initial transitional failure.</q-tooltip>
             </div>
             <div>
               <small>Contiguous Failures: </small>
               <span>{{ contiguousFailures }}</span>
+              <q-tooltip>Contiguous failures is the number of fails that occurred in a row.</q-tooltip>
             </div>
           </q-item-section>
           <q-separator vertical />
@@ -68,7 +72,7 @@
               <span>{{ duration2 }}</span>
             </div>
             <div>
-              <small>Time Of First Failure: </small>
+              <small v-if="timeOfFirstFailure2">Time Of First Failure: </small>
               <span>{{ timeOfFirstFailure2 }}</span>
             </div>
             <div>
@@ -117,7 +121,7 @@ export default {
           .message
         return error
       } catch (err) {
-        return '-'
+        return ''
       }
     },
     heartbeat: function () {
@@ -128,7 +132,7 @@ export default {
           .heartbeat
         return datePickerFormat(h)
       } catch (err) {
-        return '-'
+        return ''
       }
     },
     duration: function () {
@@ -138,7 +142,7 @@ export default {
           .duration
         return h
       } catch (err) {
-        return '-'
+        return ''
       }
     },
     timeOfFirstFailure: function () {
@@ -148,7 +152,7 @@ export default {
           .timeOfFirstFailure
         return datePickerFormat(h)
       } catch (err) {
-        return '-'
+        return ''
       }
     },
     contiguousFailures: function () {
@@ -158,7 +162,7 @@ export default {
           .contiguousFailures
         return h
       } catch (err) {
-        return '-'
+        return ''
       }
     },
     duration2: function () {
@@ -168,7 +172,7 @@ export default {
           .duration
         return h
       } catch (err) {
-        return '-'
+        return ''
       }
     },
     timeOfFirstFailure2: function () {
@@ -178,7 +182,7 @@ export default {
           .timeOfFirstFailure
         return datePickerFormat(h)
       } catch (err) {
-        return '-'
+        return ''
       }
     },
     contiguousFailures2: function () {
@@ -188,7 +192,7 @@ export default {
           .contiguousFailures
         return h
       } catch (err) {
-        return '-'
+        return ''
       }
     }
   },
