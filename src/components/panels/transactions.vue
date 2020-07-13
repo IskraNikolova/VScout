@@ -18,7 +18,7 @@
         </div>
         <div id="f-size12" class="q-pb-md">TOTAL TRANSACTIONS</div>
         <div class="text-h5"><span class="text-accent">{{ totalTxsCount.toLocaleString() }}</span></div>
-        <div><small>AVM (X-CHAIN)</small></div>
+        <div><small>X-CHAIN</small></div>
       </div>
       <div class="col-md-9 col-xs-12">
         <div style="max-width: 250px;"><q-btn-toggle
