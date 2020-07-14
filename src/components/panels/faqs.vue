@@ -6,7 +6,7 @@
       <q-btn no-caps flat v-if="!visible" @click="visible=!visible" icon="expand_more"/>
       <q-btn no-caps flat v-else @click="visible=!visible" icon="expand_less"/>
     </div>
-    <q-slide-transition>
+    <!--<q-slide-transition>
       <div v-show="visible">
         <q-card
           class="q-pa-md q-pl-xl q-pt-xl"
@@ -31,7 +31,7 @@
             </div>
         </q-card>
       </div>
-    </q-slide-transition>
+    </q-slide-transition>-->
   </div>
 </template>
 
@@ -75,7 +75,7 @@ export default {
         },
         {
           title: 'Is there any available airdrop or bounty program?',
-          content: 'We have a bug bounty program. See <a href="https://www.avalabs.org/dap">here</a>.'
+          content: 'We have a bug bounty program. See <a href="https://www.avalabs.org/avalanche-x">here</a>.'
         },
         {
           title: 'What kind of assets can I create on AVA?',
@@ -105,7 +105,7 @@ AVA platform is where everything runs. The AVA platform makes use of either Aval
         },
         {
           title: 'Will there be developer documentation?',
-          content: 'Yes, see <a href="https://www.avalabs.org/documents">here</a>.'
+          content: 'Yes, see <a href="https://docs.avax.network/">here</a>.'
         },
         {
           title: 'Does Avalanche only support payments?',
