@@ -35,7 +35,11 @@
                 :rules="[ val => val && val.length > 0 || 'Please type your node ID!']"
               >
                 <template v-slot:append>
-                  <q-btn round dense @click="onGetNodeID" flat no-caps color="accent" icon="add"/>
+                  <q-btn round dense @click="onGetNodeID" :loading="loading" flat no-caps color="accent" icon="add">
+                    <template v-slot:loading>
+                      <q-spinner-ball />
+                    </template>
+                  </q-btn>
                 </template>
               </q-input>
 
@@ -125,17 +129,17 @@
               />
               <q-input
                 color="accent"
-                class="q-mb-md q-pt-md"
+                class="q-mb-xl q-pt-md"
                 clearable outlined
                 type="number"
                 label-color="orange"
                 v-model="delegationFeeRate"
                 label="Delegation Fee"
-                hint="Percent fee this validator charges when others delegate stake to them, multiplied by 10,000."
+                hint="Тhe percent fee this validator charges when others delegate stake to them, multiplied by 10,000. For example, suppose a validator has delegationFeeRate 300,000 and someone delegates to that validator. When the delegation period is over, if the delegator is entitled to a reward, 30% of the reward (300,000 / 10,000) goes to the validator and 70% goes to the delegator."
               />
               <q-input
                 color="accent"
-                class="q-mb-md q-pt-md"
+                class="q-mb-md q-pt-xl"
                 label-color="orange"
                 v-model="endDate"
                 label="End Date"
@@ -252,6 +256,7 @@ export default {
   },
   data () {
     return {
+      loading: false,
       error: null,
       endDate: null,
       startDate: null,

@@ -21,24 +21,27 @@ export const _initializeNetwork = async () => {
     window.ethereum.autoRefreshOnNetworkChange = false
   }
 
-  web3 = new Web3(getProvider({ endpoint: `ws://${config.network.endpointCChainWs}` }))
+  // web3 = new Web3(getProvider({ endpoint: `htps://${config.network.endpointCChainWs}` }))
+  web3 = new Web3(`https://${config.network.endpointCChainWs}`)
+  console.log(web3)
   contract = await new web3.eth.Contract(contractAbi, config.network.contract)
+  console.log(contract)
 }
 
-const getProvider = ({ endpoint }) => {
-  const provider = new Web3.providers.WebsocketProvider(endpoint)
-  provider.on('connect', async () => {
-    console.log('WS Connected')
-  })
-  provider.on('error', e => {
-    console.error('WS Error' + e)
-    web3.setProvider(getProvider({ endpoint }))
-  })
-  provider.on('end', e => {
-    console.error('WS End' + e)
-  })
-  return provider
-}
+// const getProvider = ({ endpoint }) => {
+//   const provider = new Web3.providers.WebsocketProvider(endpoint)
+//   provider.on('connect', async () => {
+//     console.log('WS Connected')
+//   })
+//   provider.on('error', e => {
+//     console.error('WS Error' + e)
+//     web3.setProvider(getProvider({ endpoint }))
+//   })
+//   provider.on('end', e => {
+//     console.error('WS End' + e)
+//   })
+//   return provider
+// }
 
 const getEstimatedGas = async ({ data, from }) => {
   try {

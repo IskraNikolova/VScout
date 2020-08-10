@@ -132,6 +132,7 @@ async function initApp ({ dispatch, getters }) {
         dispatch(GET_TX_FOR_24_HOURS)
       ])
     } catch (err) {
+      console.log(err)
     }
   }, 6000)
 }
@@ -296,6 +297,7 @@ async function getValidators (
   })
 
   if (response.data.error) {
+    console.log(response)
     return null
   }
 

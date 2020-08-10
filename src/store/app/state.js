@@ -30,6 +30,7 @@ export default function () {
     },
     isBlockchainView: true,
     hasNetworkConnection: true,
+    hasNodeConnection: true,
     networkEndpoint: network.endpointUrls[0],
     nodeInfo: {
       networkID: '',
