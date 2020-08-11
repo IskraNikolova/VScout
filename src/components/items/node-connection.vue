@@ -20,7 +20,9 @@
       Node ID
       <div class="text-grey">
         {{ nodeID }}
-        <q-btn class="text-accent" size="xs" flat icon="info" @click="onOpenNodeInfo"/>
+        <q-btn class="text-accent" size="xs" flat icon="info" @click="onOpenNodeInfo">
+          <q-tooltip>Information about the node</q-tooltip>
+        </q-btn>
         <node-info-dialog ref="nodeInfoDialog" />
       </div>
     </div>

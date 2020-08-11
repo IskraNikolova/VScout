@@ -77,7 +77,7 @@ export default {
     ]),
     tps: function () {
       const t = this.txsFor24H.transactionCount / (24 * 60 * 60)
-      return t.toFixed(2)
+      return t.toFixed(4)
     }
   },
   mounted () {
