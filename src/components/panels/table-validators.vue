@@ -102,7 +102,7 @@
                 </small>
               </div>
               <div>
-                <small class="text-grey">Own</small> {{ col.value }}
+                <small class="text-grey">Owned</small> {{ col.value }}
                 <small class="text-grey">Delegated</small> {{ props.row.delegateStake }}
               </div>
             </div>

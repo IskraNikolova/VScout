@@ -21,23 +21,25 @@
         <div><small>X-CHAIN</small></div>
       </div>
       <div class="col-md-9 col-xs-12">
-        <div style="max-width: 250px;"><q-btn-toggle
-          v-model="interval"
-          outline
-          no-caps
-          size="xs"
-          spread
-          toggle-color="accent"
-          @click.native="onGetData"
-          :options="[
-            {label: 'Yr', value: 'year'},
-            {label: 'Mo', value: 'month'},
-            {label: 'Wk', value: 'week'},
-            {label: '24h', value: 'day'},
-            {label: '2h', value: 'hourTwo'},
-            {label: '30m', value: 'minute'}
-          ]"
-        /></div>
+        <div style="max-width: 250px;">
+          <q-btn-toggle
+            v-model="interval"
+            outline
+            no-caps
+            size="xs"
+            spread
+            toggle-color="accent"
+            @click.native="onGetData"
+            :options="[
+              {label: 'Yr', value: 'year'},
+              {label: 'Mo', value: 'month'},
+              {label: 'Wk', value: 'week'},
+              {label: '24h', value: 'day'},
+              {label: '2h', value: 'hourTwo'},
+              {label: '30m', value: 'minute'}
+            ]"
+          />
+        </div>
         <div class="row">
           <div class="col-md-6 col-xs-12"><canvas id="chartVol"></canvas></div>
           <div class="col-md-6 col-xs-12"><canvas id="chartTps"></canvas></div>
@@ -148,7 +150,7 @@ export default {
               if (label) {
                 label += ': '
               }
-              label += Math.round(tooltipItem.yLabel * 100) / 100
+              label += Math.round(tooltipItem.yLabel * 10000) / 10000
               return label
             }
           }
@@ -198,11 +200,12 @@ export default {
     getTpsChartData () {
       let data = this.txsHistory(this.interval)
       if (!data) data = { label: '', intervals: [] }
+
       const tpsData = {
         label: `TPS History - ${data.label} Ø`,
         data: data.intervals.map(a => {
           const sec = this.getSec(a.endTime, a.startTime)
-          return (a.transactionCount / sec).toFixed(2)
+          return (a.transactionCount / sec)
         }),
         borderColor: '#87C5D6',
         backgroundColor: '#87C5D6'

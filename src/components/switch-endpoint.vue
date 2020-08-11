@@ -108,7 +108,8 @@ export default {
       if (response.data.error) {
         const test = await _getValidators({ endpoint })
         if (test.data.error) {
-          this.onError(test.data.error.message)
+          const msg = `${test.data.error.message} with ${endpoint}`
+          this.onError(msg)
           return
         }
         this.$store.commit(SET_ENDPOINT, { endpoint })
