@@ -49,7 +49,7 @@
           @click.native="onSwitchAccounts"
           :options="[
             {label: 'Validators', value: 'validators'},
-            {label: 'Delegators', value: 'delegators'}
+            {label: 'Delegations', value: 'delegations'}
           ]"
         />
         <!--<q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
@@ -448,7 +448,7 @@ export default {
     onSwitchAccounts () {
       const temp = {
         validators: true,
-        delegators: false
+        delegations: false
       }
       this.$store.commit(UPDATE_UI, {
         typeAccount: {

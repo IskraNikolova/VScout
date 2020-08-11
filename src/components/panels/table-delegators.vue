@@ -38,7 +38,7 @@
           @click.native="onSwitchAccounts"
           :options="[
             {label: 'Validators', value: 'validators'},
-            {label: 'Delegators', value: 'delegators'}
+            {label: 'Delegations', value: 'delegations'}
           ]"
         />
       </template>
@@ -56,7 +56,7 @@
           borderless
           color="accent"
           stack-label
-          label="Filter delegatorss..."
+          label="Filter delegations..."
           clearable v-model="filter"
         >
           <template v-slot:append>
@@ -131,7 +131,7 @@ export default {
   data () {
     return {
       type: 'active',
-      type2: 'delegators',
+      type2: 'delegations',
       curentValidators: [],
       isGrid: false,
       isActive: true,
@@ -223,7 +223,7 @@ export default {
     onSwitchAccounts () {
       const temp = {
         validators: true,
-        delegators: false
+        delegations: false
       }
       this.$store.commit(UPDATE_UI, {
         typeAccount: {
