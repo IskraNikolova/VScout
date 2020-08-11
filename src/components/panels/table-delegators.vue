@@ -151,25 +151,25 @@ export default {
         {
           name: 'pAccount',
           align: 'left',
-          label: 'DELEGATOR (P-Chain Account)',
+          label: 'Delegation (P-Chain Account)',
           field: 'pAccount'
         },
         {
           name: 'nodeId',
           align: 'left',
-          label: 'VALIDATOR (Node ID)',
+          label: 'Validator (Node ID)',
           field: 'nodeId'
         },
         {
           name: 'stake',
           align: 'left',
-          label: 'STAKE (AVAX / nAvax)',
+          label: 'Stake (AVAX / nAvax)',
           field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
           sortable: true
         },
-        { name: 'startTime', align: 'left', label: 'START TIME', field: 'startTime', sortable: true },
-        { name: 'endTime', align: 'left', label: 'END TIME', field: 'endTime', sortable: true },
-        { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress' }
+        { name: 'startTime', align: 'left', label: 'Start Time', field: 'startTime', sortable: true },
+        { name: 'endTime', align: 'left', label: 'End Time', field: 'endTime', sortable: true },
+        { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress' }
       ]
     }
   },

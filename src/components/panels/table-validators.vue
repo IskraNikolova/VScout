@@ -97,14 +97,17 @@
             <div v-else-if="col.name === 'stake'" class="q-pl-md">
               <div>
                 <small class="text-grey">Total</small> {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
-                <small class="text-orange" v-if="props.row.percent">
-                  {{ props.row.percent }} %
+                <small class="text-accent">
+                  $AVAX
                 </small>
               </div>
               <div>
                 <small class="text-grey">Owned</small> {{ col.value }}
                 <small class="text-grey">Delegated</small> {{ props.row.delegateStake }}
               </div>
+            </div>
+            <div v-else-if="col.name === 'networkShare' && props.row.percent" class="q-pl-md">
+              {{ props.row.percent }} %
             </div>
             <div v-else-if="col.name === 'percent'">
               <div class="container_row" v-if="props.row.cumulativeStake">
@@ -345,7 +348,7 @@ export default {
       columns: [
         {
           name: 'rank',
-          label: 'RANK',
+          label: 'Rank',
           align: 'center',
           field: row => row.rank,
           sortable: true,
@@ -354,25 +357,26 @@ export default {
         {
           name: 'validator',
           align: 'left',
-          label: 'VALIDATOR (Node ID)',
+          label: 'Validator (Node ID)',
           field: 'name'
         },
         {
           name: 'stake',
           align: 'left',
-          label: 'STAKE (AVAX)',
+          label: 'Stake (AVAX)',
           field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
           sortable: true
         },
+        { name: 'networkShare', align: 'left', label: 'Network Share (%)', field: row => row.percent, sortable: true },
         {
           name: 'percent',
           align: 'left',
-          label: 'CUMULATIVE STAKE (%)',
+          label: 'Cumulative Stake (%)',
           field: 'cumulativeStake'
         },
-        { name: 'startTime', align: 'left', label: 'START TIME', field: 'startTime', sortable: true },
-        { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress' },
-        { name: 'delegate', align: 'center', label: 'DELEGATE', field: 'delegate' }
+        { name: 'startTime', align: 'left', label: 'Start Time', field: 'startTime', sortable: true },
+        { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress' },
+        { name: 'delegate', align: 'center', label: 'Delegate', field: 'delegate' }
       ]
     }
   },

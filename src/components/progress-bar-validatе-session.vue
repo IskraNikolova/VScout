@@ -1,12 +1,12 @@
 <template>
   <div>
-    <q-linear-progress dark size="49px" :value="progress" :buffer="progress" color="accent">
+    <q-linear-progress dark size="50px" :value="progress" :buffer="progress" color="accent">
       <div class="absolute-full text-black progressBadge">
         {{ progressBadge }} %
       </div>
     </q-linear-progress>
-    <div class="absolute-full timeago">
-      <div>{{ timeago }}</div>
+    <div class="text-grey absolute-full q-pt-md timeago">
+      <small>{{ timeago }}</small>
     </div>
   </div>
 </template>
