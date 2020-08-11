@@ -12,7 +12,7 @@
         </small>
       </div>
       <div v-if="address">
-        P-Chain Account (staker) <span id="identity">{{ address }} </span>
+        P-Chain Account (beneficiary) <span id="identity">{{ address }} </span>
         <small>
           <q-icon
             @click="copyToClipboard(address)"
