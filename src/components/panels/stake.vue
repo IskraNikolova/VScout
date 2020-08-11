@@ -19,7 +19,7 @@
         <img src="~assets/manage.svg" class="custom-icon">
       </div>
       <div class="col-md-2 col-xs-10">
-        <div id="f-size12" class="q-pb-md">VALIDATION STAKE</div>
+        <div id="f-size12" class="q-pb-md">TOTAL STAKE</div>
         <div class="text-h5 q-pb-md">
             <span class="text-orange">
               <small>{{stakedAVA}}</small>
