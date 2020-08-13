@@ -262,7 +262,7 @@
                 <q-btn
                   outline
                   size="xs"
-                  color="orange"
+                  class="orange"
                   label="Delegate"
                   v-if="isDefaultSubnetID"
                   @click="onDelegate(props.row)"

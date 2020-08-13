@@ -27,7 +27,6 @@ import {
   SET_BLOCKCHAINS,
   GET_TXS_HISTORY,
   SET_TXS_HISTORY,
-  SUBSCRIBE_TO_EVENT,
   GET_TX_FOR_24_HOURS,
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
@@ -76,8 +75,7 @@ import {
 } from './../../modules/network'
 
 import {
-  _initializeNetwork,
-  subscribeToContractEvents
+  _initializeNetwork
 } from './../../modules/networkRpc'
 
 import {
@@ -112,7 +110,6 @@ async function initApp ({ dispatch, getters }) {
   }
 
   await _initializeNetwork()
-  // dispatch(SUBSCRIBE_TO_EVENT)
 
   setInterval(async () => {
     try {
@@ -341,7 +338,7 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
 
   commit(SET_PENDING_DELEGATORS, { delegators: mapDelegators(d) })
 
-  const val = mapValidators(v)
+  const val = await mapValidators(v)
   commit(SET_PENDING_VALIDATORS, { validators: val })
 }
 
@@ -665,20 +662,6 @@ async function getNodeHealth ({ commit, getters }) {
   commit(SET_NODE_HEALTH, { nodeID: getters.nodeID, nodeHealth: response.data.result })
 }
 
-function subscribeToEvents ({ commit, dispatch }) {
-  const sentMessageHandler = async (error, result) => {
-    if (error) console.error(error)
-    console.log(result)
-    // TODO UPDATE VALIDATOR INFO
-  }
-
-  subscribeToContractEvents({
-    eventName: 'SetValidatorInfoEvent',
-    filters: {},
-    handler: sentMessageHandler
-  })
-}
-
 export default {
   [INIT_APP]: initApp,
   [GET_NODE_ID]: getNodeId,
@@ -697,7 +680,6 @@ export default {
   [GET_BLOCKCHAINS]: getBlockchains,
   [INIT_VALIDATORS]: initValidators,
   [GET_TX_FOR_24_HOURS]: getTxsFor24H,
-  [SUBSCRIBE_TO_EVENT]: subscribeToEvents,
   [GET_PENDING_VALIDATORS]: getPendingValidators,
   [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsByBlockchain,
   [DELEGATE_VALIDATOR]: addDefaultSubnetDelegator,

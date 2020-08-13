@@ -22,7 +22,6 @@ export const _initializeNetwork = async () => {
   }
 
   web3 = new Web3(getProvider({ endpoint: `wss://${config.network.endpointCChainWs}` }))
-  // web3 = new Web3(`https://${config.network.endpointCChainWs}`)
   contract = await new web3.eth.Contract(contractAbi, config.network.contract)
 }
 
@@ -103,15 +102,6 @@ const executeMethod = async (method) => {
   })
 }
 
-export const getChatPastEvents = async (eventName, filters = {}) => {
-  try {
-    const events = await contract.getPastEvents(eventName, filters)
-    return events
-  } catch (err) {
-    return []
-  }
-}
-
 export const _getValidatorById = async (id) => {
   if (!id) return
 
@@ -170,37 +160,3 @@ export const _setValidatorInfo = async ({ id, name, avatar, link }) => {
 export const stringToHex = input => web3.utils.asciiToHex(input)
 
 export const utf8StringToHex = input => web3.utils.utf8ToHex(input).padEnd(66, '0')
-
-export const subscribeToContractEvents = ({ eventName, filters, handler }) => {
-  if (!contract) return
-  const events = contract._jsonInterface.filter(a => a.type === 'event')
-  const ev = events.find(e => e.name === eventName)
-  const eventInterface = {
-    ...ev
-  }
-  web3.eth.subscribe('logs', {
-    address: config.network.contract,
-    topics: [eventInterface.signature]
-  }, (error, result) => {
-    if (error) return handler(error)
-
-    const event = web3.eth.abi.decodeLog(
-      eventInterface.inputs,
-      result.data,
-      result.topics.slice(1)
-    )
-
-    // Don't call handler if data doesn't match filters
-    let isMatch = false
-    const filtersKeys = Object.keys(filters)
-    filtersKeys.forEach(key => {
-      const value = filters[`${key}`]
-      if (event[`${key}`].toLowerCase() === value.toLowerCase()) isMatch = true
-    })
-    if (!isMatch) return
-
-    handler(null, {
-      ...event
-    })
-  })
-}

@@ -5,7 +5,7 @@
         {{ progressBadge }} %
       </div>
     </q-linear-progress>
-    <div class="text-grey absolute-full q-pt-md timeago">
+    <div class="absolute-full q-pt-md timeago">
       <small>{{ timeago }}</small>
     </div>
   </div>
