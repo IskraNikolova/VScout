@@ -7,6 +7,13 @@ export const getDuration = (s, e) => {
   return moment.duration(end.diff(start))
 }
 
+export const getDurationHumanize = (s, e) => {
+  const start = moment(new Date(Number(s) * 1000))
+  const end = moment(new Date(Number(e) * 1000))
+
+  return moment.duration(end.diff(start)).humanize(true)
+}
+
 export const timeago = (t) => {
   return moment.duration(t).humanize(true)
 }

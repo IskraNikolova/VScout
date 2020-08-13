@@ -106,7 +106,7 @@
               <small>{{ formatDate(col.value) }}</small>
             </div>
             <div v-else class="q-pl-md">
-              <small>{{ col.value }}</small>
+              <small>[{{ col.value }}]</small>
             </div>
           </q-td>
         </q-tr>
@@ -151,19 +151,19 @@ export default {
         {
           name: 'pAccount',
           align: 'left',
-          label: 'Delegation (P-Chain Account)',
+          label: 'Owner (P-Chain Account)',
           field: 'pAccount'
         },
         {
           name: 'nodeId',
           align: 'left',
-          label: 'Validator (Node ID)',
+          label: 'Delegated Node ID',
           field: 'nodeId'
         },
         {
           name: 'stake',
           align: 'left',
-          label: 'Stake (AVAX / nAvax)',
+          label: 'Delegated (AVAX / nAvax)',
           field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
           sortable: true
         },

@@ -51,7 +51,7 @@ contract Validators {
         bytes memory _link,
         uint256 _code)
         public 
-        hasAccess(_code){
+        {
         members[_id] = Member(_name, _avatarUrl, _link);
 
         permission = random();

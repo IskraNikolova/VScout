@@ -52,10 +52,10 @@
             {label: 'Delegations', value: 'delegations'}
           ]"
         />
-        <!--<q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
-        <add-identification-dialog ref="addIdentificationRef" />-->
+        <q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
+        <add-identification-dialog ref="addIdentificationRef" />
       </template>
-      <template slot="top-right" v-if="!isGrid">
+      <template slot="top-right" v-if="!isGrid"  class="ch5">
         <q-input
           borderless
           color="accent"
@@ -78,7 +78,7 @@
           >
             <div v-if="col.name === 'validator'" class="row q-pl-md">
             <!--<div :style="'border: solid 2px ' + border + ';border-radius: 50px;width: 24px;'">-->
-              <q-avatar size="25px">
+              <q-avatar size="25px" @click="onClick(props.row.link)">
                 <q-img :src="props.row.avatar">
                   <template v-slot:error>
                     <div class="bg-negative text-white">
@@ -93,8 +93,9 @@
                 @click="props.expand=!props.expand">
                 {{ props.row.name}}
               </div>
+              <q-tooltip>Node ID: {{props.row.validator}}</q-tooltip>
             </div>
-            <div v-else-if="col.name === 'stake'" class="q-pl-md">
+            <div v-else-if="col.name === 'stake'">
               <div>
                 <small class="text-grey">Total</small> {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
                 <small class="text-accent">
@@ -106,7 +107,11 @@
                 <small class="text-grey">Delegated</small> {{ props.row.delegateStake }}
               </div>
             </div>
-            <div v-else-if="col.name === 'networkShare' && props.row.percent" class="q-pl-md">
+            <div v-else-if="col.name === 'weight'">
+              {{ col.value }}
+              <q-tooltip>Weight is the validator’s weight used for sampling.</q-tooltip>
+            </div>
+            <div v-else-if="col.name === 'networkShare' && props.row.percent">
               {{ props.row.percent }} %
             </div>
             <div v-else-if="col.name === 'percent'">
@@ -135,7 +140,6 @@
                   </q-linear-progress>
                 </div>
               </div>
-              <div v-else></div>
             </div>
             <div v-else-if="col.name === 'progress'">
               <progress-bar-validate-session
@@ -143,8 +147,8 @@
                 v-bind:endTime="props.row.endTime"
               />
             </div>
-            <div v-else-if="col.name === 'startTime'" class="q-pl-md">
-              {{ formatDate(col.value) }}
+            <div v-else-if="col.name === 'startTime'">
+              <small>{{ formatDate(col.value) }}</small>
             </div>
             <div v-else-if="col.name === 'delegate'">
               <q-btn v-if="isDefaultSubnetID" no-caps flat @click="onDelegate(props.row)">
@@ -158,12 +162,15 @@
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
             <details-validator
+              v-bind:link="props.row.link ? props.row.link : ''"
               v-bind:delegatorsCount="props.row.delegatorsCount ? props.row.delegatorsCount : NaN"
               v-bind:weight="props.row.weight ? props.row.weight : ''"
               v-bind:address="props.row.address ? props.row.address : ''"
               v-bind:identity="props.row.validator"
+              v-bind:name="props.row.name"
               v-bind:startTime="props.row.startTime"
               v-bind:endTime="props.row.endTime"
+              v-bind:avatar="props.row.avatar"
             />
           </q-td>
         </q-tr>
@@ -172,7 +179,7 @@
         <div class="q-pa-xs" style="width: 400px;margin:auto;">
           <q-card flat bordered>
             <q-item>
-              <q-item-section avatar>
+              <q-item-section avatar @click="onClick(props.row.link)">
                 <q-avatar>
                   <q-img :src="props.row.avatar">
                     <template v-slot:error>
@@ -190,19 +197,19 @@
                     {{ props.row.rank }}
                   </span>
                 </q-item-label>
-                <q-item-label>
-                  {{ props.row.name }}
+                <q-item-label @click="onClick(props.row.link)">
+                  {{ props.row.name }} <small v-if="props.row.name !== props.row.validator" class="text-grey">({{props.row.validator}})</small>
                   <small>
                     <q-icon
                       @click="copyToClipboard(props.row.validator)"
-                      color="accent"
+                      color="grey"
                       name="file_copy"
                     />
                   </small>
                 </q-item-label>
                 <q-item-label v-if="props.row.address">
                   <small class="text-grey">
-                    P-Chain Account ( {{ props.row.address.substr(0, 12)}} ... {{ props.row.address.substr(22) }} )
+                    Owner ({{ props.row.address.substr(0, 12)}} ... {{ props.row.address.substr(22) }})
                     <q-icon
                       @click="copyToClipboard(props.row.address)"
                       color="grey"
@@ -320,7 +327,7 @@ import CumulativeStakeChart from './../cumulative-stake-chart'
 import AddValidatorDialog from './../dialogs/add-validator-dialog'
 import ProgressBarValidateSession from './../progress-bar-validatе-session'
 import DelegateValidatorDialog from './../dialogs/delegate-validator-dialog'
-// import AddIdentificationDialog from './../add-identification-dialog'
+import AddIdentificationDialog from './../dialogs/add-identification-dialog'
 
 export default {
   name: 'TableItem',
@@ -330,7 +337,7 @@ export default {
     AddValidatorDialog,
     CumulativeStakeChart,
     DelegateValidatorDialog,
-    // AddIdentificationDialog,
+    AddIdentificationDialog,
     ProgressBarValidateSession
   },
   data () {
@@ -352,31 +359,50 @@ export default {
           align: 'center',
           field: row => row.rank,
           sortable: true,
-          style: 'width: 50px'
+          style: 'width: 50px',
+          headerClasses: 'ch5'
         },
         {
           name: 'validator',
-          align: 'left',
-          label: 'Validator (Node ID)',
-          field: 'name'
+          align: 'center',
+          label: 'Validator',
+          field: 'name',
+          headerClasses: 'ch5'
         },
         {
           name: 'stake',
-          align: 'left',
+          align: 'center',
           label: 'Stake (AVAX)',
           field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
-          sortable: true
+          sortable: true,
+          headerClasses: 'ch5'
         },
-        { name: 'networkShare', align: 'left', label: 'Network Share (%)', field: row => row.percent, sortable: true },
+        {
+          name: 'weight',
+          align: 'center',
+          label: 'Weight',
+          field: row => row.weight,
+          sortable: true,
+          headerClasses: 'ch5'
+        },
+        {
+          name: 'networkShare',
+          align: 'center',
+          label: 'Network Share (%)',
+          field: row => row.percent,
+          sortable: true,
+          headerClasses: 'ch5'
+        },
         {
           name: 'percent',
-          align: 'left',
+          align: 'center',
           label: 'Cumulative Stake (%)',
-          field: 'cumulativeStake'
+          field: 'cumulativeStake',
+          headerClasses: 'ch5'
         },
-        { name: 'startTime', align: 'left', label: 'Start Time', field: 'startTime', sortable: true },
-        { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress' },
-        { name: 'delegate', align: 'center', label: 'Delegate', field: 'delegate' }
+        { name: 'startTime', align: 'center', label: 'Start Time', field: 'startTime', sortable: true, headerClasses: 'ch5' },
+        { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress', headerClasses: 'ch5' },
+        { name: 'delegate', align: 'center', label: 'Delegate', field: 'delegate', headerClasses: 'ch5' }
       ]
     }
   },
@@ -398,19 +424,18 @@ export default {
       const columns = this.columns.map(c => c.name)
       if (this.curentValidators.find(a => a.percent === 'NAN' || !a.percent)) {
         return columns.filter(c => c !== 'percent')
+      } else if (this.curentValidators.find(a => a.weight < 1)) {
+        return columns.filter(c => c !== 'weight')
       }
-      return columns
+
+      return columns.filter(c => c !== 'stake')
     }
   },
   methods: {
-    onClick (props) {
-      if (!props.row.link) {
-        this.filter = props.row.name
-        this.isGrid = true
-        return
-      }
+    onClick (link) {
+      if (!link) return
       try {
-        openURL(props.row.link)
+        openURL(link)
       } catch (err) {
       }
     },

@@ -17,9 +17,8 @@
             <q-item-label class="text-h6">Add/Update Identification For Your Validator</q-item-label>
             <q-item-label caption>
               You can add some bio for your validator (node).
-              You must provide your username and password to authenticate it.
-             <br/>Data will be store to contract, for this reason, to make this recording you must have a <a href="https://metamask.io/">MetaMask</a> installed
-              and a C-Chain address <a href="https://medium.com/avalabs/deploy-a-smart-contract-on-ava-using-remix-and-metamask-98933a93f436">see</a> <br />with a minimum amount of C-AVA for contract write.
+              For authentication you need username and password to the user that holds the node's owner (P-Chain account).
+              <br/>Data will be stored in smart contract, for this reason you need <a href="https://metamask.io/">MetaMask</a> and C-Chain address <a href="https://medium.com/avalabs/deploy-a-smart-contract-on-ava-using-remix-and-metamask-98933a93f436">see</a> <br /> with minimum amount of C-AVAX.
             </q-item-label>
           </q-item-section>
         </q-item>

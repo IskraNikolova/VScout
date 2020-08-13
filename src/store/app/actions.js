@@ -76,7 +76,7 @@ import {
 } from './../../modules/network'
 
 import {
-  // _initializeNetwork,
+  _initializeNetwork,
   subscribeToContractEvents
 } from './../../modules/networkRpc'
 
@@ -111,7 +111,7 @@ async function initApp ({ dispatch, getters }) {
     console.log(err)
   }
 
-  // await _initializeNetwork()
+  await _initializeNetwork()
   // dispatch(SUBSCRIBE_TO_EVENT)
 
   setInterval(async () => {
@@ -283,7 +283,7 @@ async function initValidators ({ commit, getters }) {
   const delegators = mapDelegators(d)
   commit(SET_DELEGATORS, { delegators })
 
-  const res = validatorProcessing(v, d, getters.validators)
+  const res = await validatorProcessing(v, d, getters.validators)
   commit(SET_VALIDATORS, { validators: res.validators })
   commit(SET_STAKED_AVA, { stakedAva: res.allStake })
 }
@@ -297,7 +297,6 @@ async function getValidators (
   })
 
   if (response.data.error) {
-    console.log(response)
     return null
   }
 
@@ -311,7 +310,7 @@ async function getValidators (
   const delegators = mapDelegators(d)
   commit(SET_DELEGATORS, { delegators })
 
-  const res = validatorProcessing(v, d, getters.validators)
+  const res = await validatorProcessing(v, d, getters.validators)
   commit(SET_VALIDATORS, { validators: res.validators })
   commit(SET_STAKED_AVA, { stakedAva: res.allStake })
   return true

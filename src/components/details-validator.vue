@@ -1,32 +1,40 @@
 <template>
-  <div class="row">
-    <div class="col">
-      <div>
-        Validator ID: <span id="identity">{{ identity }} </span>
-        <small>
-          <q-icon
-            @click="copyToClipboard(identity)"
-            color="grey"
-            name="file_copy"
-          />
-        </small>
-      </div>
-      <div v-if="address">
-        Owner <span id="identity">{{ address }} </span>
-        <small>
-          <q-icon
-            @click="copyToClipboard(address)"
-            color="grey"
-            name="file_copy"
-          />
-        </small>
-      </div>
-      <div v-else>Weight <span id="identity">{{ weight }}</span></div>
-      <div v-if="delegatorsCount" >Delegations <span class="text-orange">{{ delegatorsCount }}</span></div>
-      <div>Start <span class="text-accent">{{ startDate }} </span><small>({{ fromNowGet }})</small></div>
-      <div>End <span class="text-accent">{{ endDate }}</span></div>
-    </div>
-  </div>
+    <q-card flat>
+      <q-card-section horizontal>
+        <q-card-section class="col-6">
+          <div v-if="identity !== name"><span class="text-grey ch5">Name: </span><a :href="link" v-if="link">{{ name }}</a><span v-else>{{ name }}</span></div>
+          <div>
+            <span class="text-grey ch5">Node ID:</span> [{{ identity }}]
+              <q-tooltip>Node ID is not blockchain address</q-tooltip>
+            <small>
+              <q-icon
+                @click="copyToClipboard(identity)"
+                name="file_copy"
+              />
+            </small>
+          </div>
+          <div v-if="address">
+            <span class="text-grey ch5">Owner (P-Chain Account): </span>{{ address }}
+            <small>
+              <q-icon
+                @click="copyToClipboard(address)"
+                name="file_copy"
+              />
+            </small>
+          </div>
+          <div v-else><span class="text-grey ch5">Weight:</span> {{ weight }}</div>
+          <div v-if="delegatorsCount"><span class="text-grey ch5">Delegations:</span> {{ delegatorsCount }}</div>
+        </q-card-section>
+
+        <q-separator vertical />
+
+        <q-card-section class="col-5">
+          <div><span class="text-grey ch5">Stake Period:</span>   {{ validatePeriod }}</div>
+          <div><span class="text-grey ch5">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
+          <div><span class="text-grey ch5">End Time:</span>  {{ endDate }}</div>
+        </q-card-section>
+      </q-card-section>
+    </q-card>
 </template>
 
 <script>
@@ -34,11 +42,15 @@ import {
   copyToClipboard
 } from 'quasar'
 
-import { date, fromNow } from './../modules/time'
+import { date, fromNow, getDurationHumanize } from './../modules/time'
 
 export default {
   name: 'DetailsValidator',
   props: {
+    avatar: {
+      type: String,
+      required: true
+    },
     identity: {
       type: String,
       required: true
@@ -62,6 +74,14 @@ export default {
     endTime: {
       type: String,
       required: true
+    },
+    link: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
     }
   },
   computed: {
@@ -73,6 +93,9 @@ export default {
     },
     fromNowGet: function () {
       return fromNow(this.startTime)
+    },
+    validatePeriod: function () {
+      return getDurationHumanize(this.startTime, this.endTime)
     }
   },
   methods: {
@@ -93,6 +116,6 @@ export default {
 </script>
 <style scoped>
   #identity {
-    color: #ffa959;
+    color: grey;
   }
 </style>

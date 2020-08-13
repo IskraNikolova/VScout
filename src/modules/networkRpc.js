@@ -21,27 +21,25 @@ export const _initializeNetwork = async () => {
     window.ethereum.autoRefreshOnNetworkChange = false
   }
 
-  // web3 = new Web3(getProvider({ endpoint: `htps://${config.network.endpointCChainWs}` }))
-  web3 = new Web3(`https://${config.network.endpointCChainWs}`)
-  console.log(web3)
+  web3 = new Web3(getProvider({ endpoint: `wss://${config.network.endpointCChainWs}` }))
+  // web3 = new Web3(`https://${config.network.endpointCChainWs}`)
   contract = await new web3.eth.Contract(contractAbi, config.network.contract)
-  console.log(contract)
 }
 
-// const getProvider = ({ endpoint }) => {
-//   const provider = new Web3.providers.WebsocketProvider(endpoint)
-//   provider.on('connect', async () => {
-//     console.log('WS Connected')
-//   })
-//   provider.on('error', e => {
-//     console.error('WS Error' + e)
-//     web3.setProvider(getProvider({ endpoint }))
-//   })
-//   provider.on('end', e => {
-//     console.error('WS End' + e)
-//   })
-//   return provider
-// }
+const getProvider = ({ endpoint }) => {
+  const provider = new Web3.providers.WebsocketProvider(endpoint)
+  provider.on('connect', async () => {
+    console.log('WS Connected')
+  })
+  provider.on('error', e => {
+    console.error('WS Error' + e)
+    web3.setProvider(getProvider({ endpoint }))
+  })
+  provider.on('end', e => {
+    console.error('WS End' + e)
+  })
+  return provider
+}
 
 const getEstimatedGas = async ({ data, from }) => {
   try {
@@ -89,6 +87,7 @@ const prepareTransaction = async (method, from) => {
  */
 const executeMethod = async (method) => {
   const rawTx = await prepareTransaction(method, window.web3.givenProvider.selectedAddress)
+
   return new Promise((resolve, reject) => {
     window.web3.eth.sendTransaction(rawTx)
       .on('transactionHash', (hash) => {
@@ -99,7 +98,6 @@ const executeMethod = async (method) => {
       })
       .on('error', (err) => {
         if (err.message && err.message.includes('insufficient funds')) Notify.create('Insufficient funds')
-        console.error('Send transaction error', err)
         reject(err)
       })
   })

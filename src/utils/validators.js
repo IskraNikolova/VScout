@@ -2,6 +2,7 @@ const BigNumber = require('bignumber.js')
 
 import { fromNow } from './../modules/time'
 import { groupBy, round, getAvatar } from './commons'
+import { _getValidatorById } from './../modules/networkRpc'
 
 /**
 * @param {Array} Array of validators and delegators for split
@@ -41,8 +42,8 @@ export function splitPendingAccounts (validators, existValidators) {
 * @param {Array} Array of current validators on Default Subnet
 * @returns {Array} Array with processing validators
 */
-export function validatorProcessing (validators, delegators, defaultValidators) {
-  const val = mapValidators(validators, delegators, defaultValidators)
+export async function validatorProcessing (validators, delegators, defaultValidators) {
+  const val = await mapValidators(validators, delegators, defaultValidators)
 
   // get all staked AVAX
   const allStake = val.reduce((a, b) => {
@@ -79,11 +80,11 @@ export function compare (a, b) {
   return temp[compareStake === 0]
 }
 
-export function mapValidators (validators, delegators, defaultValidators) {
+export async function mapValidators (validators, delegators, defaultValidators) {
   if (!validators) return []
 
-  return validators.map((val) => {
-    // const info = await _getValidatorById(val.id)
+  const res = await Promise.all(validators.map(async (val) => {
+    const info = await _getValidatorById(val.id)
     let address = ''
     let delegateStake = 0
     let delegatorsCount = 0
@@ -104,9 +105,8 @@ export function mapValidators (validators, delegators, defaultValidators) {
       delegatorsCount = props.delegatorsCount
     }
 
-    const avatar = getAvatar(val.id)
-      .monster // info.avatarUrl ? info.avatarUrl : getAvatar(val.id).monster
-    const name = val.id // info.name ? info.name : val.id
+    const avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.id).monster
+    const name = info.name ? info.name : val.id
     const total = parseFloat(stakeAmount) + parseFloat(delegateStake)
 
     return {
@@ -124,10 +124,12 @@ export function mapValidators (validators, delegators, defaultValidators) {
       delegateStakenAva: delegateStake,
       stake: getAvaFromnAva(stakeAmount),
       stakenAva: parseFloat(stakeAmount),
-      delegateStake: getAvaFromnAva(delegateStake)
-      // link: info.link
+      delegateStake: getAvaFromnAva(delegateStake),
+      link: info.link
     }
-  })
+  }))
+
+  return res
 }
 
 export function getDelegatorsForNode (validator, delegators) {
