@@ -9,6 +9,7 @@ import {
   SET_NODE_ID,
   GET_ACCOUNT,
   CREATE_USER,
+  SET_ENDPOINT,
   FUND_ACCOUNT,
   LIST_ACCOUNTS,
   GET_TOTAL_TXS,
@@ -90,7 +91,8 @@ import {
   temp
 } from './../../utils/constants'
 
-async function initApp ({ dispatch, getters }) {
+async function initApp ({ dispatch, commit, getters }) {
+  commit(SET_ENDPOINT, {})
   try {
     Promise.all([
       dispatch(GET_NODE_HEALTH),

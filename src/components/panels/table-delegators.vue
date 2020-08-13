@@ -1,5 +1,6 @@
 <template>
   <div class="q-mt-md">
+    {{filter}}
     <q-table
       :data="curentVal"
       :columns="columns"

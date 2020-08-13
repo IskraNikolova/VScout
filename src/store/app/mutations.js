@@ -41,6 +41,7 @@ const mutations = {
     state.nodeInfo = nodeInfo
   },
   [SET_ENDPOINT]: (state, { endpoint }) => {
+    if (!endpoint) endpoint = network.endpointUrls[0]
     state.networkEndpoint = endpoint
   },
   [SET_TOTAL_TXS]: (state, { totalTxsCount }) => {

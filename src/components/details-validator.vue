@@ -23,7 +23,12 @@
             </small>
           </div>
           <div v-else><span class="text-grey ch5">Weight:</span> {{ weight }}</div>
-          <div v-if="delegatorsCount"><span class="text-grey ch5">Delegations:</span> {{ delegatorsCount }}</div>
+          <div v-if="delegatorsCount">
+            <span class="text-grey ch5">Delegations:</span>
+            <span class="text-accent text-h7" style="cursor: pointer;" @click="onGetDelegations">
+              {{ delegatorsCount }}
+            </span>
+          </div>
         </q-card-section>
 
         <q-separator vertical />
@@ -43,6 +48,7 @@ import {
 } from 'quasar'
 
 import { date, fromNow, getDurationHumanize } from './../modules/time'
+import { UPDATE_UI } from './../store/ui/types'
 
 export default {
   name: 'DetailsValidator',
@@ -109,6 +115,13 @@ export default {
         textColor: 'black',
         position: 'center',
         timeout: 1000
+      })
+    },
+    onGetDelegations () {
+      this.$store.commit(UPDATE_UI, {
+        typeAccount: {
+          isValidators: false
+        }
       })
     }
   }
