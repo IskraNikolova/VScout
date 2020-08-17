@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="flex flex-center text-h2 q-pt-xl">FAQs</div>
-    <div class="flex flex-center text-h7 q-pt-xl q-mb-xl">
+    <div class="flex flex-center text-h2 q-pt-xl text-white">FAQs</div>
+    <div class="flex flex-center text-h7 q-pt-xl q-mb-xl text-white">
       Let's answer some questions you may have.
       <q-btn no-caps flat v-if="!visible" @click="visible=!visible" icon="expand_more"/>
       <q-btn no-caps flat v-else @click="visible=!visible" icon="expand_less"/>

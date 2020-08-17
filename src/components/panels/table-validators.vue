@@ -11,6 +11,7 @@
       class="light-background shadow-3"
       id="custom-table"
       :visible-columns="visibleColumns"
+      :loading="visible"
     >
       <template v-slot:header-cell-delegate="props">
         <q-th :props="props">
@@ -31,8 +32,8 @@
             {label: 'Active', value: 'active'},
             {label: 'Pending', value: 'pending'}
           ]"
-        />
-        <q-btn
+        />|
+        <!--<q-btn
           size="xs"
           outline
           icon="add"
@@ -40,7 +41,7 @@
           @click.native="onAddValidator"
           class="q-mr-md q-ml-md"
         />
-        <add-validator-dialog ref="addValidatorDialog" />
+        <add-validator-dialog ref="addValidatorDialog" />-->
         <q-btn-toggle
           v-model="type2"
           flat
@@ -103,7 +104,7 @@
                 </small>
               </div>
               <div>
-                <small class="text-grey">Owned</small> {{ col.value }}
+                <small class="text-grey">Own</small> {{ col.value }}
                 <small class="text-grey">Delegated</small> {{ props.row.delegateStake }}
               </div>
             </div>
@@ -121,16 +122,16 @@
                     size="50px"
                     :value="props.row.cumulativeStake / 100"
                     :buffer="props.row.cumulativeStake / 100"
-                    color="accent"
+                    color="orange"
                   >
                   </q-linear-progress>
                 </div>
                 <div class="layer2">
                   <q-linear-progress
-                    size="50px"
+                    size="49px"
                     :value="(props.row.cumulativeStake - props.row.percent) / 100"
                     :buffer="(props.row.cumulativeStake - props.row.percent) / 100"
-                    color="blue-grey-5">
+                    color="grey">
                     <div
                       class="absolute-full text-black q-ml-xs"
                       style="font-size: 15px;margin-top: 6%;"
@@ -150,12 +151,12 @@
             <div v-else-if="col.name === 'startTime'">
               <small>{{ formatDate(col.value) }}</small>
             </div>
-            <div v-else-if="col.name === 'delegate'">
+            <!--<div v-else-if="col.name === 'delegate'">
               <q-btn v-if="isDefaultSubnetID" no-caps flat @click="onDelegate(props.row)">
                 <small class="text-orange">Delegate</small>
               </q-btn>
               <div v-else> - </div>
-            </div>
+            </div>-->
             <div v-else>{{ col.value }}</div>
           </q-td>
         </q-tr>
@@ -176,7 +177,7 @@
         </q-tr>
       </template>
       <template v-slot:item="props">
-        <div class="q-pa-xs" style="width: 400px;margin:auto;">
+        <div style="width: 300px;margin:auto;">
           <q-card flat bordered>
             <q-item>
               <q-item-section avatar @click="onClick(props.row.link)">
@@ -228,7 +229,7 @@
             <q-separator />
 
             <q-card-section horizontal>
-              <q-card-section class="col-7 q-mb-xl">
+              <q-card-section class="col-5 q-mb-xl">
                 <div class="q-mb-md">Stake (AVAX)</div>
                 {{ props.row.stake > 1 ? getLocalString(props.row.stake) : props.row.stake }}
                 <small class="text-accent">$AVAX</small>
@@ -237,40 +238,40 @@
                   ({{ getLocalString(props.row.stakenAva) }} nAvax)
                 </small>
                 <div>
-                <small class="text-orange" v-if="props.row.percent !== 'NaN'">
-                  {{ props.row.percent }} %
-                </small>
-              </div>
-              <div>
-                <small class="text-grey">Delegated</small>
-                {{ props.row.delegateStake }}
-                <small class="text-accent">$AVAX</small>
-              </div>
-              <div>
-                <small class="text-grey">Total</small>
-                {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
-                <small class="text-accent">$AVAX</small>
-              </div>
-              <q-separator class="q-mb-md"/>
-              <div class="q-pl-xs">
-                <div>Staked by</div>
-                <div class="text-accent">
-                  <small>{{ props.row.fromNowST }}</small>
+                  <small class="text-orange" v-if="props.row.percent !== 'NaN'">
+                    {{ props.row.percent }} %
+                  </small>
                 </div>
-              </div>
-              <div class="q-mt-md">
-                <q-btn
-                  outline
-                  size="xs"
-                  class="orange"
-                  label="Delegate"
-                  v-if="isDefaultSubnetID"
-                  @click="onDelegate(props.row)"
-                />
-              </div>
+                <div>
+                  <small class="text-grey">Delegated</small>
+                  {{ props.row.delegateStake }}
+                  <small class="text-accent">$AVAX</small>
+                </div>
+                <div>
+                  <small class="text-grey">Total</small>
+                  {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
+                  <small class="text-accent">$AVAX</small>
+                </div>
+                <q-separator class="q-mb-md"/>
+                <div class="q-pl-xs">
+                  <div>Staked by</div>
+                  <div class="text-accent">
+                    <small>{{ props.row.fromNowST }}</small>
+                  </div>
+                </div>
+                <!--<div class="q-mt-md">
+                  <q-btn
+                    outline
+                    size="xs"
+                    class="orange"
+                    label="Delegate"
+                    v-if="isDefaultSubnetID"
+                    @click="onDelegate(props.row)"
+                  />
+                </div>-->
               </q-card-section>
               <q-separator vertical />
-              <q-card-section class="col-5">
+              <q-card-section class="col-7">
                 <cumulative-stake-chart
                   v-if="props.row.cumulativeStake"
                   v-bind:name="props.row.validator"
@@ -278,8 +279,8 @@
                   v-bind:percentAll="props.row.cumulativeStake ? props.row.cumulativeStake : NaN"
                 /><div v-else> - </div>
               </q-card-section>
-
             </q-card-section>
+
             <q-card-section>
               <div class="text-grey">Progress (%)</div>
               <progress-bar-validate-session
@@ -307,7 +308,7 @@
         </div>
       </template>
     </q-table>
-    <delegate-validator-dialog ref="delegateValidatorDialog" />
+    <!--<delegate-validator-dialog ref="delegateValidatorDialog" />-->
   </div>
 </template>
 
@@ -324,9 +325,9 @@ import { UPDATE_UI } from './../../store/ui/types'
 import DetailsValidator from './../details-validator'
 import Settings from './settings'
 import CumulativeStakeChart from './../cumulative-stake-chart'
-import AddValidatorDialog from './../dialogs/add-validator-dialog'
+// import AddValidatorDialog from './../dialogs/add-validator-dialog'
 import ProgressBarValidateSession from './../progress-bar-validatе-session'
-import DelegateValidatorDialog from './../dialogs/delegate-validator-dialog'
+// import DelegateValidatorDialog from './../dialogs/delegate-validator-dialog'
 import AddIdentificationDialog from './../dialogs/add-identification-dialog'
 
 export default {
@@ -334,15 +335,16 @@ export default {
   components: {
     Settings,
     DetailsValidator,
-    AddValidatorDialog,
+    // AddValidatorDialog,
     CumulativeStakeChart,
-    DelegateValidatorDialog,
+    // DelegateValidatorDialog,
     AddIdentificationDialog,
     ProgressBarValidateSession
   },
   data () {
     return {
       filter: '',
+      visible: false,
       type: 'active',
       type2: 'validators',
       isGrid: false,
@@ -351,60 +353,17 @@ export default {
         rowsPerPage: 21
       },
       border: '#87C5D6',
-      separator: 'cell',
-      columns: [
-        {
-          name: 'rank',
-          label: 'Rank',
-          align: 'center',
-          field: row => row.rank,
-          sortable: true,
-          style: 'width: 50px',
-          headerClasses: 'ch5'
-        },
-        {
-          name: 'validator',
-          align: 'center',
-          label: 'Validator',
-          field: 'name',
-          headerClasses: 'ch5'
-        },
-        {
-          name: 'stake',
-          align: 'center',
-          label: 'Stake (AVAX)',
-          field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
-          sortable: true,
-          headerClasses: 'ch5'
-        },
-        {
-          name: 'weight',
-          align: 'center',
-          label: 'Weight',
-          field: row => row.weight,
-          sortable: true,
-          headerClasses: 'ch5'
-        },
-        {
-          name: 'networkShare',
-          align: 'center',
-          label: 'Network Share (%)',
-          field: row => row.percent,
-          sortable: true,
-          headerClasses: 'ch5'
-        },
-        {
-          name: 'percent',
-          align: 'center',
-          label: 'Cumulative Stake (%)',
-          field: 'cumulativeStake',
-          headerClasses: 'ch5'
-        },
-        { name: 'startTime', align: 'center', label: 'Start Time', field: 'startTime', sortable: true, headerClasses: 'ch5' },
-        { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress', headerClasses: 'ch5' },
-        { name: 'delegate', align: 'center', label: 'Delegate', field: 'delegate', headerClasses: 'ch5' }
-      ]
+      separator: 'cell'
     }
+  },
+  created () {
+    this.visible = true
+    const i = setInterval(() => {
+      if (this.validators.length > 0) {
+        this.visible = false
+        clearInterval(i)
+      }
+    }, 500)
   },
   computed: {
     ...mapGetters([
@@ -429,6 +388,60 @@ export default {
       }
 
       return columns.filter(c => c !== 'stake')
+    },
+    columns: function () {
+      return [
+        {
+          name: 'rank',
+          label: 'RANK',
+          align: 'center',
+          field: row => row.rank,
+          sortable: true,
+          style: 'width: 50px',
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'validator',
+          align: 'center',
+          label: 'VALIDATOR',
+          field: 'name',
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'stake',
+          align: 'center',
+          label: 'STAKE (AVAX)',
+          field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
+          sortable: true,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'weight',
+          align: 'center',
+          label: 'WEIGHT',
+          field: row => row.weight,
+          sortable: true,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'networkShare',
+          align: 'center',
+          label: 'NETWORK SHARE (%)',
+          field: row => row.percent,
+          sortable: true,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'percent',
+          align: 'center',
+          label: 'CUMULATIVE STAKE (%)',
+          field: 'cumulativeStake',
+          headerClasses: 'text-medium'
+        },
+        { name: 'startTime', align: 'center', label: 'START TIME', field: 'startTime', sortable: true, headerClasses: 'text-medium' },
+        { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress', headerClasses: 'text-medium' }
+        // { name: 'delegate', align: 'center', label: 'Delegate', field: 'delegate', headerClasses: 'ch5' }
+      ]
     }
   },
   methods: {

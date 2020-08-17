@@ -98,14 +98,14 @@ async function initApp ({ dispatch, commit, getters }) {
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_BLOCKCHAINS),
       dispatch(GET_NODE_ID),
-      dispatch(GET_TX_FOR_24_HOURS),
-      dispatch(GET_TXS_HISTORY, {
-        txHKey: getters.txHKey
-      }),
+      // dispatch(GET_TX_FOR_24_HOURS),
+      // dispatch(GET_TXS_HISTORY, {
+      //   txHKey: getters.txHKey
+      // }),
       dispatch(GET_SUBNETS),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
-      dispatch(INIT_VALIDATORS),
-      dispatch(GET_TOTAL_TXS)
+      dispatch(INIT_VALIDATORS)
+      // dispatch(GET_TOTAL_TXS)
     ])
   } catch (err) {
     console.log(err)
@@ -123,12 +123,12 @@ async function initApp ({ dispatch, commit, getters }) {
         }),
         dispatch(GET_PENDING_VALIDATORS, {
           subnetID: getters.subnetID
-        }),
-        dispatch(GET_TXS_HISTORY, {
-          txHKey: getters.txHKey
-        }),
-        dispatch(GET_TOTAL_TXS),
-        dispatch(GET_TX_FOR_24_HOURS)
+        })
+        // dispatch(GET_TXS_HISTORY, {
+        //   txHKey: getters.txHKey
+        // }),
+        // dispatch(GET_TOTAL_TXS),
+        // dispatch(GET_TX_FOR_24_HOURS)
       ])
     } catch (err) {
       console.log(err)
@@ -283,8 +283,9 @@ async function initValidators ({ commit, getters }) {
   commit(SET_DELEGATORS, { delegators })
 
   const res = await validatorProcessing(v, d, getters.validators)
+
   commit(SET_VALIDATORS, { validators: res.validators })
-  commit(SET_STAKED_AVA, { stakedAva: res.allStake })
+  commit(SET_STAKED_AVA, { all: res.allStake, validatedStake: res.validatedStake, delegatedStake: res.delegatedStake })
 }
 
 async function getValidators (
@@ -311,7 +312,7 @@ async function getValidators (
 
   const res = await validatorProcessing(v, d, getters.validators)
   commit(SET_VALIDATORS, { validators: res.validators })
-  commit(SET_STAKED_AVA, { stakedAva: res.allStake })
+  commit(SET_STAKED_AVA, { all: res.allStake, validatedStake: res.validatedStake, delegatedStake: res.delegatedStake })
   return true
 }
 

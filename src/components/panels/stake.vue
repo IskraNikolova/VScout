@@ -3,47 +3,52 @@
     class="q-mt-md q-pt-md q-pl-xl q-pr-xl" id="custom-card" >
     <div class="row">
       <div class="col-md-2 col-xs-10">
-        <div id="f-size12" class="q-pb-md">VALIDATORS</div>
+        <div id="f-size12" class="q-pb-md text-medium">VALIDATORS</div>
         <div>
           <span class="text-h5 text-orange">{{ validators.length }}</span> <span id="f-size12"> active </span>  /  <span class="text-orange"> {{ pendingValidators.length }}</span> <span id="f-size12"> pending</span> </div>
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/validators-grey.png" class="custom-icon">
       </div>
+      <q-separator  class="q-mt-md q-mb-md xs sm md"/>
       <div class="col-md-2 col-xs-10">
-        <div id="f-size12" class="q-pb-md">DELEGATIONS</div>
+        <div id="f-size12" class="q-pb-md text-medium">DELEGATIONS</div>
         <div>
           <span class="text-h5 text-orange">{{ delegators.length }}</span> <span id="f-size12"> active</span>  /  <span class="text-orange"> {{ pendingDelegators.length }}</span> <span id="f-size12"> pending</span> </div>
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/manage.svg" class="custom-icon">
       </div>
+      <q-separator class="q-mt-md q-mb-md xs sm md"/>
       <div class="col-md-2 col-xs-10">
-        <div id="f-size12" class="q-pb-md">TOTAL STAKE</div>
+        <div id="f-size12" class="q-pb-md text-medium">TOTAL STAKE</div>
         <div class="text-h5 q-pb-md">
             <span class="text-orange">
-              <small>{{stakedAVA}}</small>
-            </span>
-            <span style="font-size: 13px;">AVAX</span>
-        </div>
-      </div>
-      <div class="col-1 q-pt-md">
-        <img src="~assets/stake_amount.png" class="custom-icon">
-      </div>
-      <div class="col-md-2 col-xs-10">
-       <div id="f-size12" class="q-pb-md">AVAX VOLUME (24h)</div>
-       <div class="text-h5 q-pb-md">
-            <span class="text-orange">
-              <small>
-                {{ txsFor24H.transactionVolume.toLocaleString() }}
-              </small>
+              <small>{{ stakedAVA }}</small>
             </span>
             <span style="font-size: 13px;"> AVAX</span>
         </div>
       </div>
       <div class="col-1 q-pt-md">
-        <img src="~assets/ava_price.png" class="custom-icon">
+        <img src="~assets/stake_amount.png" class="custom-icon">
       </div>
+      <q-separator class="q-mt-md q-mb-md xs sm md"/>
+      <div class="col-md-3 col-xs-10">
+       <div id="f-size12" class="q-pb-md text-medium">VALIDATION / DELEGATED STAKE</div>
+       <div class="text-h5 q-pb-md">
+            <span class="text-orange">
+             <small>{{ validatedStake }}</small>
+            </span>
+            /
+            <span class="text-orange">
+             <small>{{ delegatedStake }}</small>
+            </span>
+            <span style="font-size: 13px;"> AVAX</span>
+        </div>
+      </div>
+      <!--<div class="col-1 q-pt-md">
+        <img src="~assets/ava_price.png" class="custom-icon">
+      </div>-->
     </div>
   </q-card>
 </template>
@@ -56,6 +61,8 @@ export default {
   computed: {
     ...mapGetters([
       'stakedAVA',
+      'delegatedStake',
+      'validatedStake',
       'txsFor24H',
       'validators',
       'delegators',
@@ -69,8 +76,6 @@ export default {
 <style scoped>
  #custom-card {
    border-right: 2px solid grey;
-   padding-top: 3%;
-   padding-bottom: 3%;
  }
  .custom-icon {
    width:30vw;

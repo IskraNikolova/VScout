@@ -50,6 +50,14 @@ export async function validatorProcessing (validators, delegators, defaultValida
     return a + parseFloat(b.totalnAva)
   }, 0.0)
 
+  const validatedStake = val.reduce((a, b) => {
+    return a + parseFloat(b.stakenAva)
+  }, 0.0)
+
+  const delegatedStake = val.reduce((a, b) => {
+    return a + parseFloat(b.delegateStakenAva)
+  }, 0.0)
+
   // get and set percent for total stake (own and delegated)
   let validatorsResult = val.map((v) => {
     v.percent = getPercent(v.totalnAva, allStake)
@@ -66,7 +74,12 @@ export async function validatorProcessing (validators, delegators, defaultValida
     v.cumulativeStake = cumulativeStake(currentValidators)
     return v
   })
-  return { allStake: getAvaFromnAva(allStake), validators: result }
+  return {
+    allStake: getAvaFromnAva(allStake),
+    validatedStake: getAvaFromnAva(validatedStake),
+    delegatedStake: getAvaFromnAva(delegatedStake),
+    validators: result
+  }
 }
 
 export function compare (a, b) {

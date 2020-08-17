@@ -1,10 +1,7 @@
 <template>
-  <q-page
-    class="q-pr-xl q-pl-xl"
-    style="background-color: white;"
-  >
+  <q-page class="q-pr-md q-pl-md">
     <network class="q-pr-md"/>
-    <transactions class="q-pa-md" />
+    <!--<transactions class="q-pa-md" />-->
     <stake class="q-pr-md"/>
     <table-validators
       v-if="ui.typeAccount.isValidators"
@@ -19,7 +16,7 @@
     <div class="flex flex-center q-mt-xl">
       <img src="~assets/ava-black.png" id="logo"/>
     </div>
-    <div class="flex flex-center q-mt-xl">
+    <div class="flex flex-center q-mt-xl text-white">
       Made with ❤️ for builders everywhere.
     </div>
   </q-page>
@@ -34,7 +31,7 @@ import {
 import Faqs from './../components/panels/faqs'
 import Stake from './../components/panels/stake'
 import Network from './../components/panels/network'
-import Transactions from './../components/panels/transactions'
+// import Transactions from './../components/panels/transactions'
 import TableValidators from './../components/panels/table-validators'
 import TableDelegators from './../components/panels/table-delegators'
 
@@ -49,7 +46,7 @@ export default {
     Faqs,
     Stake,
     Network,
-    Transactions,
+    // Transactions,
     TableValidators,
     TableDelegators
   },

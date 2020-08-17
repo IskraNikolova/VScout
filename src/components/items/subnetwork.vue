@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div id="f-size12" class="q-pb-md">SUBNETWORK</div>
+    <div id="f-size12" class="q-pb-md text-medium">SUBNETWORK</div>
     <div>
-      <div class="text-h6 q-pb-md text-orange" v-if="isDefaultSubnetID">
+      <div class="text-h6 q-pb-md text-orange" style="cursor: pointer;" v-if="isDefaultSubnetID" @click="$router.push(`/search/${currentSubnet.id}`)">
         Default Subnet
       </div>
-      <div v-else class="q-pb-md q-pt-xs text-orange" style="font-size: 19px;" >
+      <div v-else class="q-pb-md q-pt-xs text-orange" style="font-size: 19px;cursor: pointer;" @click="$router.push(`/search/${currentSubnet.id}`)">
         <small>{{ currentSubnet.id }}</small>
       </div>
     </div>

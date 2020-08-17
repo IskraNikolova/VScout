@@ -6,6 +6,8 @@ export default function () {
     subnets: [],
     subnetID: '',
     stakedAVA: 0,
+    validatedStake: 0,
+    delegatedStake: 0,
     nodeHealth: {},
     validators: [],
     delegators: [],

@@ -1,7 +1,7 @@
 <template>
   <q-btn-dropdown
     flat
-    dropdown-icon="img:statics/blockchain-black.svg"
+    label="network"
   >
     <q-tabs
       v-model="tab"

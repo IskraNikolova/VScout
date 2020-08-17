@@ -1,11 +1,43 @@
 @font-face {
-  font-family: 'Helvetica';
-  src: url('~assets/fonts/Helvetica.otf') format("opentype");
+  font-family: 'Rubik-Light';
+  src: url('~assets/fonts/Rubik-Light.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: 'Rubik-Regular';
+  src: url('~assets/fonts/Rubik-Regular.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: 'Rubik-Medium';
+  src: url('~assets/fonts/Rubik-Medium.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: 'Rubik-Bold';
+  src: url('~assets/fonts/Rubik-Medium.ttf') format("truetype");
 }
 
 body {
-  font-family: 'Helvetica',sans-serif;
+  font-family: 'Rubik-Regular',sans-serif;
   word-wrap: break-word;
+  background: #32353b;
+}
+
+.text-medium {
+  font-family: 'Rubik-Medium',sans-serif;
+}
+
+.text-regular {
+  font-family: 'Rubik-Regular',sans-serif;
+}
+
+.text-light {
+  font-family: 'Rubik-Light',sans-serif;
+}
+
+.text-bold {
+  font-family: 'Rubik-Bold',sans-serif;
 }
 
 .ch5 {
@@ -17,18 +49,17 @@ body {
   font-size-adjust: 0.68!important;
 }
 
-#toolbar-logo {
-  width: 20%;
-  max-width: 20%;
-}
-
-.background-img-s {
-  width: 55%;
-  max-width: 55%;
-}
-
 .cold {
   color:  #344245;
+}
+
+.background-orange {
+  background: $orange;
+}
+
+.background-white {
+  background: white;
+  color: $orange;
 }
 
 .light-background {

@@ -30,6 +30,18 @@ export function blockchainByID (state) {
     .find(b => b.id === id)
 }
 
+export function blockchainByName (state) {
+  return (name) => state
+    .blockchains
+    .find(b => b.name.toLowerCase() === name.toLowerCase())
+}
+
+export function subnetByID (state) {
+  return (id) => state
+    .subnets
+    .find(b => b.id === id)
+}
+
 export function subnets (state) {
   return state.subnets
 }
@@ -48,6 +60,14 @@ export function subnetID (state) {
 
 export function stakedAVA (state) {
   return state.stakedAVA.toLocaleString()
+}
+
+export function validatedStake (state) {
+  return state.validatedStake.toLocaleString()
+}
+
+export function delegatedStake (state) {
+  return state.delegatedStake.toLocaleString()
 }
 
 export function isDefaultSubnetID (state) {

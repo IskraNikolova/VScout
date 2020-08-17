@@ -1,6 +1,6 @@
 <template>
   <div class="col-md-3 col-xs-10">
-    <div id="f-size12" class="q-pb-md">
+    <div id="f-size12" class="q-pb-md text-medium">
       NODE CONNECTION
       <q-spinner-ball v-if="ui.doesItConnect" />
     </div>
@@ -8,7 +8,8 @@
       <div class="col">
         <small>Connected with</small>
         <div class="text-h7 q-pb-md text-orange" >
-        {{ networkEndpoint }}
+        {{ networkEndpoint.substr(0, 19)}}...
+        <q-tooltip>{{ networkEndpoint}}</q-tooltip>
         </div>
       </div>
       <div class="q-pl-md q-pt-xs col">
@@ -17,7 +18,7 @@
       </div>
     </div>
     <div id="f-size12" v-if="nodeID">
-      Node ID
+      <span class="text-medium">Node ID</span>
       <div class="text-grey">
         {{ nodeID }}
         <q-btn class="text-accent" size="xs" flat icon="info" @click="onOpenNodeInfo">
@@ -61,7 +62,7 @@ export default {
       }
     },
     color: function () {
-      if (this.healthy) return 'accent'
+      if (this.healthy) return 'green'
       return 'negative'
     }
   },

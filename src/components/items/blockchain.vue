@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="f-size12" class="q-pb-md">
+    <div id="f-size12" class="q-pb-md text-medium">
       BLOCKCHAIN
     </div>
     <div class="row q-mb-md">
@@ -39,7 +39,7 @@
       </div>
     </div>
     <div id="f-size12">
-      Blockchain ID
+      <span class="text-medium">Blockchain ID</span>
       <div class="text-grey">
         {{ currentBlockchain.id }}
       </div>

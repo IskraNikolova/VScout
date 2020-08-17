@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import { round } from './../../utils/commons'
 
+import { VMDict } from './../../utils/constants'
+
 const { network } = require('./../../modules/config').default
 
 import {
@@ -50,13 +52,22 @@ const mutations = {
   [SET_VALIDATORS]: (state, { validators }) => {
     state.validators = validators
   },
-  [SET_STAKED_AVA]: (state, { stakedAva }) => {
-    state.stakedAVA = round(stakedAva, 100)
+  [SET_STAKED_AVA]: (state, { all, validatedStake, delegatedStake }) => {
+    if (!all) return
+    else if (!validatedStake) return
+    else if (!delegatedStake) return
+    state.stakedAVA = round(all, 100)
+    state.validatedStake = round(validatedStake, 1000)
+    state.delegatedStake = round(delegatedStake, 1000)
   },
   [SET_DELEGATORS]: (state, { delegators }) => {
     state.delegators = delegators
   },
   [SET_BLOCKCHAINS]: (state, { blockchains }) => {
+    blockchains = blockchains.map(b => {
+      b.vmName = VMDict[b.vmID].name
+      return b
+    })
     state.blockchains = blockchains
   },
   [SET_TXS_HISTORY]: (state, { key, txsHistory }) => {

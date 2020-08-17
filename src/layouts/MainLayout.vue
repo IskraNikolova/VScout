@@ -1,23 +1,17 @@
 <template>
   <q-layout view="lHh Lpr lFf" >
-    <q-header reveal class="bg-white text-black q-pt-md q-pr-xl" style="z-index: 0;">
-      <q-toolbar>
-        <q-img class="md background-img-s" src="./../statics/img/background.png"/>
-        <q-img class="xl background-img-s" src="./../statics/img/background.png"/>
-        <q-img class="lg background-img-s" src="./../statics/img/background.png"/>
-        <q-img class="md" src="~assets/AVAVE.png" id="toolbar-logo" style="margin-left: -5%;"/>
-        <q-img class="xl" src="~assets/AVAVE.png" id="toolbar-logo" style="margin-left: -5%;"/>
-        <q-img class="lg" src="~assets/AVAVE.png" id="toolbar-logo" style="margin-left: -5%;"/>
-        <q-toolbar-title></q-toolbar-title>
-        <q-img class="xs" src="~assets/AVAVE.png" id="toolbar-logo"/>
-        <q-img class="sm" src="~assets/AVAVE.png" id="toolbar-logo"/>
-        <q-btn push no-caps flat id="logo-sim" icon="img:statics/rwc.svg">
+    <q-header reveal>
+      <q-toolbar class="background-white">
+        <q-toolbar-title @click="$router.push('/')" style="cursor:pointer;margin-left: 12px;">
+          <q-icon name="home" />
+        </q-toolbar-title>
+        <q-btn push flat id="logo-sim" label="calculator">
           <q-popup-proxy>
             <q-banner class="q-pa-md" dense style="width: 430px;">
               <div class="q-pb-md">Reward Calculator</div>
               <div class="q-pa-md absolute-top-right">
                 <q-badge outline size="xs" color="accent" :label="percentReward.toFixed(2) + '%'" />
-                </div>
+              </div>
               <q-input
                 label-color="orange"
                 outlined
@@ -78,7 +72,7 @@
         <select-network-dropdown />
         <q-btn-dropdown
           flat
-          dropdown-icon="img:statics/node.svg"
+          label="endpoint"
           id="target-el"
         >
           <div class="no-wrap q-pa-md text-orange">
@@ -86,9 +80,29 @@
           </div>
           <switch-endpoint />
         </q-btn-dropdown>
+       </q-toolbar>
+      <q-toolbar class="background-orange">
+        <q-toolbar-title>
+          <img src="~assets/vscout.png" style="width: 215px;">
+        </q-toolbar-title>
+        <q-bar>
+          <q-input
+            outlined
+            dark
+            stack-label
+            color="white"
+            style="min-width: 450px;"
+            placeholder="Search Validator/Blockchain/Subnet"
+            clearable v-model="filter"
+          >
+            <template v-slot:append>
+              <q-icon name="search" @click="search"/>
+            </template>
+          </q-input>
+        </q-bar>
       </q-toolbar>
     </q-header>
-    <q-page-container style="z-index: 10;">
+    <q-page-container>
       <q-page-sticky position="top" style="z-index: 11;" :offset="[0, 18]" v-if="!hasNetworkConnection">
         <q-btn
           round
@@ -125,7 +139,8 @@ export default {
       weekly: 0.00,
       percentReward: 4,
       btnNetwork: false,
-      switchNet: '#target-el'
+      switchNet: '#target-el',
+      filter: ''
     }
   },
   mounted () {
@@ -145,6 +160,9 @@ export default {
         this.result = (this.stakeAmount * basePercY) / 100
       }
       this.weekly = this.result / 52
+    },
+    search () {
+      this.$router.push(`/search/${this.filter}`)
     }
   }
 }
