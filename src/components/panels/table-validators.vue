@@ -117,7 +117,7 @@
             </div>
             <div v-else-if="col.name === 'percent'">
               <div class="container_row" v-if="props.row.cumulativeStake">
-                <div class="layer1" :style="'height: 50px;width:' + props.row.cumulativeStake + '%;background: rgb(50,53,59);background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(50,53,59,1) ' + (props.row.cumulativeStake - props.row.percent) / 5 + '%, rgba(255,96,0,1) 95%);'">
+                <div class="layer1" :style="'border-radius:0px 15px 0px 0px;height: 50px;width:' + props.row.cumulativeStake + '%;background: rgb(50,53,59);background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(50,53,59,1) ' + (props.row.cumulativeStake - props.row.percent) / 5 + '%, rgba(255,96,0,1) 95%);'">
                   <!--<q-linear-progress
                     size="50px"
                     :value="props.row.cumulativeStake / 100"
@@ -131,7 +131,7 @@
                     size="49px"
                     :value="(props.row.cumulativeStake - props.row.percent) / 100"
                     :buffer="(props.row.cumulativeStake - props.row.percent) / 100"
-                    :style="'opacity:0.6;'"
+                    style="opacity:0.6;border-radius:0px 15px 0px 0px;"
                     color="grey">
                     <div
                       class="absolute-full text-bold text-black"
