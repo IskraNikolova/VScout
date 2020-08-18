@@ -83,7 +83,7 @@
        </q-toolbar>
       <q-toolbar class="background-orange">
         <q-toolbar-title>
-          <img src="~assets/vscout.png" style="width: 150px;">
+          <img src="~assets/vscout.svg" style="width: 200px;">
         </q-toolbar-title>
         <q-bar>
           <q-input
