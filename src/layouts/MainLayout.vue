@@ -3,7 +3,7 @@
     <q-header reveal>
       <q-toolbar class="background-white">
         <q-toolbar-title @click="$router.push('/')" style="cursor:pointer;margin-left: 12px;">
-          <q-icon name="home" />
+          VScout.io <q-icon name="home" color="grey"/>
         </q-toolbar-title>
         <q-btn push flat id="logo-sim" label="calculator">
           <q-popup-proxy>
@@ -83,7 +83,7 @@
        </q-toolbar>
       <q-toolbar class="background-orange">
         <q-toolbar-title>
-          <img src="~assets/vscout.png" style="width: 215px;">
+          <img src="~assets/vscout.png" style="width: 150px;">
         </q-toolbar-title>
         <q-bar>
           <q-input
@@ -108,7 +108,7 @@
           round
           icon="wifi_off"
           size="lg"
-          color="accent"
+          color="grey"
         />
       </q-page-sticky>
       <router-view />

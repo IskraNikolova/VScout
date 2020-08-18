@@ -56,7 +56,7 @@
         <q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
         <add-identification-dialog ref="addIdentificationRef" />
       </template>
-      <template slot="top-right" v-if="!isGrid"  class="ch5">
+      <template slot="top-right" v-if="!isGrid">
         <q-input
           borderless
           color="accent"
@@ -75,7 +75,7 @@
             v-for="(col) in props.cols"
             :key="col.name"
             :props="props"
-            style="padding: 0px!important;margin:0px!important;"
+            style="padding: 0px!important;height: 50px!important;"
           >
             <div v-if="col.name === 'validator'" class="row q-pl-md">
             <!--<div :style="'border: solid 2px ' + border + ';border-radius: 50px;width: 24px;'">-->
@@ -117,23 +117,24 @@
             </div>
             <div v-else-if="col.name === 'percent'">
               <div class="container_row" v-if="props.row.cumulativeStake">
-                <div class="layer1">
-                  <q-linear-progress
+                <div class="layer1" :style="'height: 50px;width:' + props.row.cumulativeStake + '%;background: rgb(50,53,59);background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(50,53,59,1) ' + (props.row.cumulativeStake - props.row.percent) / 5 + '%, rgba(255,96,0,1) 95%);'">
+                  <!--<q-linear-progress
                     size="50px"
                     :value="props.row.cumulativeStake / 100"
                     :buffer="props.row.cumulativeStake / 100"
                     color="orange"
                   >
-                  </q-linear-progress>
+                  </q-linear-progress>-->
                 </div>
                 <div class="layer2">
                   <q-linear-progress
                     size="49px"
                     :value="(props.row.cumulativeStake - props.row.percent) / 100"
                     :buffer="(props.row.cumulativeStake - props.row.percent) / 100"
+                    :style="'opacity:0.6;'"
                     color="grey">
                     <div
-                      class="absolute-full text-black q-ml-xs"
+                      class="absolute-full text-bold text-black"
                       style="font-size: 15px;margin-top: 6%;"
                     >
                       {{props.row.cumulativeStake}} %
@@ -177,7 +178,7 @@
         </q-tr>
       </template>
       <template v-slot:item="props">
-        <div style="width: 300px;margin:auto;">
+        <div style="max-width: 400px;width: 100%;margin:auto;">
           <q-card flat bordered>
             <q-item>
               <q-item-section avatar @click="onClick(props.row.link)">
@@ -229,7 +230,7 @@
             <q-separator />
 
             <q-card-section horizontal>
-              <q-card-section class="col-5 q-mb-xl">
+              <q-card-section class="col-6 q-mb-xl">
                 <div class="q-mb-md">Stake (AVAX)</div>
                 {{ props.row.stake > 1 ? getLocalString(props.row.stake) : props.row.stake }}
                 <small class="text-accent">$AVAX</small>
@@ -271,7 +272,7 @@
                 </div>-->
               </q-card-section>
               <q-separator vertical />
-              <q-card-section class="col-7">
+              <q-card-section class="col-6">
                 <cumulative-stake-chart
                   v-if="props.row.cumulativeStake"
                   v-bind:name="props.row.validator"
@@ -517,5 +518,4 @@ export default {
   grid-column: 1;
   grid-row: 1;
 }
-
 </style>

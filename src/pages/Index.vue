@@ -1,23 +1,26 @@
 <template>
-  <q-page class="q-pr-md q-pl-md">
-    <network class="q-pr-md"/>
-    <!--<transactions class="q-pa-md" />-->
-    <stake class="q-pr-md"/>
-    <table-validators
-      v-if="ui.typeAccount.isValidators"
-      @getValidators="getValidatorsV"
-    />
-    <table-delegators
-      v-else
-      @getDelegators="getValidatorsV"
-    />
-    <faqs class="q-pr-md" />
+  <q-page>
+    <div style="height: 3px;width: 100%;background: grey;opacity: 0.5;"></div>
+    <div style="padding: 3%;">
+      <network class="q-pr-md"/>
+      <!--<transactions class="q-pa-md" />-->
+      <stake class="q-pr-md"/>
+      <table-validators
+        v-if="ui.typeAccount.isValidators"
+        @getValidators="getValidatorsV"
+      />
+      <table-delegators
+        v-else
+        @getDelegators="getValidatorsV"
+      />
+      <faqs class="q-pr-md" />
 
-    <div class="flex flex-center q-mt-xl">
-      <img src="~assets/ava-black.png" id="logo"/>
-    </div>
-    <div class="flex flex-center q-mt-xl text-white">
-      Made with ❤️ for builders everywhere.
+      <div class="flex flex-center q-mt-xl">
+        <img src="~assets/ava-black.png" id="logo"/>
+      </div>
+      <div class="flex flex-center q-mt-xl text-white">
+        Made with ❤️ for builders everywhere.
+      </div>
     </div>
   </q-page>
 </template>
