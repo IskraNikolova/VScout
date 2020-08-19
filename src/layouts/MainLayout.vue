@@ -377,6 +377,7 @@ export default {
     },
     search () {
       this.$router.push(`/search/${this.filter}`)
+      this.filter = ''
     }
   }
 }

@@ -378,7 +378,7 @@ export default {
     visibleColumns: function () {
       const columns = this.columns.map(c => c.name)
       if (this.curentValidators.find(a => a.percent === 'NAN' || !a.percent)) {
-        return columns.filter(c => c !== 'percent')
+        return columns.filter(c => c !== 'percent' && c !== 'networkShare' && c !== 'weight')
       } else if (this.curentValidators.find(a => a.weight < 1)) {
         return columns.filter(c => c !== 'weight')
       }

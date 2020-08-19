@@ -2,6 +2,10 @@ export function validators (state) {
   return state.validators
 }
 
+export function defaultValidators (state) {
+  return state.defaultValidators
+}
+
 export function delegators (state) {
   return state.delegators
 }

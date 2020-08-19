@@ -37,7 +37,7 @@
                   </span>
                 </q-item-label>
                 <q-item-label @click="onClick(validator().link)">
-                  {{ validator().name }} <small v-if="validator().name !== validator().validator" class="text-grey">({{validator().validator}})</small>
+                  {{ validator().name }} <small v-if="validator().name !== validator().validator" class="text-grey">({{ validator().validator }})</small>
                   <small>
                     <q-icon
                       @click="copyToClipboard(validator().validator)"
@@ -178,23 +178,23 @@
     </div>
     <div v-else class="fixed-center">
       <p>
-        <img
+        <!--<img
           src="~assets/notfound.svg"
           style="width:30vw;max-width:150px;"
-        >
+        >-->
       </p>
-    <p class="text-bold text-h6">
-      Looks like we don't have any matches for "{{ this.$route.params.id }}"
-    </p>
-    <p class="text-faded">
-      - Check for typos
-    </p>
-    <p class="text-faded">
-      - Check if your connection endpoint is healthy and synced with the network
-    </p>
-    <p class="text-faded">
-      - Everything is correct, but you are not getting the expected result? <a href="https://chat.avax.network/">Tag us in Avalanche discord!</a>
-    </p>
+      <p class="text-bold text-h6">
+        Looks like we don't have any matches for "{{ this.$route.params.id }}"
+      </p>
+      <p class="text-faded">
+        - Check for typos
+      </p>
+      <p class="text-faded">
+        - Check if your connection endpoint is healthy and synced with the network
+      </p>
+      <p class="text-faded">
+        - Everything is correct, but you are not getting the expected result? <a href="https://chat.avax.network/">Tag us in Avalanche discord!</a>
+      </p>
     </div>
     </q-card>
   </q-page>

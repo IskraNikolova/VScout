@@ -31,6 +31,7 @@ import {
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
   DELEGATE_VALIDATOR,
+  SET_DEFAULT_VALIDATORS,
   GET_PENDING_VALIDATORS,
   SET_PENDING_VALIDATORS,
   SET_PENDING_DELEGATORS,
@@ -280,10 +281,13 @@ async function initValidators ({ commit, getters }) {
   const delegators = mapDelegators(d)
   commit(SET_DELEGATORS, { delegators })
 
-  const res = await validatorProcessing(v, d, getters.validators)
+  const res = await validatorProcessing(v, d, getters.defaultValidators)
 
   commit(SET_VALIDATORS, { validators: res.validators })
   commit(SET_STAKED_AVA, { all: res.allStake, validatedStake: res.validatedStake, delegatedStake: res.delegatedStake })
+  if (getters.isDefaultSubnetID) {
+    commit(SET_DEFAULT_VALIDATORS, { defaultValidators: res.validators })
+  }
 }
 
 async function getValidators (
@@ -308,9 +312,12 @@ async function getValidators (
   const delegators = mapDelegators(d)
   commit(SET_DELEGATORS, { delegators })
 
-  const res = await validatorProcessing(v, d, getters.validators)
+  const res = await validatorProcessing(v, d, getters.defaultValidators)
   commit(SET_VALIDATORS, { validators: res.validators })
   commit(SET_STAKED_AVA, { all: res.allStake, validatedStake: res.validatedStake, delegatedStake: res.delegatedStake })
+  if (subnetID === '11111111111111111111111111111111LpoYY') {
+    commit(SET_DEFAULT_VALIDATORS, { defaultValidators: res.validators })
+  }
   return true
 }
 

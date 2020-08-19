@@ -22,6 +22,7 @@ import {
   SET_TX_FOR_24_HOURS,
   SET_PREVIOUS_24_TXS,
   SET_ENDPOINTS_MEMORY,
+  SET_DEFAULT_VALIDATORS,
   SET_PENDING_DELEGATORS,
   SET_PENDING_VALIDATORS,
   SET_CURRENT_BLOCKCHAIN,
@@ -94,6 +95,9 @@ const mutations = {
     if (state.endpointsMemory.includes(endpoint) ||
     network.endpointUrls.indexOf(endpoint) > 1) return
     state.endpointsMemory.push(endpoint)
+  },
+  [SET_DEFAULT_VALIDATORS]: (state, { defaultValidators }) => {
+    state.defaultValidators = defaultValidators
   },
   [SET_PENDING_VALIDATORS]: (state, { validators }) => {
     state.pendingValidators = validators

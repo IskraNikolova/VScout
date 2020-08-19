@@ -20,6 +20,7 @@ export default function () {
     txsHistoryState: {},
     endpointsMemory: [],
     pendingValidators: [],
+    defaultValidators: [],
     pendingDelegators: [],
     currentBlockchain: {},
     txsFor24H: {
