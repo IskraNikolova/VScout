@@ -106,9 +106,8 @@
       </div>
       <div class="md">
         <q-toolbar class="background-white">
-          <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm class="text-grey"/>
           <q-toolbar-title @click="$router.push('/')" style="cursor:pointer;margin-left: 12px;">
-            VScout.io
+            VScout.io <q-icon name="home" color="grey" />
           </q-toolbar-title>
           <q-btn push flat id="logo-sim" label="calculator">
             <q-popup-proxy>
@@ -209,9 +208,8 @@
       </div>
       <div class="lg">
         <q-toolbar class="background-white">
-          <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm class="text-grey"/>
           <q-toolbar-title @click="$router.push('/')" style="cursor:pointer;margin-left: 12px;">
-            VScout.io
+            VScout.io <q-icon name="home" color="grey" />
           </q-toolbar-title>
           <q-btn push flat id="logo-sim" label="calculator">
             <q-popup-proxy>
@@ -312,9 +310,8 @@
       </div>
       <div class="xl">
         <q-toolbar class="background-white">
-          <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm class="text-grey"/>
           <q-toolbar-title @click="$router.push('/')" style="cursor:pointer;margin-left: 12px;">
-            VScout.io
+            VScout.io <q-icon name="home" color="grey" />
           </q-toolbar-title>
           <q-btn push flat id="logo-sim" label="calculator">
             <q-popup-proxy>
@@ -444,7 +441,6 @@
     </q-header>
     <q-drawer
       v-model="drawer"
-      show-if-above
       :width="200"
       :breakpoint="500"
     >
