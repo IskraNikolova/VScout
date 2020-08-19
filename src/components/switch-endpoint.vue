@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <q-menu>
+    <div class="no-wrap q-pa-md text-orange">
+      Switch To Endpoint
+    </div>
+    <q-separator />
     <q-list v-for="(endpoint, i) in endpoints" v-bind:key="i">
       <q-item
         clickable
@@ -45,7 +49,7 @@
         />
       </q-badge>
     </div>
-  </div>
+  </q-menu>
 </template>
 
 <script>

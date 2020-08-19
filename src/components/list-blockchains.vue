@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <q-menu>
+    <div class="no-wrap q-pa-md text-grey">
+      Switch To Blockchain
+    </div>
+    <q-separator />
    <q-list v-for="(blockchain, i) in blockchains" v-bind:key="i">
     <q-item clickable v-close-popup @click="onSelectBlockchain(blockchain)">
     <q-item-section>
@@ -16,7 +20,7 @@
     </q-item-section>
     </q-item>
    </q-list>
-  </div>
+  </q-menu>
 </template>
 
 <script>

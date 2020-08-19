@@ -9,7 +9,7 @@
         <small>Connected with</small>
         <div class="text-h7 q-pb-md text-orange" >
         {{ networkEndpoint.substr(0, 19)}}...
-        <q-tooltip>{{ networkEndpoint}}</q-tooltip>
+        <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">{{ networkEndpoint}}</q-tooltip>
         </div>
       </div>
       <div class="q-pl-md q-pt-xs col">
@@ -22,7 +22,7 @@
       <div class="text-grey">
         {{ nodeID }}
         <q-btn class="text-accent" size="xs" flat icon="info" @click="onOpenNodeInfo">
-          <q-tooltip>Information about the node</q-tooltip>
+          <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Information about the node</q-tooltip>
         </q-btn>
         <node-info-dialog ref="nodeInfoDialog" />
       </div>

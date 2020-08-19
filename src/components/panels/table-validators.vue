@@ -94,7 +94,7 @@
                 @click="props.expand=!props.expand">
                 {{ props.row.name}}
               </div>
-              <q-tooltip>Node ID: {{props.row.validator}}</q-tooltip>
+              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Node ID: {{props.row.validator}}</q-tooltip>
             </div>
             <div v-else-if="col.name === 'stake'">
               <div>
@@ -110,7 +110,7 @@
             </div>
             <div v-else-if="col.name === 'weight'">
               {{ col.value }}
-              <q-tooltip>Weight is the validator’s weight used for sampling.</q-tooltip>
+              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Weight is the validator’s weight used for sampling.</q-tooltip>
             </div>
             <div v-else-if="col.name === 'networkShare' && props.row.percent">
               {{ props.row.percent }} %

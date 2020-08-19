@@ -5,7 +5,7 @@
           <div v-if="identity !== name"><span class="text-grey ch5">Name: </span><a :href="link" v-if="link">{{ name }}</a><span v-else>{{ name }}</span></div>
           <div>
             <span class="text-grey ch5">Node ID:</span> [{{ identity }}]
-              <q-tooltip>Node ID is not blockchain address</q-tooltip>
+              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Node ID is not blockchain address</q-tooltip>
             <small>
               <q-icon
                 @click="copyToClipboard(identity)"

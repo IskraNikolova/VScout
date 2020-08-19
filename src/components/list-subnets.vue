@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <q-menu>
+    <div class="no-wrap q-pa-md text-grey">
+      Switch To Subnet
+    </div>
+    <q-separator />
     <q-list v-for="(subnet, i) in subnets" v-bind:key="i">
       <q-item clickable v-close-popup @click="onSelectSubnet(subnet)">
       <q-item-section>
@@ -17,7 +21,7 @@
       </q-item>
       <q-separator />
     </q-list>
-  </div>
+  </q-menu>
 </template>
 
 <script>
