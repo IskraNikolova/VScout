@@ -76,14 +76,26 @@
             label="blockchains"
             class="text-regular text-grey"
           >
+          <q-menu>
+          <div class="no-wrap q-pa-md text-grey">
+            Switch To Blockchain
+          </div>
+          <q-separator />
           <list-blockchains />
+            </q-menu>
           </q-btn>
           <q-btn
             flat
             label="subnets"
             class="text-regular text-grey"
           >
-          <list-subnets />
+          <q-menu>
+            <div class="no-wrap q-pa-md text-grey">
+              Switch To Subnet
+            </div>
+            <q-separator />
+            <list-subnets />
+          </q-menu>
           </q-btn>
           <q-btn
             flat
@@ -91,7 +103,13 @@
             class="text-regular text-grey"
             id="target-el"
           >
+          <q-menu>
+            <div class="no-wrap q-pa-md text-orange">
+              Switch To Endpoint
+            </div>
+            <q-separator />
             <switch-endpoint />
+            </q-menu>
             <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Connect To Node</q-tooltip>
           </q-btn>
         </q-toolbar>
