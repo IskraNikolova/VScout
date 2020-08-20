@@ -122,7 +122,7 @@ export default {
         return
       }
 
-      const nodeID = response.data.result.nodeID
+      const nodeID = response.data.result.nodeID.split('-')[1]
       this.$store.commit(SET_ENDPOINT, { endpoint })
       this.$store.commit(SET_NODE_ID, { nodeID })
       if (isCustom) {
