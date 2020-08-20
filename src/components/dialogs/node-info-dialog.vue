@@ -125,7 +125,7 @@ export default {
       'nodeInfo'
     ]),
     filterPeers: function () {
-      return this.nodeInfo.peers.filter(a => a.id.toLowerCase().includes(this.filter.toLowerCase()) || a.ip.includes(this.filter))
+      return this.nodeInfo.peers.filter(a => a.nodeID.toLowerCase().includes(this.filter.toLowerCase()) || a.ip.includes(this.filter))
     }
   },
   data () {

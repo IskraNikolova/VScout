@@ -9,7 +9,7 @@ import { _getValidatorById } from './../modules/networkRpc'
 * @returns {Object} Object of two arrays - current validators and delegators
 */
 export function splitAccounts (validators) {
-  const grouped = groupBy(validators, 'id')
+  const grouped = groupBy(validators, 'nodeID')
   const keys = Object.keys(grouped)
   return keys.reduce((result, key) => {
     grouped[key]
@@ -28,7 +28,7 @@ export function splitAccounts (validators) {
 export function splitPendingAccounts (validators, existValidators) {
   return validators.reduce((result, val) => {
     if (existValidators
-      .find(v => v.validator === val.id)) {
+      .find(v => v.validator === val.nodeID)) {
       result.d.push(val)
     } else {
       result.v.push(val)
@@ -97,7 +97,8 @@ export async function mapValidators (validators, delegators, defaultValidators) 
   if (!validators) return []
 
   const res = await Promise.all(validators.map(async (val) => {
-    const info = await _getValidatorById(val.id)
+    const nodeID = val.nodeID.split('-')[1]
+    const info = await _getValidatorById(nodeID)
     let address = ''
     let delegateStake = 0
     let delegatorsCount = 0
@@ -107,7 +108,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       weight = val.weight
 
       const currentValidator = defaultValidators
-        .find(v => v.validator === val.id)
+        .find(v => v.validator === nodeID)
       stakeAmount = currentValidator.stakenAva
     } else {
       address = val.address
@@ -118,8 +119,8 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       delegatorsCount = props.delegatorsCount
     }
 
-    const avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.id).monster
-    const name = info.name ? info.name : val.id
+    const avatar = info.avatarUrl ? info.avatarUrl : getAvatar(nodeID).monster
+    const name = info.name ? info.name : nodeID
     const total = parseFloat(stakeAmount) + parseFloat(delegateStake)
 
     return {
@@ -129,7 +130,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       address,
       delegatorsCount,
       totalnAva: total,
-      validator: val.id,
+      validator: nodeID,
       endTime: val.endTime,
       startTime: val.startTime,
       total: getAvaFromnAva(total),
@@ -154,7 +155,7 @@ export function getDelegatorsForNode (validator, delegators) {
   }
 
   const currentDelegators = delegators
-    .filter(d => d.id === validator.id)
+    .filter(d => d.nodeID === validator.nodeID)
 
   const delegateStake = currentDelegators
     .reduce((a, b) => {
@@ -170,8 +171,8 @@ export function getDelegatorsForNode (validator, delegators) {
 export function mapDelegators (delegators) {
   if (!delegators) return []
   return delegators.map((delegator, i) => {
-    const { avatar } = getAvatar(delegator.id)
-    const nodeId = delegator.id
+    const nodeId = delegator.nodeID.split('-')[1]
+    const { avatar } = getAvatar(nodeId)
 
     return {
       avatar,

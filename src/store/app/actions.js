@@ -1,4 +1,4 @@
-import moment from 'moment'
+// import moment from 'moment'
 
 import {
   SIGN_TX,
@@ -11,8 +11,8 @@ import {
   CREATE_USER,
   FUND_ACCOUNT,
   LIST_ACCOUNTS,
-  GET_TOTAL_TXS,
-  SET_TOTAL_TXS,
+  // GET_TOTAL_TXS,
+  // SET_TOTAL_TXS,
   GET_NODE_INFO,
   SET_NODE_INFO,
   GET_VALIDATORS,
@@ -25,11 +25,12 @@ import {
   INIT_VALIDATORS,
   GET_BLOCKCHAINS,
   SET_BLOCKCHAINS,
-  GET_TXS_HISTORY,
-  SET_TXS_HISTORY,
-  GET_TX_FOR_24_HOURS,
-  SET_TX_FOR_24_HOURS,
-  SET_PREVIOUS_24_TXS,
+  // GET_TXS_HISTORY,
+  // SET_TXS_HISTORY,
+  // SUBSCRIBE_TO_EVENT,
+  // GET_TX_FOR_24_HOURS,
+  // SET_TX_FOR_24_HOURS,
+  // SET_PREVIOUS_24_TXS,
   DELEGATE_VALIDATOR,
   SET_DEFAULT_VALIDATORS,
   GET_PENDING_VALIDATORS,
@@ -53,7 +54,7 @@ import {
   _exportAVA,
   _importAVA,
   _getSubnets,
-  _getLastTx,
+  // _getLastTx,
   _getTxStatus,
   _getNodeId,
   _getNetworkID,
@@ -67,9 +68,9 @@ import {
   _listAccounts,
   _getBlockchains,
   _getValidators,
-  _getAggregates,
+  // _getAggregates,
   _getAssetsForChain,
-  _getAggregatesWithI,
+  // _getAggregatesWithI,
   _getPendingValidators,
   _addDefaultSubnetDelegator,
   _addDefaultSubnetValidator
@@ -77,6 +78,7 @@ import {
 
 import {
   _initializeNetwork
+  // _subscribeToContractEvents
 } from './../../modules/networkRpc'
 
 import {
@@ -87,9 +89,13 @@ import {
   splitPendingAccounts
 } from './../../utils/validators'
 
+// import {
+//   temp
+// } from './../../utils/constants'
+
 import {
-  temp
-} from './../../utils/constants'
+// getPastEvents
+} from './../../modules/validators'
 
 async function initApp ({ dispatch, getters }) {
   try {
@@ -111,6 +117,8 @@ async function initApp ({ dispatch, getters }) {
   }
 
   await _initializeNetwork()
+  // const events = await getPastEvents()
+  // dispatch(SUBSCRIBE_TO_EVENT)
 
   setInterval(async () => {
     try {
@@ -187,72 +195,72 @@ async function getSubnets ({ commit, getters }) {
   commit(SET_SUBNETS, { subnets: await result })
 }
 
-async function getTxsFor24H ({ commit, getters }) {
-  const minAgo = moment().subtract(24, 'hours')
-  const response = await _getAggregates(
-    minAgo.toISOString(),
-    moment().toISOString()
-  )
+// async function getTxsFor24H ({ commit, getters }) {
+//   const minAgo = moment().subtract(24, 'hours')
+//   const response = await _getAggregates(
+//     minAgo.toISOString(),
+//     moment().toISOString()
+//   )
 
-  if (typeof response === 'undefined' ||
-    response === null) return
+//   if (typeof response === 'undefined' ||
+//     response === null) return
 
-  const { transactionCount, transactionVolume } = response
-  commit(SET_PREVIOUS_24_TXS, { prevTxsFor24H: getters.txsFor24H })
-  commit(SET_TX_FOR_24_HOURS, {
-    txsFor24H: {
-      transactionCount,
-      transactionVolume: Math.round(transactionVolume / 10 ** 9)
-    }
-  })
-}
+//   const { transactionCount, transactionVolume } = response
+//   commit(SET_PREVIOUS_24_TXS, { prevTxsFor24H: getters.txsFor24H })
+//   commit(SET_TX_FOR_24_HOURS, {
+//     txsFor24H: {
+//       transactionCount,
+//       transactionVolume: Math.round(transactionVolume / 10 ** 9)
+//     }
+//   })
+// }
 
-async function getTotalTXs ({ commit }) {
-  const response = await _getLastTx()
-  if (typeof response === 'undefined' ||
-    response === null) return
+// async function getTotalTXs ({ commit }) {
+//   const response = await _getLastTx()
+//   if (typeof response === 'undefined' ||
+//     response === null) return
 
-  const totalTxsCount = response.count
+//   const totalTxsCount = response.count
 
-  commit(SET_TOTAL_TXS, { totalTxsCount })
-}
+//   commit(SET_TOTAL_TXS, { totalTxsCount })
+// }
 
-async function getTxsHistory ({ commit }, { txHKey }) {
-  const t = temp[txHKey]
-  if (!t) return
+// async function getTxsHistory ({ commit }, { txHKey }) {
+//   const t = temp[txHKey]
+//   if (!t) return
 
-  const { sub, interval, label } = t
-  const minAgo = moment(new Date())
-    .subtract(sub.value, sub.label)
+//   const { sub, interval, label } = t
+//   const minAgo = moment(new Date())
+//     .subtract(sub.value, sub.label)
 
-  const aggregates = await _getAggregatesWithI(
-    minAgo.toISOString(),
-    moment(new Date()).toISOString(),
-    `${interval.value}${interval.label}`
-  )
+//   const aggregates = await _getAggregatesWithI(
+//     minAgo.toISOString(),
+//     moment(new Date()).toISOString(),
+//     `${interval.value}${interval.label}`
+//   )
 
-  if (aggregates === null) return null
+//   if (aggregates === null) return null
 
-  try {
-    aggregates.intervals.map(a => {
-      if (moment(a.endTime) > moment() &&
-        aggregates.intervalSize) {
-        aggregates.intervals.pop()
-      }
-    })
-  } catch (err) {
-    return null
-  }
+//   try {
+//     aggregates.intervals.map(a => {
+//       if (moment(a.endTime) > moment() &&
+//         aggregates.intervalSize) {
+//         aggregates.intervals.pop()
+//       }
+//     })
+//   } catch (err) {
+//     return null
+//   }
 
-  aggregates.label = label
-  aggregates.key = txHKey
+//   aggregates.label = label
+//   aggregates.key = txHKey
 
-  commit(SET_TXS_HISTORY, {
-    key: txHKey,
-    txsHistory: aggregates
-  })
-  return true
-}
+//   commit(SET_TXS_HISTORY, {
+//     key: txHKey,
+//     txsHistory: aggregates
+//   })
+//   return true
+// }
 
 async function getAssetsByBlockchain ({ commit }) {
   const assetsByChain = await _getAssetsForChain()
@@ -358,7 +366,8 @@ async function getNodeId ({ getters, commit }) {
   if (typeof response === 'undefined' ||
     response === null) return
 
-  commit(SET_NODE_ID, { nodeID: response.data.result.nodeID })
+  const nodeID = response.data.result.nodeID.split('-')[1]
+  commit(SET_NODE_ID, { nodeID })
 }
 
 async function getNodeInfo ({ getters, commit }) {
@@ -381,6 +390,7 @@ async function getNodeInfo ({ getters, commit }) {
   if (resNodePeers.data.error) {
     return
   }
+
   const nodeInfo = {
     networkID: resNetworkID.data.result.networkID,
     networkName: resNetworkName.data.result.networkName,
@@ -670,6 +680,20 @@ async function getNodeHealth ({ commit, getters }) {
   commit(SET_NODE_HEALTH, { nodeID: getters.nodeID, nodeHealth: response.data.result })
 }
 
+// function subscribeToEvents ({ commit, dispatch }) {
+//   const sentMessageHandler = async (error, result) => {
+//     if (error) console.error(error)
+//     console.log(result)
+//     // TODO UPDATE VALIDATOR INFO
+//   }
+
+//   _subscribeToContractEvents({
+//     eventName: 'SetValidatorInfoEvent',
+//     filters: {},
+//     handler: sentMessageHandler
+//   })
+// }
+
 export default {
   [INIT_APP]: initApp,
   [GET_NODE_ID]: getNodeId,
@@ -678,16 +702,17 @@ export default {
   [GET_SUBNETS]: getSubnets,
   [SIGN_TX]: signTransaction,
   [FUND_ACCOUNT]: fundAccount,
-  [GET_TOTAL_TXS]: getTotalTXs,
+  // [GET_TOTAL_TXS]: getTotalTXs,
   [GET_NODE_INFO]: getNodeInfo,
   [LIST_ACCOUNTS]: listAccounts,
   [GET_VALIDATORS]: getValidators,
   [CREATE_ACCOUNT]: createAccount,
-  [GET_TXS_HISTORY]: getTxsHistory,
+  // [GET_TXS_HISTORY]: getTxsHistory,
   [GET_NODE_HEALTH]: getNodeHealth,
   [GET_BLOCKCHAINS]: getBlockchains,
   [INIT_VALIDATORS]: initValidators,
-  [GET_TX_FOR_24_HOURS]: getTxsFor24H,
+  // [GET_TX_FOR_24_HOURS]: getTxsFor24H,
+  // [SUBSCRIBE_TO_EVENT]: subscribeToEvents,
   [GET_PENDING_VALIDATORS]: getPendingValidators,
   [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsByBlockchain,
   [DELEGATE_VALIDATOR]: addDefaultSubnetDelegator,
