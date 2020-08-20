@@ -22,7 +22,7 @@
               />
             </small>
           </div>
-          <div v-else><span class="text-grey text-medium">Weight:</span> {{ weight }}</div>
+          <div v-if="weight"><span class="text-grey text-medium">Weight:</span> {{ weight }}</div>
           <div v-if="delegatorsCount">
             <span class="text-grey text-medium">Delegations:</span>
             <span class="text-accent text-h7" style="cursor: pointer;" @click="onGetDelegations">

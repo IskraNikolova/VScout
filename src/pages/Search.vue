@@ -56,7 +56,7 @@
                     />
                   </small>
                 </q-item-label>
-                <q-item-label v-else>
+                <q-item-label v-if="validator().weight">
                   <small class="text-grey">
                     Weight: <span class="text-accent">{{ validator().weight }}</span>
                   </small>

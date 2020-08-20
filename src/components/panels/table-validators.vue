@@ -53,8 +53,8 @@
             {label: 'Delegations', value: 'delegations'}
           ]"
         />
-        <q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
-        <add-identification-dialog ref="addIdentificationRef" />
+        <!--<q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
+        <add-identification-dialog ref="addIdentificationRef" />-->
       </template>
       <template slot="top-right" v-if="!isGrid">
         <q-input
@@ -311,7 +311,7 @@ import CumulativeStakeChart from './../cumulative-stake-chart'
 // import AddValidatorDialog from './../dialogs/add-validator-dialog'
 import ProgressBarValidateSession from './../progress-bar-validatе-session'
 // import DelegateValidatorDialog from './../dialogs/delegate-validator-dialog'
-import AddIdentificationDialog from './../dialogs/add-identification-dialog'
+// import AddIdentificationDialog from './../dialogs/add-identification-dialog'
 
 export default {
   name: 'TableItem',
@@ -321,7 +321,7 @@ export default {
     // AddValidatorDialog,
     CumulativeStakeChart,
     // DelegateValidatorDialog,
-    AddIdentificationDialog,
+    // AddIdentificationDialog,
     ProgressBarValidateSession
   },
   data () {

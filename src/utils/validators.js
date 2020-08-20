@@ -2,7 +2,7 @@ const BigNumber = require('bignumber.js')
 
 import { fromNow } from './../modules/time'
 import { groupBy, round, getAvatar } from './commons'
-import { _getValidatorById } from './../modules/networkRpc'
+// import { _getValidatorById } from './../modules/networkRpc'
 
 /**
 * @param {Array} Array of validators and delegators for split
@@ -10,6 +10,7 @@ import { _getValidatorById } from './../modules/networkRpc'
 */
 export function splitAccounts (validators) {
   const grouped = groupBy(validators, 'nodeID')
+
   const keys = Object.keys(grouped)
   return keys.reduce((result, key) => {
     grouped[key]
@@ -98,12 +99,14 @@ export async function mapValidators (validators, delegators, defaultValidators) 
 
   const res = await Promise.all(validators.map(async (val) => {
     const nodeID = val.nodeID.split('-')[1]
-    const info = await _getValidatorById(nodeID)
-    let address = ''
+
+    // const info = await _getValidatorById(nodeID)
+    const address = ''
     let delegateStake = 0
     let delegatorsCount = 0
     let weight = 0
     let stakeAmount = 0
+
     if (val.weight) {
       weight = val.weight
 
@@ -111,7 +114,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
         .find(v => v.validator === nodeID)
       stakeAmount = currentValidator.stakenAva
     } else {
-      address = val.address
+      // address = val.address
       stakeAmount = val.stakeAmount
 
       const props = getDelegatorsForNode(val, delegators)
@@ -119,8 +122,8 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       delegatorsCount = props.delegatorsCount
     }
 
-    const avatar = info.avatarUrl ? info.avatarUrl : getAvatar(nodeID).monster
-    const name = info.name ? info.name : nodeID
+    const avatar = getAvatar(nodeID).monster // info.avatarUrl ? info.avatarUrl : getAvatar(nodeID).monster
+    const name = nodeID // info.name ? info.name : nodeID
     const total = parseFloat(stakeAmount) + parseFloat(delegateStake)
 
     return {
@@ -139,7 +142,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       stake: getAvaFromnAva(stakeAmount),
       stakenAva: parseFloat(stakeAmount),
       delegateStake: getAvaFromnAva(delegateStake),
-      link: info.link
+      link: '' // info.link
     }
   }))
 

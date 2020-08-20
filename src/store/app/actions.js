@@ -77,8 +77,8 @@ import {
 } from './../../modules/network'
 
 import {
-  _initializeNetwork
-  // _subscribeToContractEvents
+// _initializeNetwork
+// _subscribeToContractEvents
 } from './../../modules/networkRpc'
 
 import {
@@ -116,7 +116,7 @@ async function initApp ({ dispatch, getters }) {
     console.log(err)
   }
 
-  await _initializeNetwork()
+  // await _initializeNetwork()
   // const events = await getPastEvents()
   // dispatch(SUBSCRIBE_TO_EVENT)
 
