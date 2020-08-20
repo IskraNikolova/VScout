@@ -214,7 +214,7 @@
                     />
                   </small>
                 </q-item-label>
-                <q-item-label v-else>
+                <q-item-label v-if="props.row.weight">
                   <small class="text-grey">
                     Weight: <span class="text-accent">{{ props.row.weight }}</span>
                   </small>

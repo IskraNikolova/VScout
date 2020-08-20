@@ -311,6 +311,7 @@ async function getValidators (
   }
 
   const { validators } = response.data.result
+
   if (typeof validators === 'undefined' ||
     validators === null) return
 

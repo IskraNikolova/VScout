@@ -1,43 +1,36 @@
 <template>
     <q-card flat>
-      <q-card-section horizontal>
-        <q-card-section class="col-6">
-          <div v-if="identity !== name"><span class="text-grey text-medium">Name: </span><a :href="link" v-if="link">{{ name }}</a><span v-else>{{ name }}</span></div>
-          <div>
-            <span class="text-grey text-medium">Node ID:</span> [{{ identity }}]
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Node ID is not blockchain address</q-tooltip>
-            <small>
-              <q-icon
-                @click="copyToClipboard(identity)"
-                name="file_copy"
-              />
-            </small>
-          </div>
-          <div v-if="address">
-            <span class="text-grey text-medium">Owner (P-Chain Account): </span>{{ address }}
-            <small>
-              <q-icon
-                @click="copyToClipboard(address)"
-                name="file_copy"
-              />
-            </small>
-          </div>
-          <div v-if="weight"><span class="text-grey text-medium">Weight:</span> {{ weight }}</div>
-          <div v-if="delegatorsCount">
-            <span class="text-grey text-medium">Delegations:</span>
-            <span class="text-accent text-h7" style="cursor: pointer;" @click="onGetDelegations">
-              {{ delegatorsCount }}
-            </span>
-          </div>
-        </q-card-section>
-
-        <q-separator vertical />
-
-        <q-card-section class="col-5">
-          <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }}</div>
-          <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
-          <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
-        </q-card-section>
+      <q-card-section>
+        <div v-if="identity !== name"><span class="text-grey text-medium">Name: </span><a :href="link" v-if="link">{{ name }}</a><span v-else>{{ name }}</span></div>
+        <div>
+          <span class="text-grey text-medium">Node ID:</span> [{{ identity }}]
+            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Node ID is not blockchain address</q-tooltip>
+          <small>
+            <q-icon
+              @click="copyToClipboard(identity)"
+              name="file_copy"
+            />
+          </small>
+        </div>
+        <div v-if="address">
+          <span class="text-grey text-medium">Owner (P-Chain Account): </span>{{ address }}
+          <small>
+            <q-icon
+              @click="copyToClipboard(address)"
+              name="file_copy"
+            />
+          </small>
+        </div>
+        <div v-if="weight"><span class="text-grey text-medium">Weight:</span> {{ weight }}</div>
+        <div v-if="delegatorsCount">
+          <span class="text-grey text-medium">Delegations:</span>
+          <span class="text-accent text-h7" style="cursor: pointer;" @click="onGetDelegations">
+            {{ delegatorsCount }}
+          </span>
+        </div>
+        <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }}</div>
+        <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
+        <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
       </q-card-section>
     </q-card>
 </template>

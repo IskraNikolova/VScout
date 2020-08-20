@@ -133,6 +133,7 @@ export default {
     },
     onSuccess (endpoint) {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })
+      this.getValidators({ endpoint })
       this.$q.notify({
         textColor: 'black',
         color: 'white',
