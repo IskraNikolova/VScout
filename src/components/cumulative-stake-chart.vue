@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="q-ml-xs q-mb-md">
-      Cumulative stake:
-      <span class="text-accent">
+      <span class="text-medium">Cumulative Stake: </span>
+      <span class="text-orange">
         {{ 100 - Math.round(100 - (percentAll), 2) }} %
       </span>
     </div>
@@ -59,9 +59,10 @@ export default {
         type: 'pie',
         data: {
           datasets: [{
+            labels: ['', 'Network Share', ''],
             data: dataArray,
-            backgroundColor: ['#677b87', '#87C5D6', 'black'],
-            borderColor: ['#677b87', '#87C5D6', 'black']
+            backgroundColor: ['#32353b', '#ff6000', '#ffffff'],
+            borderColor: ['#32353b', '#ff6000', '#32353b']
           }]
         },
         options: {
@@ -71,7 +72,7 @@ export default {
           tooltips: {
             callbacks: {
               label: function (tooltipItem, data) {
-                const label = data.datasets[0].data[tooltipItem.index] + '%'
+                const label = data.datasets[0].labels[tooltipItem.index] + ': ' + data.datasets[0].data[tooltipItem.index] + '%'
                 return label
               }
             }

@@ -18,7 +18,7 @@
         <div class="text-bold q-pa-md">VALIDATOR</div>
           <q-card flat>
             <q-item>
-              <q-item-section avatar @click="onClick(validator().link)">
+              <q-item-section avatar style="cursor:pointer;" @click="onClick(validator().link)">
                 <q-avatar>
                   <q-img :src="validator().avatar">
                     <template v-slot:error>
@@ -31,13 +31,13 @@
               </q-item-section>
               <q-item-section>
                 <q-item-label >
-                  <small>Rank </small>
+                  <small class="text-medium">Rank </small>
                   <span class="text-accent">
                     {{ validator().rank }}
                   </span>
                 </q-item-label>
-                <q-item-label @click="onClick(validator().link)">
-                  {{ validator().name }} <small v-if="validator().name !== validator().validator" class="text-grey">({{ validator().validator }})</small>
+                <q-item-label>
+                  <span  style="cursor:pointer;" @click="onClick(validator().link)">{{ validator().name }} </span> <small v-if="validator().name !== validator().validator" class="text-grey">({{ validator().validator }})</small>
                   <small>
                     <q-icon
                       @click="copyToClipboard(validator().validator)"
@@ -48,7 +48,7 @@
                 </q-item-label>
                 <q-item-label v-if="validator().address">
                   <small class="text-grey">
-                    Owner ({{ validator().address.substr(0, 12)}} ... {{ validator().address.substr(22) }})
+                    <span class="text-medium">Owner</span> ({{ validator().address.substr(0, 12)}} ... {{ validator().address.substr(22) }})
                     <q-icon
                       @click="copyToClipboard(validator().address)"
                       color="grey"
@@ -64,21 +64,18 @@
               </q-item-section>
             </q-item>
 
-            <q-separator />
+            <q-separator class="q-mb-xl"/>
 
             <q-card-section horizontal>
               <q-card-section class="col-7 q-mb-xl">
-                <div class="q-mb-md">Stake (AVAX)</div>
+                <div class="q-mb-md text-medium">Stake (AVAX)</div>
+                <small class="text-grey">Own</small>
                 {{ validator().stake > 1 ? getLocalString(validator().stake) : validator().stake }}
                 <small class="text-accent">$AVAX</small>
-                <br />
                 <small style="color: grey;">
                   ({{ getLocalString(validator().stakenAva) }} nAvax)
                 </small>
                 <div>
-                <small class="text-orange" v-if="validator().percent !== 'NaN'">
-                  {{validator().percent }} %
-                </small>
               </div>
               <div>
                 <small class="text-grey">Delegated</small>
@@ -90,18 +87,33 @@
                 {{ validator().total > 1 ? validator().total.toLocaleString() : validator().total }}
                 <small class="text-accent">$AVAX</small>
               </div>
-              <q-separator class="q-mb-md"/>
-              <div class="q-pl-xs">
-                <div>Staked by</div>
+              <q-separator class="q-pa-xs q-mb-md q-mt-md"/>
+              <div class="text-medium q-mt-md">Network Share (%) </div>
+              <span class="text-orange q-pl-xs" v-if="validator().percent !== 'NaN'">
+                {{validator().percent }} %
+              </span>
+              <q-separator class="q-pa-xs q-mb-md q-mt-md" />
+              <div class="q-pl-xs q-mt-md">
+                <div class="text-medium">Staked By</div>
                 <div class="text-accent">
                   <small>{{ validator().fromNowST }}</small>
                 </div>
               </div>
-              <div class="text-grey q-pt-xl">Progress (%)</div>
-              <progress-bar-validate-session
-                v-bind:startTime="validator().startTime"
-                v-bind:endTime="validator().endTime"
-              />
+              <q-separator class="q-pa-xs q-mb-md q-mt-md" />
+              <div class="q-pl-xs q-mt-md">
+                <div class="text-medium">Delegations</div>
+                <div class="text-accent">
+                  <small>{{ validator().delegatorsCount}}</small>
+                </div>
+              </div>
+              <q-separator class="q-pa-xs q-mb-md q-mt-md" />
+              <q-card-section>
+                <div class="text-grey q-pt-xl">Progress (%)</div>
+                <progress-bar-validate-session
+                  v-bind:startTime="validator().startTime"
+                  v-bind:endTime="validator().endTime"
+                />
+              </q-card-section>
               </q-card-section>
               <q-separator vertical />
               <q-card-section class="col-5">
@@ -117,13 +129,13 @@
 
             <q-card-section horizontal>
               <q-card-section class="col-6">
-                <small class="text-grey">Start Time</small>
+                <small class="text-grey text-bold">Start Time</small>
                 <br />
                 <small>{{ formatDate(validator().startTime) }}</small>
               </q-card-section>
               <q-separator vertical/>
               <q-card-section class="col-6">
-                <small class="text-grey">End Time</small>
+                <small class="text-grey text-bold">End Time</small>
                 <br />
                 <small>{{ formatDate(validator().endTime) }}</small>
               </q-card-section>
