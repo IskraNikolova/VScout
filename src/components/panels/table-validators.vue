@@ -33,15 +33,6 @@
             {label: 'Pending', value: 'pending'}
           ]"
         />|
-        <!--<q-btn
-          size="xs"
-          outline
-          icon="add"
-          label="Add Validator"
-          @click.native="onAddValidator"
-          class="q-mr-md q-ml-md"
-        />
-        <add-validator-dialog ref="addValidatorDialog" />-->
         <q-btn-toggle
           v-model="type2"
           flat
@@ -317,7 +308,6 @@ import { UPDATE_UI } from './../../store/ui/types'
 import DetailsValidator from './../details-validator'
 import Settings from './settings'
 import CumulativeStakeChart from './../cumulative-stake-chart'
-// import AddValidatorDialog from './../dialogs/add-validator-dialog'
 import ProgressBarValidateSession from './../progress-bar-validatе-session'
 // import DelegateValidatorDialog from './../dialogs/delegate-validator-dialog'
 // import AddIdentificationDialog from './../dialogs/add-identification-dialog'
@@ -327,7 +317,6 @@ export default {
   components: {
     Settings,
     DetailsValidator,
-    // AddValidatorDialog,
     CumulativeStakeChart,
     // DelegateValidatorDialog,
     // AddIdentificationDialog,

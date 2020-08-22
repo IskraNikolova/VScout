@@ -115,7 +115,7 @@
         </q-toolbar>
         <q-toolbar class="background-orange">
           <q-toolbar-title>
-            <img src="~assets/vscout.svg" style="width: 200px;">
+            <img src="~assets/vscoutlogo5.png" style="width: 200px;">
           </q-toolbar-title>
           <q-bar>
             <q-input
@@ -394,6 +394,7 @@ export default {
       this.weekly = this.result / 52
     },
     search () {
+      if (!this.filter) return
       this.$router.push(`/search/${this.filter}`)
       this.filter = ''
     }

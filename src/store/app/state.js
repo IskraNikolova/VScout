@@ -12,25 +12,13 @@ export default function () {
     validators: [],
     delegators: [],
     blockchains: [],
-    prevTotalTxs: 0,
-    totalTxsCount: 0,
-    txHKey: 'minute',
     currentSubnet: {},
     assetsByChain: {},
-    txsHistoryState: {},
     endpointsMemory: [],
     pendingValidators: [],
     defaultValidators: [],
     pendingDelegators: [],
     currentBlockchain: {},
-    txsFor24H: {
-      transactionCount: 0,
-      transactionVolume: 0
-    },
-    prevTxsFor24H: {
-      transactionCount: 0,
-      transactionVolume: 0
-    },
     isBlockchainView: true,
     hasNetworkConnection: true,
     hasNodeConnection: true,

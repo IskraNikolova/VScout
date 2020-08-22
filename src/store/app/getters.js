@@ -123,10 +123,6 @@ export function endpointsMemory (state) {
   return state.endpointsMemory
 }
 
-export function txHKey (state) {
-  return state.txHKey
-}
-
 export function assets (state) {
   return (key) => state.assetsByChain[key]
 }

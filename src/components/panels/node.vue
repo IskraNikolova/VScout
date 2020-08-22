@@ -46,7 +46,7 @@
           outline
           size="xs"
           no-caps
-          label="List"
+          label="Peers"
         >
           <q-item>
             <q-item-section caption>

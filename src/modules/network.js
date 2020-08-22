@@ -16,16 +16,6 @@ const body = (method, params = {}) => {
   }
 }
 
-export const _getLastTx = async () => {
-  try {
-    const req = await axios
-      .get(network.explorerApiBaseUrl + c.tx + c.getLast)
-    return req.data
-  } catch (err) {
-    return null
-  }
-}
-
 export const _getAssetsForChain = async () => {
   try {
     const req = await axios
@@ -33,29 +23,6 @@ export const _getAssetsForChain = async () => {
     if (!req.data.assets) return
 
     return groupBy(req.data.assets, 'chainID')
-  } catch (err) {
-    return null
-  }
-}
-
-export const _getAggregates = async (s, e) => {
-  try {
-    const req = await axios
-      .get(network.explorerApiBaseUrl + c.tx + c.aggregates(s, e))
-    return req.data.aggregates
-  } catch (err) {
-    return null
-  }
-}
-
-export const _getAggregatesWithI = async (s, e, intervalSize) => {
-  try {
-    const endpoint = network.explorerApiBaseUrl +
-      c.tx +
-      c.aggregatesWInt(s, e, intervalSize)
-
-    const req = await axios.get(endpoint)
-    return req.data
   } catch (err) {
     return null
   }

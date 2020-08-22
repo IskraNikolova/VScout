@@ -10,17 +10,13 @@ import {
   SET_SUBNETS,
   SET_ENDPOINT,
   SET_NODE_INFO,
-  SET_TOTAL_TXS,
   SET_VALIDATORS,
   SET_STAKED_AVA,
   SET_DELEGATORS,
   SET_BLOCKCHAINS,
-  SET_TXS_HISTORY,
   SET_NODE_HEALTH,
   SET_NETWORK_STATUS,
   SET_CURRENT_SUBNET,
-  SET_TX_FOR_24_HOURS,
-  SET_PREVIOUS_24_TXS,
   SET_ENDPOINTS_MEMORY,
   SET_DEFAULT_VALIDATORS,
   SET_PENDING_DELEGATORS,
@@ -47,9 +43,6 @@ const mutations = {
     if (!endpoint) endpoint = network.endpointUrls[0]
     state.networkEndpoint = endpoint
   },
-  [SET_TOTAL_TXS]: (state, { totalTxsCount }) => {
-    state.totalTxsCount = totalTxsCount
-  },
   [SET_VALIDATORS]: (state, { validators }) => {
     state.validators = validators
   },
@@ -70,11 +63,6 @@ const mutations = {
     })
     state.blockchains = blockchains
   },
-  [SET_TXS_HISTORY]: (state, { key, txsHistory }) => {
-    state.txHKey = key
-    if (!txsHistory) return
-    state.txsHistoryState[key] = txsHistory
-  },
   [SET_NODE_HEALTH]: (state, { nodeID, nodeHealth }) => {
     if (!state.nodeHealth[nodeID]) Vue.set(state.nodeHealth, nodeID, {})
     state.nodeHealth[nodeID] = nodeHealth
@@ -83,12 +71,6 @@ const mutations = {
     state.currentSubnet = subnet
     state.isBlockchainView = false
     state.subnetID = subnet.id
-  },
-  [SET_TX_FOR_24_HOURS]: (state, { txsFor24H }) => {
-    state.txsFor24H = txsFor24H
-  },
-  [SET_PREVIOUS_24_TXS]: (state, { prevTxsFor24H }) => {
-    state.prevTxsFor24H = prevTxsFor24H
   },
   [SET_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
     if (state.endpointsMemory.includes(endpoint) ||

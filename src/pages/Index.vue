@@ -13,10 +13,11 @@
         v-else
         @getDelegators="getValidatorsV"
       />
-      <faqs class="q-pr-md" />
-
       <div class="flex flex-center q-mt-xl">
-        <img src="~assets/ava-black.png" id="logo"/>
+        <faqs class="q-pr-md" />
+      </div>
+      <div class="flex flex-center">
+        <img src="~assets/vscoutlogo5.png" id="logo">
       </div>
       <div class="flex flex-center q-mt-xl text-white">
         Made with ❤️ for builders everywhere.
@@ -87,7 +88,7 @@ export default {
 
 <style scoped>
  #logo {
-  width: 70vw;
-  max-width: 70px;
+  width: 190vw;
+  max-width: 190px;
  }
 </style>
