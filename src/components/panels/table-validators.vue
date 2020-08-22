@@ -147,12 +147,6 @@
             <div v-else-if="col.name === 'startTime'">
               <small>{{ formatDate(col.value) }}</small>
             </div>
-            <!--<div v-else-if="col.name === 'delegate'">
-              <q-btn v-if="isDefaultSubnetID" no-caps flat @click="onDelegate(props.row)">
-                <small class="text-orange">Delegate</small>
-              </q-btn>
-              <div v-else> - </div>
-            </div>-->
             <div v-else>{{ col.value }}</div>
           </q-td>
         </q-tr>
@@ -247,16 +241,6 @@
                 <div class="text-grey">
                   <small>{{ props.row.fromNowST }}</small>
                 </div>
-                <!--<div class="q-mt-md">
-                  <q-btn
-                    outline
-                    size="xs"
-                    class="orange"
-                    label="Delegate"
-                    v-if="isDefaultSubnetID"
-                    @click="onDelegate(props.row)"
-                  />
-                </div>-->
               </q-card-section>
               <q-separator vertical />
               <q-card-section class="col-6">
@@ -291,7 +275,6 @@
         </div>
       </template>
     </q-table>
-    <!--<delegate-validator-dialog ref="delegateValidatorDialog" />-->
   </div>
 </template>
 
@@ -309,7 +292,6 @@ import DetailsValidator from './../details-validator'
 import Settings from './settings'
 import CumulativeStakeChart from './../cumulative-stake-chart'
 import ProgressBarValidateSession from './../progress-bar-validatе-session'
-// import DelegateValidatorDialog from './../dialogs/delegate-validator-dialog'
 // import AddIdentificationDialog from './../dialogs/add-identification-dialog'
 
 export default {
@@ -318,7 +300,6 @@ export default {
     Settings,
     DetailsValidator,
     CumulativeStakeChart,
-    // DelegateValidatorDialog,
     // AddIdentificationDialog,
     ProgressBarValidateSession
   },
@@ -421,7 +402,6 @@ export default {
         },
         { name: 'startTime', align: 'center', label: 'START TIME', field: 'startTime', sortable: true, headerClasses: 'text-medium' },
         { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress', headerClasses: 'text-medium' }
-        // { name: 'delegate', align: 'center', label: 'Delegate', field: 'delegate', headerClasses: 'ch5' }
       ]
     }
   },

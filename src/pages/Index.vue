@@ -17,7 +17,7 @@
         <faqs class="q-pr-md" />
       </div>
       <div class="flex flex-center">
-        <img src="~assets/vscoutlogo5.png" id="logo">
+        <img src="~assets/vscoutlogo5.svg" id="logo">
       </div>
       <div class="flex flex-center q-mt-xl text-white">
         Made with ❤️ for builders everywhere.

@@ -189,11 +189,11 @@
       </div>
     </div>
     <div v-else class="fixed-center">
-      <p>
-        <!--<img
+      <p class="flex flex-center q-pt-xl">
+        <img
           src="~assets/notfound.svg"
           style="width:30vw;max-width:150px;"
-        >-->
+        >
       </p>
       <p class="text-bold text-h6">
         Looks like we don't have any matches for "{{ this.$route.params.id }}"

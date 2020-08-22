@@ -115,7 +115,7 @@
         </q-toolbar>
         <q-toolbar class="background-orange">
           <q-toolbar-title>
-            <img src="~assets/vscoutlogo5.png" style="width: 200px;">
+            <img src="~assets/vscoutlogo5.svg" style="width: 200px;">
           </q-toolbar-title>
           <q-bar>
             <q-input
