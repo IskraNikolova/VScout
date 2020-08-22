@@ -78,7 +78,7 @@
             style="padding: 0px!important;height: 50px!important;"
           >
             <div v-if="col.name === 'validator'" class="row q-pl-md">
-            <!--<div :style="'border: solid 2px ' + border + ';border-radius: 50px;width: 24px;'">-->
+              <!--<div :style="'border: solid 2px ' + border + ';border-radius: 50px;width: 24px;'">-->
               <q-avatar size="25px" @click="onClick(props.row.link)">
                 <q-img :src="props.row.avatar">
                   <template v-slot:error>
@@ -89,12 +89,21 @@
                 </q-img>
               </q-avatar>
               <div
-                style="cursor:pointer;font-size: 90%;"
+                v-if="props.row.name !== props.row.nodeID"
+                style="cursor:pointer;"
                 class="q-pt-xs q-ml-md"
-                @click="props.expand=!props.expand">
+                @click="props.expand = !props.expand">
                 {{ props.row.name}}
+                <div class="text-grey">({{ props.row.nodeID }})</div>
               </div>
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Node ID: {{props.row.validator}}</q-tooltip>
+              <div
+                v-else
+                style="cursor:pointer;"
+                @click="props.expand = !props.expand"
+                class="q-pl-xs q-pt-xs"
+              >
+                {{ props.row.nodeID }}
+              </div>
             </div>
             <div v-else-if="col.name === 'stake'">
               <div>
@@ -163,7 +172,7 @@
               v-bind:delegatorsCount="props.row.delegatorsCount ? props.row.delegatorsCount : NaN"
               v-bind:weight="props.row.weight ? props.row.weight : ''"
               v-bind:address="props.row.address ? props.row.address : ''"
-              v-bind:identity="props.row.validator"
+              v-bind:identity="props.row.nodeID"
               v-bind:name="props.row.name"
               v-bind:startTime="props.row.startTime"
               v-bind:endTime="props.row.endTime"
@@ -195,10 +204,10 @@
                   </span>
                 </q-item-label>
                 <q-item-label>
-                  <span style="cursor:pointer;" @click="onClick(props.row.link)">{{ props.row.name }} <small v-if="props.row.name !== props.row.validator" class="text-grey">({{props.row.validator}})</small></span>
+                  <span style="cursor:pointer;" @click="onClick(props.row.link)">{{ props.row.name }} <small v-if="props.row.name !== props.row.nodeID" class="text-grey">({{props.row.nodeID}})</small></span>
                   <small>
                     <q-icon
-                      @click="copyToClipboard(props.row.validator)"
+                      @click="copyToClipboard(props.row.nodeID)"
                       color="grey"
                       name="file_copy"
                     />
@@ -262,7 +271,7 @@
               <q-card-section class="col-6">
                 <cumulative-stake-chart
                   v-if="props.row.cumulativeStake"
-                  v-bind:name="props.row.validator"
+                  v-bind:name="props.row.nodeID"
                   v-bind:percent="props.row.percent"
                   v-bind:percentAll="props.row.cumulativeStake ? props.row.cumulativeStake : NaN"
                 /><div v-else> - </div>
@@ -387,7 +396,7 @@ export default {
           name: 'validator',
           align: 'center',
           label: 'VALIDATOR',
-          field: 'name',
+          field: row => row.name,
           headerClasses: 'text-medium'
         },
         {

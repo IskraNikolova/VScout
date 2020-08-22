@@ -2,8 +2,8 @@
   <q-page>
     <div style="height: 3px;width: 100%;background: grey;opacity: 0.5;"></div>
     <div style="padding: 3%;">
+      <node class="q-pr-md" />
       <network class="q-pr-md"/>
-      <!--<transactions class="q-pa-md" />-->
       <stake class="q-pr-md"/>
       <table-validators
         v-if="ui.typeAccount.isValidators"
@@ -34,7 +34,7 @@ import {
 import Faqs from './../components/panels/faqs'
 import Stake from './../components/panels/stake'
 import Network from './../components/panels/network'
-// import Transactions from './../components/panels/transactions'
+import Node from './../components/panels/node'
 import TableValidators from './../components/panels/table-validators'
 import TableDelegators from './../components/panels/table-delegators'
 
@@ -49,7 +49,7 @@ export default {
     Faqs,
     Stake,
     Network,
-    // Transactions,
+    Node,
     TableValidators,
     TableDelegators
   },

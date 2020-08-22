@@ -37,10 +37,10 @@
                   </span>
                 </q-item-label>
                 <q-item-label>
-                  <span  style="cursor:pointer;" @click="onClick(validator().link)">{{ validator().name }} </span> <small v-if="validator().name !== validator().validator" class="text-grey">({{ validator().validator }})</small>
+                  <span  style="cursor:pointer;" @click="onClick(validator().link)">{{ validator().name }} </span> <small v-if="validator().name !== validator().nodeID" class="text-grey">({{ validator().nodeID }})</small>
                   <small>
                     <q-icon
-                      @click="copyToClipboard(validator().validator)"
+                      @click="copyToClipboard(validator().nodeID)"
                       color="grey"
                       name="file_copy"
                     />
@@ -119,7 +119,7 @@
               <q-card-section class="col-5">
                 <cumulative-stake-chart
                   v-if="validator().cumulativeStake"
-                  v-bind:name="validator().validator"
+                  v-bind:name="validator().nodeID"
                   v-bind:percent="validator().percent"
                   v-bind:percentAll="validator().cumulativeStake ? validator().cumulativeStake : NaN"
                 /><div v-else> - </div>

@@ -13,7 +13,7 @@
             </q-item-section>
             <q-item-section>
             <q-item-label>
-              Node ID <small class="text-orange">{{ nodeID }}</small>
+              {{ nodeID }}
             </q-item-label>
             <q-item-label caption>
               Health check on this node

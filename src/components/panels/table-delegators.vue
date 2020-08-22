@@ -1,12 +1,12 @@
 <template>
   <div class="q-mt-md">
-    {{filter}}
     <q-table
       :data="curentVal"
       :columns="columns"
       :separator="separator"
       :filter="filter"
       row-key="index"
+      :visible-columns="visibleColumns"
       :pagination="pagination"
       class="light-background shadow-3"
       id="custom-table"
@@ -182,6 +182,14 @@ export default {
       'pendingDelegators',
       'isDefaultSubnetID'
     ]),
+    visibleColumns: function () {
+      const columns = this.columns.map(c => c.name)
+      if (this.curentVal.find(a => !a.pAccount)) {
+        return columns.filter(c => c !== 'pAccount')
+      }
+
+      return columns
+    },
     curentVal: {
       get: function () {
         if (this.isActive) return this.delegators

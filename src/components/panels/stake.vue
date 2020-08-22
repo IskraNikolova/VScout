@@ -10,7 +10,7 @@
       <div class="col-1 q-pt-md">
         <img src="~assets/validators-grey.png" class="custom-icon">
       </div>
-      <q-separator  class="q-mt-md q-mb-md xs sm md"/>
+      <q-separator  class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">DELEGATIONS</div>
         <div>
@@ -19,7 +19,7 @@
       <div class="col-1 q-pt-md">
         <img src="~assets/manage.svg" class="custom-icon">
       </div>
-      <q-separator class="q-mt-md q-mb-md xs sm md"/>
+      <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">TOTAL STAKE</div>
         <div class="text-h5 q-pb-md">
@@ -32,7 +32,7 @@
       <div class="col-1 q-pt-md">
         <img src="~assets/stake_amount.png" class="custom-icon">
       </div>
-      <q-separator class="q-mt-md q-mb-md xs sm md"/>
+      <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
        <div id="f-size12" class="q-pb-md text-medium">VALIDATION / DELEGATED STAKE</div>
        <div class="text-h5 q-pb-md">

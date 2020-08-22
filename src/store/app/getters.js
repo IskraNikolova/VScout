@@ -13,7 +13,7 @@ export function delegators (state) {
 export function validatorById (state) {
   return (id) => state
     .validators
-    .find(val => val.validator === id)
+    .find(val => val.nodeID === id)
 }
 
 export function pendingValidators (state) {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="f-size12" class="q-pb-md">
+    <div id="f-size12" class="q-pb-md text-medium">
       BLOCKCHAINS
     </div>
     <div class="row q-pb-xs">

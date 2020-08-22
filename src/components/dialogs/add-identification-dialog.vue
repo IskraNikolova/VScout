@@ -94,7 +94,7 @@
                   label="Your node ID *"
                   hint="The validator node ID."
                 />
-                <q-input
+                <!--<q-input
                   readonly
                   color="accent"
                   class="q-mb-xs"
@@ -103,7 +103,7 @@
                   v-model="nodeOwner"
                   label="P-Chain address "
                   hint="The account (owner) providing the staked AVAX."
-                />
+                />-->
                 <div class="row q-pr-xl q-pt-xl">
                   <q-space />
                   <q-btn label="Get Node Info" @click="onGetNodeID" size="10px" color="accent"/>
@@ -152,7 +152,7 @@ export default {
       error: null,
       avatar: null,
       notify: null,
-      nodeOwner: null,
+      // nodeOwner: null,
       nodeIDModel: null
     }
   },
@@ -216,7 +216,7 @@ export default {
         this.error = 'Something Wrong! Check if your connection endpoint is healthy and synced with the network'
       } else {
         this.$store.commit(UPDATE_UI, { addIdentification: { isAuth: true } })
-        this.nodeOwner = validator.address
+        // this.nodeOwner = validator.address
       }
     },
     onReset () {

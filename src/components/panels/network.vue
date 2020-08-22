@@ -7,21 +7,62 @@
       <blockchain v-if="isBlockchainView" class="col-md-3 col-xs-10" />
       <subnet-blockchains v-else class="col-md-2 col-xs-10"/>
       <div class="col-1 q-pt-md">
-        <img src="~assets/network-nodes.svg" id="logo">
+        <img src="~assets/blockchain-grey.svg" id="logo">
       </div>
-      <q-separator class="q-mt-md q-mb-md xs sm md"/>
+      <q-separator class="q-mt-md q-mb-md lt-md"/>
       <subnet v-if="isBlockchainView" class="col-md-3 col-xs-10"/>
       <subnetwork v-else class="col-md-3 col-xs-10" />
       <div v-if="isBlockchainView" class="col-1 q-pt-md">
-        <img src="~assets/network-grey.svg" id="logo2">
+        <img src="~assets/network.svg" id="logo2">
       </div>
       <div v-else class="col-2 q-pt-md q-mb-md">
-        <img src="~assets/network-grey.svg" id="logo2">
+        <img src="~assets/network.svg" id="logo2">
       </div>
-      <q-separator class="q-mt-md q-mb-md xs sm md"/>
-      <node-connection class="col-md-3 col-xs-10" />
+      <q-separator class="q-mt-md q-mb-md lt-md"/>
+      <div class="col-md-2 col-xs-10">
+        <div id="f-size12" class="q-pb-md text-medium">ASSETS</div>
+        <div class="q-mb-md" v-if="this.assetsLength">
+          <div class="q-pb-md q-pr-md ">
+            <span class="text-h6 text-orange">{{ assetsLength }}</span><span> on {{ currentBlockchain.name }}</span>
+          </div>
+        </div>
+        <div v-else class="q-mb-md">
+          <div class="q-pb-md q-pr-md ">
+            <span class="text-h6 text-orange">None</span>
+          </div>
+        </div>
+        <div class="q-pt-xs">
+          <q-btn-dropdown
+            color="grey"
+            outline
+            size="xs"
+            no-caps
+            v-if="assets(currentBlockchain.id)"
+            label="Smart Digital Assets"
+          >
+            <div class="q-pa-md">
+              <small>
+                Assets on {{ currentBlockchain.name }}
+              </small>
+            <q-separator />
+            </div>
+            <q-list
+              v-for="asset in assets(currentBlockchain.id)"
+              v-bind:key="asset.id"
+            >
+              <q-item clickable v-close-popup @click="onOpenAssetInfo(asset)">
+                <q-item-section><span>{{ asset.symbol }}</span></q-item-section>
+                <q-item-section side>
+                <q-icon size="xs" name="info" color="grey" />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+          <asset-info-dialog ref="assetDialog"/>
+        </div>
+      </div>
       <div class="col-1 q-pt-md">
-        <img src="~assets/connection.svg" id="logo2">
+        <img src="~assets/coins.svg" id="logo">
       </div>
     </div>
   </q-card>
@@ -33,8 +74,9 @@ import { mapGetters } from 'vuex'
 import Subnet from './../items/subnet'
 import Blockchain from './../items/blockchain'
 import Subnetwork from './../items/subnetwork'
-import NodeConnection from './../items/node-connection'
 import SubnetBlockchains from './../items/subnet-blockchains'
+
+import AssetInfoDialog from './../dialogs/asset-info-dialog'
 
 export default {
   name: 'Network',
@@ -42,15 +84,25 @@ export default {
     Subnet,
     Subnetwork,
     Blockchain,
-    NodeConnection,
+    AssetInfoDialog,
     SubnetBlockchains
   },
   computed: {
     ...mapGetters([
       'currentSubnet',
       'isBlockchainView',
-      'currentBlockchain'
-    ])
+      'currentBlockchain',
+      'assets'
+    ]),
+    assetsLength: function () {
+      if (!this.assets(this.currentBlockchain.id)) return
+      return this.assets(this.currentBlockchain.id).length
+    }
+  },
+  methods: {
+    onOpenAssetInfo (asset) {
+      this.$refs.assetDialog.open({ asset })
+    }
   }
 }
 </script>
@@ -62,9 +114,5 @@ export default {
   #logo {
     width:45vw;
     max-width:45px;
-  }
-  #logo2 {
-    width:40vw;
-    max-width:40px;
   }
 </style>

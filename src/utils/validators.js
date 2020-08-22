@@ -29,7 +29,7 @@ export function splitAccounts (validators) {
 export function splitPendingAccounts (validators, existValidators) {
   return validators.reduce((result, val) => {
     if (existValidators
-      .find(v => v.validator === val.nodeID)) {
+      .find(v => v.nodeID === val.nodeID)) {
       result.d.push(val)
     } else {
       result.v.push(val)
@@ -98,7 +98,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
   if (!validators) return []
 
   const res = await Promise.all(validators.map(async (val) => {
-    const nodeID = val.nodeID.split('-')[1]
+    const nodeID = val.nodeID
 
     // const info = await _getValidatorById(nodeID)
     const address = ''
@@ -111,7 +111,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       weight = val.weight
 
       const currentValidator = defaultValidators
-        .find(v => v.validator === nodeID)
+        .find(v => v.nodeID === nodeID)
       stakeAmount = currentValidator.stakenAva
     } else {
       // address = val.address
@@ -131,9 +131,9 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       avatar,
       weight,
       address,
+      nodeID,
       delegatorsCount,
       totalnAva: total,
-      validator: nodeID,
       endTime: val.endTime,
       startTime: val.startTime,
       total: getAvaFromnAva(total),
@@ -174,7 +174,7 @@ export function getDelegatorsForNode (validator, delegators) {
 export function mapDelegators (delegators) {
   if (!delegators) return []
   return delegators.map((delegator, i) => {
-    const nodeId = delegator.nodeID.split('-')[1]
+    const nodeId = delegator.nodeID
     const { avatar } = getAvatar(nodeId)
 
     return {

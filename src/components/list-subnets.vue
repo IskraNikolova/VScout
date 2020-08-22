@@ -4,7 +4,7 @@
       <q-item clickable v-close-popup @click="onSelectSubnet(subnet)">
       <q-item-section>
         <q-item-label>
-        <q-img src="~assets/network-grey.svg" id="logo-xs"/>
+        <img src="~assets/network.svg" id="logo-xs">
         {{ subnet.id.substr(0, 4)}}...{{ subnet.id.substr(30)}}
         </q-item-label>
         <q-item-label caption>

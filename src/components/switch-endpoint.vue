@@ -55,6 +55,7 @@ import {
   SET_NODE_ID,
   SET_ENDPOINT,
   GET_VALIDATORS,
+  GET_NODE_INFO,
   SET_ENDPOINTS_MEMORY,
   GET_PENDING_VALIDATORS,
   REMOVE_ENDPOINTS_MEMORY
@@ -90,7 +91,8 @@ export default {
   methods: {
     ...mapActions({
       getValidators: GET_VALIDATORS,
-      getPendingValidators: GET_PENDING_VALIDATORS
+      getPendingValidators: GET_PENDING_VALIDATORS,
+      getNodeInfo: GET_NODE_INFO
     }),
     onRemoveFromMem (endpoint, event) {
       event.stopImmediatePropagation()
@@ -118,22 +120,22 @@ export default {
           this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
           this.customEndpoint = ''
         }
-        this.onSuccess(endpoint)
+        await this.onSuccess(endpoint)
         return
       }
 
-      const nodeID = response.data.result.nodeID.split('-')[1]
+      const nodeID = response.data.result.nodeID
       this.$store.commit(SET_ENDPOINT, { endpoint })
       this.$store.commit(SET_NODE_ID, { nodeID })
       if (isCustom) {
         this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
         this.customEndpoint = ''
       }
-      this.onSuccess(endpoint)
+      await this.onSuccess(endpoint)
     },
-    onSuccess (endpoint) {
+    async onSuccess (endpoint) {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })
-      this.getValidators({ endpoint })
+      await this.getNodeInfo()
       this.$q.notify({
         textColor: 'black',
         color: 'white',
@@ -142,6 +144,7 @@ export default {
         timeout: 2000,
         icon: 'done'
       })
+      await this.getValidators({ endpoint })
     },
     onError (message) {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })

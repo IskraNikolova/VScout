@@ -367,7 +367,7 @@ async function getNodeId ({ getters, commit }) {
   if (typeof response === 'undefined' ||
     response === null) return
 
-  const nodeID = response.data.result.nodeID.split('-')[1]
+  const nodeID = response.data.result.nodeID
   commit(SET_NODE_ID, { nodeID })
 }
 
