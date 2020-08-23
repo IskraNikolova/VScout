@@ -47,8 +47,6 @@ const mutations = {
     state.validators = validators
   },
   [SET_STAKED_AVA]: (state, { all, validatedStake, delegatedStake }) => {
-    if (!all) return
-
     state.stakedAVA = round(all, 100)
     state.validatedStake = round(validatedStake, 1000)
     state.delegatedStake = round(delegatedStake, 1000)

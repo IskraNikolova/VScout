@@ -8,7 +8,7 @@
           <span class="text-h5 text-orange">{{ validators.length }}</span> <span id="f-size12"> active </span>  /  <span class="text-orange"> {{ pendingValidators.length }}</span> <span id="f-size12"> pending</span> </div>
       </div>
       <div class="col-1 q-pt-md">
-        <img src="~assets/validators-grey.png" class="custom-icon">
+        <img src="~assets/validators.svg" class="custom-icon">
       </div>
       <q-separator  class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-2 col-xs-10">
@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="col-1 q-pt-md">
-        <img src="~assets/stake_amount.png" class="custom-icon">
+        <img src="~assets/stake-amount.svg" class="custom-icon">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
