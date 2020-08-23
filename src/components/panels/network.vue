@@ -121,7 +121,11 @@ export default {
       'blockchainByID',
       'isBlockchainView',
       'currentBlockchain'
-    ])
+    ]),
+    assetsLength: function () {
+      if (!this.assets(this.currentBlockchain.id)) return
+      return this.assets(this.currentBlockchain.id).length
+    }
   },
   methods: {
     onOpenAssetInfo (asset) {
