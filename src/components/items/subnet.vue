@@ -3,11 +3,11 @@
     <div id="f-size12"  class="q-pb-md text-medium">
       SUBNET ID
     </div>
-    <div class="row q-mb-md text-h6 q-pb-md text-orange" style="cursor: pointer;" v-if="isDefaultSubnetID" @click="$router.push(`/search/${currentBlockchain.subnetID}`)">
+    <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultSubnetID">
       Default Subnet
     </div>
-    <div v-else class="q-mb-md q-pb-xs text-orange subId" style="cursor: pointer;" @click="$router.push(`/search/${currentBlockchain.subnetID}`)">
-      {{ currentBlockchain.subnetID }}
+    <div class="q-pb-md text-orange" style="font-size: 19px;cursor: pointer;" @click="$router.push(`/search/${currentBlockchain.subnetID}`)">
+      <small>{{ currentBlockchain.subnetID }}</small>
     </div>
     <div id="f-size12">
       <span class="text-medium">VM ID</span>
