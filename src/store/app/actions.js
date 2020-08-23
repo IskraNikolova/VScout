@@ -160,8 +160,9 @@ async function getAssetsByBlockchain ({ commit }) {
 }
 
 async function initValidators ({ commit, getters }) {
+  const subnetID = getters.subnetID ? getters.subnetID : '11111111111111111111111111111111LpoYY'
   const response = await _getValidators({
-    subnetID: getters.subnetID,
+    subnetID,
     endpoint: getters.networkEndpoint
   })
 
