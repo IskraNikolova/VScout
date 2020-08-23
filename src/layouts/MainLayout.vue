@@ -143,7 +143,7 @@
         </div>
         <div class="background-orange q-pb-md">
           <div>
-            <img src="~assets/vscout.svg" style="width: 150px;">
+            <img src="~assets/vscoutlogo5.svg" style="width: 150px;">
           </div>
           <q-bar>
             <q-input
