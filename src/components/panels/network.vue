@@ -38,14 +38,13 @@
               outline
               size="xs"
               no-caps
-              v-if="assets(currentBlockchain.id)"
               label="Smart Digital Assets"
             >
-              <div class="q-pa-md">
+              <div class="q-pa-md" v-if="assets(currentBlockchain.id)">
                 <small>
                   Assets on {{ currentBlockchain.name }}
                 </small>
-              <q-separator />
+                <q-separator />
               </div>
               <q-list
                 v-for="asset in assets(currentBlockchain.id)"

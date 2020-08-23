@@ -8,6 +8,7 @@
       <table-validators
         v-if="ui.typeAccount.isValidators"
         @getValidators="getValidatorsV"
+        @getDefaultValidators="getDefaultValidators"
       />
       <table-delegators
         v-else
@@ -81,6 +82,11 @@ export default {
       }
 
       if (typeof type !== 'undefined') await temp[type]()
+    },
+    async getDefaultValidators () {
+      await this.getValidators({
+        endpoint: this.networkEndpoint
+      })
     }
   }
 }

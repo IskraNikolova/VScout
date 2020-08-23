@@ -83,7 +83,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'subnetID',
       'validators',
       'endpointsMemory'
     ])

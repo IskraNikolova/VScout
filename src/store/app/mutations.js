@@ -8,6 +8,7 @@ const { network } = require('./../../modules/config').default
 import {
   SET_NODE_ID,
   SET_SUBNETS,
+  SET_SUBNET_ID,
   SET_ENDPOINT,
   SET_NODE_INFO,
   SET_VALIDATORS,
@@ -69,6 +70,9 @@ const mutations = {
     state.currentSubnet = subnet
     state.isBlockchainView = false
     state.subnetID = subnet.id
+  },
+  [SET_SUBNET_ID]: (state, { subnetID }) => {
+    state.subnetID = subnetID
   },
   [SET_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
     if (state.endpointsMemory.includes(endpoint) ||

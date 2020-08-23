@@ -18,7 +18,10 @@
           <q-icon name="img:statics/delegate.png" size="3.0em" />
         </q-th>
       </template>
-      <template slot="top-left">
+      <template slot="top-left" v-if="isActive && curentValidators.length < 1">
+         <q-btn size="xs" outline label="Load For Default Subnet" @click="onGetDefaultValidators"/>
+      </template>
+      <template slot="top-left" v-else>
         <q-btn size="xs" flat icon="apps" @click="isGrid=true"/>
         <q-btn size="xs" flat icon="reorder" @click="isGrid=false"/>
         <settings />
@@ -294,6 +297,8 @@ import CumulativeStakeChart from './../cumulative-stake-chart'
 import ProgressBarValidateSession from './../progress-bar-validatе-session'
 // import AddIdentificationDialog from './../dialogs/add-identification-dialog'
 
+import { SET_SUBNET_ID } from './../../store/app/types'
+
 export default {
   name: 'TableItem',
   components: {
@@ -422,9 +427,6 @@ export default {
       if (!val) return val
       return val.toLocaleString()
     },
-    onAddValidator () {
-      this.$refs.addValidatorDialog.open()
-    },
     onAddIdentification () {
       this.$refs.addIdentificationRef.openAddId()
     },
@@ -447,6 +449,10 @@ export default {
       }
       temp[this.type]()
       this.$emit('getValidators', this.type)
+    },
+    onGetDefaultValidators () {
+      this.$store.commit(SET_SUBNET_ID, { subnetID: '11111111111111111111111111111111LpoYY' })
+      this.$emit('getDefaultValidators')
     },
     onSwitchAccounts () {
       const temp = {
