@@ -1,3 +1,4 @@
+import { Notify } from 'quasar'
 import {
   INIT_APP,
   GET_SUBNETS,
@@ -23,6 +24,10 @@ import {
   GET_ASSETS_BY_BLOCKCHAINS,
   SET_ASSETS_BY_BLOCKCHAINS
 } from './types'
+
+import {
+  UPDATE_UI
+} from './../ui/types'
 
 import {
   _health,
@@ -60,6 +65,7 @@ async function initApp ({ dispatch, getters }) {
   try {
     Promise.all([
       dispatch(GET_NODE_HEALTH),
+      dispatch(GET_NODE_INFO),
       dispatch(GET_BLOCKCHAINS),
       dispatch(GET_NODE_ID),
       dispatch(GET_SUBNETS),
@@ -78,6 +84,7 @@ async function initApp ({ dispatch, getters }) {
     try {
       await Promise.all([
         dispatch(GET_NODE_HEALTH),
+        dispatch(GET_NODE_INFO),
         dispatch(GET_VALIDATORS, {
           subnetID: getters.subnetID,
           endpoint: getters.networkEndpoint
@@ -159,9 +166,12 @@ async function initValidators ({ commit, getters }) {
   })
 
   if (response.data.error) {
+    commit(UPDATE_UI, { doesItConnect: true })
+    Notify.create({ position: 'top', message: 'Could not connect to the endpoint', icon: 'warning', color: 'white', textColor: 'orange' })
     return null
   }
 
+  commit(UPDATE_UI, { doesItConnect: false })
   const { validators } = response.data.result
   if (typeof validators === 'undefined' ||
     validators === null) return
@@ -244,11 +254,13 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
 async function getNodeId ({ getters, commit }) {
   const response = await _getNodeId({ endpoint: getters.networkEndpoint })
   if (response.data.error) {
+    commit(UPDATE_UI, { doesItConnect: true })
     return
   }
   if (typeof response === 'undefined' ||
     response === null) return
 
+  commit(UPDATE_UI, { doesItConnect: false })
   const nodeID = response.data.result.nodeID
   commit(SET_NODE_ID, { nodeID })
 }
@@ -256,16 +268,19 @@ async function getNodeId ({ getters, commit }) {
 async function getNodeInfo ({ getters, commit }) {
   const resNetworkID = await _getNetworkID({ endpoint: getters.networkEndpoint })
   if (resNetworkID.data.error) {
+    commit(UPDATE_UI, { doesItConnect: true })
     return
   }
 
   const resNetworkName = await _getNetworkName({ endpoint: getters.networkEndpoint })
   if (resNetworkName.data.error) {
+    commit(UPDATE_UI, { doesItConnect: true })
     return
   }
 
   const resNodeVersion = await _getNodeVersion({ endpoint: getters.networkEndpoint })
   if (resNodeVersion.data.error) {
+    commit(UPDATE_UI, { doesItConnect: true })
     return
   }
 
@@ -274,6 +289,7 @@ async function getNodeInfo ({ getters, commit }) {
     return
   }
 
+  commit(UPDATE_UI, { doesItConnect: false })
   const nodeInfo = {
     networkID: resNetworkID.data.result.networkID,
     networkName: resNetworkName.data.result.networkName,
@@ -290,9 +306,11 @@ async function getNodeHealth ({ commit, getters }) {
     response === null) return
 
   if (response.data.error) {
-    return null
+    commit(SET_NODE_HEALTH, { nodeID: getters.nodeID, nodeHealth: { healthy: false } })
+    commit(UPDATE_UI, { doesItConnect: true })
   }
 
+  commit(UPDATE_UI, { doesItConnect: false })
   commit(SET_NODE_HEALTH, { nodeID: getters.nodeID, nodeHealth: response.data.result })
 }
 

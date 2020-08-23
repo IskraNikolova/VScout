@@ -127,7 +127,7 @@ export default {
       try {
         return this.nodeHealthInfo.healthy
       } catch (err) {
-        return true
+        return false
       }
     },
     color: function () {

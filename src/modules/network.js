@@ -33,6 +33,7 @@ export const request = async (endpoint, body) => {
     const response = await axios.post(endpoint, body)
     return response
   } catch (err) {
+    console.log(err)
     return {
       data: {
         error: err
@@ -66,56 +67,6 @@ export const _getPendingValidators = async ({ subnetID, endpoint }) => {
   return response
 }
 
-export const _createUser = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.keystore, body(c.createUser, params))
-  return response
-}
-
-export const _createAddress = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.avm, body(c.createAddress, params))
-  return response
-}
-
-export const _createAccount = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platform, body(c.createAccount, params))
-  return response
-}
-
-export const _listAccounts = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platform, body(c.listAccounts, params))
-  return response
-}
-
-export const _getAccount = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platformBc, body(c.getAccount, params))
-  return response
-}
-
-export const _issueTx = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platform, body(c.issueTx, params))
-  return response
-}
-
-export const _exportAVA = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.avm, body(c.exportAVA, params))
-  return response
-}
-
-export const _importAVA = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platform, body(c.importAVA, params))
-  return response
-}
-
-export const _sign = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platform, body(c.sign, params))
-  return response
-}
-
-export const _getTxStatus = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.avm, body(c.getTxStatus, params))
-  return response
-}
-
 export const _getNodeId = async ({ endpoint }) => {
   const response = await request(endpoint + c.info, body(c.getNodeID))
   return response
@@ -138,16 +89,6 @@ export const _getNodeVersion = async ({ endpoint }) => {
 
 export const _getPeers = async ({ endpoint }) => {
   const response = await request(endpoint + c.info, body(c.peers))
-  return response
-}
-
-export const _addDefaultSubnetValidator = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platform, body(c.addDefaultSubnetValidator, params))
-  return response
-}
-
-export const _addDefaultSubnetDelegator = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platform, body(c.addDefaultSubnetDelegator, params))
   return response
 }
 
