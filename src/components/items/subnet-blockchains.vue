@@ -3,9 +3,9 @@
     <div id="f-size12" class="q-pb-md text-medium">
       BLOCKCHAINS
     </div>
-    <div class="row q-pb-xs">
+    <div class="row">
       <div class="col">
-        <div class="q-pb-md q-pt-xs" >
+        <div class="q-pb-xs q-pt-xs" >
         <span
           v-if="currentSubnet.blockchainsId"
           class="text-h6 q-pb-md q-pt-xs text-orange"
@@ -13,13 +13,13 @@
           {{ currentSubnet.blockchainsId.length }}
         </span>
         <span v-else class="text-h6 text-orange">None <br /></span>
-        <small class="text-grey">Validated by this subnet</small>
+        <small class="text-grey q-pt-xs">Validated by this subnet</small>
         </div>
       </div>
     </div>
     <div id="f-size12">
       <q-btn-dropdown
-        color="accent"
+        color="grey"
         outline
         v-if="currentSubnet.blockchainsId"
         size="xs"

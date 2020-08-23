@@ -20,49 +20,76 @@
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-2 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">ASSETS</div>
-        <div class="q-mb-md" v-if="this.assetsLength">
-          <div class="q-pb-md q-pr-md ">
-            <span class="text-h6 text-orange">{{ assetsLength }}</span><span> on {{ currentBlockchain.name }}</span>
-          </div>
-        </div>
-        <div v-else class="q-mb-md">
-          <div class="q-pb-md q-pr-md ">
-            <span class="text-h6 text-orange">None</span>
-          </div>
-        </div>
-        <div class="q-pt-xs">
-          <q-btn-dropdown
-            color="grey"
-            outline
-            size="xs"
-            no-caps
-            v-if="assets(currentBlockchain.id)"
-            label="Smart Digital Assets"
-          >
-            <div class="q-pa-md">
-              <small>
-                Assets on {{ currentBlockchain.name }}
-              </small>
-            <q-separator />
+        <div v-if="isBlockchainView">
+          <div id="f-size12" class="q-pb-md text-medium">ASSETS</div>
+          <div class="q-mb-md" v-if="this.assetsLength">
+            <div class="q-pb-md q-pr-md ">
+              <span class="text-h6 text-orange">{{ assetsLength }}</span><span> on {{ currentBlockchain.name }}</span>
             </div>
-            <q-list
-              v-for="asset in assets(currentBlockchain.id)"
-              v-bind:key="asset.id"
+          </div>
+          <div v-else class="q-mb-md">
+            <div class="q-pb-md q-pr-md ">
+              <span class="text-h6 text-orange">None</span>
+            </div>
+          </div>
+          <div class="q-pt-xs">
+            <q-btn-dropdown
+              color="grey"
+              outline
+              size="xs"
+              no-caps
+              v-if="assets(currentBlockchain.id)"
+              label="Smart Digital Assets"
             >
-              <q-item clickable v-close-popup @click="onOpenAssetInfo(asset)">
-                <q-item-section><span>{{ asset.symbol }}</span></q-item-section>
-                <q-item-section side>
-                <q-icon size="xs" name="info" color="grey" />
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-btn-dropdown>
-          <asset-info-dialog ref="assetDialog"/>
+              <div class="q-pa-md">
+                <small>
+                  Assets on {{ currentBlockchain.name }}
+                </small>
+              <q-separator />
+              </div>
+              <q-list
+                v-for="asset in assets(currentBlockchain.id)"
+                v-bind:key="asset.id"
+              >
+                <q-item clickable v-close-popup @click="onOpenAssetInfo(asset)">
+                  <q-item-section><span>{{ asset.symbol }}</span></q-item-section>
+                  <q-item-section side>
+                  <q-icon size="xs" name="info" color="grey" />
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
+            <asset-info-dialog ref="assetDialog"/>
+          </div>
+        </div>
+        <div v-else>
+          <div id="f-size12" class="q-pb-md text-medium">CONTROL KEYS</div>
+          <div >
+            <div class="col-4 q-mt-xs" id="f-size12">
+              <span class="text-h6 text-orange"> {{ currentSubnet.threshold }}</span> Threshold
+            </div>
+            <q-btn-dropdown
+              size="xs" no-caps
+              label="Control Keys"
+              outline
+              color="grey"
+            >
+              <q-list v-for="key in currentSubnet.controlKeys" v-bind:key="key">
+                <q-item>
+                  <q-item-section side>
+                    <q-icon size="xs" name="img:statics/key.svg" color="grey" />
+                  </q-item-section>
+                  <q-item-section>
+                    <span>{{ key }}</span>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
+          </div>
         </div>
       </div>
       <div class="col-1 q-pt-md">
-        <img src="~assets/coins.svg" id="logo">
+        <img src="~assets/key-digital.svg" style=" width:40vw;max-width:40px;">
       </div>
     </div>
   </q-card>
@@ -89,15 +116,12 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'assets',
       'currentSubnet',
+      'blockchainByID',
       'isBlockchainView',
-      'currentBlockchain',
-      'assets'
-    ]),
-    assetsLength: function () {
-      if (!this.assets(this.currentBlockchain.id)) return
-      return this.assets(this.currentBlockchain.id).length
-    }
+      'currentBlockchain'
+    ])
   },
   methods: {
     onOpenAssetInfo (asset) {

@@ -124,7 +124,7 @@ export function endpointsMemory (state) {
 }
 
 export function assets (state) {
-  return (key) => state.assetsByChain[key]
+  return (chain) => state.assetsByChain[chain]
 }
 
 export function nodeID (state) {
