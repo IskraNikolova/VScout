@@ -15,7 +15,7 @@
         @getDelegators="getValidatorsV"
       />
       <div class="flex flex-center q-mt-xl">
-        <faqs class="q-pr-md" />
+        <!--<faqs class="q-pr-md" />-->
       </div>
       <div class="flex flex-center">
         <img src="~assets/vscoutlogo5.svg" id="logo">
@@ -41,7 +41,7 @@ import {
 export default {
   name: 'PageIndex',
   components: {
-    Faqs: () => import('components/panels/Faqs'),
+    // Faqs: () => import('components/panels/Faqs'),
     Stake: () => import('components/panels/stake'),
     Network: () => import('components/panels/network'),
     Node: () => import('components/panels/node'),
