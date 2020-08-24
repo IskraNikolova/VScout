@@ -5,12 +5,12 @@
     <q-item-section>
       <q-item-label>
         <q-img src="statics/blockchain-black.svg" id="logo-xs"/>
-          {{ blockchain.name }}
+          {{ blockchainName }}
         </q-item-label>
         <q-item-label caption>
         <small>Subnet ID: </small>
         <span class="text-orange">
-          {{ blockchain.subnetID.substr(0, 4)}}...{{ blockchain.subnetID.substr(30)}}
+          {{ subnetIDView }}
         </span>
       </q-item-label>
     </q-item-section>
@@ -40,7 +40,15 @@ export default {
       'networkEndpoint',
       'pendingValidators',
       'currentBlockchain'
-    ])
+    ]),
+    subnetIDView: function () {
+      if (!this.blockchain || !this.blockchain.subnetID) return
+      return `${this.blockchain.subnetID.substr(0, 4)}...${this.blockchain.subnetID.substr(30)}`
+    },
+    blockchainName: function () {
+      if (!this.blockchain) return
+      return this.blockchain.name
+    }
   },
   methods: {
     ...mapActions({
