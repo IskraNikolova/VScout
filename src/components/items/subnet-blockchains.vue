@@ -34,17 +34,17 @@
           <q-item
             clickable
             v-close-popup
-            @click="onSelectBlockchain(blockchainByID(id))"
+            @click="onSelectBlockchain(blockchain(id))"
           >
             <q-item-section>
               <q-item-label>
                 <q-img src="statics/blockchain-black.svg" id="logo-xs"/>
-                {{ blockchainByID(id).name }}
+                {{ blockchainName(id) }}
               </q-item-label>
               <q-item-label caption>
                 <small>VM ID: </small>
                 <span class="text-orange">
-                  {{ vmID }}
+                  {{ vmID(id) }}
                 </span>
               </q-item-label>
             </q-item-section>
@@ -72,10 +72,18 @@ export default {
       'networkEndpoint'
     ]),
     vmID: function (id) {
+      if (!this.blockchain(id)) return
+      return `${this.blockchain(id).vmID.substr(0, 4)}...${this.blockchain(id).vmID.substr(30)}`
+    },
+    blockchain: function (id) {
       if (!id) return
-      const blockchain = this.blockchainByID(id)
-      if (!blockchain) return
-      return `${blockchain.vmID.substr(0, 4)}...${blockchain.vmID.substr(30)}`
+      const chain = this.blockchainByID(id)
+      if (!chain) return
+      return chain
+    },
+    blockchainName: function (id) {
+      if (!this.blockchain(id)) return
+      return this.blockchain(id).name
     }
   },
   methods: {
