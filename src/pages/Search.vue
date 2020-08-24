@@ -225,9 +225,6 @@ import {
 
 import { date } from './../modules/time'
 
-import CumulativeStakeChart from './../components/cumulative-stake-chart'
-import ProgressBarValidateSession from './../components/progress-bar-validatе-session'
-
 import {
   GET_VALIDATORS,
   SET_CURRENT_SUBNET,
@@ -239,8 +236,8 @@ import {
 export default {
   name: 'PageSearch',
   components: {
-    CumulativeStakeChart,
-    ProgressBarValidateSession
+    CumulativeStakeChart: () => import('components/cumulative-stake-chart'),
+    ProgressBarValidateSession: () => import('components/progress-bar-validatе-session')
   },
   computed: {
     ...mapGetters([

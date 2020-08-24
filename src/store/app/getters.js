@@ -75,7 +75,11 @@ export function delegatedStake (state) {
 }
 
 export function isDefaultSubnetID (state) {
-  return state.currentSubnet === '11111111111111111111111111111111LpoYY'
+  return state.currentSubnet.id === '11111111111111111111111111111111LpoYY'
+}
+
+export function isDefaultBSubnetID (state) {
+  return state.currentBlockchain.subnetID === '11111111111111111111111111111111LpoYY'
 }
 
 export function isBlockchainView (state) {

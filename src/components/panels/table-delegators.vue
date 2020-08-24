@@ -122,12 +122,11 @@ import { mapGetters } from 'vuex'
 import { date } from './../../modules/time'
 import { copyToClipboard, openURL } from 'quasar'
 import { UPDATE_UI } from './../../store/ui/types'
-import ProgressBarValidateSession from './../progress-bar-validatе-session'
 
 export default {
   name: 'TableDelegators',
   components: {
-    ProgressBarValidateSession
+    ProgressBarValidateSession: () => import('components/progress-bar-validatе-session')
   },
   data () {
     return {

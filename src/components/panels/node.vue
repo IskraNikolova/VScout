@@ -85,7 +85,17 @@
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-2 col-xs-10">
-        <node-connection class="col-md-3 col-xs-10" />
+        <div id="f-size12" class="q-pb-md text-medium">
+          ENDPOINT
+          <q-spinner-ball v-if="ui.doesItConnect" />
+        </div>
+        <div class="q-pb-md">
+          <div class="text-h7 text-orange">{{ networkEndpoint }}</div>
+        </div>
+        <div id="f-size12" class="q-mt-md">
+          <q-icon name="info" color="accent" size="md"/>
+          <span class="q-pt-xl">You can switch to other node</span>
+        </div>
       </div>
       <div class="col-1 q-pt-md q-pl-md">
         <img src="~assets/computer-network.svg" id="logo2">
@@ -102,23 +112,23 @@ import {
 
 import { datePickerFormat } from './../../modules/time'
 
-import NodeConnection from './../items/node-connection'
-import NodeHealthDialog from './../dialogs/node-health-dialog'
-
 export default {
   name: 'Node',
   components: {
-    NodeConnection,
-    NodeHealthDialog
+    NodeHealthDialog: () => import('components/dialogs/node-health-dialog')
   },
   computed: {
     ...mapGetters([
-      'nodeInfo',
+      'ui',
       'nodeID',
-      'nodeHealth'
+      'nodeInfo',
+      'nodeHealth',
+      'networkEndpoint'
     ]),
     filterPeers: function () {
-      return this.nodeInfo.peers.filter(a => a.nodeID.toLowerCase().includes(this.filter.toLowerCase()) || a.ip.includes(this.filter))
+      return this.nodeInfo
+        .peers
+        .filter(a => a.nodeID.toLowerCase().includes(this.filter.toLowerCase()) || a.ip.includes(this.filter))
     },
     nodeHealthInfo: function () {
       return this.nodeHealth(this.nodeID)

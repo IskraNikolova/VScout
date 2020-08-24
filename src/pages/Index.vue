@@ -33,13 +33,6 @@ import {
   mapActions
 } from 'vuex'
 
-import Faqs from './../components/panels/faqs'
-import Stake from './../components/panels/stake'
-import Network from './../components/panels/network'
-import Node from './../components/panels/node'
-import TableValidators from './../components/panels/table-validators'
-import TableDelegators from './../components/panels/table-delegators'
-
 import {
   GET_VALIDATORS,
   GET_PENDING_VALIDATORS
@@ -48,12 +41,12 @@ import {
 export default {
   name: 'PageIndex',
   components: {
-    Faqs,
-    Stake,
-    Network,
-    Node,
-    TableValidators,
-    TableDelegators
+    Faqs: () => import('components/panels/Faqs'),
+    Stake: () => import('components/panels/stake'),
+    Network: () => import('components/panels/network'),
+    Node: () => import('components/panels/node'),
+    TableValidators: () => import('components/panels/table-validators'),
+    TableDelegators: () => import('components/panels/table-delegators')
   },
   computed: {
     ...mapGetters([

@@ -53,16 +53,12 @@
 
 <script>
 
-import ListSubnets from './../list-subnets'
-import SwitchEndpoint from './../switch-endpoint'
-import ListBlockchains from './../list-blockchains'
-
 export default {
   name: 'Settings',
   components: {
-    ListSubnets,
-    SwitchEndpoint,
-    ListBlockchains
+    ListSubnets: () => import('components/list-subnets'),
+    SwitchEndpoint: () => import('components/switch-endpoint'),
+    ListBlockchains: () => import('components/list-blockchains')
   }
 }
 </script>

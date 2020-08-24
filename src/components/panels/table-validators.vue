@@ -291,22 +291,17 @@ import {
 
 import { date } from './../../modules/time'
 import { UPDATE_UI } from './../../store/ui/types'
-import DetailsValidator from './../details-validator'
-import Settings from './settings'
-import CumulativeStakeChart from './../cumulative-stake-chart'
-import ProgressBarValidateSession from './../progress-bar-validatе-session'
-// import AddIdentificationDialog from './../dialogs/add-identification-dialog'
 
 import { SET_SUBNET_ID } from './../../store/app/types'
 
 export default {
   name: 'TableItem',
   components: {
-    Settings,
-    DetailsValidator,
-    CumulativeStakeChart,
-    // AddIdentificationDialog,
-    ProgressBarValidateSession
+    Settings: () => import('components/panels/settings'),
+    DetailsValidator: () => import('components/details-validator'),
+    CumulativeStakeChart: () => import('components/cumulative-stake-chart'),
+    // AddIdentificationDialog: () => import('components/dialogs/add-identification-dialog'),
+    ProgressBarValidateSession: () => import('components/progress-bar-validatе-session')
   },
   data () {
     return {

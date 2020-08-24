@@ -65,8 +65,6 @@ import {
 
 export default {
   name: 'SubnetBlockchains',
-  components: {
-  },
   computed: {
     ...mapGetters([
       'currentSubnet',

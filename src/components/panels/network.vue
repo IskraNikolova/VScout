@@ -4,14 +4,55 @@
     id="custom-card"
   >
     <div class="row">
-      <blockchain v-if="isBlockchainView" class="col-md-3 col-xs-10" />
+      <div v-if="isBlockchainView">
+        <div id="f-size12" class="q-pb-md text-medium">
+          BLOCKCHAIN
+        </div>
+        <div class="q-mb-md">
+          <div class="text-h6 text-orange q-pb-md q-pr-md ">
+            {{ currentBlockchain.name }}
+          </div>
+        </div>
+        <div id="f-size12">
+          <span class="text-medium">Blockchain ID</span>
+          <div class="text-grey">
+            {{ currentBlockchain.id }}
+          </div>
+        </div>
+      </div>
       <subnet-blockchains v-else class="col-md-2 col-xs-10"/>
       <div class="col-1 q-pt-md">
         <img src="~assets/blockchain-grey.svg" id="logo">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
-      <subnet v-if="isBlockchainView" class="col-md-3 col-xs-10"/>
-      <subnetwork v-else class="col-md-3 col-xs-10" />
+      <div v-if="isBlockchainView">
+        <div id="f-size12"  class="q-pb-md text-medium">
+          SUBNET ID
+        </div>
+        <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultBSubnetID">
+          Default Subnet
+        </div>
+        <div class="q-pb-md text-orange" style="font-size: 19px;cursor: pointer;" @click="$router.push(`/search/${currentBlockchain.subnetID}`)">
+          <small>{{ currentBlockchain.subnetID }}</small>
+        </div>
+        <div id="f-size12">
+          <span class="text-medium">VM ID</span>
+          <div class="text-grey">
+            {{ currentBlockchain.vmID }}
+          </div>
+        </div>
+      </div>
+      <div v-else class="col-md-3 col-xs-10">
+        <div id="f-size12" class="q-pb-md text-medium">SUBNETWORK</div>
+        <div>
+          <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultSubnetID">
+            Default Subnet
+          </div>
+          <div class="q-pb-md text-orange" style="font-size: 19px;cursor: pointer;" @click="$router.push(`/search/${currentSubnet.id}`)">
+            <small>{{ currentSubnet.id }}</small>
+          </div>
+        </div>
+      </div>
       <div v-if="isBlockchainView" class="col-1 q-pt-md">
         <img src="~assets/network.svg" id="logo2">
       </div>
@@ -88,7 +129,8 @@
         </div>
       </div>
       <div class="col-1 q-pt-md">
-        <img src="~assets/key-digital.svg" style=" width:40vw;max-width:40px;">
+        <img src="~assets/coins.svg" style=" width:40vw;max-width:40px;" v-if="isBlockchainView">
+        <img src="~assets/key-digital.svg" style=" width:40vw;max-width:40px;" v-else>
       </div>
     </div>
   </q-card>
@@ -97,21 +139,11 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import Subnet from './../items/subnet'
-import Blockchain from './../items/blockchain'
-import Subnetwork from './../items/subnetwork'
-import SubnetBlockchains from './../items/subnet-blockchains'
-
-import AssetInfoDialog from './../dialogs/asset-info-dialog'
-
 export default {
   name: 'Network',
   components: {
-    Subnet,
-    Subnetwork,
-    Blockchain,
-    AssetInfoDialog,
-    SubnetBlockchains
+    SubnetBlockchains: () => import('components/items/subnet-blockchains'),
+    AssetInfoDialog: () => import('components/dialogs/asset-info-dialog')
   },
   computed: {
     ...mapGetters([
@@ -119,7 +151,9 @@ export default {
       'currentSubnet',
       'blockchainByID',
       'isBlockchainView',
-      'currentBlockchain'
+      'currentBlockchain',
+      'isDefaultSubnetID',
+      'isDefaultBSubnetID'
     ]),
     assetsLength: function () {
       if (!this.assets(this.currentBlockchain.id)) return
