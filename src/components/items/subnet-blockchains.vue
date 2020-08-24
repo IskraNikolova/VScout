@@ -44,7 +44,7 @@
               <q-item-label caption>
                 <small>VM ID: </small>
                 <span class="text-orange">
-                  {{ blockchainByID(id).vmID.substr(0, 4)}}...{{blockchainByID(id).vmID.substr(30)}}
+                  {{ vmID }}
                 </span>
               </q-item-label>
             </q-item-section>
@@ -70,7 +70,13 @@ export default {
       'currentSubnet',
       'blockchainByID',
       'networkEndpoint'
-    ])
+    ]),
+    vmID: function (id) {
+      if (!id) return
+      const blockchain = this.blockchainByID(id)
+      if (!blockchain) return
+      return `${blockchain.vmID.substr(0, 4)}...${blockchain.vmID.substr(30)}`
+    }
   },
   methods: {
     ...mapActions({
