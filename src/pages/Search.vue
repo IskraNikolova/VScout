@@ -158,7 +158,11 @@
           <div class="col-6">
             <span class="text-light text-h7">SUBNET ID:</span> <div class="text-medium">{{ blockchain().subnetID }}</div>
             <br />
-            <span class="text-light text-h7">STATUS:</span> <div class="text-medium">CREATED</div>
+            <span class="text-light text-h7">STATUS:</span>
+            <div :class="'text-medium text-' + getColor(blockchain().status)">
+              {{ blockchain().status }}
+              <q-tooltip>{{ getStatusInfo(blockchain().status )}}</q-tooltip>
+            </div>
           </div>
         </div>
       </div>
@@ -223,7 +227,21 @@ import {
   openURL
 } from 'quasar'
 
-import { date } from './../modules/time'
+import { date } from './../modules/time.js'
+
+const colors = {
+  Validating: 'accent',
+  Created: 'green',
+  Preferred: 'grey',
+  Unknown: 'negative'
+}
+
+const statusInfo = {
+  Validating: 'The blockchain is being validated by this node.',
+  Created: 'The blockchain exists but isn’t being validated by this node.',
+  Preferred: 'The blockchain was proposed to be created and is likely to be created but the transaction isn’t yet accepted.',
+  Unknown: 'The blockchain either wasn’t proposed or the proposal to create it isn’t preferred. The proposal may be resubmitted.'
+}
 
 import {
   GET_VALIDATORS,
@@ -327,6 +345,12 @@ export default {
       this.getPendingValidators({
         subnetID: id
       })
+    },
+    getColor (status) {
+      return colors[status]
+    },
+    getStatusInfo (status) {
+      return statusInfo[status]
     }
   }
 }

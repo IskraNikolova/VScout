@@ -20,6 +20,7 @@ export const c = {
   getSubnets: 'platform.getSubnets',
   getLiveness: 'health.getLiveness',
   getBlockchains: 'platform.getBlockchains',
+  getBlockchainStatus: 'platform.getBlockchainStatus',
   getCurrentValidators: 'platform.getCurrentValidators',
   getPendingValidators: 'platform.getPendingValidators',
 

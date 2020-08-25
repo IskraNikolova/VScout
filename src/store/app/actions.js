@@ -43,6 +43,7 @@ import {
   _getBlockchains,
   _getValidators,
   _getAssetsForChain,
+  _getBlockchainStatus,
   _getPendingValidators
 } from './../../modules/network'
 
@@ -122,9 +123,25 @@ async function getBlockchains ({ commit, getters }) {
     return null
   }
 
-  const { blockchains } = response.data.result
+  let { blockchains } = response.data.result
   if (typeof blockchains === 'undefined' ||
     blockchains === null) return
+
+  blockchains = await Promise.all(blockchains
+    .map(async b => {
+      const res = await _getBlockchainStatus({
+        endpoint: getters.networkEndpoint,
+        params: {
+          blockchainID: b.id
+        }
+      })
+      if (res.data.error) return b
+      return {
+        ...b,
+        status: res.data.result.status
+      }
+    })
+  )
 
   commit(SET_BLOCKCHAINS, { blockchains })
   commit(SET_CURRENT_BLOCKCHAIN, {

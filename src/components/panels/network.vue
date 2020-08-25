@@ -9,8 +9,10 @@
           BLOCKCHAIN
         </div>
         <div class="q-mb-md">
-          <div class="text-h6 text-orange q-pb-md q-pr-md ">
-            {{ currentBlockchain.name }}
+          <div class="q-pb-md q-pr-md ">
+            <span class="text-h6 text-orange">{{ currentBlockchain.name }}</span>
+            <span style="text-transform: uppercase; font-size: 85%;" :class="'q-ml-md text-' + getColor(currentBlockchain.status)">{{ currentBlockchain.status }}</span>
+            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 14px">{{ getStatusInfo(currentBlockchain.status) }}</q-tooltip>
           </div>
         </div>
         <div id="f-size12">
@@ -139,6 +141,20 @@
 <script>
 import { mapGetters } from 'vuex'
 
+const colors = {
+  Validating: 'accent',
+  Created: 'green',
+  Preferred: 'grey',
+  Unknown: 'negative'
+}
+
+const statusInfo = {
+  Validating: 'The blockchain is being validated by this node.',
+  Created: 'The blockchain exists but isn’t being validated by this node.',
+  Preferred: 'The blockchain was proposed to be created and is likely to be created but the transaction isn’t yet accepted.',
+  Unknown: 'The blockchain either wasn’t proposed or the proposal to create it isn’t preferred. The proposal may be resubmitted.'
+}
+
 export default {
   name: 'Network',
   components: {
@@ -163,6 +179,12 @@ export default {
   methods: {
     onOpenAssetInfo (asset) {
       this.$refs.assetDialog.open({ asset })
+    },
+    getColor (status) {
+      return colors[status]
+    },
+    getStatusInfo (status) {
+      return statusInfo[status]
     }
   }
 }

@@ -47,6 +47,11 @@ export const _getBlockchains = async ({ endpoint }) => {
   return response
 }
 
+export const _getBlockchainStatus = async ({ endpoint, params }) => {
+  const response = await request(endpoint + c.platform, body(c.getBlockchainStatus, params))
+  return response
+}
+
 export const _getSubnets = async ({ endpoint }) => {
   const response = await request(endpoint + c.platform, body(c.getSubnets))
   return response
