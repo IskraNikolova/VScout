@@ -154,11 +154,11 @@ const statusInfo = {
   Preferred: 'The blockchain was proposed to be created and is likely to be created but the transaction isn’t yet accepted.',
   Unknown: 'The blockchain either wasn’t proposed or the proposal to create it isn’t preferred. The proposal may be resubmitted.'
 }
-
+import SubnetBlockchains from './../items/subnet-blockchains'
 export default {
   name: 'Network',
   components: {
-    SubnetBlockchains: () => import('components/items/subnet-blockchains'),
+    SubnetBlockchains,
     AssetInfoDialog: () => import('components/dialogs/asset-info-dialog')
   },
   computed: {
