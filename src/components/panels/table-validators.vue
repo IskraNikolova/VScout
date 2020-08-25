@@ -289,7 +289,7 @@ import {
   openURL
 } from 'quasar'
 
-import { date } from './../../modules/time'
+import { date } from './../../modules/time.js'
 import { UPDATE_UI } from './../../store/ui/types'
 
 import { SET_SUBNET_ID } from './../../store/app/types'

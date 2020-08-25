@@ -91,7 +91,7 @@ module.exports = function (ctx) {
       open: true // opens browser window automatically
     },
 
-    animations: 'all', // --- includes all animations
+    // animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations
 
     // https://quasar.dev/quasar-cli/developing-ssr/configuring-ssr

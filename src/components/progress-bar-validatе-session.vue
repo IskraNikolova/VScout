@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import { round } from './../utils/commons'
-import { getDuration, timeago } from './../modules/time'
+import { round } from './../utils/commons.js'
+import { getDuration, timeago } from './../modules/time.js'
 
 export default {
   name: 'ProgressBarValidateSession',

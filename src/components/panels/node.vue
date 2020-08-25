@@ -62,8 +62,8 @@
             </q-item-section>
             </q-item>
           <q-list
-            v-for="peer in filterPeers"
-            v-bind:key="peer.nodeID"
+            v-for="(peer, i) in filterPeers"
+            v-bind:key="i"
             class="q-pa-md"
           >
             <q-item v-close-popup>
@@ -110,12 +110,17 @@ import {
   copyToClipboard
 } from 'quasar'
 
-import { datePickerFormat } from './../../modules/time'
+import { datePickerFormat } from './../../modules/time.js'
 
 export default {
   name: 'Node',
   components: {
     NodeHealthDialog: () => import('components/dialogs/node-health-dialog')
+  },
+  data () {
+    return {
+      filter: ''
+    }
   },
   computed: {
     ...mapGetters([
@@ -126,9 +131,10 @@ export default {
       'networkEndpoint'
     ]),
     filterPeers: function () {
-      return this.nodeInfo
+      const res = this.nodeInfo
         .peers
         .filter(a => a.nodeID.toLowerCase().includes(this.filter.toLowerCase()) || a.ip.includes(this.filter))
+      return res
     },
     nodeHealthInfo: function () {
       return this.nodeHealth(this.nodeID)
@@ -143,11 +149,6 @@ export default {
     color: function () {
       if (this.healthy) return 'green'
       return 'negative'
-    }
-  },
-  data () {
-    return {
-      filter: ''
     }
   },
   methods: {

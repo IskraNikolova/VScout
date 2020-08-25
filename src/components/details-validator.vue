@@ -40,7 +40,7 @@ import {
   copyToClipboard
 } from 'quasar'
 
-import { date, fromNow, getDurationHumanize } from './../modules/time'
+import { date, fromNow, getDurationHumanize } from './../modules/time.js'
 import { UPDATE_UI } from './../store/ui/types'
 
 export default {

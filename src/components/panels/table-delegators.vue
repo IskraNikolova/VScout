@@ -119,8 +119,12 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import { date } from './../../modules/time'
-import { copyToClipboard, openURL } from 'quasar'
+import {
+  openURL,
+  copyToClipboard
+} from 'quasar'
+
+import { date } from './../../modules/time.js'
 import { UPDATE_UI } from './../../store/ui/types'
 
 export default {

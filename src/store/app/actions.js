@@ -5,8 +5,10 @@ import {
   SET_SUBNETS,
   GET_NODE_ID,
   SET_NODE_ID,
+  SET_ENDPOINT,
   GET_NODE_INFO,
   SET_NODE_INFO,
+  INIT_ENDPOINT,
   GET_VALIDATORS,
   SET_DELEGATORS,
   SET_STAKED_AVA,
@@ -61,9 +63,12 @@ import {
 // getPastEvents
 } from './../../modules/validators'
 
+const { network } = require('./../../modules/config').default
+
 async function initApp ({ dispatch, getters }) {
   try {
     Promise.all([
+      dispatch(INIT_ENDPOINT),
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_NODE_INFO),
       dispatch(GET_BLOCKCHAINS),
@@ -97,6 +102,15 @@ async function initApp ({ dispatch, getters }) {
       console.log(err)
     }
   }, 6000)
+}
+
+async function initEndpoint ({ commit }) {
+  const local = network.endpointUrls[1]
+  const resNetworkID = await _getNetworkID({ endpoint: local })
+  if (resNetworkID.data.error) {
+    return
+  }
+  commit(SET_ENDPOINT, { endpoint: local })
 }
 
 async function getBlockchains ({ commit, getters }) {
@@ -334,6 +348,7 @@ export default {
   [GET_NODE_ID]: getNodeId,
   [GET_SUBNETS]: getSubnets,
   [GET_NODE_INFO]: getNodeInfo,
+  [INIT_ENDPOINT]: initEndpoint,
   [GET_VALIDATORS]: getValidators,
   [GET_NODE_HEALTH]: getNodeHealth,
   [GET_BLOCKCHAINS]: getBlockchains,
