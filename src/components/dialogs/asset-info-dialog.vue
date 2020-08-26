@@ -60,7 +60,7 @@ export default {
     }),
     toUrl (url) {
       this.close()
-      openURL('https://ava-explorer.herokuapp.com/tx/' + url)
+      openURL('https://explorer.avax.network/tx/' + url)
     },
     getCurrentSupply (value, denomination) {
       let returnValue = Number(value)
