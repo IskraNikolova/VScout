@@ -335,6 +335,9 @@ export default {
       'pendingValidators',
       'isDefaultSubnetID'
     ]),
+    isYourNode: function (id) {
+      return id === this.nodeID
+    },
     curentValidators: {
       get: function () {
         if (this.isActive) return this.validators

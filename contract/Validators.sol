@@ -4,11 +4,11 @@ pragma solidity >=0.4.16 <0.7.0;
  * @title Validators
  */
 contract Validators {
-    event SetValidatorInfoEvent(string indexed id, bytes32 name, bytes avatarUrl, bytes link);
+    event SetValidatorInfoEvent(string indexed id, bytes32 name, bytes avatar, bytes bio, bytes link);
 
     uint256 private permission;
-    address owner;
     address private admin;
+    address owner;
 
     constructor() public {
         permission = random();
@@ -17,7 +17,8 @@ contract Validators {
 
     struct Member {
         bytes32 name;
-        bytes avatarUrl;
+        bytes avatar;
+        bytes bio;
         bytes link;
     }
     
@@ -47,15 +48,17 @@ contract Validators {
     function setValidatorInfo(
         string memory _id,
         bytes32 _name,
-        bytes memory _avatarUrl,
+        bytes memory _avatar,
+        bytes memory  _bio,
         bytes memory _link,
         uint256 _code)
+        hasAccess(_code)
         public 
         {
-        members[_id] = Member(_name, _avatarUrl, _link);
+        members[_id] = Member(_name, _avatar, _bio, _link);
 
         permission = random();
-        emit SetValidatorInfoEvent(_id, _name, _avatarUrl, _link);
+        emit SetValidatorInfoEvent(_id, _name, _avatar, _bio, _link);
     }
     
     function getPermissionCode () 

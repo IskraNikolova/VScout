@@ -17,7 +17,7 @@
         </div>
         <div id="f-size12">
           <span class="text-medium">Blockchain ID</span>
-          <div class="text-grey" style="max-width: 340px;">
+          <div class="text-grey" style="max-width: 344px;">
             {{ currentBlockchain.id }}
           </div>
         </div>

@@ -26,7 +26,12 @@
 			},
 			{
 				"internalType": "bytes",
-				"name": "_avatarUrl",
+				"name": "_avatar",
+				"type": "bytes"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_bio",
 				"type": "bytes"
 			},
 			{
@@ -68,7 +73,13 @@
 			{
 				"indexed": false,
 				"internalType": "bytes",
-				"name": "avatarUrl",
+				"name": "avatar",
+				"type": "bytes"
+			},
+			{
+				"indexed": false,
+				"internalType": "bytes",
+				"name": "bio",
 				"type": "bytes"
 			},
 			{
@@ -111,7 +122,12 @@
 			},
 			{
 				"internalType": "bytes",
-				"name": "avatarUrl",
+				"name": "avatar",
+				"type": "bytes"
+			},
+			{
+				"internalType": "bytes",
+				"name": "bio",
 				"type": "bytes"
 			},
 			{

@@ -60,10 +60,6 @@ import {
   splitPendingAccounts
 } from './../../utils/validators'
 
-import {
-// getPastEvents
-} from './../../modules/validators'
-
 const { network } = require('./../../modules/config').default
 
 async function initApp ({ dispatch, getters }) {
@@ -77,13 +73,12 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_SUBNETS),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(INIT_VALIDATORS)
+      // _initializeNetwork()
     ])
   } catch (err) {
     console.log(err)
   }
 
-  // await _initializeNetwork()
-  // const events = await getPastEvents()
   // dispatch(SUBSCRIBE_TO_EVENT)
 
   setInterval(async () => {

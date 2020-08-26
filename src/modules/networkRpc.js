@@ -139,7 +139,7 @@ export const getPermission = async () => {
  * @param {string} params.avatar
  * @param {string} params.link
  */
-export const _setValidatorInfo = async ({ id, name, avatar, link }) => {
+export const _setValidatorInfo = async ({ id, name, avatar, bio, link }) => {
   try {
     const account = await contract
       .methods
@@ -148,10 +148,21 @@ export const _setValidatorInfo = async ({ id, name, avatar, link }) => {
 
     const byteName = name ? stringToHex(name) : account.name
     const byteAvatar = avatar ? stringToHex(avatar) : account.avatarUrl
+    const byteBio = bio ? stringToHex(bio) : account.bio
     const byteLink = link ? stringToHex(link) : account.link
     const code = await getPermission()
 
-    const method = contract.methods.setValidatorInfo(id, byteName, byteAvatar, byteLink, code)
+    const method = contract
+      .methods
+      .setValidatorInfo(
+        id,
+        byteName,
+        byteAvatar,
+        byteBio,
+        byteLink,
+        code
+      )
+
     return executeMethod(method)
   } catch (err) {
     throw new Error(err.message)

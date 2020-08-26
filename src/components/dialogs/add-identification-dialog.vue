@@ -33,10 +33,28 @@
         <q-form
           @submit="onSubmit"
           @reset="onReset"
-          class="q-gutter-md"
+          class="q-gutter-md q-pt-xl"
         >
           <div class="row">
-            <div class="col-md-5 col-12 q-mr-xl q-pt-xl q-pb-md">
+            <div class="col-md-5 col-12 q-mr-xl q-pb-md">
+              <q-input
+                readonly
+                color="accent"
+                class="q-mb-md"
+                outlined
+                label-color="orange"
+                v-model="nodeIDModel"
+                label="Your node ID *"
+                hint="The validator node ID."
+              >
+                <template v-slot:append>
+                  <q-btn round dense @click="onGetNodeID" :loading="loading" flat no-caps color="accent" icon="add">
+                    <template v-slot:loading>
+                      <q-spinner-ball />
+                    </template>
+                  </q-btn>
+                </template>
+              </q-input>
               <q-input
                 color="accent"
                 class="q-mb-xs"
@@ -59,60 +77,30 @@
                 hint="For avatar you must use url."
                 :error="validateData.errors.avatar"
               />
-              <q-input
-                color="accent"
-                class="q-mb-xs"
-                outlined
-                clearable
-                label-color="orange"
-                v-model="link"
-                label="Link"
-                hint="Your business link or other."
-                :error="validateData.errors.link"
-              />
             </div>
             <q-separator vertical class="q-mr-xl" />
             <div class="col-md-5 col-12 q-pr-xl">
-              <q-card-section class="row">
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="text-h6">Node</q-item-label>
-                    <q-item-label v-if="!ui.addIdentification.isAuth" caption>
-                      First connect to your local node!
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-card-section>
-              <div v-if="!ui.addIdentification.isAuth">
                 <q-input
-                  readonly
-                  color="accent"
-                  class="q-mb-md"
-                  outlined
-                  label-color="orange"
-                  v-model="nodeIDModel"
-                  label="Your node ID *"
-                  hint="The validator node ID."
-                />
-                <!--<q-input
-                  readonly
+                  type="textarea"
                   color="accent"
                   class="q-mb-xs"
                   outlined
                   label-color="orange"
-                  v-model="nodeOwner"
-                  label="P-Chain address "
-                  hint="The account (owner) providing the staked AVAX."
-                />-->
-                <div class="row q-pr-xl q-pt-xl">
-                  <q-space />
-                  <q-btn label="Get Node Info" @click="onGetNodeID" size="10px" color="accent"/>
-                  <q-btn label="Cancel" flat @click="onClose()" size="10px" color="accent"/>
-                </div>
-              </div>
-              <div v-else>
-                <q-img basic src="~assets/success.png" id="logo"/>
-              </div>
+                  v-model="bio"
+                  label="Bio "
+                  hint="Bio (optional)"
+                />
+                <q-input
+                  color="accent"
+                  class="q-mb-xs"
+                  outlined
+                  clearable
+                  label-color="orange"
+                  v-model="link"
+                  label="Link"
+                  hint="Your business link or other."
+                  :error="validateData.errors.link"
+                />
             </div>
           </div>
         <div class="row q-pr-xl" v-if="ui.addIdentification.isAuth">
@@ -133,8 +121,7 @@ import DOMPurify from 'dompurify'
 import { _setValidatorInfo } from './../../modules/networkRpc'
 
 import {
-  GET_NODE_ID,
-  LIST_ACCOUNTS
+  GET_NODE_ID
 } from './../../store/app/types'
 
 import {
@@ -147,12 +134,13 @@ export default {
   name: 'AddIdentificationDialog',
   data () {
     return {
+      loading: null,
       name: null,
       link: null,
+      bio: null,
       error: null,
       avatar: null,
       notify: null,
-      // nodeOwner: null,
       nodeIDModel: null
     }
   },
@@ -169,6 +157,7 @@ export default {
       return {
         errors: {
           name: (DOMPurify.sanitize(this.name) !== this.name) && this.name,
+          bio: (DOMPurify.sanitize(this.bio) !== this.bio) && this.bio,
           link: DOMPurify.sanitize(inputLink) !== inputLink,
           avatar: DOMPurify.sanitize(inputAvatar) !== inputAvatar
         }
@@ -178,7 +167,6 @@ export default {
   methods: {
     ...mapActions({
       getNodeId: GET_NODE_ID,
-      listAccounts: LIST_ACCOUNTS,
       openAddId: OPEN_ADD_IDENTIFICATION,
       closeAddId: CLOSE_ADD_IDENTIFICATION
     }),
@@ -187,7 +175,7 @@ export default {
       this.onReset()
     },
     async onSubmit () {
-      if (!this.link && !this.name && !this.avatar) {
+      if (!this.link && !this.name && !this.avatar && !this.bio) {
         this.error = 'Empty fields!'
         return
       }
@@ -195,6 +183,7 @@ export default {
         const txHash = await _setValidatorInfo({
           link: this.link,
           name: this.name,
+          bio: this.bio,
           avatar: this.avatar,
           id: this.nodeIDModel
         })
@@ -210,18 +199,21 @@ export default {
       }
     },
     onGetNodeID () {
+      this.loading = true
       this.nodeIDModel = this.nodeID
       const validator = this.validatorById(this.nodeIDModel)
       if (!validator) {
+        this.loading = null
         this.error = 'Something Wrong! Check if your connection endpoint is healthy and synced with the network'
       } else {
+        this.loading = null
         this.$store.commit(UPDATE_UI, { addIdentification: { isAuth: true } })
-        // this.nodeOwner = validator.address
       }
     },
     onReset () {
       this.name = null
       this.link = null
+      this.bio = null
       this.error = null
       this.notify = null
       this.avatar = null
