@@ -87,7 +87,7 @@ async function initApp ({ dispatch, getters }) {
         dispatch(GET_NODE_INFO),
         dispatch(GET_VALIDATORS, {
           subnetID: getters.subnetID,
-          endpoint: getters.networkEndpoint
+          endpoint: getters.networkEndpoint.url
         }),
         dispatch(GET_PENDING_VALIDATORS, {
           subnetID: getters.subnetID
@@ -101,9 +101,9 @@ async function initApp ({ dispatch, getters }) {
 
 async function initEndpoint ({ commit }) {
   const local = network.endpointUrls[1]
-  const response = await _getNodeId({ endpoint: local })
+  const response = await _getNodeId({ endpoint: local.url })
   if (response.data.error) {
-    const response = await _getNodeId({ endpoint: local })
+    const response = await _getNodeId({ endpoint: local.url })
     if (response.data.error) return
     const nodeID = response.data.result.nodeID
     commit(SET_ENDPOINT, { endpoint: network.endpointUrls[0] })
@@ -118,7 +118,7 @@ async function initEndpoint ({ commit }) {
 
 async function getBlockchains ({ commit, getters }) {
   const response = await _getBlockchains({
-    endpoint: getters.networkEndpoint
+    endpoint: getters.networkEndpoint.url
   })
 
   if (response.data.error) {
@@ -135,11 +135,11 @@ async function getBlockchains ({ commit, getters }) {
     vmID: '',
     name: 'P-Chain'
   })
-  console.log(blockchains)
+
   blockchains = await Promise.all(blockchains
     .map(async b => {
       const res = await _getBlockchainStatus({
-        endpoint: getters.networkEndpoint,
+        endpoint: getters.networkEndpoint.url,
         params: {
           blockchainID: b.id
         }
@@ -160,7 +160,7 @@ async function getBlockchains ({ commit, getters }) {
 
 async function getSubnets ({ commit, getters }) {
   const response = await _getSubnets({
-    endpoint: getters.networkEndpoint
+    endpoint: getters.networkEndpoint.url
   })
 
   if (response.data.error) {
@@ -173,7 +173,7 @@ async function getSubnets ({ commit, getters }) {
 
   const result = Promise.all(subnets.map(async subnet => {
     const response = await _validates({
-      endpoint: getters.networkEndpoint,
+      endpoint: getters.networkEndpoint.url,
       params: {
         subnetID: subnet.id
       }
@@ -203,7 +203,7 @@ async function initValidators ({ commit, getters }) {
   const subnetID = getters.subnetID ? getters.subnetID : '11111111111111111111111111111111LpoYY'
   const response = await _getValidators({
     subnetID,
-    endpoint: getters.networkEndpoint
+    endpoint: getters.networkEndpoint.url
   })
 
   if (response.data.error) {
@@ -266,7 +266,7 @@ async function getValidators (
 async function getPendingValidators ({ commit, getters }, { subnetID }) {
   const response = await _getPendingValidators({
     subnetID,
-    endpoint: getters.networkEndpoint
+    endpoint: getters.networkEndpoint.url
   })
 
   if (response.data.error) {
@@ -293,7 +293,7 @@ async function getPendingValidators ({ commit, getters }, { subnetID }) {
 }
 
 async function getNodeId ({ getters, commit }) {
-  const response = await _getNodeId({ endpoint: getters.networkEndpoint })
+  const response = await _getNodeId({ endpoint: getters.networkEndpoint.url })
   if (response.data.error) {
     commit(UPDATE_UI, { doesItConnect: true })
     return
@@ -307,25 +307,25 @@ async function getNodeId ({ getters, commit }) {
 }
 
 async function getNodeInfo ({ getters, commit }) {
-  const resNetworkID = await _getNetworkID({ endpoint: getters.networkEndpoint })
+  const resNetworkID = await _getNetworkID({ endpoint: getters.networkEndpoint.url })
   if (resNetworkID.data.error) {
     commit(UPDATE_UI, { doesItConnect: true })
     return
   }
 
-  const resNetworkName = await _getNetworkName({ endpoint: getters.networkEndpoint })
+  const resNetworkName = await _getNetworkName({ endpoint: getters.networkEndpoint.url })
   if (resNetworkName.data.error) {
     commit(UPDATE_UI, { doesItConnect: true })
     return
   }
 
-  const resNodeVersion = await _getNodeVersion({ endpoint: getters.networkEndpoint })
+  const resNodeVersion = await _getNodeVersion({ endpoint: getters.networkEndpoint.url })
   if (resNodeVersion.data.error) {
     commit(UPDATE_UI, { doesItConnect: true })
     return
   }
 
-  const resNodePeers = await _getPeers({ endpoint: getters.networkEndpoint })
+  const resNodePeers = await _getPeers({ endpoint: getters.networkEndpoint.url })
   if (resNodePeers.data.error) {
     return
   }
@@ -342,7 +342,7 @@ async function getNodeInfo ({ getters, commit }) {
 }
 
 async function getNodeHealth ({ commit, getters }) {
-  const response = await _health({ endpoint: getters.networkEndpoint })
+  const response = await _health({ endpoint: getters.networkEndpoint.url })
   if (typeof response === 'undefined' ||
     response === null) return
 

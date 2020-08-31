@@ -7,7 +7,11 @@
         @click="onSelectEndpoint(endpoint, false)"
       >
         <q-item-section>
-          <q-item-label>{{ endpoint }}</q-item-label>
+          <q-item-label>{{ endpoint.name }}</q-item-label>
+          <q-item-label caption>
+           {{ endpoint.url }}
+            <q-icon name="done" style="margin-top: -7px;" size="md" class="text-green q-ml-md" v-if="networkEndpoint.url === endpoint.url" />
+          </q-item-label>
         </q-item-section>
       </q-item>
     </q-list>
@@ -87,7 +91,8 @@ export default {
   computed: {
     ...mapGetters([
       'validators',
-      'endpointsMemory'
+      'endpointsMemory',
+      'networkEndpoint'
     ])
   },
   methods: {
@@ -108,20 +113,25 @@ export default {
     async onSelectEndpoint (endpoint, isCustom) {
       this.$store.commit(UPDATE_UI, { doesItConnect: true })
 
-      const response = await _getNodeId({ endpoint })
+      if (isCustom) {
+        endpoint = { name: 'Custom', url: endpoint }
+      }
+
+      const response = await _getNodeId({ endpoint: endpoint.url })
       if (response.data.error) {
-        const msg = `${response.data.error.message} with ${endpoint}`
+        const msg = `${response.data.error.message} with ${endpoint.name} - ${endpoint.url}`
         this.onError(msg)
         return
       }
 
-      const nodeID = response.data.result.nodeID
-      this.$store.commit(SET_ENDPOINT, { endpoint })
-      this.$store.commit(SET_NODE_ID, { nodeID })
       if (isCustom) {
-        this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
+        this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint: endpoint.url })
         this.customEndpoint = ''
       }
+
+      this.$store.commit(SET_ENDPOINT, { endpoint })
+      const nodeID = response.data.result.nodeID
+      this.$store.commit(SET_NODE_ID, { nodeID })
       await this.onSuccess(endpoint)
     },
     async onSuccess (endpoint) {
@@ -130,12 +140,12 @@ export default {
       this.$q.notify({
         textColor: 'black',
         color: 'white',
-        message: `Connected to ${endpoint}`,
+        message: `Connected to ${endpoint.name} (${endpoint.url})`,
         position: 'top',
         timeout: 2000,
         icon: 'done'
       })
-      await this.getValidators({ endpoint })
+      await this.getValidators({ endpoint: endpoint.url })
     },
     onError (message) {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })

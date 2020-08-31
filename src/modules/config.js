@@ -1,6 +1,6 @@
 export default {
   network: {
-    endpointUrls: ['https://testapi.avax.network/', 'http://127.0.0.1:9650/'],
+    endpointUrls: [{ name: 'Everest TestNet', url: 'https://testapi.avax.network/' }, { name: 'Localhost', url: 'http://127.0.0.1:9650/' }],
     explorerApiBaseUrl: 'https://explorerapi.avax.network/',
     contract: '0x521A57EbAb9F81B7c77Dd1CBb8Fe4CB67Ef1357B',
     endpointCChain: 'testapi.avax.network/ext/bc/C/rpc',

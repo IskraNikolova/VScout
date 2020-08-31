@@ -41,7 +41,7 @@ const mutations = {
     state.nodeInfo = nodeInfo
   },
   [SET_ENDPOINT]: (state, { endpoint }) => {
-    if (!endpoint) endpoint = network.endpointUrls[0]
+    if (!endpoint) endpoint = network.endpointUrls[0].url
     state.networkEndpoint = endpoint
   },
   [SET_VALIDATORS]: (state, { validators }) => {
@@ -76,7 +76,7 @@ const mutations = {
   },
   [SET_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
     if (state.endpointsMemory.includes(endpoint) ||
-    network.endpointUrls.indexOf(endpoint) > 1) return
+    network.endpointUrls.find(e => e.url === endpoint)) return
     state.endpointsMemory.push(endpoint)
   },
   [SET_DEFAULT_VALIDATORS]: (state, { defaultValidators }) => {

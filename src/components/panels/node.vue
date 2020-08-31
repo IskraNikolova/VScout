@@ -92,11 +92,10 @@
           <q-spinner-ball v-if="ui.doesItConnect" />
         </div>
         <div class="q-pb-md">
-          <div class="text-h7 text-orange">{{ networkEndpoint }}</div>
+          <div class="text-h7 text-orange">{{ networkEndpoint.name }}</div>
         </div>
         <div id="f-size12" class="q-mt-md">
-          <q-icon name="info" color="accent" size="md"/>
-          <span class="q-pt-xl">You can switch to other node</span>
+          <span class="q-pt-xl">{{ networkEndpoint.url }}</span>
         </div>
       </div>
       <div class="col-1 q-pt-md q-pl-md">
