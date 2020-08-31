@@ -2,16 +2,13 @@
     <q-card flat>
       <q-card-section>
         <div v-if="identity !== name"><span class="text-grey text-medium">Name: </span><a :href="link" v-if="link">{{ name }}</a><span v-else>{{ name }}</span></div>
-        <div>
-          <span class="text-grey text-medium">Node ID:</span> [{{ identity }}]
-            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Node ID is not blockchain address</q-tooltip>
-          <small>
-            <q-icon
-              @click="copyToClipboard(identity)"
-              name="file_copy"
-            />
-          </small>
-        </div>
+        <span class="text-grey text-medium">Node ID:</span> [{{ identity }}]
+        <small>
+          <q-icon
+            @click="copyToClipboard(identity)"
+            name="file_copy"
+          />
+        </small>
         <div v-if="address">
           <span class="text-grey text-medium">Owner (P-Chain Account): </span>{{ address }}
           <small>
@@ -28,7 +25,7 @@
             {{ delegatorsCount }}
           </span>
         </div>
-        <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }}</div>
+        <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} - Reward: {{ calculate() }} $AVAX</div>
         <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
         <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
       </q-card-section>
@@ -40,7 +37,7 @@ import {
   copyToClipboard
 } from 'quasar'
 
-import { date, fromNow, getDurationHumanize } from './../modules/time.js'
+import { date, fromNow, getDurationHumanize, getWeeks } from './../modules/time.js'
 import { UPDATE_UI } from './../store/ui/types'
 
 export default {
@@ -81,6 +78,10 @@ export default {
     name: {
       type: String,
       required: true
+    },
+    stakeAmount: {
+      type: Number,
+      required: true
     }
   },
   computed: {
@@ -109,6 +110,24 @@ export default {
         position: 'center',
         timeout: 1000
       })
+    },
+    getWeeksP () {
+      return getWeeks(this.startDate, this.endDate)
+    },
+    calculate () {
+      const stakeTime = this.getWeeksP()
+      const basePercY = 4
+      if (stakeTime > 2) {
+        //  additional percent reward; calculate 11.11%  bonus devide 52 weeks
+        const bonusPercentPerWeek = 0.2136538461538462
+        const percentReward = (stakeTime * bonusPercentPerWeek) + basePercY
+        return (this.stakeAmount * percentReward) / 100
+      } else if (stakeTime === 2) {
+        this.percentReward = basePercY
+        return (this.stakeAmount * basePercY) / 100
+      }
+
+      return ''
     },
     onGetDelegations () {
       this.$store.commit(UPDATE_UI, {

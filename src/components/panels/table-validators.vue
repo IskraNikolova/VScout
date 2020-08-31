@@ -161,6 +161,7 @@
               v-bind:weight="props.row.weight ? props.row.weight : ''"
               v-bind:address="props.row.address ? props.row.address : ''"
               v-bind:identity="props.row.nodeID"
+              v-bind:stakeAmount="props.row.stake"
               v-bind:name="props.row.name"
               v-bind:startTime="props.row.startTime"
               v-bind:endTime="props.row.endTime"

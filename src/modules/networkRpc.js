@@ -114,7 +114,8 @@ export const _getValidatorById = async (id) => {
 
     return {
       name: hexStringToAsciiString(validator.name),
-      avatarUrl: hexStringToAsciiString(validator.avatarUrl),
+      avatarUrl: hexStringToAsciiString(validator.avatar),
+      bio: hexStringToAsciiString(validator.bio),
       link: hexStringToAsciiString(validator.link)
     }
   } catch (err) {
@@ -139,15 +140,15 @@ export const getPermission = async () => {
  * @param {string} params.avatar
  * @param {string} params.link
  */
+
 export const _setValidatorInfo = async ({ id, name, avatar, bio, link }) => {
   try {
     const account = await contract
       .methods
       .members(id)
       .call()
-
     const byteName = name ? stringToHex(name) : account.name
-    const byteAvatar = avatar ? stringToHex(avatar) : account.avatarUrl
+    const byteAvatar = avatar ? stringToHex(avatar) : account.avatar
     const byteBio = bio ? stringToHex(bio) : account.bio
     const byteLink = link ? stringToHex(link) : account.link
     const code = await getPermission()
@@ -205,14 +206,4 @@ export const _subscribeToContractEvents = ({ eventName, filters, handler }) => {
       ...event
     })
   })
-}
-
-export const _getPastEvents = async (eventName, filters = {}) => {
-  try {
-    const events = await contract.getPastEvents(eventName, filters)
-    return events
-  } catch (err) {
-    console.log(err)
-    return []
-  }
 }

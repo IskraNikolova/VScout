@@ -51,6 +51,12 @@ export const fromNow = (time) => {
   return moment(new Date(Number(time) * 1000), 'YYYYMMDD').fromNow()
 }
 
+export const getWeeks = (s, e) => {
+  const start = moment(s)
+  const end = moment(e)
+  return end.diff(start, 'week')
+}
+
 export const getSeconds = (time) => {
   return moment(new Date(Number(time) * 1000), 'YYYYMMDD').fromNow()
 }

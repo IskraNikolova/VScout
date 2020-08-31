@@ -2,6 +2,7 @@
   <q-page>
     <div style="height: 3px;width: 100%;background: grey;opacity: 0.5;"></div>
     <div style="padding: 3%;">
+      <error class="q-pr-md" />
       <node class="q-pr-md" />
       <network class="q-pr-md"/>
       <stake class="q-pr-md"/>
@@ -41,6 +42,7 @@ import {
 export default {
   name: 'PageIndex',
   components: {
+    Error: () => import('components/panels/error'),
     Faqs: () => import('components/panels/faqs'),
     Stake: () => import('components/panels/stake'),
     Network: () => import('components/panels/network'),

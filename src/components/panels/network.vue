@@ -34,7 +34,7 @@
         <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultBSubnetID">
           Default Subnet
         </div>
-        <div class="q-pb-md text-orange" style="font-size: 19px;cursor: pointer;" @click="$router.push(`/search/${currentBlockchain.subnetID}`)">
+        <div class="q-pb-md text-orange" style="font-size: 17px;cursor: pointer;max-width: 300px;" @click="$router.push(`/search/${currentBlockchain.subnetID}`)">
           <small>{{ currentBlockchain.subnetID }}</small>
         </div>
         <div id="f-size12">
