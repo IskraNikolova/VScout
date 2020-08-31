@@ -66,13 +66,12 @@ async function initApp ({ dispatch, getters }) {
   try {
     Promise.all([
       dispatch(INIT_ENDPOINT),
+      dispatch(INIT_VALIDATORS),
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_NODE_INFO),
       dispatch(GET_BLOCKCHAINS),
-      dispatch(GET_NODE_ID),
       dispatch(GET_SUBNETS),
-      dispatch(GET_ASSETS_BY_BLOCKCHAINS),
-      dispatch(INIT_VALIDATORS)
+      dispatch(GET_ASSETS_BY_BLOCKCHAINS)
       // _initializeNetwork()
     ])
   } catch (err) {
@@ -102,11 +101,19 @@ async function initApp ({ dispatch, getters }) {
 
 async function initEndpoint ({ commit }) {
   const local = network.endpointUrls[1]
-  const resNetworkID = await _getNetworkID({ endpoint: local })
-  if (resNetworkID.data.error) {
+  const response = await _getNodeId({ endpoint: local })
+  if (response.data.error) {
+    const response = await _getNodeId({ endpoint: local })
+    if (response.data.error) return
+    const nodeID = response.data.result.nodeID
+    commit(SET_ENDPOINT, { endpoint: network.endpointUrls[0] })
+    commit(SET_NODE_ID, { nodeID })
     return
   }
+
+  const nodeID = response.data.result.nodeID
   commit(SET_ENDPOINT, { endpoint: local })
+  commit(SET_NODE_ID, { nodeID })
 }
 
 async function getBlockchains ({ commit, getters }) {

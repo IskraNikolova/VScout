@@ -110,20 +110,6 @@ export default {
 
       const response = await _getNodeId({ endpoint })
       if (response.data.error) {
-        // const test = await _getValidators({ endpoint })
-        // if (test.data.error) {
-        //   const msg = `${test.data.error.message} with ${endpoint}`
-        //   this.onError(msg)
-        //   return
-        // }
-        // this.$store.commit(SET_ENDPOINT, { endpoint })
-        // this.$store.commit(SET_NODE_ID, { nodeID: '' })
-        // if (isCustom) {
-        //   this.$store.commit(SET_ENDPOINTS_MEMORY, { endpoint })
-        //   this.customEndpoint = ''
-        // }
-        // await this.onSuccess(endpoint)
-        // return
         const msg = `${response.data.error.message} with ${endpoint}`
         this.onError(msg)
         return
