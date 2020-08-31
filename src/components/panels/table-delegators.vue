@@ -127,10 +127,12 @@ import {
 import { date } from './../../modules/time.js'
 import { UPDATE_UI } from './../../store/ui/types'
 
+import ProgressBarValidateSession from './../progress-bar-validatе-session'
+
 export default {
   name: 'TableDelegators',
   components: {
-    ProgressBarValidateSession: () => import('components/progress-bar-validatе-session')
+    ProgressBarValidateSession
   },
   data () {
     return {

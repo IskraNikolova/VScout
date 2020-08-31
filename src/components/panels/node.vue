@@ -20,6 +20,7 @@
           </span>
         </div>
       </div>
+      <q-separator class="q-mt-md q-mb-md lt-md" />
       <div class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium ">NODE <span v-if="validatorById(nodeID)"> - VALIDATOR </span></div>
         <div class="text-h7 text-orange q-pb-md q-pt-xs" style="cursor: pointer;" @click="copyToClipboard(nodeID)">

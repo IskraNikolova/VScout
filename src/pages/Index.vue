@@ -39,6 +39,8 @@ import {
   GET_PENDING_VALIDATORS
 } from '../store/app/types'
 
+import TableDelegators from './../components/panels/table-delegators'
+
 export default {
   name: 'PageIndex',
   components: {
@@ -48,7 +50,7 @@ export default {
     Network: () => import('components/panels/network'),
     Node: () => import('components/panels/node'),
     TableValidators: () => import('components/panels/table-validators'),
-    TableDelegators: () => import('components/panels/table-delegators')
+    TableDelegators
   },
   computed: {
     ...mapGetters([
