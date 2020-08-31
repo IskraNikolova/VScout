@@ -129,6 +129,13 @@ async function getBlockchains ({ commit, getters }) {
   if (typeof blockchains === 'undefined' ||
     blockchains === null) return
 
+  blockchains.push({
+    id: '11111111111111111111111111111111LpoYY',
+    subnetID: '11111111111111111111111111111111LpoYY',
+    vmID: '',
+    name: 'P-Chain'
+  })
+  console.log(blockchains)
   blockchains = await Promise.all(blockchains
     .map(async b => {
       const res = await _getBlockchainStatus({

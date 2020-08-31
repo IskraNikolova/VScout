@@ -316,47 +316,8 @@ export default {
         rowsPerPage: 21
       },
       border: '#87C5D6',
-      separator: 'cell'
-    }
-  },
-  created () {
-    this.visible = true
-    const i = setInterval(() => {
-      if (this.validators.length > 0) {
-        this.visible = false
-        clearInterval(i)
-      }
-    }, 500)
-  },
-  computed: {
-    ...mapGetters([
-      'nodeID',
-      'validators',
-      'networkEndpoint',
-      'pendingValidators',
-      'isDefaultSubnetID'
-    ]),
-    isYourNode: function (id) {
-      return id === this.nodeID
-    },
-    curentValidators: {
-      get: function () {
-        if (this.isActive) return this.validators
-        return this.pendingValidators
-      }
-    },
-    visibleColumns: function () {
-      const columns = this.columns.map(c => c.name)
-      if (this.curentValidators.find(a => a.percent === 'NAN' || !a.percent)) {
-        return columns.filter(c => c !== 'percent' && c !== 'networkShare' && c !== 'weight')
-      } else if (this.curentValidators.find(a => a.weight < 1)) {
-        return columns.filter(c => c !== 'weight')
-      }
-
-      return columns.filter(c => c !== 'stake')
-    },
-    columns: function () {
-      return [
+      separator: 'cell',
+      columns: [
         {
           name: 'rank',
           label: 'RANK',
@@ -407,6 +368,43 @@ export default {
         { name: 'startTime', align: 'center', label: 'START TIME', field: 'startTime', sortable: true, headerClasses: 'text-medium' },
         { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress', headerClasses: 'text-medium' }
       ]
+    }
+  },
+  created () {
+    this.visible = true
+    const i = setInterval(() => {
+      if (this.validators.length > 0) {
+        this.visible = false
+        clearInterval(i)
+      }
+    }, 500)
+  },
+  computed: {
+    ...mapGetters([
+      'nodeID',
+      'validators',
+      'networkEndpoint',
+      'pendingValidators',
+      'isDefaultSubnetID'
+    ]),
+    isYourNode: function (id) {
+      return id === this.nodeID
+    },
+    curentValidators: {
+      get: function () {
+        if (this.isActive) return this.validators
+        return this.pendingValidators
+      }
+    },
+    visibleColumns: function () {
+      const columns = this.columns.map(c => c.name)
+      if (this.curentValidators.find(a => a.percent === 'NAN' || !a.percent)) {
+        return columns.filter(c => c !== 'percent' && c !== 'networkShare' && c !== 'weight')
+      } else if (this.curentValidators.find(a => a.weight < 1)) {
+        return columns.filter(c => c !== 'weight')
+      }
+
+      return columns.filter(c => c !== 'stake')
     }
   },
   methods: {

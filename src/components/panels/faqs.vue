@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="flex flex-center text-h2 q-pt-xl text-white">FAQs</div>
-    <div class="q-pl-xl text-h7 q-pt-xl q-mb-xl text-white">
+    <div class="flex flex-center q-pl-xl text-h7 q-pt-xl q-mb-xl text-white">
       Let's answer some questions you may have.
       <q-btn no-caps flat v-if="!visible" @click="visible=!visible" icon="expand_more"/>
       <q-btn no-caps flat v-else @click="visible=!visible" icon="expand_less"/>
     </div>
-    <!--<q-slide-transition>
+    <q-slide-transition>
       <div v-show="visible">
         <q-card
           class="q-pa-md q-pl-xl q-pt-xl"
@@ -31,7 +31,7 @@
             </div>
         </q-card>
       </div>
-    </q-slide-transition>-->
+    </q-slide-transition>
   </div>
 </template>
 
@@ -45,79 +45,52 @@ export default {
       innerVisible: true,
       questions: [
         {
-          title: 'What are subnetworks?',
-          content: `Other blockchain architectures are monolithic. This means that they implement a single blockchain, which consists of a single set of validators and a single execution environment. AVA is designed to be a build-your-own-blockchain platform. You can define your own set of validators, and import your own functionality (e.g. import the Ethereum virtual machine, or EVM).
-           This is where subnetworks come in: they allow you to deploy sandboxed blockchains that are part of the larger AVA network. They can operate entirely privately or interoperate freely with the rest of the network. An example of such a subnetwork is Athereum.`
+          title: 'Who can be an Avalanche validator?',
+          content: 'Anyone who covers the minimum hardware and staking amount requirements can become a validator on Avalanche.'
         },
         {
-          title: 'What is the native token used for?',
-          content: 'In short, the AVA token is crucial for securing the network, paying for expensive operations in the network, and enabling atomic swaps of assets (between subnetworks). The AVA token has similar functionality to “gas” in Ethereum, although it has additional utility.'
+          title: 'What are the requirements for running a validator node on Avalanche?',
+          content: 'Avalanche is an incredibly lightweight protocol, so the minimum computer requirements are quite modest. Hardware: CPU > 2 GHz, RAM > 4 GB, Storage > 10 GB free space.\nThe minimum stake requirement for Avalanche Mainnet is 2000 AVAX.'
         },
         {
-          title: 'How long will transactions take?',
-          content: 'Usually transactions should finalize in about a second.'
+          title: 'Do I need to trust the validator to transfer my delegation rewards?',
+          content: 'No, rewards are handled on protocol level.'
         },
         {
-          title: 'Who is building AVA?',
-          content: 'The initial AVA team consists of distributed systems and finance experts, with deep domain expertise in building blockchains and financial products. As we open-source our technology, development will be global.'
+          title: 'Do I earn less as a delegator?',
+          content: 'You will earn the same as validators minus the delegation fee set by the validator you choose to delegate to.'
         },
         {
-          title: 'How many tps does AVA handle?',
-          content: 'Each subnetwork on AVA supports over 6000 transactions per second and has the potential to achieve over 20,000 transactions per second with additional optimizations.'
+          title: 'Do I need to keep my private keys on my validator?',
+          content: 'No, you don’t need to keep your private keys on your validator. And we strongly advise you not to.'
         },
         {
-          title: 'What does AVA solve?',
-          content: 'AVA provides a platform for the development of compliant and interoperable public and private blockchains, thus enabling -- for the first time -- the right architectural foundations for democratizing capital flows. Leveraging the platform\'s high level of performance and flexibility, AVA enables new forms of marketplaces for assets.'
+          title: 'Can I add more stake to my validator while the staking period is in progress?',
+          content: 'Yes. You can use delegation to delegate stake to your own validator, this will effectively increase your stake.'
         },
         {
-          title: 'What is AVA\'s governance model?',
-          content: 'We understand that in order to have a truly decentralized platform we will need involvement from the holders of the tokens themselves. To that end, AVA enables dynamic parameter optimization through token holders. The key governable parameters are the contentious ones, such as minting rate, and minimum stake amount.'
+          title: 'Can I stop my validator and unstake?',
+          content: 'No. Your stake is locked for the pre-defined staking period, your stake is automatically returned to your address upon completion, together with the accumulated staking rewards.'
         },
         {
-          title: 'Is there any available airdrop or bounty program?',
-          content: 'We have a bug bounty program. See <a href="https://www.avalabs.org/avalanche-x">here</a>.'
+          title: 'Can I stake coins that are not yet unlocked by my vesting schedule?',
+          content: 'Yes. Locked coins can be staked on your own validator or delegated to an existing one.'
         },
         {
-          title: 'What kind of assets can I create on AVA?',
-          content: 'Any kind you can imagine! In AVA, you can deploy sub-networks of any kind and trade assets with any covenants and rulesets that suit your needs.'
+          title: 'When should I receive my rewards for running a validator?',
+          content: 'All validation/delegation rewards are credited in your selected destination address upon completion of the staking period determined in the process of adding a validator.'
         },
         {
-          title: 'Why do you call AVA a construction kit / LEGO?',
-          content: 'AVA takes an interesting approach to its design: everything is a modular component. In other words, everything that you need to build highly performant, decentralized ledgers are available to you as building blocks, hence the "LEGO" analogy.'
+          title: 'Is my validating node uptime important?',
+          content: 'Yes, the reward is directly correlated to your uptime.'
         },
         {
-          title: 'What does a "heterogeneous network" mean?',
-          content: 'It simply means that each subnetwork can implement vastly different functionalities, thus creating a highly "heterogeneous" set of subnetworks.'
+          title: 'How can I check if my node is healthy and operational?',
+          content: 'Simply select your node as an endpoint in VScout. Once you are connected to your node you can perform health checks through our UI'
         },
         {
-          title: 'Where can I check out the code?',
-          content: 'The main client is open sourced on Github. Check it out <a href="https://github.com/ava-labs/gecko">here</a>.'
-        },
-        {
-          title: 'Is there a difference between the AVA Platform and Avalanche?',
-          content: `Avalanche is one of the two types of consensus protocols underlying AVA Platform. Avalanche is suited for partially ordered, high throughput applications such as payments or asset transfers. The Snowman protocol, on the other hand, builds a linear chain, and is suited for smart contracts.
-
-AVA platform is where everything runs. The AVA platform makes use of either Avalanche or Snowman.`
-        },
-        {
-          title: 'Is the AVA platform permissionless?',
-          content: 'Creation of new subnetworks and validation into permissionless subnetworks is -- of course -- entirely permissionless. Anyone can use the AVA token and boot up a new subnetwork or validate existing permissionless ones. However, the private deployments on AVA will remained permissioned. The hybrid architecture is what enables AVA to bridge all forms of blockchains so seamlessly.'
-        },
-        {
-          title: 'Will there be developer documentation?',
-          content: 'Yes, see <a href="https://docs.avax.network/">here</a>.'
-        },
-        {
-          title: 'Does Avalanche only support payments?',
-          content: 'Avalanche achieves partial ordering. This is by construction, since the performance of partially ordered databases is higher than their totally-ordered cousins. However, Avalanche can be made to support linear chains. The linear implementation of Avalanche is called Snowman, and they both run within the AVA network.'
-        },
-        {
-          title: 'How does AVA achieve Sybil resistance?',
-          content: 'Staking.'
-        },
-        {
-          title: 'What kind of smart contracts are available on AVA?',
-          content: 'For now, full EVM support, and thus all Ethereum smart contracts. We hope to also support WASM soon.'
+          title: 'I need help, where can I receive technical support?',
+          content: 'Avalanche Discord is the place to be for all technical questions, join at <a href="http://chat.avax.network">chat.avax.network</a>.'
         }
       ]
     }

@@ -4,7 +4,7 @@
     id="custom-card"
   >
     <div class="row">
-      <div v-if="isBlockchainView">
+      <div v-if="isBlockchainView" style="min-width: 300px;">
         <div id="f-size12" class="q-pb-md text-medium">
           BLOCKCHAIN
         </div>
@@ -27,7 +27,7 @@
         <img src="~assets/blockchain-grey.svg" id="logo">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
-      <div v-if="isBlockchainView">
+      <div v-if="isBlockchainView" style="min-width: 300px;">
         <div id="f-size12"  class="q-pb-md text-medium">
           SUBNET ID
         </div>
