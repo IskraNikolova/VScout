@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium ">NODE</div>
+        <div id="f-size12" class="q-pb-md text-medium ">NODE <span v-if="validatorById(nodeID)"> - VALIDATOR </span></div>
         <div class="text-h7 text-orange q-pb-md q-pt-xs" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
           {{ nodeID.substr(0, 22) }}...{{nodeID.substr(32)}}
           <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Copy to Clipboard</q-tooltip>
@@ -32,7 +32,8 @@
         </div>
       </div>
       <div class="col-1 q-pt-md">
-        <img src="~assets/node1.svg" id="logo2">
+        <img src="~/assets/ribbon.svg" v-if="validatorById(nodeID)" id="logo2" />
+        <img src="~assets/node1.svg" v-else id="logo2">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md" />
       <div class="col-md-2 col-xs-10">
@@ -128,6 +129,7 @@ export default {
       'nodeID',
       'nodeInfo',
       'nodeHealth',
+      'validatorById',
       'networkEndpoint'
     ]),
     filterPeers: function () {
