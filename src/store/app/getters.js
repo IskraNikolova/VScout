@@ -1,3 +1,5 @@
+const { network } = require('./../../modules/config').default
+
 export function validators (state) {
   return state.validators
 }
@@ -74,12 +76,8 @@ export function delegatedStake (state) {
   return state.delegatedStake
 }
 
-export function isDefaultSubnetID (state) {
-  return state.currentSubnet.id === '11111111111111111111111111111111LpoYY'
-}
-
-export function isDefaultBSubnetID (state) {
-  return state.currentBlockchain.subnetID === '11111111111111111111111111111111LpoYY'
+export function isDefaultSubnetID () {
+  return (id) => id === network.defaultSubnetID
 }
 
 export function isBlockchainView (state) {

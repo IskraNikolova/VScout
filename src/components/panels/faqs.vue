@@ -4,7 +4,7 @@
     <div class="flex flex-center q-pl-xl text-h7 q-pt-xl q-mb-xl text-white">
       Let's answer some questions you may have.
       <q-btn no-caps flat v-if="!visible" @click="visible=!visible" icon="expand_more"/>
-      <q-btn no-caps flat v-else @click="visible=!visible" icon="expand_less"/>
+      <a v-else style="text-decoration: none;" class="text-white" href="#up"><q-btn no-caps flat @click="visible=!visible" icon="expand_less"/></a>
     </div>
     <q-slide-transition>
       <div v-show="visible">

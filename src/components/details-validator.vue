@@ -121,10 +121,10 @@ export default {
         //  additional percent reward; calculate 11.11%  bonus devide 52 weeks
         const bonusPercentPerWeek = 0.2136538461538462
         const percentReward = (stakeTime * bonusPercentPerWeek) + basePercY
-        return (this.stakeAmount * percentReward) / 100
+        return Math.round((this.stakeAmount * percentReward) / 100, 4)
       } else if (stakeTime === 2) {
         this.percentReward = basePercY
-        return (this.stakeAmount * basePercY) / 100
+        return Math.round((this.stakeAmount * basePercY) / 100, 4)
       }
 
       return ''

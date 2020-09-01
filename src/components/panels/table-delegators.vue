@@ -184,8 +184,7 @@ export default {
       'nodeID',
       'delegators',
       'networkEndpoint',
-      'pendingDelegators',
-      'isDefaultSubnetID'
+      'pendingDelegators'
     ]),
     visibleColumns: function () {
       const columns = this.columns.map(c => c.name)

@@ -384,8 +384,7 @@ export default {
       'nodeID',
       'validators',
       'networkEndpoint',
-      'pendingValidators',
-      'isDefaultSubnetID'
+      'pendingValidators'
     ]),
     isYourNode: function (id) {
       return id === this.nodeID

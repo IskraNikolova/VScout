@@ -8,6 +8,7 @@ const routes = [
     ]
   },
   { path: '/faqs', redirect: '/' },
+  { path: '/up', redirect: '/' },
   {
     path: '/search',
     component: () => import('layouts/MainLayout.vue'),

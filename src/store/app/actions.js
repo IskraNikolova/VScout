@@ -1,4 +1,5 @@
 import { Notify } from 'quasar'
+
 import {
   INIT_APP,
   GET_SUBNETS,
@@ -66,11 +67,17 @@ async function initApp ({ dispatch, getters }) {
   try {
     await Promise.all([
       dispatch(INIT_ENDPOINT),
-      dispatch(INIT_VALIDATORS),
+      dispatch(INIT_VALIDATORS, {
+        subnetID: getters.subnetID
+      }),
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_NODE_INFO),
-      dispatch(GET_BLOCKCHAINS, { endpoint: getters.networkEndpoint.url }),
-      dispatch(GET_SUBNETS, { endpoint: getters.networkEndpoint.url }),
+      dispatch(GET_BLOCKCHAINS, {
+        endpoint: getters.networkEndpoint.url
+      }),
+      dispatch(GET_SUBNETS, {
+        endpoint: getters.networkEndpoint.url
+      }),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS)
       // _initializeNetwork()
     ])
@@ -119,19 +126,17 @@ async function initEndpoint ({ commit }) {
 
 async function getBlockchains ({ commit, getters }, { endpoint }) {
   if (!endpoint) endpoint = getters.networkEndpoint.url
-  const response = await _getBlockchains({ endpoint })
 
-  if (response.data.error) {
-    return null
-  }
+  const response = await _getBlockchains({ endpoint })
+  if (response.data.error) return null
 
   let { blockchains } = response.data.result
   if (typeof blockchains === 'undefined' ||
     blockchains === null) return
 
   blockchains.push({
-    id: '11111111111111111111111111111111LpoYY',
-    subnetID: '11111111111111111111111111111111LpoYY',
+    id: network.defaultSubnetID,
+    subnetID: network.defaultSubnetID,
     vmID: '',
     name: 'P-Chain'
   })
@@ -158,14 +163,11 @@ async function getBlockchains ({ commit, getters }, { endpoint }) {
   })
 }
 
-async function getSubnets ({ commit, getters }, { endpoint }) {
+async function getSubnets ({ commit }, { endpoint }) {
   const response = await _getSubnets({
     endpoint
   })
-
-  if (response.data.error) {
-    return null
-  }
+  if (response.data.error) return null
 
   const { subnets } = response.data.result
   if (typeof subnets === 'undefined' ||
@@ -173,7 +175,7 @@ async function getSubnets ({ commit, getters }, { endpoint }) {
 
   const result = Promise.all(subnets.map(async subnet => {
     const response = await _validates({
-      endpoint: getters.networkEndpoint.url,
+      endpoint,
       params: {
         subnetID: subnet.id
       }
@@ -199,8 +201,9 @@ async function getAssetsByBlockchain ({ commit }) {
   commit(SET_ASSETS_BY_BLOCKCHAINS, { assetsByChain })
 }
 
-async function initValidators ({ commit, getters }) {
-  const subnetID = getters.subnetID ? getters.subnetID : '11111111111111111111111111111111LpoYY'
+async function initValidators (
+  { commit, getters },
+  { subnetID = network.defaultSubnetID }) {
   const response = await _getValidators({
     subnetID,
     endpoint: getters.networkEndpoint.url
@@ -231,31 +234,34 @@ async function initValidators ({ commit, getters }) {
 
   const res = await validatorProcessing(v, d, getters.defaultValidators)
 
-  commit(SET_VALIDATORS, { validators: res.validators })
+  commit(SET_VALIDATORS, {
+    validators: res.validators
+  })
+
   commit(SET_STAKED_AVA, {
     all: res.allStake,
     validatedStake: res.validatedStake,
     delegatedStake: res.delegatedStake
   })
-  if (getters.isDefaultSubnetID) {
-    commit(SET_DEFAULT_VALIDATORS, { defaultValidators: res.validators })
+
+  if (getters.isDefaultSubnetID(subnetID)) {
+    commit(SET_DEFAULT_VALIDATORS, {
+      defaultValidators: res.validators
+    })
   }
 }
 
 async function getValidators (
   { commit, getters },
-  { subnetID, endpoint }) {
+  { subnetID = getters.subnetID, endpoint }) {
   const response = await _getValidators({
     subnetID,
     endpoint
   })
 
-  if (response.data.error) {
-    return null
-  }
+  if (response.data.error) return null
 
   let { validators } = response.data.result
-
   if (typeof validators === 'undefined' ||
     validators === null) validators = []
 
@@ -266,26 +272,37 @@ async function getValidators (
   commit(SET_DELEGATORS, { delegators })
 
   const res = await validatorProcessing(v, d, getters.defaultValidators)
-  commit(SET_VALIDATORS, { validators: res.validators })
-  commit(SET_STAKED_AVA, { all: res.allStake, validatedStake: res.validatedStake, delegatedStake: res.delegatedStake })
-  if (subnetID === '11111111111111111111111111111111LpoYY') {
-    commit(SET_DEFAULT_VALIDATORS, { defaultValidators: res.validators })
+
+  commit(SET_VALIDATORS, {
+    validators: res.validators
+  })
+
+  commit(SET_STAKED_AVA, {
+    all: res.allStake,
+    validatedStake: res.validatedStake,
+    delegatedStake: res.delegatedStake
+  })
+
+  if (subnetID === network.defaultSubnetID) {
+    commit(SET_DEFAULT_VALIDATORS, {
+      defaultValidators: res.validators
+    })
   }
+
   return true
 }
 
-async function getPendingValidators ({ commit, getters }, { subnetID, endpoint }) {
+async function getPendingValidators (
+  { commit, getters },
+  { subnetID = getters.subnetID, endpoint }) {
   const response = await _getPendingValidators({
     subnetID,
     endpoint
   })
 
-  if (response.data.error) {
-    return null
-  }
+  if (response.data.error) return null
 
   let { validators } = response.data.result
-
   if (typeof validators === 'undefined' ||
       validators === null) validators = []
 
@@ -297,14 +314,21 @@ async function getPendingValidators ({ commit, getters }, { subnetID, endpoint }
 
   const { v, d } = splitPendingAccounts(validators, getters.validators)
 
-  commit(SET_PENDING_DELEGATORS, { delegators: mapDelegators(d) })
+  commit(SET_PENDING_DELEGATORS, {
+    delegators: mapDelegators(d)
+  })
 
   const val = await mapValidators(v)
-  commit(SET_PENDING_VALIDATORS, { validators: val })
+  commit(SET_PENDING_VALIDATORS, {
+    validators: val
+  })
 }
 
 async function getNodeId ({ getters, commit }) {
-  const response = await _getNodeId({ endpoint: getters.networkEndpoint.url })
+  const response = await _getNodeId({
+    endpoint: getters.networkEndpoint.url
+  })
+
   if (response.data.error) {
     commit(UPDATE_UI, { doesItConnect: true })
     return
@@ -318,28 +342,34 @@ async function getNodeId ({ getters, commit }) {
 }
 
 async function getNodeInfo ({ getters, commit }) {
-  const resNetworkID = await _getNetworkID({ endpoint: getters.networkEndpoint.url })
+  const resNetworkID = await _getNetworkID({
+    endpoint: getters.networkEndpoint.url
+  })
   if (resNetworkID.data.error) {
     commit(UPDATE_UI, { doesItConnect: true })
     return
   }
 
-  const resNetworkName = await _getNetworkName({ endpoint: getters.networkEndpoint.url })
+  const resNetworkName = await _getNetworkName({
+    endpoint: getters.networkEndpoint.url
+  })
   if (resNetworkName.data.error) {
     commit(UPDATE_UI, { doesItConnect: true })
     return
   }
 
-  const resNodeVersion = await _getNodeVersion({ endpoint: getters.networkEndpoint.url })
+  const resNodeVersion = await _getNodeVersion({
+    endpoint: getters.networkEndpoint.url
+  })
   if (resNodeVersion.data.error) {
     commit(UPDATE_UI, { doesItConnect: true })
     return
   }
 
-  const resNodePeers = await _getPeers({ endpoint: getters.networkEndpoint.url })
-  if (resNodePeers.data.error) {
-    return
-  }
+  const resNodePeers = await _getPeers({
+    endpoint: getters.networkEndpoint.url
+  })
+  if (resNodePeers.data.error) return
 
   commit(UPDATE_UI, { doesItConnect: false })
   const nodeInfo = {
@@ -353,17 +383,25 @@ async function getNodeInfo ({ getters, commit }) {
 }
 
 async function getNodeHealth ({ commit, getters }) {
-  const response = await _health({ endpoint: getters.networkEndpoint.url })
+  const response = await _health({
+    endpoint: getters.networkEndpoint.url
+  })
   if (typeof response === 'undefined' ||
     response === null) return
 
   if (response.data.error) {
-    commit(SET_NODE_HEALTH, { nodeID: getters.nodeID, nodeHealth: { healthy: false } })
+    commit(SET_NODE_HEALTH, {
+      nodeID: getters.nodeID,
+      nodeHealth: { healthy: false }
+    })
     commit(UPDATE_UI, { doesItConnect: true })
   }
 
   commit(UPDATE_UI, { doesItConnect: false })
-  commit(SET_NODE_HEALTH, { nodeID: getters.nodeID, nodeHealth: response.data.result })
+  commit(SET_NODE_HEALTH, {
+    nodeID: getters.nodeID,
+    nodeHealth: response.data.result
+  })
 }
 
 // function subscribeToEvents ({ commit, dispatch }) {

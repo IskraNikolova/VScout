@@ -31,7 +31,7 @@
         <div id="f-size12"  class="q-pb-md text-medium">
           SUBNET ID
         </div>
-        <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultBSubnetID">
+        <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultSubnetID(currentBlockchain.subnetID)">
           Default Subnet
         </div>
         <div class="q-pb-md text-orange" style="font-size: 17px;cursor: pointer;max-width: 300px;" @click="$router.push(`/search/${currentBlockchain.subnetID}`)">
@@ -47,7 +47,7 @@
       <div v-else class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">SUBNETWORK</div>
         <div>
-          <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultSubnetID">
+          <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultSubnetID(currentSubnet.id)">
             Default Subnet
           </div>
           <div class="q-pb-md text-orange" style="font-size: 19px;cursor: pointer;" @click="$router.push(`/search/${currentSubnet.id}`)">
@@ -180,8 +180,7 @@ export default {
       'blockchainByID',
       'isBlockchainView',
       'currentBlockchain',
-      'isDefaultSubnetID',
-      'isDefaultBSubnetID'
+      'isDefaultSubnetID'
     ]),
     assetsLength: function () {
       if (!this.assets(this.currentBlockchain.id)) return

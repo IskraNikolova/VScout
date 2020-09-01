@@ -27,18 +27,6 @@ export const datePickerFormat = ({ value, label }) => {
   return date.format('YYYY-MM-DD HH:mm')
 }
 
-export const datePickerFormatStart = (time) => {
-  const now = moment()
-  let date = moment(Number(time) * 1000)
-  if (now > date) date = now.add(5, 'minute')
-  return date.format('YYYY-MM-DD HH:mm')
-}
-
-export const datePickerFormatEnd = (time) => {
-  const date = moment(Number(time) * 1000)
-  return date.format('YYYY-MM-DD HH:mm')
-}
-
 export const toUnix = (date) => {
   return moment(date).unix()
 }
@@ -52,8 +40,8 @@ export const fromNow = (time) => {
 }
 
 export const getWeeks = (s, e) => {
-  const start = moment(s)
-  const end = moment(e)
+  const start = moment(new Date(s), 'YYYYMMDD')
+  const end = moment(new Date(e), 'YYYYMMDD')
   return end.diff(start, 'week')
 }
 
