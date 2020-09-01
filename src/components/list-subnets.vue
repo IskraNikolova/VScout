@@ -60,7 +60,7 @@ export default {
       this.$store.commit(SET_CURRENT_SUBNET, { subnet })
       await this.getValidators({
         subnetID: subnet.id,
-        endpoint: this.networkEndpoint
+        endpoint: this.networkEndpoint.url
       })
       this.getPendingValidators({
         subnetID: subnet.id

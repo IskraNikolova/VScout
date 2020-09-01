@@ -64,7 +64,7 @@ const { network } = require('./../../modules/config').default
 
 async function initApp ({ dispatch, getters }) {
   try {
-    Promise.all([
+    await Promise.all([
       dispatch(INIT_ENDPOINT),
       dispatch(INIT_VALIDATORS),
       dispatch(GET_NODE_HEALTH),
@@ -214,6 +214,7 @@ async function initValidators ({ commit, getters }) {
 
   commit(UPDATE_UI, { doesItConnect: false })
   const { validators } = response.data.result
+
   if (typeof validators === 'undefined' ||
     validators === null) return
 

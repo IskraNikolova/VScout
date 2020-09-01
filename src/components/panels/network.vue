@@ -39,8 +39,8 @@
         </div>
         <div id="f-size12">
           <span class="text-medium">VM ID</span>
-          <div class="text-grey" style="max-width: 360px;">
-            {{ currentBlockchain.vmID }}
+          <div class="text-grey" style="max-width: 360px;cursor: pointer;" @click="goToDoc(currentBlockchain.vmDocumentation)">
+            {{ currentBlockchain.vmID ?  currentBlockchain.vmID : currentBlockchain.vmName }}
           </div>
         </div>
       </div>
@@ -141,6 +141,10 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import {
+  openURL
+} from 'quasar'
+
 const colors = {
   Validating: 'accent',
   Created: 'green',
@@ -185,6 +189,9 @@ export default {
     },
     getStatusInfo (status) {
       return statusInfo[status]
+    },
+    goToDoc (url) {
+      openURL(url)
     }
   }
 }

@@ -107,6 +107,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+
 import {
   copyToClipboard
 } from 'quasar'

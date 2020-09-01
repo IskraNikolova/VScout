@@ -13,7 +13,52 @@
       color="accent"
       flat
     />
-    <div v-if="validator()">
+    <div v-if="subnet()">
+      <div class="q-pa-md gt-sm">
+        <div class="q-pl-md text-bold">SUBNET ID</div>
+        <div class="text-regular text-orange q-pl-md q-pb-md">{{ subnet().id }}</div>
+        <span class="q-pl-md text-light text-h7">BLOCKCHAINS:</span>
+        <div class="row q-pl-md">
+          <div class="col text-medium" v-for="id in subnet().blockchainsId" v-bind:key="id">
+            <br />
+            <small class="text-grey">NAME: </small>{{ blockchainByID(id).name }}
+            <br />
+            <small class="text-grey">ID: </small><span class="text-light">{{ blockchainByID(id).id }}</span>
+            <br />
+            <small class="text-grey">VM ID: </small><span class="text-light">{{ blockchainByID(id).vmID }}</span>
+          </div>
+        </div>
+        <q-separator class="q-mt-md q-mb-md"/>
+        <div class="q-pl-md">
+          <span class="text-light text-h7">THRESHOLD:</span> <span class="text-medium q-pl-xs">{{ subnet().threshold }}</span>
+          <br />
+          <span class="text-light text-h7">CONTROL KEYS:</span> <div class="text-medium q-pl-xs" v-for="key in subnet().controlKeys" v-bind:key="key">{{ key }}</div>
+          <br />
+        </div>
+      </div>
+      <div class="q-pa-md lt-md">
+        <div class="text-bold">SUBNET ID</div>
+        <div class="text-regular text-orange q-pb-md">{{ subnet().id }}</div>
+        <span class="text-light text-h7">BLOCKCHAINS:</span>
+        <div class="text-medium" v-for="id in subnet().blockchainsId" v-bind:key="id">
+          <br />
+          <small class="text-grey">NAME: </small>{{ blockchainByID(id).name }}
+          <br />
+          <small class="text-grey">ID: </small><span class="text-light">{{ blockchainByID(id).id }}</span>
+          <br />
+          <small class="text-grey">VM ID: </small><span class="text-light">{{ blockchainByID(id).vmID }}</span>
+          <q-separator class="q-mt-md q-mb-md"/>
+        </div>
+        <div>
+          <span class="text-light text-h7">THRESHOLD:</span> <span class="text-medium q-pl-xs">{{ subnet().threshold }}</span>
+          <br />
+          <span class="text-light text-h7">CONTROL KEYS:</span> <div class="text-medium q-pl-xs" v-for="key in subnet().controlKeys" v-bind:key="key">{{ key }}</div>
+          <br />
+        </div>
+      </div>
+      <q-separator />
+    </div>
+    <div v-else-if="validator()">
       <div class="text-bold q-pl-xl">VALIDATOR</div>
       <q-card flat class="gt-sm q-pa-xl">
         <q-item>
@@ -263,7 +308,29 @@
       </q-card>
     </div>
     <div v-else-if="blockchain()">
-      <div class="q-pa-md">
+      <div class="q-pa-md gt-sm">
+        <div class="text-bold q-pl-md">BLOCKCHAIN ID</div>
+        <div class="text-regular text-orange q-pl-md q-pt-md">{{ blockchain().id }}</div>
+        <div class="row q-pt-xl q-pl-md">
+          <div class="col-6">
+            <span class="text-light text-h7">NAME:</span> <div class="text-medium">{{ blockchain().name }}</div>
+            <br />
+            <span class="text-light text-h7">VM (Virtual Machine):</span>
+            <div class="q-pl-xs"><small class="text-grey">ID: </small> <span class="text-medium">{{ blockchain().vmID }}</span></div>
+            <div class="q-pl-xs"><small class="text-grey">NAME: </small> <span class="text-medium">{{ blockchain().vmName }}</span></div>
+          </div>
+          <div class="col-6">
+            <span class="text-light text-h7">SUBNET ID:</span> <div class="text-medium">{{ blockchain().subnetID }}</div>
+            <br />
+            <span class="text-light text-h7">STATUS:</span>
+            <div :class="'text-medium text-' + getColor(blockchain().status)">
+              {{ blockchain().status }}
+              <q-tooltip>{{ getStatusInfo(blockchain().status )}}</q-tooltip>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="q-pa-md lt-sm">
         <div class="text-bold">BLOCKCHAIN ID</div>
         <div class="text-regular text-orange q-pl-xs q-pt-md">{{ blockchain().id }}</div>
         <div class="row q-pt-xl">
@@ -283,50 +350,6 @@
               <q-tooltip>{{ getStatusInfo(blockchain().status )}}</q-tooltip>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div v-else-if="subnet()">
-      <div class="q-pa-md gt-sm">
-        <div class="q-pl-md text-bold">SUBNET ID</div>
-        <div class="text-regular text-orange q-pl-md q-pb-md">{{ subnet().id }}</div>
-        <span class="q-pl-md text-light text-h7">BLOCKCHAINS:</span>
-        <div class="row q-pl-md">
-          <div class="col text-medium" v-for="id in subnet().blockchainsId" v-bind:key="id">
-            <br />
-            <small class="text-grey">NAME: </small>{{ blockchainByID(id).name }}
-            <br />
-            <small class="text-grey">ID: </small><span class="text-light">{{ blockchainByID(id).id }}</span>
-            <br />
-            <small class="text-grey">VM ID: </small><span class="text-light">{{ blockchainByID(id).vmID }}</span>
-          </div>
-        </div>
-        <q-separator class="q-mt-md q-mb-md"/>
-        <div class="q-pl-md">
-          <span class="text-light text-h7">THRESHOLD:</span> <span class="text-medium q-pl-xs">{{ subnet().threshold }}</span>
-          <br />
-          <span class="text-light text-h7">CONTROL KEYS:</span> <div class="text-medium q-pl-xs" v-for="key in subnet().controlKeys" v-bind:key="key">{{ key }}</div>
-          <br />
-        </div>
-      </div>
-      <div class="q-pa-md lt-md">
-        <div class="text-bold">SUBNET ID</div>
-        <div class="text-regular text-orange q-pb-md">{{ subnet().id }}</div>
-        <span class="text-light text-h7">BLOCKCHAINS:</span>
-        <div class="text-medium" v-for="id in subnet().blockchainsId" v-bind:key="id">
-          <br />
-          <small class="text-grey">NAME: </small>{{ blockchainByID(id).name }}
-          <br />
-          <small class="text-grey">ID: </small><span class="text-light">{{ blockchainByID(id).id }}</span>
-          <br />
-          <small class="text-grey">VM ID: </small><span class="text-light">{{ blockchainByID(id).vmID }}</span>
-          <q-separator class="q-mt-md q-mb-md"/>
-        </div>
-        <div>
-          <span class="text-light text-h7">THRESHOLD:</span> <span class="text-medium q-pl-xs">{{ subnet().threshold }}</span>
-          <br />
-          <span class="text-light text-h7">CONTROL KEYS:</span> <div class="text-medium q-pl-xs" v-for="key in subnet().controlKeys" v-bind:key="key">{{ key }}</div>
-          <br />
         </div>
       </div>
     </div>

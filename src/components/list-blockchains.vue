@@ -54,7 +54,7 @@ export default {
         this.getAssets(),
         this.getValidators({
           subnetID: blockchain.subnetID,
-          endpoint: this.networkEndpoint
+          endpoint: this.networkEndpoint.url
         }),
         this.getPendingValidators({
           subnetID: blockchain.subnetID

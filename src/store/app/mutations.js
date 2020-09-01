@@ -58,6 +58,7 @@ const mutations = {
   [SET_BLOCKCHAINS]: (state, { blockchains }) => {
     blockchains = blockchains.map(b => {
       b.vmName = VMDict[b.vmID].name
+      b.vmDocumentation = VMDict[b.vmID].documentation
       return b
     })
     state.blockchains = blockchains
