@@ -16,7 +16,7 @@
         @getDelegators="getValidatorsV"
       />
       <div class="flex flex-center q-mt-xl">
-        <faqs class="q-pr-md" />
+        <faqs class="q-pr-md" id="faqs"/>
       </div>
       <div class="flex flex-center">
         <img src="~assets/vscoutlogo5.svg" id="logo">
@@ -74,7 +74,8 @@ export default {
           endpoint: this.networkEndpoint
         }),
         pending: async () => await this.getPendingValidators({
-          subnetID: this.subnetID
+          subnetID: this.subnetID,
+          endpoint: this.networkEndpoint
         })
       }
 
@@ -82,6 +83,7 @@ export default {
     },
     async getDefaultValidators () {
       await this.getValidators({
+        subnetID: '11111111111111111111111111111111LpoYY',
         endpoint: this.networkEndpoint
       })
     }

@@ -97,18 +97,21 @@
             <list-subnets />
           </q-menu>
           </q-btn>
+          <a style="text-decoration: none;margin-top: -3px;padding-left: 20px;padding-right: 20px;" class="text-grey" href="#faqs">FAQ</a>
           <q-btn
             flat
-            label="endpoint"
+            no-caps
+            icon="img:statics/flash.svg"
+            :label="networkEndpoint.name"
             class="text-regular text-grey"
             id="target-el"
           >
-          <q-menu>
-            <div class="no-wrap q-pa-md text-orange">
-              Switch To Endpoint
-            </div>
-            <q-separator />
-            <switch-endpoint />
+            <q-menu>
+              <div class="no-wrap q-pa-md text-orange">
+                Switch To Endpoint
+              </div>
+              <q-separator />
+              <switch-endpoint />
             </q-menu>
             <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Connect To Node</q-tooltip>
           </q-btn>
@@ -295,11 +298,11 @@
 
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <q-icon name="img:statics/node.svg" />
+              <q-icon name="img:statics/flash.svg" />
             </q-item-section>
 
             <q-item-section>
-              <span @click="isE=true">Endpoint</span>
+              <span @click="isE=true">{{ networkEndpoint.name }}</span>
               <q-dialog v-model="isE" transition-show="rotate" transition-hide="rotate">
                 <q-card>
                   <q-card-section>
@@ -355,7 +358,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'hasNetworkConnection'
+      'hasNetworkConnection',
+      'networkEndpoint'
     ])
   },
   data () {

@@ -63,7 +63,8 @@ export default {
         endpoint: this.networkEndpoint.url
       })
       this.getPendingValidators({
-        subnetID: subnet.id
+        subnetID: subnet.id,
+        endpoint: this.networkEndpoint.url
       })
     }
   }

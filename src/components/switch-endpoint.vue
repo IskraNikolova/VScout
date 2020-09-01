@@ -56,13 +56,16 @@
 import { mapGetters, mapActions } from 'vuex'
 
 import {
+  GET_SUBNETS,
   SET_NODE_ID,
   SET_ENDPOINT,
-  GET_VALIDATORS,
   GET_NODE_INFO,
+  GET_VALIDATORS,
+  GET_BLOCKCHAINS,
   SET_ENDPOINTS_MEMORY,
   GET_PENDING_VALIDATORS,
-  REMOVE_ENDPOINTS_MEMORY
+  REMOVE_ENDPOINTS_MEMORY,
+  GET_ASSETS_BY_BLOCKCHAINS
 } from '../store/app/types'
 
 import {
@@ -71,7 +74,6 @@ import {
 
 import {
   _getNodeId
-  // _getValidators
 } from './../modules/network.js'
 
 const {
@@ -99,7 +101,10 @@ export default {
     ...mapActions({
       getValidators: GET_VALIDATORS,
       getPendingValidators: GET_PENDING_VALIDATORS,
-      getNodeInfo: GET_NODE_INFO
+      getNodeInfo: GET_NODE_INFO,
+      getBlockchains: GET_BLOCKCHAINS,
+      getSubnets: GET_SUBNETS,
+      getAssetByBlockchain: GET_ASSETS_BY_BLOCKCHAINS
     }),
     onRemoveFromMem (endpoint, event) {
       event.stopImmediatePropagation()
@@ -146,6 +151,10 @@ export default {
         icon: 'done'
       })
       await this.getValidators({ endpoint: endpoint.url })
+      await this.getPendingValidators({ endpoint: endpoint.url })
+      await this.getBlockchains({ endpoint: endpoint.url })
+      await this.getSubnets({ endpoint: endpoint.url })
+      await this.getAssetByBlockchain()
     },
     onError (message) {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })

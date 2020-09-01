@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-center text-h2 q-pt-xl text-white">FAQs</div>
+    <div class="flex flex-center text-h2 q-pt-xl text-white">FAQ</div>
     <div class="flex flex-center q-pl-xl text-h7 q-pt-xl q-mb-xl text-white">
       Let's answer some questions you may have.
       <q-btn no-caps flat v-if="!visible" @click="visible=!visible" icon="expand_more"/>
@@ -23,7 +23,7 @@
                   <q-separator spaced style="width: 70%;"/>
                   <q-slide-transition>
                     <div v-show="innerVisible">
-                      <div v-html="question.content" style="color: grey;font-size: 13px;"></div>
+                      <div v-html="question.content" style="color: grey;font-size: 15px;"></div>
                     </div>
                   </q-slide-transition>
               </div>
@@ -41,7 +41,7 @@ export default {
   name: 'Faqs',
   data () {
     return {
-      visible: false,
+      visible: true,
       innerVisible: true,
       questions: [
         {

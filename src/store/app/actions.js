@@ -69,8 +69,8 @@ async function initApp ({ dispatch, getters }) {
       dispatch(INIT_VALIDATORS),
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_NODE_INFO),
-      dispatch(GET_BLOCKCHAINS),
-      dispatch(GET_SUBNETS),
+      dispatch(GET_BLOCKCHAINS, { endpoint: getters.networkEndpoint.url }),
+      dispatch(GET_SUBNETS, { endpoint: getters.networkEndpoint.url }),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS)
       // _initializeNetwork()
     ])
@@ -90,7 +90,8 @@ async function initApp ({ dispatch, getters }) {
           endpoint: getters.networkEndpoint.url
         }),
         dispatch(GET_PENDING_VALIDATORS, {
-          subnetID: getters.subnetID
+          subnetID: getters.subnetID,
+          endpoint: getters.networkEndpoint.url
         })
       ])
     } catch (err) {
@@ -116,10 +117,9 @@ async function initEndpoint ({ commit }) {
   commit(SET_NODE_ID, { nodeID })
 }
 
-async function getBlockchains ({ commit, getters }) {
-  const response = await _getBlockchains({
-    endpoint: getters.networkEndpoint.url
-  })
+async function getBlockchains ({ commit, getters }, { endpoint }) {
+  if (!endpoint) endpoint = getters.networkEndpoint.url
+  const response = await _getBlockchains({ endpoint })
 
   if (response.data.error) {
     return null
@@ -158,9 +158,9 @@ async function getBlockchains ({ commit, getters }) {
   })
 }
 
-async function getSubnets ({ commit, getters }) {
+async function getSubnets ({ commit, getters }, { endpoint }) {
   const response = await _getSubnets({
-    endpoint: getters.networkEndpoint.url
+    endpoint
   })
 
   if (response.data.error) {
@@ -208,7 +208,13 @@ async function initValidators ({ commit, getters }) {
 
   if (response.data.error) {
     commit(UPDATE_UI, { doesItConnect: true })
-    Notify.create({ position: 'top', message: 'Could not connect to the endpoint', icon: 'warning', color: 'white', textColor: 'orange' })
+    Notify.create({
+      position: 'top',
+      message: 'Could not connect to the endpoint',
+      icon: 'warning',
+      color: 'white',
+      textColor: 'orange'
+    })
     return null
   }
 
@@ -226,7 +232,11 @@ async function initValidators ({ commit, getters }) {
   const res = await validatorProcessing(v, d, getters.defaultValidators)
 
   commit(SET_VALIDATORS, { validators: res.validators })
-  commit(SET_STAKED_AVA, { all: res.allStake, validatedStake: res.validatedStake, delegatedStake: res.delegatedStake })
+  commit(SET_STAKED_AVA, {
+    all: res.allStake,
+    validatedStake: res.validatedStake,
+    delegatedStake: res.delegatedStake
+  })
   if (getters.isDefaultSubnetID) {
     commit(SET_DEFAULT_VALIDATORS, { defaultValidators: res.validators })
   }
@@ -264,10 +274,10 @@ async function getValidators (
   return true
 }
 
-async function getPendingValidators ({ commit, getters }, { subnetID }) {
+async function getPendingValidators ({ commit, getters }, { subnetID, endpoint }) {
   const response = await _getPendingValidators({
     subnetID,
-    endpoint: getters.networkEndpoint.url
+    endpoint
   })
 
   if (response.data.error) {

@@ -7,6 +7,7 @@ const routes = [
       { path: '', component: () => import('pages/Index.vue') }
     ]
   },
+  { path: '/faqs', redirect: '/' },
   {
     path: '/search',
     component: () => import('layouts/MainLayout.vue'),
