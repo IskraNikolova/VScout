@@ -284,10 +284,10 @@ async function getPendingValidators ({ commit, getters }, { subnetID, endpoint }
     return null
   }
 
-  const { validators } = response.data.result
+  let { validators } = response.data.result
 
   if (typeof validators === 'undefined' ||
-      validators === null) return
+      validators === null) validators = []
 
   if (validators.length < 1) {
     commit(SET_PENDING_DELEGATORS, { delegators: [] })
