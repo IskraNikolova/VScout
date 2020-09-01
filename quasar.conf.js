@@ -104,9 +104,9 @@ module.exports = function (ctx) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'Avalanche Validator Explorer',
-        short_name: 'AvalanchePChainEx',
-        description: 'Avalanche chains validator explorer',
+        name: 'VScout Explorer',
+        short_name: 'VScout',
+        description: 'Avalanche validator explorer',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -144,7 +144,7 @@ module.exports = function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
     cordova: {
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
-      id: 'io.avalanche.explorer.app'
+      id: 'io.vscout.app'
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-capacitor-apps/configuring-capacitor
@@ -172,7 +172,7 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'p-chain-ex'
+        appId: 'vscout'
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

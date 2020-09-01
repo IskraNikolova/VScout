@@ -63,15 +63,15 @@ export function subnetID (state) {
 }
 
 export function stakedAVA (state) {
-  return state.stakedAVA.toLocaleString()
+  return state.stakedAVA
 }
 
 export function validatedStake (state) {
-  return state.validatedStake.toLocaleString()
+  return state.validatedStake
 }
 
 export function delegatedStake (state) {
-  return state.delegatedStake.toLocaleString()
+  return state.delegatedStake
 }
 
 export function isDefaultSubnetID (state) {

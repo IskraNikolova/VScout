@@ -65,9 +65,15 @@
       <div class="col-md-2 col-xs-10">
         <div v-if="isBlockchainView">
           <div id="f-size12" class="q-pb-md text-medium">ASSETS</div>
-          <div class="q-mb-md" v-if="this.assetsLength">
+          <div class="q-mb-md" v-if="assetsLength">
             <div class="q-pb-md q-pr-md ">
-              <span class="text-h6 text-orange">{{ assetsLength }}</span><span> on {{ currentBlockchain.name }}</span>
+              <span class="text-h6 text-orange">
+                <animated-number
+                  :value="assetsLength"
+                  :formatValue="format"
+                  :duration="3000"
+                />
+              </span><span> on {{ currentBlockchain.name }}</span>
             </div>
           </div>
           <div v-else class="q-mb-md">
@@ -140,6 +146,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import AnimatedNumber from 'animated-number-vue'
 
 import {
   openURL
@@ -162,6 +169,7 @@ import SubnetBlockchains from './../items/subnet-blockchains'
 export default {
   name: 'Network',
   components: {
+    AnimatedNumber,
     SubnetBlockchains,
     AssetInfoDialog: () => import('components/dialogs/asset-info-dialog')
   },
@@ -181,6 +189,9 @@ export default {
     }
   },
   methods: {
+    format (value) {
+      return `${Math.round(value)}`
+    },
     onOpenAssetInfo (asset) {
       this.$refs.assetDialog.open({ asset })
     },

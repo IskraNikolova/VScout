@@ -41,7 +41,13 @@
         <div id="f-size12" class="q-pb-md text-medium">PEER CONNECTIONS</div>
         <div class="q-pb-md">
          <small>Connected with</small>
-         <div class="text-orange">{{ nodeInfo.peers.length}} peers</div>
+         <div class="text-orange">
+            <animated-number
+              :value="nodeInfo.peers.length"
+              :formatValue="format"
+              :duration="3000"
+            />
+         </div>
         </div>
         <q-btn-dropdown
           color="grey"
@@ -108,6 +114,8 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import AnimatedNumber from 'animated-number-vue'
+
 import {
   copyToClipboard
 } from 'quasar'
@@ -117,7 +125,8 @@ import { datePickerFormat } from './../../modules/time.js'
 export default {
   name: 'Node',
   components: {
-    NodeHealthDialog: () => import('components/dialogs/node-health-dialog')
+    NodeHealthDialog: () => import('components/dialogs/node-health-dialog'),
+    AnimatedNumber
   },
   data () {
     return {
@@ -155,6 +164,9 @@ export default {
     }
   },
   methods: {
+    format (value) {
+      return `${Math.round(value)} peers`
+    },
     dateFormat (date) {
       return datePickerFormat(date)
     },
