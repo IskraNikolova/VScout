@@ -254,10 +254,10 @@ async function getValidators (
     return null
   }
 
-  const { validators } = response.data.result
+  let { validators } = response.data.result
 
   if (typeof validators === 'undefined' ||
-    validators === null) return
+    validators === null) validators = []
 
   if (validators.length === getters.validators.length) return
 

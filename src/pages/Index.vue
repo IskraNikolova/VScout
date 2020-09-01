@@ -71,11 +71,11 @@ export default {
       const temp = {
         active: async () => await this.getValidators({
           subnetID: this.subnetID,
-          endpoint: this.networkEndpoint
+          endpoint: this.networkEndpoint.url
         }),
         pending: async () => await this.getPendingValidators({
           subnetID: this.subnetID,
-          endpoint: this.networkEndpoint
+          endpoint: this.networkEndpoint.url
         })
       }
 
@@ -84,7 +84,7 @@ export default {
     async getDefaultValidators () {
       await this.getValidators({
         subnetID: '11111111111111111111111111111111LpoYY',
-        endpoint: this.networkEndpoint
+        endpoint: this.networkEndpoint.url
       })
     }
   }
