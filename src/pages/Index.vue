@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div style="height: 3px;width: 100%;background: grey;opacity: 0.5;"></div>
+    <div style="height: 3px;width: 100%;background: grey;opacity: 0.5;" id="up"></div>
     <div style="padding: 3%;">
       <error class="q-pr-md" />
       <node class="q-pr-md" />
@@ -16,7 +16,7 @@
         @getDelegators="getValidatorsV"
       />
       <div class="flex flex-center q-mt-xl">
-        <faqs class="q-pr-md" id="faqs"/>
+        <faqs id="faqs"/>
       </div>
       <div class="flex flex-center">
         <img src="~assets/vscoutlogo5.svg" id="logo">

@@ -1,7 +1,7 @@
 <template>
   <q-card
     class="q-mt-md q-pt-md q-pl-xl q-pr-xl q-pb-md" id="custom-card" >
-    <div class="row" id="up">
+    <div class="row">
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium ">NETWORK</div>
         <div style="text-transform: uppercase;" class="text-h6 text-orange">

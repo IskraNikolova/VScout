@@ -4,28 +4,18 @@
     <div class="flex flex-center q-pl-xl text-h7 q-pt-xl q-mb-xl text-white">
       Let's answer some questions you may have.
       <q-btn no-caps flat v-if="!visible" @click="visible=!visible" icon="expand_more"/>
-      <a v-else style="text-decoration: none;" class="text-white" href="#up"><q-btn no-caps flat @click="visible=!visible" icon="expand_less"/></a>
+      <q-btn no-caps flat v-else @click="visible=!visible" icon="expand_less"/>
     </div>
     <q-slide-transition>
       <div v-show="visible">
-        <q-card
-          class="q-pa-md q-pl-xl q-pt-xl"
-        >
-            <div class="row absolute-top-right">
-              <q-btn no-caps flat v-if="!innerVisible" @click="innerVisible=!innerVisible" icon="expand_more"/>
-              <q-btn no-caps flat v-else @click="innerVisible=!innerVisible" icon="expand_less"/>
-            </div>
+        <q-card class="q-mt-md q-pt-xl q-pl-xl q-pb-md q-mb-xl">
             <div v-for="(question, i) in questions"
-              v-bind:key="i" class="q-mb-xl">
+              v-bind:key="i">
               <q-slide-transition>
                 <div v-show="visible">
-                  <div class="text-h6">{{question.title}}</div>
-                  <q-separator spaced style="width: 70%;"/>
-                  <q-slide-transition>
-                    <div v-show="innerVisible">
-                      <div v-html="question.content" style="color: grey;font-size: 15px;"></div>
-                    </div>
-                  </q-slide-transition>
+                  <div class="text-h3 text-orange">. <span class="text-h6 text-grey">{{question.title}}</span></div>
+                  <q-separator spaced style="width: 50%;" class="q-pt-xs"/>
+                  <div v-html="question.content" style="font-size: 14px;padding-right: 20%;margin-bottom: 50px;"></div>
               </div>
               </q-slide-transition>
             </div>
@@ -50,7 +40,7 @@ export default {
         },
         {
           title: 'What are the requirements for running a validator node on Avalanche?',
-          content: 'Avalanche is an incredibly lightweight protocol, so the minimum computer requirements are quite modest. Hardware: CPU > 2 GHz, RAM > 4 GB, Storage > 10 GB free space.\nThe minimum stake requirement for Avalanche Mainnet is 2000 AVAX.'
+          content: 'Avalanche is an incredibly lightweight protocol, so the minimum computer requirements are quite modest. <br /> Hardware: CPU > 2 GHz, RAM > 4 GB, Storage > 10 GB free space.<br />The minimum stake requirement for Avalanche Mainnet is 2000 AVAX.'
         },
         {
           title: 'Do I need to trust the validator to transfer my delegation rewards?',
@@ -86,11 +76,11 @@ export default {
         },
         {
           title: 'How can I check if my node is healthy and operational?',
-          content: 'Simply select your node as an endpoint in VScout. Once you are connected to your node you can perform health checks through our UI'
+          content: 'Simply select your node as an endpoint in <b>VScout</b>. Once you are connected to your node you can perform health checks through our UI'
         },
         {
           title: 'I need help, where can I receive technical support?',
-          content: 'Avalanche Discord is the place to be for all technical questions, join at <a href="http://chat.avax.network">chat.avax.network</a>.'
+          content: 'Avalanche Discord is the place to be for all technical questions, join at <a style="text-decoration: none;" class="text-orange" href="http://chat.avax.network">chat.avax.network</a>.'
         }
       ]
     }
