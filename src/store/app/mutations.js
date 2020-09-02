@@ -99,8 +99,8 @@ const mutations = {
   },
   [SET_ASSETS_BY_BLOCKCHAINS]: (state, { assetsByChain }) => {
     state.assetsByChain = assetsByChain
-    Object.keys(state.assetsByChain).map((key) => {
-      state.assetsByChain[key].sort((a, b) => {
+    Object.keys(state.assetsByChain.assets).map((key) => {
+      state.assetsByChain.assets[key].sort((a, b) => {
         return Number(b.currentSupply) - Number(a.currentSupply)
       })
     })

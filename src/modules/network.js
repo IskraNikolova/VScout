@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 import { c } from './../utils/constants'
-import { groupBy } from './../utils/commons'
 const { network } = require('./config').default
 
 let id = 1
@@ -20,9 +19,10 @@ export const _getAssetsForChain = async () => {
   try {
     const req = await axios
       .get(network.explorerApiBaseUrl + c.listAssests)
+
     if (!req.data.assets) return
 
-    return groupBy(req.data.assets, 'chainID')
+    return { count: req.data.count, assets: req.data.assets }
   } catch (err) {
     return null
   }

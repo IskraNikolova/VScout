@@ -65,11 +65,11 @@
       <div class="col-md-2 col-xs-10">
         <div v-if="isBlockchainView">
           <div id="f-size12" class="q-pb-md text-medium">ASSETS</div>
-          <div class="q-mb-md" v-if="assetsLength">
+          <div class="q-mb-md" v-if="currentBlockchain.name === 'X-Chain'">
             <div class="q-pb-md q-pr-md ">
               <span class="text-h6 text-orange">
                 <animated-number
-                  :value="assetsLength"
+                  :value="assetsCount"
                   :formatValue="format"
                   :duration="3000"
                 />
@@ -89,14 +89,14 @@
               no-caps
               label="Smart Digital Assets"
             >
-              <div class="q-pa-md" v-if="assets(currentBlockchain.id)">
+              <div class="q-pa-md" v-if="currentBlockchain.name === 'X-Chain'">
                 <small>
                   Assets on {{ currentBlockchain.name }}
                 </small>
                 <q-separator />
               </div>
               <q-list
-                v-for="asset in assets(currentBlockchain.id)"
+                v-for="asset in assets"
                 v-bind:key="asset.id"
               >
                 <q-item clickable v-close-popup @click="onOpenAssetInfo(asset)">
@@ -176,16 +176,13 @@ export default {
   computed: {
     ...mapGetters([
       'assets',
+      'assetsCount',
       'currentSubnet',
       'blockchainByID',
       'isBlockchainView',
       'currentBlockchain',
       'isDefaultSubnetID'
-    ]),
-    assetsLength: function () {
-      if (!this.assets(this.currentBlockchain.id)) return
-      return this.assets(this.currentBlockchain.id).length
-    }
+    ])
   },
   methods: {
     format (value) {
