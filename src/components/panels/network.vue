@@ -149,6 +149,7 @@ import { mapGetters } from 'vuex'
 import AnimatedNumber from 'animated-number-vue'
 
 import {
+  _getAssetById,
   _getAssetsWithOffset
 } from './../../modules/network'
 
@@ -207,7 +208,14 @@ export default {
         return
       }
 
-      this.filter(filter)
+      let result = this.filter(filter)
+      if (result) return
+
+      result = await _getAssetById(filter)
+      if (!result || !this.search) {
+        this.assetSearch = null
+      }
+      this.assetSearch = result
     },
     filter (filter) {
       const result = this.items.filter(
@@ -217,7 +225,9 @@ export default {
       )
       if (result.length > 0) {
         this.items = result
+        return true
       }
+      return false
     },
     format (value) {
       return `${Math.round(value)}`
