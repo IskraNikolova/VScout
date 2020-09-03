@@ -1,7 +1,8 @@
 export const c = {
   // enpoints
   cChainWs: 'ext/C/ws',
-  listAssests: 'x/assets',
+  listAssests: 'x/assets?&offset=200&limit=500',
+  assetsWithOffset: (offset) => `x/assets?&offset=${offset}&limit=100`,
   platform: 'ext/P',
   platformBc: 'ext/bc/P',
   avm: 'ext/bc/X',

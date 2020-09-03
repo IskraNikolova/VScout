@@ -16,6 +16,7 @@ import {
   SET_DELEGATORS,
   SET_BLOCKCHAINS,
   SET_NODE_HEALTH,
+  SET_ASSETS_COUNT,
   SET_NETWORK_STATUS,
   SET_CURRENT_SUBNET,
   SET_ENDPOINTS_MEMORY,
@@ -23,8 +24,7 @@ import {
   SET_PENDING_DELEGATORS,
   SET_PENDING_VALIDATORS,
   SET_CURRENT_BLOCKCHAIN,
-  REMOVE_ENDPOINTS_MEMORY,
-  SET_ASSETS_BY_BLOCKCHAINS
+  REMOVE_ENDPOINTS_MEMORY
 } from './types'
 
 const mutations = {
@@ -97,13 +97,8 @@ const mutations = {
   [REMOVE_ENDPOINTS_MEMORY]: (state, { endpoint }) => {
     state.endpointsMemory = state.endpointsMemory.filter(a => a !== endpoint)
   },
-  [SET_ASSETS_BY_BLOCKCHAINS]: (state, { assetsByChain }) => {
-    state.assetsByChain = assetsByChain
-    Object.keys(state.assetsByChain.assets).map((key) => {
-      state.assetsByChain.assets[key].sort((a, b) => {
-        return Number(b.currentSupply) - Number(a.currentSupply)
-      })
-    })
+  [SET_ASSETS_COUNT]: (state, { assetsCount }) => {
+    state.assetsCount = assetsCount
   }
 }
 

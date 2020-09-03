@@ -19,13 +19,13 @@ import {
   INIT_VALIDATORS,
   GET_BLOCKCHAINS,
   SET_BLOCKCHAINS,
+  SET_ASSETS_COUNT,
   SET_DEFAULT_VALIDATORS,
   GET_PENDING_VALIDATORS,
   SET_PENDING_VALIDATORS,
   SET_PENDING_DELEGATORS,
   SET_CURRENT_BLOCKCHAIN,
-  GET_ASSETS_BY_BLOCKCHAINS,
-  SET_ASSETS_BY_BLOCKCHAINS
+  GET_ASSETS_BY_BLOCKCHAINS
 } from './types'
 
 import {
@@ -34,16 +34,16 @@ import {
 
 import {
   _health,
+  _getPeers,
+  _getNodeId,
   _validates,
   _getSubnets,
-  _getNodeId,
   _getNetworkID,
+  _getValidators,
   _getNetworkName,
   _getNodeVersion,
-  _getPeers,
   _getBlockchains,
-  _getValidators,
-  _getAssetsForChain,
+  _getAssetsCount,
   _getBlockchainStatus,
   _getPendingValidators
 } from './../../modules/network'
@@ -193,12 +193,12 @@ async function getSubnets ({ commit }, { endpoint }) {
   commit(SET_SUBNETS, { subnets: await result })
 }
 
-async function getAssetsByBlockchain ({ commit }) {
-  const assetsByChain = await _getAssetsForChain()
-  if (typeof assetsByChain === 'undefined' ||
-    assetsByChain === null) return
+async function getAssetsCount ({ commit }) {
+  const assetsCount = await _getAssetsCount()
+  if (typeof assetsCount === 'undefined' ||
+  assetsCount === null) return
 
-  commit(SET_ASSETS_BY_BLOCKCHAINS, { assetsByChain })
+  commit(SET_ASSETS_COUNT, { assetsCount })
 }
 
 async function initValidators (
@@ -429,5 +429,5 @@ export default {
   [GET_BLOCKCHAINS]: getBlockchains,
   [INIT_VALIDATORS]: initValidators,
   [GET_PENDING_VALIDATORS]: getPendingValidators,
-  [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsByBlockchain
+  [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsCount
 }

@@ -15,15 +15,29 @@ const body = (method, params = {}) => {
   }
 }
 
-export const _getAssetsForChain = async () => {
+export const _getAssetsCount = async () => {
   try {
     const req = await axios
       .get(network.explorerApiBaseUrl + c.listAssests)
 
+    if (!req.data.count) return
+
+    return req.data.count
+  } catch (err) {
+    return null
+  }
+}
+
+export const _getAssetsWithOffset = async (offset) => {
+  try {
+    const req = await axios
+      .get(network.explorerApiBaseUrl + c.assetsWithOffset(offset))
+
     if (!req.data.assets) return
 
-    return { count: req.data.count, assets: req.data.assets }
+    return req.data.assets
   } catch (err) {
+    console.log(err)
     return null
   }
 }

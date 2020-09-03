@@ -95,17 +95,21 @@
                 </small>
                 <q-separator />
               </div>
-              <q-list
-                v-for="asset in assets"
-                v-bind:key="asset.id"
-              >
-                <q-item clickable v-close-popup @click="onOpenAssetInfo(asset)">
-                  <q-item-section><span>{{ asset.symbol }}</span></q-item-section>
-                  <q-item-section side>
-                  <q-icon size="xs" name="info" color="grey" />
-                  </q-item-section>
+              <q-infinite-scroll @load="onLoad" :offset="250">
+                <div v-for="(asset, index) in items" :key="index" class="caption">
+                  <q-item clickable v-close-popup style="max-width: 200px;" @click="onOpenAssetInfo(asset)">
+                    <q-item-section avatar>
+                      <q-badge color="accent">{{ asset.symbol }}</q-badge>
+                    </q-item-section>
+                   <q-item-section>{{ asset.name }}</q-item-section>
                 </q-item>
-              </q-list>
+                </div>
+                <template v-slot:loading>
+                  <div class="row justify-center q-my-md">
+                    <q-spinner-dots color="primary" size="40px" />
+                  </div>
+                </template>
+              </q-infinite-scroll>
             </q-btn-dropdown>
             <asset-info-dialog ref="assetDialog"/>
           </div>
@@ -148,6 +152,8 @@
 import { mapGetters } from 'vuex'
 import AnimatedNumber from 'animated-number-vue'
 
+import { _getAssetsWithOffset } from './../../modules/network'
+
 import {
   openURL
 } from 'quasar'
@@ -173,9 +179,17 @@ export default {
     SubnetBlockchains,
     AssetInfoDialog: () => import('components/dialogs/asset-info-dialog')
   },
+  data () {
+    return {
+      items: []
+    }
+  },
+  async created () {
+    const assets = await _getAssetsWithOffset(0)
+    this.items = assets
+  },
   computed: {
     ...mapGetters([
-      'assets',
       'assetsCount',
       'currentSubnet',
       'blockchainByID',
@@ -199,6 +213,13 @@ export default {
     },
     goToDoc (url) {
       openURL(url)
+    },
+    async onLoad (index, done) {
+      const assets = await _getAssetsWithOffset(index * 100)
+      if (this.items) {
+        this.items = this.items.concat(assets)
+        done()
+      }
     }
   }
 }

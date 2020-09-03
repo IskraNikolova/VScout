@@ -13,7 +13,7 @@ export default function () {
     delegators: [],
     blockchains: [],
     currentSubnet: { id: network.defaultSubnetID },
-    assetsByChain: {},
+    assetsCount: 0,
     endpointsMemory: [],
     pendingValidators: [],
     defaultValidators: [],

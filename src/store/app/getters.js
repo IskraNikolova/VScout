@@ -92,12 +92,8 @@ export function endpointsMemory (state) {
   return state.endpointsMemory
 }
 
-export function assets (state) {
-  return state.assetsByChain.assets
-}
-
 export function assetsCount (state) {
-  return state.assetsByChain.count
+  return state.assetsCount
 }
 
 export function nodeID (state) {
