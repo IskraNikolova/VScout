@@ -56,7 +56,6 @@
           <br />
         </div>
       </div>
-      <q-separator />
     </div>
     <div v-else-if="validator()">
       <div class="text-bold q-pl-xl">VALIDATOR</div>
