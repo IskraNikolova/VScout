@@ -1,5 +1,3 @@
-import { Notify } from 'quasar'
-
 import {
   INIT_APP,
   GET_SUBNETS,
@@ -111,19 +109,19 @@ async function initApp ({ dispatch, getters }) {
 }
 
 async function initEndpoint ({ commit, getters }) {
-  const local = network.endpointUrls[1]
-  const response = await _getNodeId({ endpoint: local.url })
+  let endpoint = network.endpointUrls[1]
+  let response = await _getNodeId({ endpoint: endpoint.url })
   if (response.data.error) {
-    const response = await _getNodeId({ endpoint: getters.networkEndpoint.url })
-    if (response.data.error) return
-
-    const nodeID = response.data.result.nodeID
-    commit(SET_NODE_ID, { nodeID })
-    return
+    endpoint = getters.networkEndpoint
+    response = await _getNodeId({ endpoint: endpoint.url })
+    if (response.data.error) {
+      endpoint = network.endpointUrls[0]
+      response = await _getNodeId({ endpoint: endpoint.url })
+    }
   }
 
   const nodeID = response.data.result.nodeID
-  commit(SET_ENDPOINT, { endpoint: local })
+  commit(SET_ENDPOINT, { endpoint })
   commit(SET_NODE_ID, { nodeID })
 }
 
@@ -216,13 +214,6 @@ async function initValidators (
 
   if (response.data.error) {
     commit(UPDATE_UI, { doesItConnect: true })
-    Notify.create({
-      position: 'top',
-      message: 'Could not connect to the endpoint',
-      icon: 'warning',
-      color: 'white',
-      textColor: 'orange'
-    })
     return null
   }
 
