@@ -58,19 +58,22 @@ import { mapGetters, mapActions } from 'vuex'
 import {
   GET_SUBNETS,
   SET_NODE_ID,
-  SET_ENDPOINT,
   GET_NODE_INFO,
   GET_VALIDATORS,
   GET_BLOCKCHAINS,
-  SET_ENDPOINTS_MEMORY,
   GET_PENDING_VALIDATORS,
-  REMOVE_ENDPOINTS_MEMORY,
   GET_ASSETS_BY_BLOCKCHAINS
 } from '../store/app/types'
 
 import {
   UPDATE_UI
 } from '../store/ui/types'
+
+import {
+  SET_ENDPOINT,
+  SET_ENDPOINTS_MEMORY,
+  REMOVE_ENDPOINTS_MEMORY
+} from '../store/memory/types'
 
 import {
   _getNodeId

@@ -405,11 +405,14 @@ const statusInfo = {
 
 import {
   GET_VALIDATORS,
-  SET_CURRENT_SUBNET,
   GET_PENDING_VALIDATORS,
-  SET_CURRENT_BLOCKCHAIN,
   GET_ASSETS_BY_BLOCKCHAINS
 } from './../store/app/types'
+
+import {
+  SET_CURRENT_SUBNET,
+  SET_CURRENT_BLOCKCHAIN
+} from './../store/memory/types'
 
 export default {
   name: 'PageSearch',

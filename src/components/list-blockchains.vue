@@ -25,9 +25,12 @@ import { mapGetters, mapActions } from 'vuex'
 import {
   GET_VALIDATORS,
   GET_PENDING_VALIDATORS,
-  SET_CURRENT_BLOCKCHAIN,
   GET_ASSETS_BY_BLOCKCHAINS
 } from './../store/app/types'
+
+import {
+  SET_CURRENT_BLOCKCHAIN
+} from './../store/memory/types'
 
 export default {
   name: 'ListBlockchains',

@@ -25,10 +25,13 @@ import { mapGetters, mapActions } from 'vuex'
 
 import {
   GET_VALIDATORS,
-  SET_CURRENT_SUBNET,
   GET_PENDING_VALIDATORS,
   GET_ASSETS_BY_BLOCKCHAINS
 } from './../store/app/types'
+
+import {
+  SET_CURRENT_SUBNET
+} from './../store/memory/types'
 
 export default {
   name: 'ListSubnets',

@@ -6,7 +6,6 @@ import {
   SET_SUBNETS,
   GET_NODE_ID,
   SET_NODE_ID,
-  SET_ENDPOINT,
   GET_NODE_INFO,
   SET_NODE_INFO,
   INIT_ENDPOINT,
@@ -24,9 +23,13 @@ import {
   GET_PENDING_VALIDATORS,
   SET_PENDING_VALIDATORS,
   SET_PENDING_DELEGATORS,
-  SET_CURRENT_BLOCKCHAIN,
   GET_ASSETS_BY_BLOCKCHAINS
 } from './types'
+
+import {
+  SET_ENDPOINT,
+  SET_CURRENT_BLOCKCHAIN
+} from './../memory/types'
 
 import {
   UPDATE_UI
@@ -107,14 +110,14 @@ async function initApp ({ dispatch, getters }) {
   }, 6000)
 }
 
-async function initEndpoint ({ commit }) {
+async function initEndpoint ({ commit, getters }) {
   const local = network.endpointUrls[1]
   const response = await _getNodeId({ endpoint: local.url })
   if (response.data.error) {
-    const response = await _getNodeId({ endpoint: local.url })
+    const response = await _getNodeId({ endpoint: getters.networkEndpoint.url })
     if (response.data.error) return
+
     const nodeID = response.data.result.nodeID
-    commit(SET_ENDPOINT, { endpoint: network.endpointUrls[0] })
     commit(SET_NODE_ID, { nodeID })
     return
   }
@@ -158,9 +161,11 @@ async function getBlockchains ({ commit, getters }, { endpoint }) {
   )
 
   commit(SET_BLOCKCHAINS, { blockchains })
-  commit(SET_CURRENT_BLOCKCHAIN, {
-    blockchain: blockchains[0]
-  })
+  if (!getters.currentBlockchain.id) {
+    commit(SET_CURRENT_BLOCKCHAIN, {
+      blockchain: blockchains[0]
+    })
+  }
 }
 
 async function getSubnets ({ commit }, { endpoint }) {

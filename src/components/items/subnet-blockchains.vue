@@ -59,9 +59,12 @@
 import { mapActions, mapGetters } from 'vuex'
 
 import {
-  GET_VALIDATORS,
-  SET_CURRENT_BLOCKCHAIN
+  GET_VALIDATORS
 } from './../../store/app/types'
+
+import {
+  SET_CURRENT_BLOCKCHAIN
+} from './../../store/memory/types'
 
 export default {
   name: 'SubnetBlockchains',
