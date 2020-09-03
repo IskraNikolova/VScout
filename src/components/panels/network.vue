@@ -65,7 +65,6 @@
       <div class="col-md-2 col-xs-10">
         <div v-if="isBlockchainView">
           <div id="f-size12" class="q-pb-md text-medium">ASSETS</div>
-          <div class="q-mb-md" v-if="currentBlockchain.name === 'X-Chain'">
             <div class="q-pb-md q-pr-md ">
               <span class="text-h6 text-orange">
                 <animated-number
@@ -73,14 +72,8 @@
                   :formatValue="format"
                   :duration="3000"
                 />
-              </span><span> on {{ currentBlockchain.name }}</span>
+              </span><span> on X-Chain</span>
             </div>
-          </div>
-          <div v-else class="q-mb-md">
-            <div class="q-pb-md q-pr-md ">
-              <span class="text-h6 text-orange">None</span>
-            </div>
-          </div>
           <div class="q-pt-xs">
             <q-btn-dropdown
               color="grey"
@@ -89,12 +82,15 @@
               no-caps
               label="Smart Digital Assets"
             >
-              <div class="q-pa-md" v-if="currentBlockchain.name === 'X-Chain'">
-                <small>
-                  Assets on {{ currentBlockchain.name }}
-                </small>
-                <q-separator />
+              <div class="q-pa-md">
+                <q-input v-model="search" label="Search..." @input="onSearch"/>
               </div>
+              <q-item v-if="assetSearch" clickable v-close-popup @click="onOpenAssetInfo(assetSearch)">
+                <q-item-section avatar>
+                  <q-badge color="accent">{{ assetSearch.symbol }}</q-badge>
+                </q-item-section>
+                <q-item-section>{{ assetSearch.name }}</q-item-section>
+              </q-item>
               <q-infinite-scroll @load="onLoad" :offset="250">
                 <div v-for="(asset, index) in items" :key="index" class="caption">
                   <q-item clickable v-close-popup style="max-width: 200px;" @click="onOpenAssetInfo(asset)">
@@ -102,7 +98,7 @@
                       <q-badge color="accent">{{ asset.symbol }}</q-badge>
                     </q-item-section>
                    <q-item-section>{{ asset.name }}</q-item-section>
-                </q-item>
+                  </q-item>
                 </div>
                 <template v-slot:loading>
                   <div class="row justify-center q-my-md">
@@ -152,7 +148,9 @@
 import { mapGetters } from 'vuex'
 import AnimatedNumber from 'animated-number-vue'
 
-import { _getAssetsWithOffset } from './../../modules/network'
+import {
+  _getAssetsWithOffset
+} from './../../modules/network'
 
 import {
   openURL
@@ -181,7 +179,9 @@ export default {
   },
   data () {
     return {
-      items: []
+      items: [],
+      search: '',
+      assetSearch: null
     }
   },
   async created () {
@@ -199,6 +199,26 @@ export default {
     ])
   },
   methods: {
+    async onSearch () {
+      const filter = this.search.toLowerCase()
+      if (!filter) {
+        const assets = await _getAssetsWithOffset(0)
+        this.items = assets
+        return
+      }
+
+      this.filter(filter)
+    },
+    filter (filter) {
+      const result = this.items.filter(
+        a => a.name.toLowerCase().includes(filter) ||
+        a.alias.toLowerCase().includes(filter) ||
+        a.symbol.toLowerCase().includes(filter)
+      )
+      if (result.length > 0) {
+        this.items = result
+      }
+    },
     format (value) {
       return `${Math.round(value)}`
     },
@@ -216,8 +236,10 @@ export default {
     },
     async onLoad (index, done) {
       const assets = await _getAssetsWithOffset(index * 100)
+      const filter = this.search.toLowerCase()
       if (this.items) {
         this.items = this.items.concat(assets)
+        if (filter) this.filter(filter)
         done()
       }
     }

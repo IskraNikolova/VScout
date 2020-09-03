@@ -28,6 +28,19 @@ export const _getAssetsCount = async () => {
   }
 }
 
+export const _getAssetById = async (id) => {
+  try {
+    const req = await axios
+      .get(network.explorerApiBaseUrl + c.assestById(id))
+
+    if (!req.data) return
+
+    return req.data
+  } catch (err) {
+    return null
+  }
+}
+
 export const _getAssetsWithOffset = async (offset) => {
   try {
     const req = await axios
