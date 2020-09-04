@@ -5,24 +5,16 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import {
-  INIT_APP,
   SET_NETWORK_STATUS
 } from './store/app/types'
 
 export default {
   name: 'App',
-  created () {
-    this.initApp()
+  mounted () {
     setInterval(() => {
       this.$store.commit(SET_NETWORK_STATUS, { hasNetworkConnection: window.navigator.onLine })
     }, 1000)
-  },
-  methods: {
-    ...mapActions({
-      initApp: INIT_APP
-    })
   }
 }
 </script>

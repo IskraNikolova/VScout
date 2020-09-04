@@ -12,7 +12,7 @@ export default function () {
     validators: [],
     delegators: [],
     blockchains: [],
-    assetsCount: 0,
+    assetsCount: 1,
     endpointsMemory: [],
     pendingValidators: [],
     defaultValidators: [],

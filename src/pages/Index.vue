@@ -35,22 +35,21 @@ import {
 } from 'vuex'
 
 import {
+  INIT_APP,
   GET_VALIDATORS,
   GET_PENDING_VALIDATORS
 } from '../store/app/types'
 
-import TableDelegators from './../components/panels/table-delegators'
-
 export default {
   name: 'PageIndex',
   components: {
-    Error: () => import('components/panels/error'),
-    Faqs: () => import('components/panels/faqs'),
-    Stake: () => import('components/panels/stake'),
-    Network: () => import('components/panels/network'),
     Node: () => import('components/panels/node'),
+    Network: () => import('components/panels/network'),
+    Stake: () => import('components/panels/stake'),
+    Error: () => import('components/panels/error'),
     TableValidators: () => import('components/panels/table-validators'),
-    TableDelegators
+    Faqs: () => import('components/panels/faqs'),
+    TableDelegators: () => import('components/panels/table-delegators')
   },
   computed: {
     ...mapGetters([
@@ -62,8 +61,12 @@ export default {
       'pendingValidators'
     ])
   },
+  async created () {
+    await this.initApp()
+  },
   methods: {
     ...mapActions({
+      initApp: INIT_APP,
       getValidators: GET_VALIDATORS,
       getPendingValidators: GET_PENDING_VALIDATORS
     }),

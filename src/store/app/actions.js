@@ -84,7 +84,6 @@ async function initApp ({ dispatch, getters }) {
   }
 
   // dispatch(SUBSCRIBE_TO_EVENT)
-
   setInterval(async () => {
     try {
       await Promise.all([
@@ -159,6 +158,8 @@ async function getBlockchains (
 async function initBlockchainView (
   { commit, getters },
   { endpoint = getters.networkEndpoint.url }) {
+  if (getters.currentBlockchain.id) return
+
   const response = await _getBlockchains({ endpoint })
   if (response.data.error) return null
 
@@ -168,27 +169,27 @@ async function initBlockchainView (
 
   commit(SET_BLOCKCHAINS, { blockchains })
 
-  if (!getters.currentBlockchain.id) {
-    let blockchain = blockchains[0]
-    const res = await _getBlockchainStatus({
-      endpoint: getters.networkEndpoint.url,
-      params: {
-        blockchainID: blockchain.id
-      }
-    })
-
-    if (!res.data.error) {
-      blockchain = {
-        ...blockchain,
-        status: res.data.result.status
-      }
+  let blockchain = blockchains[0]
+  const res = await _getBlockchainStatus({
+    endpoint: getters.networkEndpoint.url,
+    params: {
+      blockchainID: blockchain.id
     }
+  })
 
-    commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
+  if (!res.data.error) {
+    blockchain = {
+      ...blockchain,
+      status: res.data.result.status
+    }
   }
+
+  commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
 }
 
-async function getSubnets ({ commit, getters }, { endpoint = getters.networkEndpoint.url }) {
+async function getSubnets (
+  { commit, getters },
+  { endpoint = getters.networkEndpoint.url }) {
   const response = await _getSubnets({
     endpoint
   })

@@ -6,6 +6,6 @@ export default function () {
     isBlockchainView: true,
     networkEndpoint: network.endpointUrls[0],
     currentSubnet: { id: network.defaultSubnetID },
-    currentBlockchain: { subnetID: network.defaultSubnetID }
+    currentBlockchain: { subnetID: network.defaultSubnetID, name: 'X-Chain' }
   }
 }

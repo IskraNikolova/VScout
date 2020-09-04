@@ -61,8 +61,7 @@ import {
   GET_NODE_INFO,
   GET_VALIDATORS,
   GET_BLOCKCHAINS,
-  GET_PENDING_VALIDATORS,
-  GET_ASSETS_BY_BLOCKCHAINS
+  GET_PENDING_VALIDATORS
 } from '../store/app/types'
 
 import {
@@ -102,12 +101,11 @@ export default {
   },
   methods: {
     ...mapActions({
-      getValidators: GET_VALIDATORS,
-      getPendingValidators: GET_PENDING_VALIDATORS,
-      getNodeInfo: GET_NODE_INFO,
-      getBlockchains: GET_BLOCKCHAINS,
       getSubnets: GET_SUBNETS,
-      getAssetByBlockchain: GET_ASSETS_BY_BLOCKCHAINS
+      getNodeInfo: GET_NODE_INFO,
+      getValidators: GET_VALIDATORS,
+      getBlockchains: GET_BLOCKCHAINS,
+      getPendingValidators: GET_PENDING_VALIDATORS
     }),
     onRemoveFromMem (endpoint, event) {
       event.stopImmediatePropagation()
@@ -157,7 +155,6 @@ export default {
       await this.getPendingValidators({ endpoint: endpoint.url })
       await this.getBlockchains({ endpoint: endpoint.url })
       await this.getSubnets({ endpoint: endpoint.url })
-      await this.getAssetByBlockchain()
     },
     onError (message) {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })
