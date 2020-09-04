@@ -209,8 +209,7 @@ export default {
       }
     },
     getLocalString (val) {
-      if (!val) return val
-      return val.toLocaleString()
+      if (val) return val.toLocaleString()
     },
     copyToClipboard (id) {
       if (!id) return

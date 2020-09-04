@@ -69,9 +69,7 @@ export default {
         returnValue = value / 10 ** denomination
       }
 
-      if (!returnValue) return
-
-      return returnValue.toLocaleString()
+      if (returnValue) return returnValue.toLocaleString()
     }
   }
 }

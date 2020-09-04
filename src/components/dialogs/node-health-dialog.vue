@@ -49,7 +49,7 @@
               <span>{{ duration }}</span>
               <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Duration is the execution duration of the last health check in milliseconds.</q-tooltip>
             </div>
-            <div  v-if="timeOfFirstFailure">
+            <div>
               <small>Time Of First Failure: </small>
               <span>{{ timeOfFirstFailure }}</span>
               <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Time of first failure is the time of the initial transitional failure.</q-tooltip>
@@ -63,16 +63,17 @@
           <q-separator vertical />
           <q-item-section class="q-pl-md">
             <div class="q-mb-md">Chains Default Bootstrapped</div>
-            <div v-if="error">
+            <div>
               <small>Error: </small>
-              <span class="text-negative">{{ error }}</span>
+              <span class="text-negative" v-if="error">{{ error }}</span>
+              <span class="text-negative" v-else> --- </span>
             </div>
              <div>
               <small>Duration: </small>
               <span>{{ duration2 }}</span>
             </div>
             <div>
-              <small v-if="timeOfFirstFailure2">Time Of First Failure: </small>
+              <small>Time Of First Failure: </small>
               <span>{{ timeOfFirstFailure2 }}</span>
             </div>
             <div>

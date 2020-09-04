@@ -408,11 +408,7 @@ export default {
   },
   methods: {
     onClick (link) {
-      if (!link) return
-      try {
-        openURL(link)
-      } catch (err) {
-      }
+      if (link) openURL(link)
     },
     onDelegate (validator) {
       this.$refs
@@ -420,15 +416,12 @@ export default {
         .openDelegate(validator)
     },
     getLocalString (val) {
-      if (!val) return val
-      return val.toLocaleString()
+      if (val) return val.toLocaleString()
     },
     onAddIdentification () {
       this.$refs.addIdentificationRef.openAddId()
     },
     copyToClipboard (id) {
-      if (!id) return
-
       copyToClipboard(id)
       this.$q.notify({
         message: 'Copied to clipboard!',
@@ -462,8 +455,7 @@ export default {
       })
     },
     formatDate (time) {
-      if (!time) return
-      return date(time)
+      if (time) return date(time)
     }
   }
 }
