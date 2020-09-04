@@ -13,7 +13,6 @@ import {
   SET_VALIDATORS,
   GET_NODE_HEALTH,
   SET_NODE_HEALTH,
-  INIT_VALIDATORS,
   GET_BLOCKCHAINS,
   SET_BLOCKCHAINS,
   SET_ASSETS_COUNT,
@@ -52,7 +51,6 @@ import {
 
 import {
 // _initializeNetwork
-// _subscribeToContractEvents
 } from './../../modules/networkRpc'
 
 import {
@@ -72,32 +70,26 @@ async function initApp ({ dispatch, getters }) {
       dispatch(INIT_BLOCKCHAIN_VIEW, {}),
       dispatch(GET_NODE_INFO),
       dispatch(GET_NODE_HEALTH),
-      // dispatch(GET_SUBNETS, {}),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
-      dispatch(INIT_VALIDATORS, {
+      dispatch(GET_VALIDATORS, {
         subnetID: getters.subnetID
       })
       // _initializeNetwork()
     ])
   } catch (err) {
-    console.log(err)
   }
 
-  // dispatch(SUBSCRIBE_TO_EVENT)
   setInterval(async () => {
     try {
       await Promise.all([
         dispatch(GET_NODE_HEALTH),
         dispatch(GET_NODE_INFO),
-        dispatch(GET_VALIDATORS, {
-          endpoint: getters.networkEndpoint.url
-        }),
+        dispatch(GET_VALIDATORS, {}),
         dispatch(GET_PENDING_VALIDATORS, {
           endpoint: getters.networkEndpoint.url
         })
       ])
     } catch (err) {
-      console.log(err)
     }
   }, 6000)
 }
@@ -227,13 +219,10 @@ async function getAssetsCount ({ commit }) {
   commit(SET_ASSETS_COUNT, { assetsCount })
 }
 
-async function initValidators (
+async function getValidators (
   { commit, getters },
-  { subnetID = network.defaultSubnetID }) {
-  const response = await _getValidators({
-    subnetID,
-    endpoint: getters.networkEndpoint.url
-  })
+  { subnetID = network.defaultSubnetID, endpoint = getters.networkEndpoint.url }) {
+  const response = await _getValidators({ subnetID, endpoint })
 
   if (response.data.error) {
     commit(UPDATE_UI, { doesItConnect: true })
@@ -245,6 +234,8 @@ async function initValidators (
 
   if (typeof validators === 'undefined' ||
     validators === null) return
+
+  if (validators.length === getters.validators.length) return
 
   const { v, d } = splitAccounts(validators)
 
@@ -268,47 +259,6 @@ async function initValidators (
       defaultValidators: res.validators
     })
   }
-}
-
-async function getValidators (
-  { commit, getters },
-  { subnetID = getters.subnetID, endpoint }) {
-  const response = await _getValidators({
-    subnetID,
-    endpoint
-  })
-
-  if (response.data.error) return null
-
-  let { validators } = response.data.result
-  if (typeof validators === 'undefined' ||
-    validators === null) validators = []
-
-  if (validators.length === getters.validators.length) return
-
-  const { v, d } = splitAccounts(validators)
-  const delegators = mapDelegators(d)
-  commit(SET_DELEGATORS, { delegators })
-
-  const res = await validatorProcessing(v, d, getters.defaultValidators)
-
-  commit(SET_VALIDATORS, {
-    validators: res.validators
-  })
-
-  commit(SET_STAKED_AVA, {
-    all: res.allStake,
-    validatedStake: res.validatedStake,
-    delegatedStake: res.delegatedStake
-  })
-
-  if (subnetID === network.defaultSubnetID) {
-    commit(SET_DEFAULT_VALIDATORS, {
-      defaultValidators: res.validators
-    })
-  }
-
-  return true
 }
 
 async function getPendingValidators (
@@ -408,34 +358,19 @@ async function getNodeHealth ({ commit, getters }) {
   if (typeof response === 'undefined' ||
     response === null) return
 
-  if (response.data.error) {
-    commit(SET_NODE_HEALTH, {
-      nodeID: getters.nodeID,
-      nodeHealth: { healthy: false }
-    })
-    commit(UPDATE_UI, { doesItConnect: true })
+  let doesItConnect = true
+  let nodeHealth = { healthy: false }
+  if (!response.data.error) {
+    doesItConnect = false
+    nodeHealth = response.data.result
   }
 
-  commit(UPDATE_UI, { doesItConnect: false })
   commit(SET_NODE_HEALTH, {
     nodeID: getters.nodeID,
-    nodeHealth: response.data.result
+    nodeHealth
   })
+  commit(UPDATE_UI, { doesItConnect })
 }
-
-// function subscribeToEvents ({ commit, dispatch }) {
-//   const sentMessageHandler = async (error, result) => {
-//     if (error) console.error(error)
-//     console.log(result)
-//     // TODO UPDATE VALIDATOR INFO
-//   }
-
-//   _subscribeToContractEvents({
-//     eventName: 'SetValidatorInfoEvent',
-//     filters: {},
-//     handler: sentMessageHandler
-//   })
-// }
 
 export default {
   [INIT_APP]: initApp,
@@ -446,7 +381,6 @@ export default {
   [GET_VALIDATORS]: getValidators,
   [GET_NODE_HEALTH]: getNodeHealth,
   [GET_BLOCKCHAINS]: getBlockchains,
-  [INIT_VALIDATORS]: initValidators,
   [INIT_BLOCKCHAIN_VIEW]: initBlockchainView,
   [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsCount,
   [GET_PENDING_VALIDATORS]: getPendingValidators
