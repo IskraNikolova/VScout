@@ -343,7 +343,9 @@
           color="grey"
         />
       </q-page-sticky>
-      <router-view />
+      <keep-alive>
+        <router-view />
+      </keep-alive>
        <!-- place QPageScroller at end of page -->
         <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
           <q-btn fab icon="keyboard_arrow_up" color="orange" />
