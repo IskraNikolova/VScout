@@ -6,7 +6,7 @@
           <q-toolbar-title @click="$router.push('/')" style="cursor:pointer;margin-left: 12px;">
             VScout.io <q-icon name="home" color="grey" />
           </q-toolbar-title>
-          <q-btn push flat id="logo-sim" label="calculator">
+          <q-btn push flat id="logo-sim" label="calculator" @click="calculate">
             <q-popup-proxy>
               <q-banner class="q-pa-md" dense style="width: 430px;">
                 <div class="q-pb-md">Reward Calculator</div>
@@ -360,16 +360,12 @@ import {
   GET_BLOCKCHAINS
 } from './../store/app/types'
 
-import ListSubnets from './../components/list-subnets'
-import SwitchEndpoint from './../components/switch-endpoint'
-import ListBlockchains from './../components/list-blockchains'
-
 export default {
   name: 'MainLayout',
   components: {
-    ListSubnets,
-    SwitchEndpoint,
-    ListBlockchains
+    ListSubnets: () => import('components/list-subnets'),
+    SwitchEndpoint: () => import('components/switch-endpoint'),
+    ListBlockchains: () => import('components/list-blockchains')
   },
   computed: {
     ...mapGetters([
@@ -391,13 +387,8 @@ export default {
       weekly: 0.00,
       drawer: false,
       percentReward: 4,
-      btnNetwork: false,
-      stakeAmount: 2000,
-      switchNet: '#target-el'
+      stakeAmount: 2000
     }
-  },
-  mounted () {
-    this.calculate()
   },
   methods: {
     ...mapActions({

@@ -22,9 +22,9 @@ export default function () {
     hasNodeConnection: true,
     networkEndpoint: network.endpointUrls[0],
     nodeInfo: {
-      networkID: '',
+      networkID: '4',
       networkName: '',
-      nodeVersion: '',
+      nodeVersion: 'avalanche/',
       peers: []
     }
   }
