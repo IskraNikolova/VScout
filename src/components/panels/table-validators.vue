@@ -291,6 +291,7 @@ import {
 } from 'quasar'
 
 import { date } from './../../modules/time.js'
+const { network } = require('./../../modules/config').default
 import { UPDATE_UI } from './../../store/ui/types'
 
 import { SET_SUBNET_ID } from './../../store/app/types'
@@ -447,7 +448,7 @@ export default {
       this.$emit('getValidators', this.type)
     },
     onGetDefaultValidators () {
-      this.$store.commit(SET_SUBNET_ID, { subnetID: '11111111111111111111111111111111LpoYY' })
+      this.$store.commit(SET_SUBNET_ID, { subnetID: network.defaultSubnetID })
       this.$emit('getDefaultValidators')
     },
     onSwitchAccounts () {

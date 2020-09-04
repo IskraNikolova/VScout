@@ -24,6 +24,7 @@
 import { mapGetters, mapActions } from 'vuex'
 
 import {
+  SET_SUBNET_ID,
   GET_VALIDATORS,
   GET_PENDING_VALIDATORS,
   GET_ASSETS_BY_BLOCKCHAINS
@@ -61,6 +62,7 @@ export default {
     },
     async onSelectSubnet (subnet) {
       this.$store.commit(SET_CURRENT_SUBNET, { subnet })
+      this.$store.commit(SET_SUBNET_ID, { subnetID: subnet.id })
       await this.getValidators({
         subnetID: subnet.id,
         endpoint: this.networkEndpoint.url

@@ -24,6 +24,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import {
   GET_VALIDATORS,
+  SET_SUBNET_ID,
   GET_PENDING_VALIDATORS,
   GET_ASSETS_BY_BLOCKCHAINS
 } from './../store/app/types'
@@ -53,6 +54,7 @@ export default {
     }),
     async onSelectBlockchain (blockchain) {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
+      this.$store.commit(SET_SUBNET_ID, { subnetID: blockchain.subnetID })
       await Promise.all([
         this.getAssets(),
         this.getValidators({

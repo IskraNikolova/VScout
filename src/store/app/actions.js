@@ -94,11 +94,9 @@ async function initApp ({ dispatch, getters }) {
         dispatch(GET_NODE_HEALTH),
         dispatch(GET_NODE_INFO),
         dispatch(GET_VALIDATORS, {
-          subnetID: getters.subnetID,
           endpoint: getters.networkEndpoint.url
         }),
         dispatch(GET_PENDING_VALIDATORS, {
-          subnetID: getters.subnetID,
           endpoint: getters.networkEndpoint.url
         })
       ])
