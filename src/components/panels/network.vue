@@ -193,7 +193,6 @@ export default {
     ...mapGetters([
       'assetsCount',
       'currentSubnet',
-      'blockchainByID',
       'isBlockchainView',
       'currentBlockchain',
       'isDefaultSubnetID'

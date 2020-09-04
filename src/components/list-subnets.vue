@@ -42,7 +42,6 @@ export default {
       'subnetID',
       'validators',
       'blockchains',
-      'currentSubnet',
       'blockchainByID',
       'networkEndpoint',
       'pendingValidators'

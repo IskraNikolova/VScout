@@ -108,7 +108,6 @@ export default {
       'stakedAVA',
       'delegatedStake',
       'validatedStake',
-      'txsFor24H',
       'validators',
       'delegators',
       'pendingValidators',

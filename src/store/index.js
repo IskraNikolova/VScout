@@ -14,7 +14,7 @@ const vuexLocal = new VuexPersistence({
     const persistState = { ...state }
     // don't persist UI and App state
     delete persistState.ui
-    delete persistState.app
+    // delete persistState.app
     return persistState
   }
 })

@@ -71,8 +71,7 @@ export default {
   computed: {
     ...mapGetters([
       'currentSubnet',
-      'blockchainByID',
-      'networkEndpoint'
+      'blockchainByID'
     ]),
     vmID: function (id) {
       if (!id) return

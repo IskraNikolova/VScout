@@ -384,7 +384,6 @@ export default {
     ...mapGetters([
       'nodeID',
       'validators',
-      'networkEndpoint',
       'pendingValidators'
     ]),
     isYourNode: function (id) {

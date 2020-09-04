@@ -183,7 +183,6 @@ export default {
     ...mapGetters([
       'nodeID',
       'delegators',
-      'networkEndpoint',
       'pendingDelegators'
     ]),
     visibleColumns: function () {
