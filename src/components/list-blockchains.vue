@@ -23,8 +23,8 @@
 import { mapGetters, mapActions } from 'vuex'
 
 import {
-  GET_VALIDATORS,
   SET_SUBNET_ID,
+  GET_VALIDATORS,
   GET_PENDING_VALIDATORS,
   GET_ASSETS_BY_BLOCKCHAINS
 } from './../store/app/types'

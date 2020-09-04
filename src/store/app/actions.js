@@ -17,6 +17,7 @@ import {
   GET_BLOCKCHAINS,
   SET_BLOCKCHAINS,
   SET_ASSETS_COUNT,
+  INIT_BLOCKCHAIN_VIEW,
   SET_DEFAULT_VALIDATORS,
   GET_PENDING_VALIDATORS,
   SET_PENDING_VALIDATORS,
@@ -68,18 +69,14 @@ async function initApp ({ dispatch, getters }) {
   try {
     await Promise.all([
       dispatch(INIT_ENDPOINT),
+      dispatch(INIT_BLOCKCHAIN_VIEW, {}),
+      dispatch(GET_NODE_INFO),
+      dispatch(GET_NODE_HEALTH),
+      // dispatch(GET_SUBNETS, {}),
+      dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(INIT_VALIDATORS, {
         subnetID: getters.subnetID
-      }),
-      dispatch(GET_NODE_HEALTH),
-      dispatch(GET_NODE_INFO),
-      dispatch(GET_BLOCKCHAINS, {
-        endpoint: getters.networkEndpoint.url
-      }),
-      dispatch(GET_SUBNETS, {
-        endpoint: getters.networkEndpoint.url
-      }),
-      dispatch(GET_ASSETS_BY_BLOCKCHAINS)
+      })
       // _initializeNetwork()
     ])
   } catch (err) {
@@ -123,9 +120,9 @@ async function initEndpoint ({ commit, getters }) {
   commit(SET_NODE_ID, { nodeID })
 }
 
-async function getBlockchains ({ commit, getters }, { endpoint }) {
-  if (!endpoint) endpoint = getters.networkEndpoint.url
-
+async function getBlockchains (
+  { commit, getters },
+  { endpoint = getters.networkEndpoint.url }) {
   const response = await _getBlockchains({ endpoint })
   if (response.data.error) return null
 
@@ -157,14 +154,41 @@ async function getBlockchains ({ commit, getters }, { endpoint }) {
   )
 
   commit(SET_BLOCKCHAINS, { blockchains })
+}
+
+async function initBlockchainView (
+  { commit, getters },
+  { endpoint = getters.networkEndpoint.url }) {
+  const response = await _getBlockchains({ endpoint })
+  if (response.data.error) return null
+
+  const { blockchains } = response.data.result
+  if (typeof blockchains === 'undefined' ||
+    blockchains === null) return
+
+  commit(SET_BLOCKCHAINS, { blockchains })
+
   if (!getters.currentBlockchain.id) {
-    commit(SET_CURRENT_BLOCKCHAIN, {
-      blockchain: blockchains[0]
+    let blockchain = blockchains[0]
+    const res = await _getBlockchainStatus({
+      endpoint: getters.networkEndpoint.url,
+      params: {
+        blockchainID: blockchain.id
+      }
     })
+
+    if (!res.data.error) {
+      blockchain = {
+        ...blockchain,
+        status: res.data.result.status
+      }
+    }
+
+    commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
   }
 }
 
-async function getSubnets ({ commit }, { endpoint }) {
+async function getSubnets ({ commit, getters }, { endpoint = getters.networkEndpoint.url }) {
   const response = await _getSubnets({
     endpoint
   })
@@ -422,6 +446,7 @@ export default {
   [GET_NODE_HEALTH]: getNodeHealth,
   [GET_BLOCKCHAINS]: getBlockchains,
   [INIT_VALIDATORS]: initValidators,
-  [GET_PENDING_VALIDATORS]: getPendingValidators,
-  [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsCount
+  [INIT_BLOCKCHAIN_VIEW]: initBlockchainView,
+  [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsCount,
+  [GET_PENDING_VALIDATORS]: getPendingValidators
 }

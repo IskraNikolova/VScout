@@ -75,23 +75,27 @@
             flat
             label="blockchains"
             class="text-regular text-grey"
+            @click="onGetBlockchains"
           >
           <q-menu>
-          <div class="no-wrap q-pa-md text-grey">
-            Switch To Blockchain
-          </div>
-          <q-separator />
-          <list-blockchains />
+            <div class="no-wrap q-pa-md text-grey">
+              Switch To Blockchain
+              <q-spinner-dots v-if="blockchains.length < 1" />
+            </div>
+            <q-separator />
+            <list-blockchains />
             </q-menu>
           </q-btn>
           <q-btn
             flat
             label="subnets"
             class="text-regular text-grey"
+            @click="onGetSubnets"
           >
           <q-menu>
             <div class="no-wrap q-pa-md text-grey">
               Switch To Subnet
+              <q-spinner-dots v-if="subnets.length < 1" />
             </div>
             <q-separator />
             <list-subnets />
@@ -252,7 +256,7 @@
             </q-item-section>
 
             <q-item-section>
-              <span @click="isB=true">Blockchains</span>
+              <span @click="onBlockchainClick">Blockchains</span>
               <q-dialog v-model="isB" transition-show="rotate" transition-hide="rotate">
                 <q-card>
                   <q-card-section>
@@ -260,6 +264,7 @@
                   </q-card-section>
 
                   <q-card-section class="q-pt-none">
+                    <q-spinner-dots v-if="blockchains.length < 1" />
                     <list-blockchains />
                   </q-card-section>
 
@@ -277,7 +282,7 @@
             </q-item-section>
 
             <q-item-section>
-              <span @click="isS=true">Subnets</span>
+              <span @click="onSubnetClick">Subnets</span>
               <q-dialog v-model="isS" transition-show="rotate" transition-hide="rotate">
                 <q-card>
                   <q-card-section>
@@ -285,6 +290,7 @@
                   </q-card-section>
 
                   <q-card-section class="q-pt-none">
+                    <q-spinner-dots v-if="subnets.length < 1" />
                     <list-subnets />
                   </q-card-section>
 
@@ -347,7 +353,12 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+
+import {
+  GET_SUBNETS,
+  GET_BLOCKCHAINS
+} from './../store/app/types'
 
 import ListSubnets from './../components/list-subnets'
 import SwitchEndpoint from './../components/switch-endpoint'
@@ -362,8 +373,10 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'hasNetworkConnection',
-      'networkEndpoint'
+      'subnets',
+      'blockchains',
+      'networkEndpoint',
+      'hasNetworkConnection'
     ])
   },
   data () {
@@ -387,6 +400,10 @@ export default {
     this.calculate()
   },
   methods: {
+    ...mapActions({
+      getSubnets: GET_SUBNETS,
+      getBlockchains: GET_BLOCKCHAINS
+    }),
     calculate () {
       this.stakeTime = Math.round(this.stakeTime)
       const basePercY = 4
@@ -400,6 +417,20 @@ export default {
         this.result = (this.stakeAmount * basePercY) / 100
       }
       this.weekly = this.result / 52
+    },
+    async onGetBlockchains () {
+      await this.getBlockchains({})
+    },
+    async onGetSubnets () {
+      await this.getSubnets({})
+    },
+    async onBlockchainClick () {
+      this.isB = true
+      await this.getBlockchains({})
+    },
+    async onSubnetClick () {
+      this.isS = true
+      await this.getSubnets({})
     },
     search () {
       if (!this.filter) return
