@@ -94,6 +94,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'subnetID',
       'validators',
       'endpointsMemory',
       'networkEndpoint'
@@ -142,7 +143,13 @@ export default {
     },
     async onSuccess (endpoint) {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })
-      await this.getNodeInfo()
+      await Promise.all([
+        this.getNodeInfo(),
+        this.getValidators({ endpoint: endpoint.url, subnetID: this.subnetID }),
+        this.getPendingValidators({ endpoint: endpoint.url, subnetID: this.subnetID }),
+        this.getBlockchains({ endpoint: endpoint.url }),
+        this.getSubnets({ endpoint: endpoint.url })
+      ])
       this.$q.notify({
         textColor: 'black',
         color: 'white',
@@ -151,10 +158,6 @@ export default {
         timeout: 2000,
         icon: 'done'
       })
-      await this.getValidators({ endpoint: endpoint.url })
-      await this.getPendingValidators({ endpoint: endpoint.url })
-      await this.getBlockchains({ endpoint: endpoint.url })
-      await this.getSubnets({ endpoint: endpoint.url })
     },
     onError (message) {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })
