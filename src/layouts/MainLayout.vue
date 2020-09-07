@@ -147,6 +147,7 @@
           <div class="col" @click="$router.push('/')" style="cursor:pointer;margin-top: 7px;margin-left: 7px;">
             VScout.io
           </div>
+          <a style="text-decoration: none;padding-top: 5px;padding-left: 20px;padding-right: 20px;" class="text-grey" href="#faqs">FAQ</a>
         </div>
         <div class="background-orange q-pb-md">
           <div>
