@@ -16,7 +16,6 @@ import {
   GET_BLOCKCHAINS,
   SET_BLOCKCHAINS,
   SET_ASSETS_COUNT,
-  INIT_BLOCKCHAIN_VIEW,
   SET_DEFAULT_VALIDATORS,
   GET_PENDING_VALIDATORS,
   SET_PENDING_VALIDATORS,
@@ -67,7 +66,7 @@ async function initApp ({ dispatch, getters }) {
   try {
     await Promise.all([
       dispatch(INIT_ENDPOINT),
-      dispatch(INIT_BLOCKCHAIN_VIEW, {}),
+      dispatch(GET_BLOCKCHAINS, {}),
       dispatch(GET_NODE_INFO),
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
@@ -145,38 +144,9 @@ async function getBlockchains (
   )
 
   commit(SET_BLOCKCHAINS, { blockchains })
-}
-
-async function initBlockchainView (
-  { commit, getters },
-  { endpoint = getters.networkEndpoint.url }) {
-  if (getters.currentBlockchain.id) return
-
-  const response = await _getBlockchains({ endpoint })
-  if (response.data.error) return null
-
-  const { blockchains } = response.data.result
-  if (typeof blockchains === 'undefined' ||
-    blockchains === null) return
-
-  commit(SET_BLOCKCHAINS, { blockchains })
-
-  let blockchain = blockchains[0]
-  const res = await _getBlockchainStatus({
-    endpoint: getters.networkEndpoint.url,
-    params: {
-      blockchainID: blockchain.id
-    }
-  })
-
-  if (!res.data.error) {
-    blockchain = {
-      ...blockchain,
-      status: res.data.result.status
-    }
+  if (!getters.currentBlockchain.id) {
+    commit(SET_CURRENT_BLOCKCHAIN, { blockchain: blockchains[0] })
   }
-
-  commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
 }
 
 async function getSubnets (
@@ -202,6 +172,7 @@ async function getSubnets (
     if (response.data.error) return
     const blockchainsId = response
       .data.result.blockchainIDs
+
     return {
       ...subnet,
       blockchainsId
@@ -381,7 +352,6 @@ export default {
   [GET_VALIDATORS]: getValidators,
   [GET_NODE_HEALTH]: getNodeHealth,
   [GET_BLOCKCHAINS]: getBlockchains,
-  [INIT_BLOCKCHAIN_VIEW]: initBlockchainView,
   [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsCount,
   [GET_PENDING_VALIDATORS]: getPendingValidators
 }

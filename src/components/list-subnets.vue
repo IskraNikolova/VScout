@@ -26,8 +26,7 @@ import { mapGetters, mapActions } from 'vuex'
 import {
   SET_SUBNET_ID,
   GET_VALIDATORS,
-  GET_PENDING_VALIDATORS,
-  GET_ASSETS_BY_BLOCKCHAINS
+  GET_PENDING_VALIDATORS
 } from './../store/app/types'
 
 import {
@@ -50,7 +49,6 @@ export default {
   methods: {
     ...mapActions({
       getValidators: GET_VALIDATORS,
-      getAssets: GET_ASSETS_BY_BLOCKCHAINS,
       getPendingValidators: GET_PENDING_VALIDATORS
     }),
     blockchainName (id) {

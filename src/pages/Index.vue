@@ -35,7 +35,6 @@ import {
 } from 'vuex'
 
 import {
-  INIT_APP,
   GET_VALIDATORS,
   GET_PENDING_VALIDATORS
 } from '../store/app/types'
@@ -61,12 +60,8 @@ export default {
       'pendingValidators'
     ])
   },
-  async created () {
-    await this.initApp()
-  },
   methods: {
     ...mapActions({
-      initApp: INIT_APP,
       getValidators: GET_VALIDATORS,
       getPendingValidators: GET_PENDING_VALIDATORS
     }),
