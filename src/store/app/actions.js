@@ -83,8 +83,11 @@ async function initApp ({ dispatch, getters }) {
       await Promise.all([
         dispatch(GET_NODE_HEALTH),
         dispatch(GET_NODE_INFO),
-        dispatch(GET_VALIDATORS, {}),
+        dispatch(GET_VALIDATORS, {
+          subnetID: getters.subnetID
+        }),
         dispatch(GET_PENDING_VALIDATORS, {
+          subnetID: getters.subnetID,
           endpoint: getters.networkEndpoint.url
         })
       ])
