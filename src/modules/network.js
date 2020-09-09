@@ -74,6 +74,11 @@ export const _getBlockchains = async ({ endpoint }) => {
   return response
 }
 
+export const _getHeight = async ({ endpoint }) => {
+  const response = await request(endpoint + c.platform, body(c.getHeight))
+  return response
+}
+
 export const _getBlockchainStatus = async ({ endpoint, params }) => {
   const response = await request(endpoint + c.platform, body(c.getBlockchainStatus, params))
   return response

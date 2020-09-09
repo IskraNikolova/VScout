@@ -35,3 +35,6 @@ export const GET_NODE_HEALTH = 'GET_NODE_HEALTH'
 export const SET_NODE_HEALTH = 'SET_NODE_HEALTH'
 
 export const SET_STAKED_AVA = 'SET_STAKED_AVA'
+
+export const GET_HEIGHT = 'GET_HEIGHT'
+export const SET_HEIGHT = 'SET_HEIGHT'

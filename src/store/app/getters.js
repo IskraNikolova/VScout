@@ -12,6 +12,10 @@ export function delegators (state) {
   return state.delegators
 }
 
+export function height (state) {
+  return state.height
+}
+
 export function validatorById (state) {
   return (id) => state
     .validators

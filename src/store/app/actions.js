@@ -2,6 +2,8 @@ import {
   INIT_APP,
   GET_SUBNETS,
   SET_SUBNETS,
+  GET_HEIGHT,
+  SET_HEIGHT,
   GET_NODE_ID,
   SET_NODE_ID,
   GET_NODE_INFO,
@@ -36,6 +38,7 @@ import {
   _health,
   _getPeers,
   _getNodeId,
+  _getHeight,
   _validates,
   _getSubnets,
   _getNetworkID,
@@ -72,7 +75,8 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(GET_VALIDATORS, {
         subnetID: getters.subnetID
-      })
+      }),
+      dispatch(GET_HEIGHT, {})
       // _initializeNetwork()
     ])
   } catch (err) {
@@ -82,6 +86,7 @@ async function initApp ({ dispatch, getters }) {
     try {
       await Promise.all([
         dispatch(GET_NODE_HEALTH),
+        dispatch(GET_HEIGHT, {}),
         dispatch(GET_NODE_INFO),
         dispatch(GET_VALIDATORS, {
           subnetID: getters.subnetID
@@ -210,7 +215,9 @@ async function getValidators (
     validators === null) validators = []
 
   const { v, d } = splitAccounts(validators)
-  if (v.length === getters.validators.length) return
+
+  if (v.length === getters.validators.length &&
+      d.length === getters.delegators.length) return
 
   const delegators = mapDelegators(d)
   commit(SET_DELEGATORS, { delegators })
@@ -345,8 +352,24 @@ async function getNodeHealth ({ commit, getters }) {
   commit(UPDATE_UI, { doesItConnect })
 }
 
+async function getHeight ({ commit, getters }, { endpoint = getters.networkEndpoint.url }) {
+  const response = await _getHeight({
+    endpoint
+  })
+
+  if (typeof response === 'undefined' ||
+    response === null) return
+
+  if (response.data.error) return
+
+  const height = response.data.result.height
+
+  commit(SET_HEIGHT, { height })
+}
+
 export default {
   [INIT_APP]: initApp,
+  [GET_HEIGHT]: getHeight,
   [GET_NODE_ID]: getNodeId,
   [GET_SUBNETS]: getSubnets,
   [GET_NODE_INFO]: getNodeInfo,

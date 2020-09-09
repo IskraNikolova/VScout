@@ -6,6 +6,7 @@ import { VMDict } from './../../utils/constants'
 import {
   SET_NODE_ID,
   SET_SUBNETS,
+  SET_HEIGHT,
   SET_SUBNET_ID,
   SET_NODE_INFO,
   SET_VALIDATORS,
@@ -29,6 +30,9 @@ const mutations = {
   },
   [SET_SUBNETS]: (state, { subnets }) => {
     state.subnets = subnets
+  },
+  [SET_HEIGHT]: (state, { height }) => {
+    state.height = height
   },
   [SET_NODE_INFO]: (state, { nodeInfo }) => {
     state.nodeInfo = nodeInfo

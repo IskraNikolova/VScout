@@ -15,11 +15,17 @@
             <q-tooltip content-class="bg-white text-grey" content-style="font-size: 14px">{{ getStatusInfo(currentBlockchain.status) }}</q-tooltip>
           </div>
         </div>
-        <div id="f-size12">
+        <div id="f-size12" v-if="isDefaultSubnetID(currentBlockchain.id)">
+          <span class="text-medium">Height</span>
+          <span class="text-grey">
+            {{ height }}
+          </span>
+        </div>
+        <div id="f-size12" style="max-width: 340px;">
           <span class="text-medium">Blockchain ID</span>
-          <div class="text-grey" style="max-width: 344px;cursor:pointer;" @click="$router.push(`/search/${currentBlockchain.id}`)">
+          <span class="text-grey" style="cursor:pointer;" @click="$router.push(`/search/${currentBlockchain.id}`)">
             {{ currentBlockchain.id }}
-          </div>
+          </span>
         </div>
       </div>
       <subnet-blockchains v-else class="col-md-2 col-xs-10"/>
@@ -191,6 +197,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'height',
       'assetsCount',
       'currentSubnet',
       'isBlockchainView',

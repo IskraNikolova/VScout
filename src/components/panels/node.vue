@@ -136,6 +136,7 @@ export default {
   computed: {
     ...mapGetters([
       'ui',
+      'height',
       'nodeID',
       'nodeInfo',
       'nodeHealth',

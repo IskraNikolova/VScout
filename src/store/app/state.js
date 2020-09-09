@@ -3,6 +3,7 @@ const { network } = require('./../../modules/config').default
 export default function () {
   return {
     nodeID: '',
+    height: 0,
     subnets: [],
     subnetID: network.defaultSubnetID,
     stakedAVA: 0,

@@ -59,6 +59,7 @@ import {
   GET_SUBNETS,
   SET_NODE_ID,
   GET_NODE_INFO,
+  GET_HEIGHT,
   GET_VALIDATORS,
   GET_BLOCKCHAINS,
   GET_PENDING_VALIDATORS
@@ -102,6 +103,7 @@ export default {
   },
   methods: {
     ...mapActions({
+      getHeight: GET_HEIGHT,
       getSubnets: GET_SUBNETS,
       getNodeInfo: GET_NODE_INFO,
       getValidators: GET_VALIDATORS,
@@ -145,6 +147,7 @@ export default {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })
       await Promise.all([
         this.getNodeInfo(),
+        this.getHeight({ endpoint: endpoint.url }),
         this.getValidators({ endpoint: endpoint.url, subnetID: this.subnetID }),
         this.getPendingValidators({ endpoint: endpoint.url, subnetID: this.subnetID }),
         this.getBlockchains({ endpoint: endpoint.url }),

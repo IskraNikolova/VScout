@@ -19,6 +19,7 @@ export const c = {
   getNodeVersion: 'info.getNodeVersion',
   peers: 'info.peers',
   validates: 'platform.validates',
+  getHeight: 'platform.getHeight',
   getSubnets: 'platform.getSubnets',
   getLiveness: 'health.getLiveness',
   getBlockchains: 'platform.getBlockchains',
