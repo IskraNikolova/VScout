@@ -24,6 +24,8 @@ export const _initializeNetwork = async () => {
   // web3 = new Web3(getProvider({ endpoint: `wss://${config.network.endpointCChain}` }))
   web3 = new Web3(`https://${config.network.endpointCChain}`)
   contract = await new web3.eth.Contract(contractAbi, config.network.contract)
+  web3.eth.getBlockNumber()
+    .then(console.log)
 }
 
 // const getProvider = ({ endpoint }) => {
@@ -171,6 +173,8 @@ export const _setValidatorInfo = async ({ id, name, avatar, bio, link }) => {
 }
 
 export const stringToHex = input => web3.utils.asciiToHex(input)
+
+export const getBlockNumber = () => web3.eth.getBlockNumber()
 
 export const utf8StringToHex = input => web3.utils.utf8ToHex(input).padEnd(66, '0')
 

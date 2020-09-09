@@ -52,7 +52,7 @@ import {
 } from './../../modules/network'
 
 import {
-// _initializeNetwork
+  _initializeNetwork
 } from './../../modules/networkRpc'
 
 import {
@@ -76,8 +76,8 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_VALIDATORS, {
         subnetID: getters.subnetID
       }),
-      dispatch(GET_HEIGHT, {})
-      // _initializeNetwork()
+      dispatch(GET_HEIGHT, {}),
+      _initializeNetwork()
     ])
   } catch (err) {
   }
