@@ -209,9 +209,8 @@ async function getValidators (
   if (typeof validators === 'undefined' ||
     validators === null) validators = []
 
-  if (validators.length === getters.validators.length) return
-
   const { v, d } = splitAccounts(validators)
+  if (v.length === getters.validators.length) return
 
   const delegators = mapDelegators(d)
   commit(SET_DELEGATORS, { delegators })
