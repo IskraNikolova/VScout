@@ -24,8 +24,6 @@ export const _initializeNetwork = async () => {
   // web3 = new Web3(getProvider({ endpoint: `wss://${config.network.endpointCChain}` }))
   web3 = new Web3(`https://${config.network.endpointCChain}`)
   contract = await new web3.eth.Contract(contractAbi, config.network.contract)
-  web3.eth.getBlockNumber()
-    .then(console.log)
 }
 
 // const getProvider = ({ endpoint }) => {

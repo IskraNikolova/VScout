@@ -56,7 +56,6 @@ import {
 } from './../../modules/networkRpc'
 
 import {
-  splitAccounts,
   mapDelegators,
   mapValidators,
   validatorProcessing,
@@ -209,20 +208,23 @@ async function getValidators (
   }
 
   commit(UPDATE_UI, { doesItConnect: false })
-  let { validators } = response.data.result
+  let { validators, delegators } = response.data.result
+  // console.log(validators)
+  // console.log(delegators)
 
   if (typeof validators === 'undefined' ||
-    validators === null) validators = []
+    validators === null) {
+    validators = []
+    delegators = []
+  }
 
-  const { v, d } = splitAccounts(validators)
+  if (validators.length === getters.validators.length &&
+    delegators.length === getters.delegators.length) return
 
-  if (v.length === getters.validators.length &&
-      d.length === getters.delegators.length) return
+  const del = mapDelegators(delegators)
+  commit(SET_DELEGATORS, { delegators: del })
 
-  const delegators = mapDelegators(d)
-  commit(SET_DELEGATORS, { delegators })
-
-  const res = await validatorProcessing(v, d, getters.defaultValidators)
+  const res = await validatorProcessing(validators, delegators, getters.defaultValidators)
 
   commit(SET_VALIDATORS, {
     validators: res.validators

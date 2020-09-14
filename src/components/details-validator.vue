@@ -25,7 +25,7 @@
             {{ delegatorsCount }}
           </span>
         </div>
-        <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} - Reward: {{ calculate() }} $AVAX</div>
+        <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} - Reward:  $AVAX</div>
         <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
         <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
       </q-card-section>
@@ -113,21 +113,6 @@ export default {
     },
     getWeeksP () {
       return getWeeks(this.startDate, this.endDate)
-    },
-    calculate () {
-      const stakeTime = this.getWeeksP()
-      const basePercY = 4
-      if (stakeTime > 2) {
-        //  additional percent reward; calculate 11.11%  bonus devide 52 weeks
-        const bonusPercentPerWeek = 0.2136538461538462
-        const percentReward = (stakeTime * bonusPercentPerWeek) + basePercY
-        return Math.round((this.stakeAmount * percentReward) / 100, 4)
-      } else if (stakeTime === 2) {
-        this.percentReward = basePercY
-        return Math.round((this.stakeAmount * basePercY) / 100, 4)
-      }
-
-      return ''
     },
     onGetDelegations () {
       this.$store.commit(UPDATE_UI, {

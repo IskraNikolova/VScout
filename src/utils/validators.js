@@ -1,25 +1,8 @@
 const BigNumber = require('bignumber.js')
 
 import { fromNow } from './../modules/time'
-import { groupBy, round, getAvatar } from './commons'
+import { round, getAvatar } from './commons'
 // import { _getValidatorById } from './../modules/networkRpc'
-
-/**
-* @param {Array} Array of validators and delegators for split
-* @returns {Object} Object of two arrays - current validators and delegators
-*/
-export function splitAccounts (validators) {
-  const grouped = groupBy(validators, 'nodeID')
-
-  const keys = Object.keys(grouped)
-  return keys.reduce((result, key) => {
-    grouped[key]
-      .sort((a, b) => a.startTime - b.startTime)
-    result.v.push(grouped[key].shift())
-    result.d.push(...grouped[key])
-    return result
-  }, { v: [], d: [] })
-}
 
 /**
 * @param {Array} Array of validators and delegators for split
