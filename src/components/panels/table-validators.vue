@@ -72,7 +72,7 @@
             style="padding: 0px!important;height: 50px!important;"
           >
             <div v-if="col.name === 'validator'" class="row q-pl-md">
-              <!--<div :style="'border: solid 2px ' + border + ';border-radius: 50px;width: 24px;'">-->
+              <div :style="'border: solid 1px ' + border(props.row.connected) + ';border-radius: 50px;width: 30px;'">
               <q-avatar size="25px" @click="onClick(props.row.link)">
                 <q-img :src="props.row.avatar">
                   <template v-slot:error>
@@ -82,6 +82,7 @@
                 </template>
                 </q-img>
               </q-avatar>
+              </div>
               <div
                 v-if="props.row.name !== props.row.nodeID"
                 style="cursor:pointer;"
@@ -316,7 +317,6 @@ export default {
       pagination: {
         rowsPerPage: 21
       },
-      border: '#87C5D6',
       separator: 'cell',
       columns: [
         {
@@ -407,6 +407,10 @@ export default {
     }
   },
   methods: {
+    border (isConnected) {
+      if (isConnected) return '#87C5D6'
+      else return '#ff5252'
+    },
     onClick (link) {
       if (link) openURL(link)
     },

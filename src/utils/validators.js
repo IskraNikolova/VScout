@@ -58,6 +58,7 @@ export async function validatorProcessing (validators, delegators, defaultValida
     v.cumulativeStake = cumulativeStake(currentValidators)
     return v
   })
+
   return {
     allStake: getAvaFromnAva(allStake),
     validatedStake: getAvaFromnAva(validatedStake),
@@ -84,11 +85,11 @@ export async function mapValidators (validators, delegators, defaultValidators) 
     const nodeID = val.nodeID
 
     // const info = await _getValidatorById(nodeID)
-    const address = ''
     let delegateStake = 0
     let delegatorsCount = 0
     let weight = 0
     let stakeAmount = 0
+    const address = ''
 
     if (val.weight) {
       weight = val.weight
@@ -97,7 +98,6 @@ export async function mapValidators (validators, delegators, defaultValidators) 
         .find(v => v.nodeID === nodeID)
       stakeAmount = currentValidator.stakenAva
     } else {
-      // address = val.address
       stakeAmount = val.stakeAmount
 
       const props = getDelegatorsForNode(val, delegators)
@@ -110,15 +110,14 @@ export async function mapValidators (validators, delegators, defaultValidators) 
     const total = parseFloat(stakeAmount) + parseFloat(delegateStake)
 
     return {
+      ...val,
       name,
       avatar,
-      weight,
       address,
+      weight,
       nodeID,
       delegatorsCount,
       totalnAva: total,
-      endTime: val.endTime,
-      startTime: val.startTime,
       total: getAvaFromnAva(total),
       fromNowST: fromNow(val.startTime),
       delegateStakenAva: delegateStake,
@@ -161,12 +160,10 @@ export function mapDelegators (delegators) {
     const { avatar } = getAvatar(nodeId)
 
     return {
+      ...delegator,
       avatar,
       nodeId,
       index: i + 1,
-      endTime: delegator.endTime,
-      pAccount: delegator.address,
-      startTime: delegator.startTime,
       fromNowST: fromNow(delegator.startTime),
       stake: getAvaFromnAva(delegator.stakeAmount),
       stakenAva: parseFloat(delegator.stakeAmount)

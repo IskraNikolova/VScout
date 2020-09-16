@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="q-mt-md q-pt-md q-pl-xl q-pr-xl" id="custom-card" >
+    class="q-mt-md q-pt-md q-pl-xl q-pr-xl q-pb-xs" id="custom-card" >
     <div class="row">
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">VALIDATORS</div>
@@ -19,7 +19,18 @@
               :duration="3000"
             />
           </span>
-          <span id="f-size12"> pending</span> </div>
+          <span id="f-size12"> pending</span>
+        </div>
+        <div>
+          <span class="text-accent">
+            <animated-number
+              :value="connected"
+              :formatValue="format"
+              :duration="3000"
+            />
+          </span>
+          <small> connected</small>
+        </div>
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/validators.svg" class="custom-icon">
@@ -112,7 +123,15 @@ export default {
       'delegators',
       'pendingValidators',
       'pendingDelegators'
-    ])
+    ]),
+    connected: function () {
+      return this.validators
+        .filter(a => a.connected)
+        .length
+    },
+    notconnected: function () {
+      return this.validators.length - this.connected
+    }
   },
   methods: {
     format (value) {
