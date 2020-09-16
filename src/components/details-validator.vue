@@ -1,15 +1,19 @@
 <template>
     <q-card flat>
       <q-card-section>
-        <div v-if="identity !== name"><span class="text-grey text-medium">Name: </span><a :href="link" v-if="link">{{ name }}</a><span v-else>{{ name }}</span></div>
-        <span class="text-grey text-medium">Node ID:</span> [{{ identity }}]
+        <div v-if="validator.nodeID !== validator.name">
+          <span class="text-grey text-medium">Name: </span>
+          <a :href="validator.link" v-if="link">{{ validator.name }}</a>
+          <span v-else>{{ validator.name }}</span>
+        </div>
+        <span class="text-grey text-medium">Node ID:</span> [{{ validator.nodeID }}]
         <small>
           <q-icon
-            @click="copyToClipboard(identity)"
+            @click="copyToClipboard(validator.nodeID)"
             name="file_copy"
           />
         </small>
-        <div v-if="address">
+        <!--<div v-if="address">
           <span class="text-grey text-medium">Owner (P-Chain Account): </span>{{ address }}
           <small>
             <q-icon
@@ -17,15 +21,15 @@
               name="file_copy"
             />
           </small>
-        </div>
-        <div v-if="weight"><span class="text-grey text-medium">Weight:</span> {{ weight }}</div>
+        </div>-->
+        <div v-if="weight"><span class="text-grey text-medium">Weight:</span> {{ validator.weight }}</div>
         <div v-if="delegatorsCount">
           <span class="text-grey text-medium">Delegations:</span>
           <span class="text-accent text-h7" style="cursor: pointer;" @click="onGetDelegations">
-            {{ delegatorsCount }}
+            {{ validator.delegatorsCount }}
           </span>
         </div>
-        <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} - Reward:  $AVAX</div>
+        <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} <span v-if="validator.potentialReward > 0">- Potential Reward:  {{ Number(validator.potentialReward).toLocaleString() }} <span class="text-accent">$nAVAX</span></span></div>
         <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
         <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
       </q-card-section>
@@ -43,59 +47,23 @@ import { UPDATE_UI } from './../store/ui/types'
 export default {
   name: 'DetailsValidator',
   props: {
-    avatar: {
-      type: String,
-      required: true
-    },
-    identity: {
-      type: String,
-      required: true
-    },
-    weight: {
-      type: String,
-      required: true
-    },
-    delegatorsCount: {
-      type: Number,
-      required: true
-    },
-    address: {
-      type: String,
-      required: true
-    },
-    startTime: {
-      type: String,
-      required: true
-    },
-    endTime: {
-      type: String,
-      required: true
-    },
-    link: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      required: true
-    },
-    stakeAmount: {
-      type: Number,
+    validator: {
+      type: Object,
       required: true
     }
   },
   computed: {
     startDate: function () {
-      return date(this.startTime)
+      return date(this.validator.startTime)
     },
     endDate: function () {
-      return date(this.endTime)
+      return date(this.validator.endTime)
     },
     fromNowGet: function () {
-      return fromNow(this.startTime)
+      return fromNow(this.validator.startTime)
     },
     validatePeriod: function () {
-      return getDurationHumanize(this.startTime, this.endTime)
+      return getDurationHumanize(this.validator.startTime, this.validator.endTime)
     }
   },
   methods: {

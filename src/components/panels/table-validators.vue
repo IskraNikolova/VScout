@@ -156,18 +156,7 @@
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
-            <details-validator
-              v-bind:link="props.row.link ? props.row.link : ''"
-              v-bind:delegatorsCount="props.row.delegatorsCount ? props.row.delegatorsCount : NaN"
-              v-bind:weight="props.row.weight ? props.row.weight : ''"
-              v-bind:address="props.row.address ? props.row.address : ''"
-              v-bind:identity="props.row.nodeID"
-              v-bind:stakeAmount="props.row.stake"
-              v-bind:name="props.row.name"
-              v-bind:startTime="props.row.startTime"
-              v-bind:endTime="props.row.endTime"
-              v-bind:avatar="props.row.avatar"
-            />
+            <details-validator v-bind:validator="props.row" />
           </q-td>
         </q-tr>
       </template>
