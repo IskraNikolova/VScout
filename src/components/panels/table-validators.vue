@@ -97,7 +97,7 @@
                 @click="props.expand = !props.expand"
                 class="q-pl-xs q-pt-xs"
               >
-                {{ props.row.nodeID }}
+                {{ props.row.nodeID.substr(0, 14) }} ... {{ props.row.nodeID.substr(32) }}
               </div>
             </div>
             <div v-else-if="col.name === 'stake'">
@@ -108,8 +108,8 @@
                 </small>
               </div>
               <div>
-                <small class="text-grey">Own</small> {{ col.value }}
-                <small class="text-grey">Delegated</small> {{ props.row.delegateStake }}
+                <small class="text-grey">Own </small> <span class="text-orange">{{ col.value }}</span>
+                <small class="text-grey"> Delegated</small> {{ props.row.delegateStake}}
               </div>
             </div>
             <div v-else-if="col.name === 'weight'">
@@ -353,6 +353,13 @@ export default {
           align: 'center',
           label: 'CUMULATIVE STAKE (%)',
           field: 'cumulativeStake',
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'uptime',
+          align: 'center',
+          label: 'UP TIME (%)',
+          field: row => `${Math.round(row.uptime * 100, 2)} %`,
           headerClasses: 'text-medium'
         },
         { name: 'startTime', align: 'center', label: 'START TIME', field: 'startTime', sortable: true, headerClasses: 'text-medium' },

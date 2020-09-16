@@ -3,7 +3,7 @@
       <q-card-section>
         <div v-if="validator.nodeID !== validator.name">
           <span class="text-grey text-medium">Name: </span>
-          <a :href="validator.link" v-if="link">{{ validator.name }}</a>
+          <a :href="validator.link" v-if="validator.link">{{ validator.name }}</a>
           <span v-else>{{ validator.name }}</span>
         </div>
         <span class="text-grey text-medium">Node ID:</span> [{{ validator.nodeID }}]
@@ -22,8 +22,8 @@
             />
           </small>
         </div>-->
-        <div v-if="weight"><span class="text-grey text-medium">Weight:</span> {{ validator.weight }}</div>
-        <div v-if="delegatorsCount">
+        <div v-if="validator.weight"><span class="text-grey text-medium">Weight:</span> {{ validator.weight }}</div>
+        <div v-if="validator.delegatorsCount">
           <span class="text-grey text-medium">Delegations:</span>
           <span class="text-accent text-h7" style="cursor: pointer;" @click="onGetDelegations">
             {{ validator.delegatorsCount }}
