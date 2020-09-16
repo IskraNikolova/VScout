@@ -109,7 +109,7 @@
               </div>
               <div>
                 <small class="text-grey">Own </small> <span class="text-orange">{{ col.value }}</span>
-                <small class="text-grey"> Delegated</small> {{ props.row.delegateStake}}
+                <small class="text-grey"> Delegated</small> {{ getFormatDS(props.row.delegateStake) }}
               </div>
             </div>
             <div v-else-if="col.name === 'weight'">
@@ -281,10 +281,11 @@ import {
 } from 'quasar'
 
 import { date } from './../../modules/time.js'
+import { round } from './../../utils/commons.js'
 const { network } = require('./../../modules/config').default
-import { UPDATE_UI } from './../../store/ui/types'
+import { UPDATE_UI } from './../../store/ui/types.js'
 
-import { SET_SUBNET_ID } from './../../store/app/types'
+import { SET_SUBNET_ID } from './../../store/app/types.js'
 
 export default {
   name: 'TableItem',
@@ -403,6 +404,11 @@ export default {
     }
   },
   methods: {
+    getFormatDS (val) {
+      if (!val) return 0
+
+      return round(val, 100)
+    },
     border (isConnected) {
       if (isConnected) return '#87C5D6'
       else return '#ff5252'

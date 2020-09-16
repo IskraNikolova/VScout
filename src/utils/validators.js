@@ -31,6 +31,10 @@ export async function validatorProcessing (validators, delegators, defaultValida
 
   // get all staked AVAX
   const allStake = val.reduce((a, b) => {
+    return a + parseFloat(b.totalnAva)
+  }, 0.0)
+
+  const validatedStake = val.reduce((a, b) => {
     return a + parseFloat(b.stakenAva)
   }, 0.0)
 
@@ -40,7 +44,7 @@ export async function validatorProcessing (validators, delegators, defaultValida
 
   // get and set percent for total stake (own and delegated)
   let validatorsResult = val.map((v) => {
-    v.percent = getPercent(v.stakenAva, allStake)
+    v.percent = getPercent(v.totalnAva, allStake)
     return v
   })
 
@@ -54,10 +58,9 @@ export async function validatorProcessing (validators, delegators, defaultValida
     v.cumulativeStake = cumulativeStake(currentValidators)
     return v
   })
-
   return {
     allStake: getAvaFromnAva(allStake),
-    validatedStake: getAvaFromnAva(allStake),
+    validatedStake: getAvaFromnAva(validatedStake),
     delegatedStake: getAvaFromnAva(delegatedStake),
     validators: result
   }
@@ -65,7 +68,7 @@ export async function validatorProcessing (validators, delegators, defaultValida
 
 export function compare (a, b) {
   const get = (a, b) => { return b - a }
-  const compareStake = parseFloat(b.stakenAva) - parseFloat(a.stakenAva)
+  const compareStake = parseFloat(b.total) - parseFloat(a.total)
   const temp = {
     false: compareStake,
     true: get(b.startTime, b.endTime) - get(a.startTime, a.endTime)

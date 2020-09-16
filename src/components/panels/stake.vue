@@ -21,16 +21,6 @@
           </span>
           <span id="f-size12"> pending</span>
         </div>
-        <div>
-          <span class="text-accent">
-            <animated-number
-              :value="connected"
-              :formatValue="format"
-              :duration="3000"
-            />
-          </span>
-          <small> connected</small>
-        </div>
       </div>
       <div class="col-1 q-pt-md">
         <img src="~assets/validators.svg" class="custom-icon">
@@ -123,15 +113,7 @@ export default {
       'delegators',
       'pendingValidators',
       'pendingDelegators'
-    ]),
-    connected: function () {
-      return this.validators
-        .filter(a => a.connected)
-        .length
-    },
-    notconnected: function () {
-      return this.validators.length - this.connected
-    }
+    ])
   },
   methods: {
     format (value) {
