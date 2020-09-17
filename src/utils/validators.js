@@ -88,7 +88,6 @@ export async function mapValidators (validators, delegators, defaultValidators) 
     let delegatorsCount = 0
     let weight = 0
     let stakeAmount = 0
-    const address = ''
 
     if (val.weight) {
       weight = val.weight
@@ -112,7 +111,6 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       ...val,
       name,
       avatar,
-      address,
       weight,
       nodeID,
       delegatorsCount,

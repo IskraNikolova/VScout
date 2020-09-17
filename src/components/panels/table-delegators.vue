@@ -66,25 +66,22 @@
         </q-input>
       </template>
       <template v-slot:body="props">
-        <q-tr :props="props" auto-width>
+        <q-tr :props="props" auto-width @click="props.expand = !props.expand">
           <q-td
             v-for="(col) in props.cols"
             :key="col.name"
             :props="props"
             style="padding: 0px!important;margin:0px!important;"
           >
-            <div v-if="col.name === 'pAccount'" class="row q-pl-md">
+            <div v-if="col.name === 'rewardOwner'" class="row q-pl-md">
               <q-avatar size="25px">
                 <img :src="props.row.avatar" />
               </q-avatar>
               <div
                 style="font-size: 90%;"
                 class="q-pt-xs q-ml-md">
-                {{ props.row.pAccount}}
+                {{ col.value }}
               </div>
-            </div>
-            <div v-else-if="col.name === 'index'">
-              {{ col.value }}
             </div>
             <div v-else-if="col.name === 'progress'">
               <progress-bar-validate-session
@@ -92,23 +89,14 @@
                 v-bind:endTime="props.row.endTime"
               />
             </div>
-            <div v-else-if="col.name === 'stake'" class="q-pl-md">
-              <div>
-                {{ col.value }}
-                <small style="color: grey;">
-                  ({{ getLocalString(props.row.stakenAva)}} nAvax)
-                </small>
-              </div>
-            </div>
-            <div v-else-if="col.name === 'startTime'" class="q-pl-md">
-              <small>{{ formatDate(col.value) }}</small>
-            </div>
-            <div v-else-if="col.name === 'endTime'" class="q-pl-md">
-              <small>{{ formatDate(col.value) }}</small>
-            </div>
             <div v-else class="q-pl-md">
-              <small>[{{ col.value }}]</small>
+              {{ col.value }}
             </div>
+          </q-td>
+        </q-tr>
+        <q-tr v-show="props.expand" :props="props">
+          <q-td colspan="100%">
+            <details-delegator v-bind:delegator="props.row" />
           </q-td>
         </q-tr>
       </template>
@@ -132,6 +120,7 @@ import ProgressBarValidateSession from './../progress-bar-validatе-session'
 export default {
   name: 'TableDelegators',
   components: {
+    DetailsDelegator: () => import('components/details-delegator'),
     ProgressBarValidateSession
   },
   data () {
@@ -155,26 +144,41 @@ export default {
           field: row => row.index
         },
         {
-          name: 'pAccount',
+          name: 'rewardOwner',
           align: 'left',
-          label: 'Owner (P-Chain Account)',
-          field: 'pAccount'
+          label: 'Reward Owner',
+          field: row => `${row.rewardOwner.addresses[0].substr(0, 15)}...${row.rewardOwner.addresses[0].substr(40)}`
         },
         {
           name: 'nodeId',
           align: 'left',
           label: 'Delegated Node ID',
-          field: 'nodeId'
+          field: row => `[${row.nodeId}]`,
+          style: 'font-size: 12px;'
         },
         {
           name: 'stake',
           align: 'left',
-          label: 'Delegated (AVAX / nAvax)',
-          field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
+          label: 'Delegated (AVAX)',
+          field: row => `${row.stake.toLocaleString()} AVAX`,
           sortable: true
         },
-        { name: 'startTime', align: 'left', label: 'Start Time', field: 'startTime', sortable: true },
-        { name: 'endTime', align: 'left', label: 'End Time', field: 'endTime', sortable: true },
+        {
+          name: 'startTime',
+          align: 'left',
+          label: 'Start Time',
+          field: row => this.formatDate(row.startTime),
+          style: 'font-size: 10px;',
+          sortable: true
+        },
+        {
+          name: 'endTime',
+          align: 'left',
+          label: 'End Time',
+          field: row => this.formatDate(row.endTime),
+          style: 'font-size: 10px;',
+          sortable: true
+        },
         { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress' }
       ]
     }
@@ -185,14 +189,6 @@ export default {
       'delegators',
       'pendingDelegators'
     ]),
-    visibleColumns: function () {
-      const columns = this.columns.map(c => c.name)
-      if (this.curentVal.find(a => !a.pAccount)) {
-        return columns.filter(c => c !== 'pAccount')
-      }
-
-      return columns
-    },
     curentVal: {
       get: function () {
         if (this.isActive) return this.delegators
