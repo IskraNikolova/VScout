@@ -210,7 +210,7 @@ async function getValidators (
   commit(UPDATE_UI, { doesItConnect: false })
   let { validators, delegators } = response.data.result
   // console.log(validators)
-  // console.log(delegators)
+  console.log(delegators)
 
   if (typeof validators === 'undefined' ||
     validators === null) {

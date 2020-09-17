@@ -142,6 +142,11 @@
                 v-bind:endTime="props.row.endTime"
               />
             </div>
+            <div v-else-if="col.name === 'uptime'">
+              <q-badge :color="getColorUptime(props.row.uptime)">
+                {{ col.value }}
+              </q-badge>
+            </div>
             <div v-else>{{ col.value }}</div>
           </q-td>
         </q-tr>
@@ -411,6 +416,10 @@ export default {
     }
   },
   methods: {
+    getColorUptime (val) {
+      if (val >= 0.6) return 'green'
+      return 'negative'
+    },
     getFormatDS (val) {
       if (!val) return 0
 
