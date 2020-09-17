@@ -72,7 +72,8 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(GET_VALIDATORS, {
-        subnetID: getters.subnetID
+        subnetID: getters.subnetID,
+        init: false
       }),
       dispatch(GET_HEIGHT, {})
       // _initializeNetwork()
@@ -198,7 +199,7 @@ async function getAssetsCount ({ commit }) {
 
 async function getValidators (
   { commit, getters },
-  { subnetID = network.defaultSubnetID, endpoint = getters.networkEndpoint.url }) {
+  { subnetID = network.defaultSubnetID, endpoint = getters.networkEndpoint.url, init = true }) {
   const response = await _getValidators({ subnetID, endpoint })
 
   if (response.data.error) {
@@ -217,8 +218,8 @@ async function getValidators (
     delegators = []
   }
 
-  if (validators.length === getters.validators.length &&
-    delegators.length === getters.delegators.length) return
+  if ((validators.length === getters.validators.length &&
+    delegators.length === getters.delegators.length) && init) return
 
   const del = mapDelegators(delegators)
   commit(SET_DELEGATORS, { delegators: del })

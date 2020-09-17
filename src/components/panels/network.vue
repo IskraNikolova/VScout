@@ -4,7 +4,7 @@
     id="custom-card"
   >
     <div class="row">
-      <div v-if="isBlockchainView" style="min-width: 300px;">
+      <div v-if="isBlockchainView" class="col-md-4 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">
           BLOCKCHAIN
         </div>
@@ -28,12 +28,12 @@
           </span>
         </div>
       </div>
-      <subnet-blockchains v-else class="col-md-2 col-xs-10"/>
+      <subnet-blockchains v-else class="col-md-3 col-xs-10" />
       <div class="col-1 q-pt-md">
         <img src="~assets/blockchain-grey.svg" id="logo">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
-      <div v-if="isBlockchainView" style="min-width: 300px;">
+      <div v-if="isBlockchainView" class="col-md-3 col-xs-10">
         <div id="f-size12"  class="q-pb-md text-medium">
           SUBNET ID
         </div>
@@ -51,13 +51,13 @@
         </div>
       </div>
       <div v-else class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">SUBNETWORK</div>
+        <div id="f-size12" class="q-pb-md text-medium">SUBNETWORK (ID)</div>
         <div>
           <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultSubnetID(currentSubnet.id)">
             Default Subnet
           </div>
-          <div class="q-pb-md text-orange" style="font-size: 19px;cursor: pointer;" @click="$router.push(`/search/${currentSubnet.id}`)">
-            <small>{{ currentSubnet.id }}</small>
+          <div class="q-pb-md" style="cursor: pointer;" @click="$router.push(`/search/${currentSubnet.id}`)">
+            <span class="text-orange">{{ currentSubnet.id }}</span>
           </div>
         </div>
       </div>
