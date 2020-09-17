@@ -1,6 +1,11 @@
 <template>
     <q-card flat>
       <q-card-section>
+        <div>
+          <span class="text-grey text-medium q-pb-md">Connected:</span>
+          <span class="text-accent" v-if="validator.connected"> Yes</span>
+          <span class="text-negative" v-else> No</span>
+        </div>
         <div v-if="validator.nodeID !== validator.name">
           <span class="text-grey text-medium">Name: </span>
           <a :href="validator.link" v-if="validator.link">{{ validator.name }}</a>
@@ -13,23 +18,33 @@
             name="file_copy"
           />
         </small>
-        <!--<div v-if="address">
-          <span class="text-grey text-medium">Owner (P-Chain Account): </span>{{ address }}
+        <div v-if="validator.rewardOwner">
+          <span class="text-grey text-medium">Reward Owner: </span>{{ validator.rewardOwner.addresses[0] }}
           <small>
             <q-icon
-              @click="copyToClipboard(address)"
+              @click="copyToClipboard(validator.rewardOwner.addresses[0])"
               name="file_copy"
             />
           </small>
-        </div>-->
+        </div>
+        <div v-if="validator.delegationFee"><span class="text-grey text-medium">
+          Delegation Fee:</span>   {{ validator.delegationFee }} %
+          <q-tooltip content-class="bg-white text-grey" content-style="font-size: 14px;border-style: solid;border-width: 0.1px;">
+            <q-icon name="info"/>
+            <span>
+              Avalanche allows for delegation of stake. This parameter is the percent fee this validator charges when others delegate stake to them. <br />For example, if delegationFeeRate is 1.2345 and someone delegates to this validator, then when the delegation period is over, 1.2345% of the reward <br />goes to the validator and the rest goes to the delegator.
+            </span>
+          </q-tooltip>
+        </div>
         <div v-if="validator.weight"><span class="text-grey text-medium">Weight:</span> {{ validator.weight }}</div>
-        <div v-if="validator.delegatorsCount">
+        <div>
           <span class="text-grey text-medium">Delegations:</span>
           <span class="text-accent text-h7" style="cursor: pointer;" @click="onGetDelegations">
             {{ validator.delegatorsCount }}
           </span>
         </div>
-        <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} <span v-if="validator.potentialReward > 0">- Potential Reward:  {{ Number(validator.potentialReward).toLocaleString() }} <span class="text-accent">$nAVAX</span></span></div>
+        <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} </div>
+        <div v-if="validator.potentialReward > 0" class="text-grey text-medium">Potential Reward:  {{ Number(validator.potentialReward).toLocaleString() }} <span class="text-accent">$nAVAX</span></div>
         <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
         <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
       </q-card-section>

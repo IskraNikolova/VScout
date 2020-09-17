@@ -97,27 +97,21 @@
                 @click="props.expand = !props.expand"
                 class="q-pl-xs q-pt-xs"
               >
-                {{ props.row.nodeID.substr(0, 14) }} ... {{ props.row.nodeID.substr(32) }}
+                {{ props.row.nodeID.substr(0, 14) }} ... {{ props.row.nodeID.substr(35) }}
               </div>
             </div>
             <div v-else-if="col.name === 'stake'">
               <div>
-                <small class="text-grey">Total</small> {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
-                <small class="text-accent">
-                  $AVAX
-                </small>
+                <small class="text-grey">Total:</small> {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
               </div>
               <div>
-                <small class="text-grey">Own </small> <span class="text-orange">{{ col.value }}</span>
-                <small class="text-grey"> Delegated</small> {{ getFormatDS(props.row.delegateStake) }}
+                <small class="text-grey">Own: </small> <span class="text-orange">{{ col.value }}</span>
+                <small class="text-grey"> D: {{ getFormatDS(props.row.delegateStake) }}</small>
               </div>
             </div>
             <div v-else-if="col.name === 'weight'">
               {{ col.value }}
               <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Weight is the validator’s weight used for sampling.</q-tooltip>
-            </div>
-            <div v-else-if="col.name === 'networkShare' && props.row.percent">
-              {{ props.row.percent }} %
             </div>
             <div v-else-if="col.name === 'percent'">
               <div class="container_row" v-if="props.row.cumulativeStake">
@@ -147,9 +141,6 @@
                 v-bind:startTime="props.row.startTime"
                 v-bind:endTime="props.row.endTime"
               />
-            </div>
-            <div v-else-if="col.name === 'startTime'">
-              <small>{{ formatDate(col.value) }}</small>
             </div>
             <div v-else>{{ col.value }}</div>
           </q-td>
@@ -311,7 +302,7 @@ export default {
       columns: [
         {
           name: 'rank',
-          label: 'RANK',
+          label: 'Rank',
           align: 'center',
           field: row => row.rank,
           sortable: true,
@@ -321,14 +312,14 @@ export default {
         {
           name: 'validator',
           align: 'center',
-          label: 'VALIDATOR',
+          label: 'Validator',
           field: row => row.name,
           headerClasses: 'text-medium'
         },
         {
           name: 'stake',
           align: 'center',
-          label: 'STAKE (AVAX)',
+          label: 'Stake (AVAX)',
           field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
           sortable: true,
           headerClasses: 'text-medium'
@@ -336,7 +327,7 @@ export default {
         {
           name: 'weight',
           align: 'center',
-          label: 'WEIGHT',
+          label: 'Weight',
           field: row => row.weight,
           sortable: true,
           headerClasses: 'text-medium'
@@ -344,27 +335,41 @@ export default {
         {
           name: 'networkShare',
           align: 'center',
-          label: 'NETWORK SHARE (%)',
-          field: row => row.percent,
+          label: 'Network Share (%)',
+          field: row => ` ${row.percent} %`,
           sortable: true,
           headerClasses: 'text-medium'
         },
         {
           name: 'percent',
           align: 'center',
-          label: 'CUMULATIVE STAKE (%)',
+          label: 'Cumulative Stake (%)',
           field: 'cumulativeStake',
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'delegationFee',
+          align: 'center',
+          label: 'Delegation Fee (%)',
+          field: row => `${row.delegationFee} %`,
           headerClasses: 'text-medium'
         },
         {
           name: 'uptime',
           align: 'center',
-          label: 'UP TIME (%)',
+          label: 'Up Time (%)',
           field: row => `${Math.round(row.uptime * 100, 2)} %`,
           headerClasses: 'text-medium'
         },
-        { name: 'startTime', align: 'center', label: 'START TIME', field: 'startTime', sortable: true, headerClasses: 'text-medium' },
-        { name: 'progress', align: 'left', label: 'PROGRESS (%)', field: 'progress', headerClasses: 'text-medium' }
+        {
+          name: 'startTime',
+          align: 'center',
+          label: 'Start Time',
+          field: row => this.formatDate(row.startTime),
+          sortable: true,
+          headerClasses: 'text-medium'
+        },
+        { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress', headerClasses: 'text-medium' }
       ]
     }
   },
@@ -398,6 +403,8 @@ export default {
         return columns.filter(c => c !== 'percent' && c !== 'networkShare' && c !== 'weight' && c !== 'uptime')
       } else if (this.curentValidators.find(a => a.weight < 1)) {
         return columns.filter(c => c !== 'weight')
+      } else if (this.curentValidators.find(a => a.weight > 0)) {
+        return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
       }
 
       return columns.filter(c => c !== 'stake')

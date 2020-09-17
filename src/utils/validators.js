@@ -173,7 +173,7 @@ export function mapDelegators (delegators) {
 function cumulativeStake (currentValidators) {
   return currentValidators.reduce((result, item) => {
     result += parseFloat(item.percent)
-    return round(result, 1000)
+    return Math.min(round(result, 10), 100)
   }, 0.0)
 }
 
@@ -185,7 +185,7 @@ function getPercent (v, s) {
 
   const result = res.dividedBy(allStake)
 
-  return result.toFixed(9)
+  return result.toFixed(7)
 }
 
 function getAvaFromnAva (v) {
