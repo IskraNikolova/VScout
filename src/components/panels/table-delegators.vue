@@ -66,7 +66,7 @@
         </q-input>
       </template>
       <template v-slot:body="props">
-        <q-tr :props="props" auto-width @click="props.expand = !props.expand">
+        <q-tr :props="props" style="cursor: pointer;" auto-width @click="props.expand = !props.expand">
           <q-td
             v-for="(col) in props.cols"
             :key="col.name"

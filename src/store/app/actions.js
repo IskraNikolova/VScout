@@ -58,8 +58,7 @@ import {
 import {
   mapDelegators,
   mapValidators,
-  validatorProcessing,
-  splitPendingAccounts
+  validatorProcessing
 } from './../../utils/validators'
 
 const { network } = require('./../../modules/config').default
@@ -253,7 +252,8 @@ async function getPendingValidators (
 
   if (response.data.error) return null
 
-  let { validators } = response.data.result
+  let { validators, delegators } = response.data.result
+
   if (typeof validators === 'undefined' ||
       validators === null) validators = []
 
@@ -263,13 +263,11 @@ async function getPendingValidators (
     return
   }
 
-  const { v, d } = splitPendingAccounts(validators, getters.validators)
-
   commit(SET_PENDING_DELEGATORS, {
-    delegators: mapDelegators(d)
+    delegators: mapDelegators(delegators)
   })
 
-  const val = await mapValidators(v)
+  const val = await mapValidators(validators)
   commit(SET_PENDING_VALIDATORS, {
     validators: val
   })
