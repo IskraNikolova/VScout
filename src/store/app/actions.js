@@ -209,7 +209,7 @@ async function getValidators (
 
   commit(UPDATE_UI, { doesItConnect: false })
   let { validators, delegators } = response.data.result
-  console.log(validators)
+  // console.log(validators)
   // console.log(delegators)
 
   if (typeof validators === 'undefined' ||
@@ -218,8 +218,8 @@ async function getValidators (
     delegators = []
   }
 
-  // if (validators.length === getters.validators.length &&
-  //   delegators.length === getters.delegators.length) return
+  if (validators.length === getters.validators.length &&
+    delegators.length === getters.delegators.length) return
 
   const del = mapDelegators(delegators)
   commit(SET_DELEGATORS, { delegators: del })
