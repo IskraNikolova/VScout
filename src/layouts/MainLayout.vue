@@ -11,7 +11,6 @@
               <q-banner class="q-pa-md" dense style="width: 430px;">
                 <div class="q-pb-md">Reward Calculator</div>
                 <div class="q-pa-md absolute-top-right">
-                  Current Supply
                   <q-badge outline size="xs" color="accent" label="360M" />
                 </div>
                 <q-input
@@ -179,16 +178,13 @@
                       outlined
                       v-model="stakeAmount"
                       label="Staking Amount"
-                      mask="#"
                       input-class="text-right"
                       suffix="$AVAX"
-                      precision= '2'
-                      reverse-fill-mask
                       color="accent"
                       @input="calculate"
                       class="q-pb-xl"
-                      :rules="[value => value >= 2000 || 'Stake Amount must be greater or equal to 2000 $AVAX']"
                     />
+                    <!-- :rules="[value => value >= 2000 || 'Stake Amount must be greater or equal to 2000 $AVAX']"-->
                     <q-slider
                       class="q-ml-xs q-mr-xs"
                       v-model="stakeTime"
@@ -202,16 +198,17 @@
                       label-color="white"
                       color="orange"
                     />
-                    <div class="row">
-                      <div class="q-pl-md">
-                        <small>Yearly Earning </small>
-                        <div>
-                          <span class="text-accent">
-                            {{ reward }}
-                          </span> $nAVAX
-                        </div>
-                        </div>
+                   <div>
+                      <small>Reward Earning </small>
+                      <div>
+                        <span class="text-accent">
+                          {{ rewardAvax }}
+                        </span> $AVAX
+                        (<small class="text-accent">
+                          {{ reward }} $nAVAX
+                        </small>)
                       </div>
+                    </div>
                   </q-banner>
                 </q-popup-proxy>
               </q-btn>
