@@ -11,60 +11,43 @@
               <q-banner class="q-pa-md" dense style="width: 430px;">
                 <div class="q-pb-md">Reward Calculator</div>
                 <div class="q-pa-md absolute-top-right">
-                  <q-badge outline size="xs" color="accent" :label="percentReward.toFixed(2) + '%'" />
+                  Current Supply
+                  <q-badge outline size="xs" color="accent" label="360M" />
                 </div>
                 <q-input
                   label-color="orange"
                   outlined
                   v-model="stakeAmount"
                   label="Staking Amount"
-                  mask="#"
                   input-class="text-right"
                   suffix="$AVAX"
-                  precision= '2'
-                  reverse-fill-mask
                   color="accent"
                   @input="calculate"
                   class="q-pb-xl"
-                  :rules="[value => value >= 2000 || 'Stake Amount must be greater or equal to 2000 $AVAX']"
                 />
+                <!--:rules="[value => value >= 2000 || 'Stake Amount must be greater or equal to 2000 $AVAX']"-->
                 <q-slider
                   class="q-ml-xs q-mr-xs"
                   v-model="stakeTime"
-                  :min="2"
-                  :max="52"
+                  :min="1"
+                  :max="365"
                   :step="1"
-                  :label-value="'Staking Time ' + stakeTime + ' weeks'"
+                  :label-value="'Staking Time ' + stakeTime + ' days'"
                   label-always
                   @input="calculate"
                   label-text-color="orange"
                   label-color="white"
                   color="orange"
                 />
-                <div class="row">
-                  <div class="col-4">
-                    <small>Weekly Earning  </small>
+                  <div>
+                    <small>Reward Earning </small>
                     <div>
                       <span class="text-accent">
-                        {{ weekly.toFixed(2) }}
-                      </span> $AVAX&nbsp;
-                    </div>
-                  </div>
-                  <div class="col-4 q-pl-xs">
-                    <small>{{ stakeTime }} Weeks Earnings </small>
-                    <div>
-                      <span class="text-accent">
-                        {{ (weekly * stakeTime).toFixed(2) }}
+                        {{ rewardAvax }}
                       </span> $AVAX
-                    </div>
-                  </div>
-                  <div class="col-4 q-pl-md">
-                    <small>Yearly Earning </small>
-                    <div>
-                      <span class="text-accent">
-                        {{ result.toFixed(2) }}
-                      </span> $AVAX
-                    </div>
+                      (<small class="text-accent">
+                        {{ reward }} $nAVAX
+                      </small>)
                     </div>
                   </div>
               </q-banner>
@@ -220,28 +203,12 @@
                       color="orange"
                     />
                     <div class="row">
-                      <div class="col-4">
-                        <small>Weekly Earning  </small>
-                        <div>
-                          <span class="text-accent">
-                            {{ weekly.toFixed(2) }}
-                          </span> $AVAX&nbsp;
-                        </div>
-                      </div>
-                      <div class="col-4 q-pl-xs">
-                        <small>{{ stakeTime }} Weeks Earnings </small>
-                        <div>
-                          <span class="text-accent">
-                            {{ (weekly * stakeTime).toFixed(2) }}
-                          </span> $AVAX
-                        </div>
-                      </div>
-                      <div class="col-4 q-pl-md">
+                      <div class="q-pl-md">
                         <small>Yearly Earning </small>
                         <div>
                           <span class="text-accent">
-                            {{ result.toFixed(2) }}
-                          </span> $AVAX
+                            {{ reward }}
+                          </span> $nAVAX
                         </div>
                         </div>
                       </div>
@@ -358,6 +325,9 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
+const units = require('./../utils/constants.js')
+import { reward } from './../modules/reward.js'
+
 import {
   GET_SUBNETS,
   GET_BLOCKCHAINS
@@ -384,10 +354,9 @@ export default {
       isB: false,
       isS: false,
       isE: false,
-      stakeTime: 2,
-      result: 0.00,
-      yearly: 0.00,
-      weekly: 0.00,
+      stakeTime: 1,
+      reward: 0.00,
+      rewardAvax: 0.00,
       drawer: false,
       percentReward: 4,
       stakeAmount: 2000
@@ -399,18 +368,12 @@ export default {
       getBlockchains: GET_BLOCKCHAINS
     }),
     calculate () {
-      this.stakeTime = Math.round(this.stakeTime)
-      const basePercY = 4
-      if (this.stakeTime > 2) {
-        //  additional percent reward; calculate 11.11%  bonus devide 52 weeks
-        const bonusPercentPerWeek = 0.2136538461538462
-        this.percentReward = (this.stakeTime * bonusPercentPerWeek) + basePercY
-        this.result = (this.stakeAmount * this.percentReward) / 100
-      } else {
-        this.percentReward = basePercY
-        this.result = (this.stakeAmount * basePercY) / 100
-      }
-      this.weekly = this.result / 52
+      const rewardNAvax = reward(Math.round(this.stakeTime), this.stakeAmount * units.Avax, 360 * units.MegaAvax, 365)
+      this.reward = Math.round(rewardNAvax, 2)
+      this.rewardAvax = this.getAvaFromnAva(rewardNAvax)
+    },
+    getAvaFromnAva (v) {
+      return parseFloat(v) / 10 ** 9
     },
     async onGetBlockchains () {
       await this.getBlockchains({})

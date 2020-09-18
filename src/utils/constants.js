@@ -32,6 +32,34 @@ export const c = {
   contentTypeHeader: 'content-type'
 }
 
+//  Denominations of value
+export const NanoAvax = 1
+export const MicroAvax = 1000 * NanoAvax
+export const Schmeckle = 49 * MicroAvax + 463 * NanoAvax
+export const MilliAvax = 1000 * MicroAvax
+export const Avax = 1000 * MilliAvax
+export const KiloAvax = 1000 * Avax
+export const MegaAvax = 1000 * KiloAvax
+
+// SupplyCap is the maximum amount of AVAX that should ever exist
+export const SupplyCap = 720 * MegaAvax
+
+// MaxSubMinConsumptionRate is the % consumption that incentivizes staking
+export const maxSubMinConsumptionRate = 20000 // 2%
+
+// MinConsumptionRate is the minimum % consumption of the remaining tokens
+// to be minted
+export const minConsumptionRate = 100000 // 10%
+export const PercentDenominator = 1000000
+
+// MinimumStakingDuration is the shortest amount of time a staker can bond
+// their funds for.
+// MinimumStakingDuration = 24 * time.Hour
+
+// MaximumStakingDuration is the longest amount of time a staker can bond
+// their funds for.
+// MaximumStakingDuration = 365 * 24 * time.Hour
+
 export const VMDict = {
   '': {
     name: 'platformvm',

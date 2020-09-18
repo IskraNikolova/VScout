@@ -5,23 +5,6 @@ import { round, getAvatar } from './commons'
 // import { _getValidatorById } from './../modules/networkRpc'
 
 /**
-* @param {Array} Array of validators and delegators for split
-* @param {Array} Array of existing validators and delegators
-* @returns {Object} Object of current validators and delegators
-*/
-export function splitPendingAccounts (validators, existValidators) {
-  return validators.reduce((result, val) => {
-    if (existValidators
-      .find(v => v.nodeID === val.nodeID)) {
-      result.d.push(val)
-    } else {
-      result.v.push(val)
-    }
-    return result
-  }, { v: [], d: [] })
-}
-
-/**
 * @param {Array} Array of validators
 * @param {Array} Array of current validators on Default Subnet
 * @returns {Array} Array with processing validators
