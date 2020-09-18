@@ -1,7 +1,7 @@
 <template>
   <q-page>
-    <div style="height: 3px;width: 100%;background: grey;opacity: 0.5;" id="up"></div>
-    <div style="padding: 3%;">
+    <div style="height: 3px;width: 100%;background: grey;opacity: 0.5;"></div>
+    <div style="padding: 1%;">
       <error class="q-pr-md" />
       <node class="q-pr-md" />
       <network class="q-pr-md"/>

@@ -88,16 +88,16 @@
                 style="cursor:pointer;"
                 class="q-pt-xs q-ml-md"
                 @click="props.expand = !props.expand">
-                {{ props.row.name}}
+                {{ col.value }}
                 <div class="text-grey">({{ props.row.nodeID }})</div>
               </div>
               <div
                 v-else
-                style="cursor:pointer;"
+                style="cursor:pointer;font-size: 12px;"
                 @click="props.expand = !props.expand"
                 class="q-pl-xs q-pt-xs"
               >
-                {{ props.row.nodeID.substr(0, 14) }} ... {{ props.row.nodeID.substr(35) }}
+                {{ col.value }}
               </div>
             </div>
             <div v-else-if="col.name === 'stake'">
@@ -319,6 +319,7 @@ export default {
           align: 'center',
           label: 'Validator',
           field: row => row.name,
+          // format: (val, row) => `${val.substr(0, 20)}...${val.substr(34)}`,
           headerClasses: 'text-medium'
         },
         {
@@ -340,7 +341,7 @@ export default {
         {
           name: 'networkShare',
           align: 'center',
-          label: 'Network Share (%)',
+          label: 'Network Share',
           field: row => ` ${row.percent} %`,
           sortable: true,
           headerClasses: 'text-medium'
@@ -348,21 +349,21 @@ export default {
         {
           name: 'percent',
           align: 'center',
-          label: 'Cumulative Stake (%)',
+          label: 'Cumulative Stake',
           field: 'cumulativeStake',
           headerClasses: 'text-medium'
         },
         {
           name: 'delegationFee',
           align: 'center',
-          label: 'Delegation Fee (%)',
+          label: 'Delegation Fee',
           field: row => `${row.delegationFee} %`,
           headerClasses: 'text-medium'
         },
         {
           name: 'uptime',
           align: 'center',
-          label: 'Up Time (%)',
+          label: 'Up Time',
           field: row => `${Math.round(row.uptime * 100, 2)} %`,
           headerClasses: 'text-medium'
         },

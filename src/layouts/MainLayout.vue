@@ -44,8 +44,8 @@
                       <span class="text-accent">
                         {{ rewardAvax }}
                       </span> $AVAX
-                      (<small class="text-accent">
-                        {{ reward }} $nAVAX
+                      (<small class="text-grey">
+                        {{ reward.toLocaleString() }} $nAVAX
                       </small>)
                     </div>
                   </div>
@@ -204,7 +204,7 @@
                         <span class="text-accent">
                           {{ rewardAvax }}
                         </span> $AVAX
-                        (<small class="text-accent">
+                        (<small class="text-grey">
                           {{ reward }} $nAVAX
                         </small>)
                       </div>
@@ -324,6 +324,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 const units = require('./../utils/constants.js')
 import { reward } from './../modules/reward.js'
+import { round } from './../utils/commons.js'
 
 import {
   GET_SUBNETS,
@@ -356,7 +357,8 @@ export default {
       rewardAvax: 0.00,
       drawer: false,
       percentReward: 4,
-      stakeAmount: 2000
+      stakeAmount: 2000,
+      stakeTimePortion: 1
     }
   },
   methods: {
@@ -367,7 +369,7 @@ export default {
     calculate () {
       const rewardNAvax = reward(Math.round(this.stakeTime), this.stakeAmount * units.Avax, 360 * units.MegaAvax, 365)
       this.reward = Math.round(rewardNAvax, 2)
-      this.rewardAvax = this.getAvaFromnAva(rewardNAvax)
+      this.rewardAvax = round(this.getAvaFromnAva(rewardNAvax), 10000)
     },
     getAvaFromnAva (v) {
       return parseFloat(v) / 10 ** 9
