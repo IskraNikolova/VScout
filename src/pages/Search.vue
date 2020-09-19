@@ -444,6 +444,7 @@ export default {
     blockchain () {
       let blockchain = this.blockchainByID(this.$route.params.id)
       if (!blockchain) {
+        if (!this.$route.params.id) return
         blockchain = this.blockchainByName(this.$route.params.id)
       }
 
