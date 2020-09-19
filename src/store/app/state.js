@@ -1,7 +1,9 @@
 const { network } = require('./../../modules/config').default
+import { BN } from 'avalanche'
 
 export default function () {
   return {
+    currentSupply: new BN(1),
     nodeID: '',
     height: 0,
     subnets: [],

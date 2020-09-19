@@ -16,6 +16,7 @@ import {
   SET_NODE_HEALTH,
   SET_ASSETS_COUNT,
   SET_NETWORK_STATUS,
+  SET_CURRENT_SUPPLY,
   SET_DEFAULT_VALIDATORS,
   SET_PENDING_DELEGATORS,
   SET_PENDING_VALIDATORS
@@ -24,6 +25,9 @@ import {
 const mutations = {
   [SET_NETWORK_STATUS]: (state, { hasNetworkConnection }) => {
     state.hasNetworkConnection = hasNetworkConnection
+  },
+  [SET_CURRENT_SUPPLY]: (state, { currentSupply }) => {
+    state.currentSupply = currentSupply
   },
   [SET_NODE_ID]: (state, { nodeID }) => {
     state.nodeID = nodeID

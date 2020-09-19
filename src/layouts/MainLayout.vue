@@ -342,6 +342,7 @@ export default {
     ...mapGetters([
       'subnets',
       'blockchains',
+      'currentSupply',
       'networkEndpoint',
       'hasNetworkConnection'
     ])
@@ -366,8 +367,8 @@ export default {
       getSubnets: GET_SUBNETS,
       getBlockchains: GET_BLOCKCHAINS
     }),
-    calculate () {
-      const rewardNAvax = reward(Math.round(this.stakeTime), this.stakeAmount * units.Avax, 360 * units.MegaAvax, 365)
+    async calculate () {
+      const rewardNAvax = await reward(Math.round(this.stakeTime), this.stakeAmount * units.Avax, this.currentSupply, 365)
       this.reward = Math.round(rewardNAvax, 2)
       this.rewardAvax = round(this.getAvaFromnAva(rewardNAvax), 10000)
     },

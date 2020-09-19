@@ -84,6 +84,10 @@ export function nodeID (state) {
   return state.nodeID
 }
 
+export function currentSupply (state) {
+  return state.currentSupply
+}
+
 export function nodeInfo (state) {
   return state.nodeInfo
 }

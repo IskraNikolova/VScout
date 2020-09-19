@@ -14,6 +14,10 @@ export const getDurationHumanize = (s, e) => {
   return moment.duration(end.diff(start)).humanize(true)
 }
 
+export const getDurationByDayCount = (dur) => {
+  return moment.duration(dur, 'days')
+}
+
 export const timeago = (t) => {
   return moment.duration(t).humanize(true)
 }

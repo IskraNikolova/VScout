@@ -38,3 +38,6 @@ export const SET_STAKED_AVA = 'SET_STAKED_AVA'
 
 export const GET_HEIGHT = 'GET_HEIGHT'
 export const SET_HEIGHT = 'SET_HEIGHT'
+
+export const GET_CURRENT_SUPPLY = 'GET_CURRENT_SUPPLY'
+export const SET_CURRENT_SUPPLY = 'SET_CURRENT_SUPPLY'

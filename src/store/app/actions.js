@@ -1,3 +1,11 @@
+import { Avalanche } from 'avalanche'
+const ip = 'testapi.avax.network'
+const protocol = 'https'
+const networkId = 4
+const chainId = 'X'
+const avax = new Avalanche(ip, '', protocol, networkId, chainId)
+const pChain = avax.PChain()
+
 import {
   INIT_APP,
   GET_SUBNETS,
@@ -18,6 +26,8 @@ import {
   GET_BLOCKCHAINS,
   SET_BLOCKCHAINS,
   SET_ASSETS_COUNT,
+  GET_CURRENT_SUPPLY,
+  SET_CURRENT_SUPPLY,
   SET_DEFAULT_VALIDATORS,
   GET_PENDING_VALIDATORS,
   SET_PENDING_VALIDATORS,
@@ -75,7 +85,8 @@ async function initApp ({ dispatch, getters }) {
         subnetID: getters.subnetID,
         init: false
       }),
-      dispatch(GET_HEIGHT, {})
+      dispatch(GET_HEIGHT, {}),
+      dispatch(GET_CURRENT_SUPPLY)
       // _initializeNetwork()
     ])
   } catch (err) {
@@ -86,6 +97,7 @@ async function initApp ({ dispatch, getters }) {
       await Promise.all([
         dispatch(GET_NODE_HEALTH),
         dispatch(GET_HEIGHT, {}),
+        dispatch(GET_CURRENT_SUPPLY),
         dispatch(GET_NODE_INFO),
         dispatch(GET_VALIDATORS, {
           subnetID: getters.subnetID
@@ -368,6 +380,14 @@ async function getHeight ({ commit, getters }, { endpoint = getters.networkEndpo
   commit(SET_HEIGHT, { height })
 }
 
+async function getCurrentSupply ({ commit }) {
+  try {
+    const currentSupply = await pChain.getCurrentSupply()
+    commit(SET_CURRENT_SUPPLY, { currentSupply })
+  } catch (err) {
+  }
+}
+
 export default {
   [INIT_APP]: initApp,
   [GET_HEIGHT]: getHeight,
@@ -378,6 +398,7 @@ export default {
   [GET_VALIDATORS]: getValidators,
   [GET_NODE_HEALTH]: getNodeHealth,
   [GET_BLOCKCHAINS]: getBlockchains,
+  [GET_CURRENT_SUPPLY]: getCurrentSupply,
   [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsCount,
   [GET_PENDING_VALIDATORS]: getPendingValidators
 }
