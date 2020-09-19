@@ -106,7 +106,7 @@
         <div class="row q-pr-xl" v-if="ui.addIdentification.isAuth">
           <q-space />
           <q-btn label="Add To Contract" type="submit" size="10px" color="accent"/>
-          <q-btn size="md" label="Reset" type="reset" color="grey" flat class="q-ml-sm" />
+          <!--<q-btn size="md" label="Reset" type="reset" color="grey" flat class="q-ml-sm" />-->
         </div>
         </q-form>
       </q-card-section>

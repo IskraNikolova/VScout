@@ -8,7 +8,7 @@
           </q-toolbar-title>
           <q-btn push flat id="logo-sim" label="calculator" @click="calculate">
             <q-popup-proxy>
-              <q-banner class="q-pa-md" dense style="width: 430px;">
+              <q-banner class="q-pa-md" dense style="width: 300px;">
                 <div class="q-pb-md">Reward Calculator</div>
                 <div class="q-pa-md absolute-top-right">
                   <small>Current Supply </small>
@@ -33,7 +33,7 @@
                     </q-badge>
                   </div>
                   <div class="col-2" style="margin-top: -5px;">
-                    <q-btn icon="event" size="sm" round color="accent">
+                    <q-btn icon="event" size="sm" color="accent">
                       <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
                         <q-date v-model="model" color="orange" range>
                           <div class="row items-center justify-end q-gutter-sm">
@@ -194,7 +194,7 @@
             <q-item-section>
               <q-btn push flat no-caps label="Calculator" @click="calculate" style="margin-left: -50px;">
                 <q-popup-proxy>
-                  <q-banner class="q-pa-md" dense style="width: 430px;">
+                  <q-banner class="q-pa-md" dense style="width: 360px;">
                     <div class="q-pb-md">Reward Calculator</div>
                     <div class="q-pa-md absolute-top-right">
                       <small>Current Supply </small>
@@ -219,7 +219,7 @@
                         </q-badge>
                       </div>
                       <div class="col-2" style="margin-top: -5px;">
-                        <q-btn icon="event" size="sm" round color="accent">
+                        <q-btn icon="event" size="sm" color="accent">
                           <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
                             <q-date v-model="model" color="orange" range>
                               <div class="row items-center justify-end q-gutter-sm">
