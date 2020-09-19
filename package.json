@@ -1,7 +1,7 @@
 {
   "name": "vscout",
   "version": "0.0.1",
-  "description": "Avalanche validator explorer",
+  "description": "Avalanche Validator Explorer",
   "productName": "VScout",
   "cordovaId": "io.vscout.app",
   "capacitorId": "",

@@ -106,7 +106,7 @@ module.exports = function (ctx) {
       manifest: {
         name: 'VScout Explorer',
         short_name: 'VScout',
-        description: 'Avalanche validator explorer',
+        description: 'Avalanche Validator Explorer',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',

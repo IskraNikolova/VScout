@@ -10,9 +10,10 @@
             <q-popup-proxy>
               <q-banner class="q-pa-md" dense style="width: 430px;">
                 <div class="q-pb-md">Reward Calculator</div>
-                <!--<div class="q-pa-md absolute-top-right">
-                  <q-badge outline size="xs" color="accent" label="360M" />
-                </div>-->
+                <div class="q-pa-md absolute-top-right">
+                  <small>Current Supply </small>
+                  <q-badge outline size="xs" color="accent" :label="getCurrentSupply() + 'M'" />
+                </div>
                 <q-input
                   label-color="orange"
                   outlined
@@ -58,31 +59,16 @@
                   label-color="white"
                   color="orange"
                 />
-                <div class="row">
-                  <div class="col">
-                    <small>{{ stakeTime }} Days Earning </small>
+                <div>
+                  <small>{{ stakeTime }} Days Earning </small>
+                  <div>
+                    <span class="text-accent">
+                      {{ rewardAvax }}
+                    </span> $AVAX
                     <div>
-                      <span class="text-accent">
-                        {{ rewardAvax }}
-                      </span> $AVAX
-                      <div>
-                      (<small class="text-grey">
-                        {{ reward.toLocaleString() }} $nAVAX
-                      </small>)
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <small>Yearly Earning</small>
-                    <div>
-                      <span class="text-accent">
-                        {{ yearReward }}
-                      </span> $AVAX
-                      <div>
-                      (<small class="text-grey">
-                        {{ yearRewardnAvax.toLocaleString() }} $nAVAX
-                      </small>)
-                      </div>
+                    (<small class="text-grey">
+                      {{ reward.toLocaleString() }} $nAVAX
+                    </small>)
                     </div>
                   </div>
                 </div>
@@ -258,25 +244,13 @@
                       label-color="white"
                       color="orange"
                     />
-                    <div class="row">
-                      <div class="col">
-                        <small>{{ stakeTime }} Days Earning </small>
+                    <div>
+                      <small>{{ stakeTime }} Days Earning </small>
+                      <div>
+                        <span class="text-accent">
+                          {{ rewardAvax }}
+                        </span> $AVAX
                         <div>
-                          <span class="text-accent">
-                            {{ rewardAvax }}
-                          </span> $AVAX
-                          <div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col">
-                        <small>Yearly Earning</small>
-                        <div>
-                          <span class="text-accent">
-                            {{ yearReward }}
-                          </span> $AVAX
-                          <div>
-                          </div>
                         </div>
                       </div>
                     </div>
@@ -454,6 +428,11 @@ export default {
     updateProxy () {
       this.model = this.date
     },
+    getCurrentSupply () {
+      const currentSupply = this.currentSupply.toString()
+      const currentSupplyAvax = Math.round(getAvaFromnAva(Number(currentSupply)))
+      return Math.round(currentSupplyAvax / 1000000)
+    },
     save () {
       const fr = this.model.from.split('/')
       const t = this.model.to.split('/')
@@ -478,7 +457,7 @@ export default {
 
       this.reward = round(rewardNAvax, 100)
       this.rewardAvax = round(getAvaFromnAva(rewardNAvax), 10000)
-      this.yearRewardnAvax = (rewardNAvax / this.stakeTime) * 365
+      this.yearRewardnAvax = round((rewardNAvax / this.stakeTime) * 365, 100)
       this.yearReward = round(getAvaFromnAva(this.yearRewardnAvax), 10000)
     },
     async onGetBlockchains () {
