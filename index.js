@@ -16,6 +16,8 @@ app.use(function (req, res, next) {
 
 app.use(history())
 app.use(serveStatic(__dirname + '/dist/spa'))
+app.use(express.static( __dirname+'/static', {dotfiles:'allow'} ))
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}...`)
 })
