@@ -1,7 +1,8 @@
 const BigNumber = require('bignumber.js')
 
-import { fromNow } from './../modules/time'
-import { round, getAvatar } from './commons'
+import { fromNow } from './../modules/time.js'
+import { round, getAvatar } from './commons.js'
+import { getAvaFromnAva } from './avax.js'
 // import { _getValidatorById } from './../modules/networkRpc'
 
 /**
@@ -167,8 +168,4 @@ function getPercent (v, s) {
   const result = res.dividedBy(allStake)
 
   return result.toFixed(7)
-}
-
-function getAvaFromnAva (v) {
-  return parseFloat(v) / 10 ** 9
 }

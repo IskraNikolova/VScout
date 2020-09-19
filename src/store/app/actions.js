@@ -1,10 +1,4 @@
-import { Avalanche } from 'avalanche'
-const ip = 'testapi.avax.network'
-const protocol = 'https'
-const networkId = 4
-const chainId = 'X'
-const avax = new Avalanche(ip, '', protocol, networkId, chainId)
-const pChain = avax.PChain()
+import { pChain } from './../../modules/avalanche.js'
 
 import {
   INIT_APP,
@@ -210,7 +204,7 @@ async function getAssetsCount ({ commit }) {
 }
 
 async function getValidators (
-  { commit, getters },
+  { dispatch, commit, getters },
   { subnetID = network.defaultSubnetID, endpoint = getters.networkEndpoint.url, init = true }) {
   const response = await _getValidators({ subnetID, endpoint })
 
@@ -221,8 +215,6 @@ async function getValidators (
 
   commit(UPDATE_UI, { doesItConnect: false })
   let { validators, delegators } = response.data.result
-  // console.log(validators)
-  // console.log(delegators)
 
   if (typeof validators === 'undefined' ||
     validators === null) {
@@ -253,6 +245,7 @@ async function getValidators (
       defaultValidators: res.validators
     })
   }
+  dispatch(GET_CURRENT_SUPPLY)
 }
 
 async function getPendingValidators (

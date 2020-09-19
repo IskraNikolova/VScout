@@ -50,15 +50,15 @@ export const maxSubMinConsumptionRate = 20000 // 2%
 // MinConsumptionRate is the minimum % consumption of the remaining tokens
 // to be minted
 export const minConsumptionRate = 100000 // 10%
-export const PercentDenominator = 1000000
 
-// MinimumStakingDuration is the shortest amount of time a staker can bond
-// their funds for.
-// MinimumStakingDuration = 24 * time.Hour
+export const PercentDenominator = 1000000
 
 // MaximumStakingDuration is the longest amount of time a staker can bond
 // their funds for.
-// MaximumStakingDuration = 365 * 24 * time.Hour
+export const maximumStakingDuration = 365 * 24 * 60 * 60 * 1000
+
+// Stake duration in ms
+export const stakeDurationMs = (stakeTime) => stakeTime * 24 * 60 * 60 * 1000
 
 export const VMDict = {
   '': {

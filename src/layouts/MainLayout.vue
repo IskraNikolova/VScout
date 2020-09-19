@@ -10,9 +10,9 @@
             <q-popup-proxy>
               <q-banner class="q-pa-md" dense style="width: 430px;">
                 <div class="q-pb-md">Reward Calculator</div>
-                <div class="q-pa-md absolute-top-right">
+                <!--<div class="q-pa-md absolute-top-right">
                   <q-badge outline size="xs" color="accent" label="360M" />
-                </div>
+                </div>-->
                 <q-input
                   label-color="orange"
                   outlined
@@ -25,30 +25,51 @@
                   class="q-pb-xl"
                 />
                 <!--:rules="[value => value >= 2000 || 'Stake Amount must be greater or equal to 2000 $AVAX']"-->
+                <q-badge color="orange" class="q-pb-xs q-pt-xs q-mb-xs">
+                  Staking Time (1 to 365 days)
+                </q-badge>
                 <q-slider
-                  class="q-ml-xs q-mr-xs"
+                  class="q-ml-xs q-mr-xs q-mt-md"
                   v-model="stakeTime"
                   :min="1"
                   :max="365"
                   :step="1"
-                  :label-value="'Staking Time ' + stakeTime + ' days'"
+                  snap
+                  :label-value="stakeTime + ' days'"
                   label-always
                   @input="calculate"
                   label-text-color="orange"
                   label-color="white"
                   color="orange"
                 />
-                  <div>
-                    <small>Reward Earning </small>
+                <div class="row">
+                  <div class="col">
+                    <small>{{ stakeTime }} Days Earning </small>
                     <div>
                       <span class="text-accent">
                         {{ rewardAvax }}
                       </span> $AVAX
+                      <div>
                       (<small class="text-grey">
                         {{ reward.toLocaleString() }} $nAVAX
                       </small>)
+                      </div>
                     </div>
                   </div>
+                  <div class="col">
+                    <small>Yearly Earning</small>
+                    <div>
+                      <span class="text-accent">
+                        {{ yearReward }}
+                      </span> $AVAX
+                      <div>
+                      (<small class="text-grey">
+                        {{ yearRewardnAvax.toLocaleString() }} $nAVAX
+                      </small>)
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </q-banner>
             </q-popup-proxy>
             <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Reward Calculator</q-tooltip>
@@ -83,7 +104,11 @@
             <list-subnets />
           </q-menu>
           </q-btn>
-          <a style="text-decoration: none;margin-top: -3px;padding-left: 20px;padding-right: 20px;" class="text-grey" href="#faqs">FAQ</a>
+          <a
+            id="faq"
+            class="text-grey" href="#faqs">
+            FAQ
+          </a>
           <q-btn
             flat
             no-caps
@@ -170,9 +195,9 @@
                 <q-popup-proxy>
                   <q-banner class="q-pa-md" dense style="width: 430px;">
                     <div class="q-pb-md">Reward Calculator</div>
-                    <div class="q-pa-md absolute-top-right">
+                    <!--<div class="q-pa-md absolute-top-right">
                       <q-badge outline size="xs" color="accent" :label="percentReward.toFixed(2) + '%'" />
-                    </div>
+                    </div>-->
                     <q-input
                       label-color="orange"
                       outlined
@@ -191,7 +216,7 @@
                       :min="2"
                       :max="52"
                       :step="1"
-                      :label-value="'Staking Time ' + stakeTime + ' weeks'"
+                      :label-value="'Staking Time ' + stakeTime + ' days'"
                       label-always
                       @input="calculate"
                       label-text-color="orange"
@@ -322,9 +347,10 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
-const units = require('./../utils/constants.js')
+const { Avax, maximumStakingDuration, stakeDurationMs } = require('./../utils/constants.js')
 import { reward } from './../modules/reward.js'
 import { round } from './../utils/commons.js'
+import { getAvaFromnAva } from './../utils/avax.js'
 
 import {
   GET_SUBNETS,
@@ -359,7 +385,8 @@ export default {
       drawer: false,
       percentReward: 4,
       stakeAmount: 2000,
-      stakeTimePortion: 1
+      yearReward: 0,
+      yearRewardnAvax: 0
     }
   },
   methods: {
@@ -367,13 +394,19 @@ export default {
       getSubnets: GET_SUBNETS,
       getBlockchains: GET_BLOCKCHAINS
     }),
-    async calculate () {
-      const rewardNAvax = await reward(Math.round(this.stakeTime), this.stakeAmount * units.Avax, this.currentSupply, 365)
-      this.reward = Math.round(rewardNAvax, 2)
-      this.rewardAvax = round(this.getAvaFromnAva(rewardNAvax), 10000)
-    },
-    getAvaFromnAva (v) {
-      return parseFloat(v) / 10 ** 9
+    calculate () {
+      const durationMs = stakeDurationMs(this.stakeTime)
+      const rewardNAvax = reward(
+        durationMs,
+        this.stakeAmount * Avax,
+        this.currentSupply,
+        maximumStakingDuration
+      )
+
+      this.reward = round(rewardNAvax, 100)
+      this.rewardAvax = round(getAvaFromnAva(rewardNAvax), 10000)
+      this.yearRewardnAvax = (rewardNAvax / this.stakeTime) * 365
+      this.yearReward = round(getAvaFromnAva(this.yearRewardnAvax), 10000)
     },
     async onGetBlockchains () {
       await this.getBlockchains({})
@@ -397,3 +430,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  #faq {
+    text-decoration: none;
+    margin-top: -3px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+</style>

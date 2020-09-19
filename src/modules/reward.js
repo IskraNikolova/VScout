@@ -1,20 +1,39 @@
 const units = require('./../utils/constants.js')
+const BigNumber = require('bignumber.js')
 
-export const reward = async (duration, stakedAmount, currentSupply, consumptionInterval) => {
-  const durationMs = duration * 24 * 60 * 60 * 1000
-  const consumptionIntervalMs = consumptionInterval * 24 * 60 * 60 * 1000
-  let adjustedConsumptionRateNumerator = units.maxSubMinConsumptionRate * durationMs
-  const adjustedMinConsumptionRateNumerator = units.minConsumptionRate * consumptionIntervalMs
-  adjustedConsumptionRateNumerator += adjustedMinConsumptionRateNumerator
-  const adjustedConsumptionRateDenominator = consumptionIntervalMs * units.PercentDenominator
+export const reward = (duration, stakedAmount, currentSupply, maxStakePeriod) => {
+  const maxSubMinConsumptionRate = new BigNumber(units.maxSubMinConsumptionRate)
+  const minConsumptionRate = new BigNumber(units.minConsumptionRate)
+  const consumptionInterval = new BigNumber(maxStakePeriod)
+  const supplyCap = new BigNumber(units.SupplyCap)
 
-  let result = units.SupplyCap - currentSupply
-  result *= adjustedConsumptionRateNumerator
-  result *= stakedAmount
-  result *= durationMs
-  result /= adjustedConsumptionRateDenominator
-  result /= currentSupply
-  result /= consumptionIntervalMs
+  let adjustedConsumptionRateNumerator = maxSubMinConsumptionRate
+    .multipliedBy(duration)
 
-  return result
+  const adjustedMinConsumptionRateNumerator = minConsumptionRate
+    .multipliedBy(consumptionInterval)
+
+  adjustedConsumptionRateNumerator = BigNumber
+    .sum(
+      adjustedConsumptionRateNumerator,
+      adjustedMinConsumptionRateNumerator
+    )
+
+  const adjustedConsumptionRateDenominator = consumptionInterval
+    .multipliedBy(units.PercentDenominator)
+
+  const remainingSupply = supplyCap
+    .minus(currentSupply)
+
+  let rewardRes = new BigNumber(remainingSupply)
+
+  rewardRes = rewardRes.multipliedBy(adjustedConsumptionRateNumerator)
+  rewardRes = rewardRes.multipliedBy(stakedAmount)
+  rewardRes = rewardRes.multipliedBy(duration)
+
+  rewardRes = rewardRes.dividedBy(adjustedConsumptionRateDenominator)
+  rewardRes = rewardRes.dividedBy(currentSupply)
+  rewardRes = rewardRes.dividedBy(consumptionInterval)
+
+  return rewardRes.toNumber()
 }
