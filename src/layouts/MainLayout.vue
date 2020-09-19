@@ -196,9 +196,10 @@
                 <q-popup-proxy>
                   <q-banner class="q-pa-md" dense style="width: 430px;">
                     <div class="q-pb-md">Reward Calculator</div>
-                    <!--<div class="q-pa-md absolute-top-right">
-                      <q-badge outline size="xs" color="accent" label="360M" />
-                    </div>-->
+                    <div class="q-pa-md absolute-top-right">
+                      <small>Current Supply </small>
+                      <q-badge outline size="xs" color="accent" :label="getCurrentSupply() + 'M'" />
+                    </div>
                     <q-input
                       label-color="orange"
                       outlined
