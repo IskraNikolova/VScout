@@ -6,8 +6,8 @@
     id="custom-card-2"
     align="right"
   >
-    <span class="text-orange" v-if="error"><img src="~assets/warning.svg" id="logo"> {{ error }} <q-spinner-dots  color="orange" size="1em"/></span>
-    <span class="text-orange" v-else><img src="~assets/warning.svg" id="logo"> Connecting <q-spinner-dots  color="orange" size="1em"/></span>
+    <span class="text-orange" v-if="error"><q-icon color="orange" size="md" name="report_problem"/> {{ error }} <q-spinner-dots  color="orange" size="1em"/></span>
+    <span class="text-orange" v-else><q-icon color="orange" size="md" name="network_check"/> Connecting <q-spinner-dots  color="orange" size="1em"/></span>
   </q-card>
 </template>
 

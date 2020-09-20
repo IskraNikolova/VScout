@@ -28,17 +28,17 @@
                 <!--:rules="[value => value >= 2000 || 'Stake Amount must be greater or equal to 2000 $AVAX']"-->
                 <div class="row q-mt-md">
                   <div class="col-10">
-                    <q-badge color="orange" class="q-pb-xs q-pt-xs q-mb-xs">
+                    <q-badge outline color="orange" style="height: 27px;" class="q-pb-xs q-pt-xs q-mb-xs">
                       Staking Time (1 to 365 days)
                     </q-badge>
                   </div>
-                  <div class="col-2" style="margin-top: -5px;">
-                    <q-btn icon="event" size="sm" color="accent">
+                  <div class="col-2">
+                    <q-btn icon="event" size="sm" outline color="grey">
                       <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
                         <q-date v-model="model" color="orange" range>
                           <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn label="Cancel" color="accent" flat v-close-popup />
-                            <q-btn label="OK" color="accent" flat @click="save" v-close-popup />
+                            <q-btn label="Cancel" color="grey" flat v-close-popup />
+                            <q-btn label="OK" color="grey" flat @click="save" v-close-popup />
                           </div>
                         </q-date>
                       </q-popup-proxy>
@@ -194,7 +194,7 @@
             <q-item-section>
               <q-btn push flat no-caps label="Calculator" @click="calculate" style="margin-left: -50px;">
                 <q-popup-proxy>
-                  <q-banner class="q-pa-md" dense style="width: 360px;">
+                  <q-banner class="q-pa-md" dense style="width: 300px;">
                     <div class="q-pb-md">Reward Calculator</div>
                     <div class="q-pa-md absolute-top-right">
                       <small>Current Supply </small>
@@ -214,17 +214,17 @@
                     <!--:rules="[value => value >= 2000 || 'Stake Amount must be greater or equal to 2000 $AVAX']"-->
                     <div class="row q-mt-md">
                       <div class="col-10">
-                        <q-badge color="orange" class="q-pb-xs q-pt-xs q-mb-xs">
+                        <q-badge outline color="orange" style="height: 25px;" class="q-pb-xs q-pt-xs q-mb-xs">
                           Staking Time (1 to 365 days)
                         </q-badge>
                       </div>
-                      <div class="col-2" style="margin-top: -5px;">
-                        <q-btn icon="event" size="sm" color="accent">
+                      <div class="col-2">
+                        <q-btn icon="event" size="sm" outline color="grey">
                           <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
                             <q-date v-model="model" color="orange" range>
                               <div class="row items-center justify-end q-gutter-sm">
-                                <q-btn label="Cancel" color="accent" flat v-close-popup />
-                                <q-btn label="OK" color="accent" flat @click="save" v-close-popup />
+                                <q-btn label="Cancel" color="grey" flat v-close-popup />
+                                <q-btn label="OK" color="grey" flat @click="save" v-close-popup />
                               </div>
                             </q-date>
                           </q-popup-proxy>
@@ -251,6 +251,9 @@
                         <span class="text-accent">
                           {{ rewardAvax }}
                         </span> $AVAX
+                         (<small class="text-grey">
+                            {{ reward.toLocaleString() }} $nAVAX
+                          </small>)
                         <div>
                         </div>
                       </div>

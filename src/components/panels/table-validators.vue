@@ -188,7 +188,9 @@
                   </span>
                 </q-item-label>
                 <q-item-label class="q-mt-md">
-                  <span style="cursor:pointer;font-size: 12px;" @click="onClick(props.row.link)">{{ props.row.name }} <small v-if="props.row.name !== props.row.nodeID" class="text-grey">({{props.row.nodeID}})</small></span>
+                  <span style="cursor:pointer;font-size: 11.5px;" @click="onClick(props.row.link)">
+                    {{ props.row.name }} <small v-if="props.row.name !== props.row.nodeID" class="text-grey">({{props.row.nodeID}})</small>
+                  </span>
                   <small>
                     <q-icon
                       @click="copyToClipboard(props.row.nodeID)"
@@ -461,8 +463,8 @@ export default {
       return `${val.addresses[0].substr(0, 12)}...${val.addresses[0].substr(32)}`
     },
     border (isConnected) {
-      if (isConnected) return '#87C5D6'
-      else return '#ff5252'
+      if (isConnected) return '#588da8'
+      else return '#d8345f'
     },
     onClick (link) {
       if (link) openURL(link)
@@ -520,7 +522,7 @@ export default {
 </script>
 <style scoped>
  #custom-table {
-   border-right: 2px solid #87C5D6;
+   border-right: 2px solid #588da8;
  }
  .container_row{
   display: grid;

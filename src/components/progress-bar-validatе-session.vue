@@ -2,10 +2,10 @@
   <div>
     <q-linear-progress size="50px" rounded :value="progress" :buffer="progress" color="grey">
       <div class="absolute-full text-black progressBadge">
-        <span class="text-orange text-bold">{{ progressBadge }} %</span>
+        <span class="text-accent text-bold">{{ progressBadge }} %</span>
       </div>
     </q-linear-progress>
-    <div class="absolute-full q-pb-md timeago text-orange text-medium">
+    <div class="absolute-full q-pb-md timeago text-accent text-medium">
       <small>{{ timeago }}</small>
     </div>
   </div>
