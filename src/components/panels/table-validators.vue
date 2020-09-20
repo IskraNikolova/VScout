@@ -117,20 +117,21 @@
               <div class="container_row" v-if="props.row.cumulativeStake">
                 <div
                   class="layer1"
-                  :style="'border-radius:0px 15px 0px 0px;height: 50px;width:' + props.row.cumulativeStake + '%;background: rgb(50,53,59);background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(50,53,59,1) ' + (props.row.cumulativeStake - props.row.percent) / 5 + '%, rgba(255,96,0,1) 95%);'">
+                  :style="'border-radius:0px 5px 0px 0px;height: 50px;width:' + props.row.cumulativeStake + '%;background: rgb(50,53,59);background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(50,53,59,1) ' + (props.row.cumulativeStake - props.row.percent) / 5 + '%, rgba(255,96,0,1) 95%);'">
                 </div>
                 <div class="layer2">
                   <q-linear-progress
                     size="49px"
+                    rounded
                     :value="(props.row.cumulativeStake - props.row.percent) / 100"
                     :buffer="(props.row.cumulativeStake - props.row.percent) / 100"
-                    style="opacity:0.6;border-radius:0px 15px 0px 0px;"
+                    style="opacity:0.5;border-radius:0px 5px 0px 0px;"
                     color="grey">
                     <div
                       class="absolute-full text-bold text-black"
                       style="font-size: 15px;margin-top: 6%;"
                     >
-                      {{props.row.cumulativeStake}} %
+                      {{ props.row.cumulativeStake }} %
                     </div>
                   </q-linear-progress>
                 </div>
@@ -161,15 +162,17 @@
           <q-card flat bordered>
             <q-item>
               <q-item-section avatar style="cursor:pointer;" @click="onClick(props.row.link)">
-                <q-avatar>
-                  <q-img :src="props.row.avatar">
-                    <template v-slot:error>
-                      <div>
-                        ?
-                      </div>
-                    </template>
-                  </q-img>
-                </q-avatar>
+                <div :style="'border: solid 1px ' + border(props.row.connected) + ';border-radius: 50px;width: 100%;'">
+                  <q-avatar>
+                    <q-img :src="props.row.avatar">
+                      <template v-slot:error>
+                        <div>
+                          ?
+                        </div>
+                      </template>
+                    </q-img>
+                  </q-avatar>
+                </div>
               </q-item-section>
               <q-item-section>
                 <q-item-label >
@@ -177,9 +180,12 @@
                   <span class="text-accent">
                     {{ props.row.rank }}
                   </span>
+                   <span class="q-pl-xl"><q-badge :color="getColorUptime(props.row.uptime)">
+                    {{ Math.round(props.row.uptime * 100, 2) }} %
+                  </q-badge></span>
                 </q-item-label>
                 <q-item-label>
-                  <span style="cursor:pointer;" @click="onClick(props.row.link)">{{ props.row.name }} <small v-if="props.row.name !== props.row.nodeID" class="text-grey">({{props.row.nodeID}})</small></span>
+                  <span style="cursor:pointer;font-size: 12px;" @click="onClick(props.row.link)">{{ props.row.name }} <small v-if="props.row.name !== props.row.nodeID" class="text-grey">({{props.row.nodeID}})</small></span>
                   <small>
                     <q-icon
                       @click="copyToClipboard(props.row.nodeID)"
@@ -227,6 +233,10 @@
                 <span class="text-orange q-pl-xs" v-if="props.row.percent !== 'NaN'">
                   {{ props.row.percent }} %
                 </span>
+                <div class="text-medium q-mt-md">Delegation Fee</div>
+                <div class="text-grey">
+                  <small>{{ props.row.delegationFee }} %</small>
+                </div>
                 <div class="text-medium q-mt-md">Staked By</div>
                 <div class="text-grey">
                   <small>{{ props.row.fromNowST }}</small>
@@ -373,6 +383,7 @@ export default {
           label: 'Start Time',
           field: row => this.formatDate(row.startTime),
           sortable: true,
+          style: 'font-size: 75%;',
           headerClasses: 'text-medium'
         },
         { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress', headerClasses: 'text-medium' }
