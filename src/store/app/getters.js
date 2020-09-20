@@ -43,7 +43,7 @@ export function blockchainByID (state) {
 export function blockchainByName (state) {
   return (name) => state
     .blockchains
-    .find(b => b.name.toLowerCase() === name.toLowerCase())
+    .find(b => b.name === name)
 }
 
 export function subnetByID (state) {

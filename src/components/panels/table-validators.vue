@@ -102,10 +102,10 @@
             </div>
             <div v-else-if="col.name === 'stake'">
               <div>
-                <small class="text-grey">Total:</small> {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
+                <small class="text-grey">Total:</small> {{ getFormatAVAX(props.row.total) }}
               </div>
               <div>
-                <small class="text-grey">Own: </small> <span class="text-orange">{{ col.value }}</span>
+                <small class="text-grey">Own: </small> <span class="text-orange">{{ getFormatAVAX(col.value) }}</span>
                 <small class="text-grey"> D: {{ getFormatDS(props.row.delegateStake) }}</small>
               </div>
             </div>
@@ -160,6 +160,12 @@
       <template v-slot:item="props">
         <div style="max-width: 400px;width: 100%;margin:auto;margin-bottom: 5px;">
           <q-card flat bordered>
+            <span class="absolute absolute-top-right q-mt-xs q-mr-md">
+              <small class="q-mr-xs">Up Time</small>
+              <q-badge :color="getColorUptime(props.row.uptime)" >
+                {{ getUpTime(props.row.uptime) }} %
+              </q-badge>
+            </span>
             <q-item>
               <q-item-section avatar style="cursor:pointer;" @click="onClick(props.row.link)">
                 <div :style="'border: solid 1px ' + border(props.row.connected) + ';border-radius: 50px;width: 100%;'">
@@ -175,16 +181,13 @@
                 </div>
               </q-item-section>
               <q-item-section>
-                <q-item-label >
+                <q-item-label>
                   <small>Rank </small>
                   <span class="text-accent">
                     {{ props.row.rank }}
                   </span>
-                   <span class="q-pl-xl"><q-badge :color="getColorUptime(props.row.uptime)">
-                    {{ Math.round(props.row.uptime * 100, 2) }} %
-                  </q-badge></span>
                 </q-item-label>
-                <q-item-label>
+                <q-item-label class="q-mt-md">
                   <span style="cursor:pointer;font-size: 12px;" @click="onClick(props.row.link)">{{ props.row.name }} <small v-if="props.row.name !== props.row.nodeID" class="text-grey">({{props.row.nodeID}})</small></span>
                   <small>
                     <q-icon
@@ -194,11 +197,11 @@
                     />
                   </small>
                 </q-item-label>
-                <q-item-label v-if="props.row.address">
+                <q-item-label>
                   <small class="text-grey">
-                    Owner ({{ props.row.address.substr(0, 12)}} ... {{ props.row.address.substr(22) }})
+                    Owner ({{ getFormatOwner(props.row.rewardOwner)}})
                     <q-icon
-                      @click="copyToClipboard(props.row.address)"
+                      @click="copyToClipboard(props.row.rewardOwner.addresses[0])"
                       color="grey"
                       name="file_copy"
                     />
@@ -218,7 +221,7 @@
               <q-card-section class="col-6 q-mb-xl">
                 <div class="text-medium q-mb-md">Stake (AVAX)</div>
                 <small class="text-grey">Own</small>
-                {{ props.row.stake > 1 ? getLocalString(props.row.stake) : props.row.stake }}
+                {{ getFormatAVAX(props.row.stake)}}
                 <div>
                   <small class="text-grey">Delegated</small>
                   {{ props.row.delegateStake }}
@@ -226,7 +229,7 @@
                 <q-separator />
                 <div>
                   <small class="text-grey">Total</small>
-                  {{ props.row.total > 1 ? props.row.total.toLocaleString() : props.row.total }}
+                  {{ getFormatAVAX(props.row.total)}}
                   <small class="text-accent">$AVAX</small>
                 </div>
                 <div class="text-medium q-mt-md">Network Share (%)</div>
@@ -237,19 +240,23 @@
                 <div class="text-grey">
                   <small>{{ props.row.delegationFee }} %</small>
                 </div>
-                <div class="text-medium q-mt-md">Staked By</div>
-                <div class="text-grey">
-                  <small>{{ props.row.fromNowST }}</small>
-                </div>
+                  <div class="text-medium q-mt-md">Staked By</div>
+                  <div class="text-grey">
+                    <small>{{ props.row.fromNowST }}</small>
+                  </div>
               </q-card-section>
               <q-separator vertical />
               <q-card-section class="col-6">
                 <cumulative-stake-chart
-                  v-if="props.row.cumulativeStake"
+                  style="margin-bottom: 26px;"
                   v-bind:name="props.row.nodeID"
                   v-bind:percent="props.row.percent"
                   v-bind:percentAll="props.row.cumulativeStake ? props.row.cumulativeStake : NaN"
-                /><div v-else> - </div>
+                />
+                <div class="text-medium q-mt-md">Potential Reward</div>
+                <div class="text-grey">
+                  <small>{{ getFormatReward(props.row.potentialReward) }} AVAX</small>
+                </div>
               </q-card-section>
             </q-card-section>
             <q-card-section style="margin-top: -50px;"><div class="text-grey text-medium">Progress (%)</div>
@@ -287,6 +294,7 @@ import {
 } from 'quasar'
 
 import { date } from './../../modules/time.js'
+import { getAvaFromnAva } from './../../utils/avax.js'
 import { round } from './../../utils/commons.js'
 const { network } = require('./../../modules/config').default
 import { UPDATE_UI } from './../../store/ui/types.js'
@@ -329,14 +337,13 @@ export default {
           align: 'center',
           label: 'Validator',
           field: row => row.name,
-          // format: (val, row) => `${val.substr(0, 20)}...${val.substr(34)}`,
           headerClasses: 'text-medium'
         },
         {
           name: 'stake',
           align: 'center',
           label: 'Stake (AVAX)',
-          field: row => row.stake > 1 ? row.stake.toLocaleString() : row.stake,
+          field: row => row.stake,
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -428,14 +435,30 @@ export default {
     }
   },
   methods: {
+    getUpTime (val) {
+      if (!val) return 0
+      return round(val * 100, 100)
+    },
+    getFormatReward (val) {
+      if (!val) return 0
+      const avax = getAvaFromnAva(val)
+      return this.getLocalString(round(avax, 100))
+    },
+    getFormatAVAX (val) {
+      if (!val) return 0
+      return this.getLocalString(round(Number(val), 100))
+    },
     getColorUptime (val) {
       if (val >= 0.6) return 'green'
       return 'negative'
     },
     getFormatDS (val) {
       if (!val) return 0
-
-      return round(val, 100).toLocaleString()
+      return this.getLocalString(round(val, 100))
+    },
+    getFormatOwner (val) {
+      if (!val.addresses) return
+      return `${val.addresses[0].substr(0, 12)}...${val.addresses[0].substr(32)}`
     },
     border (isConnected) {
       if (isConnected) return '#87C5D6'
@@ -451,6 +474,7 @@ export default {
     },
     getLocalString (val) {
       if (val) return val.toLocaleString()
+      return 0
     },
     onAddIdentification () {
       this.$refs.addIdentificationRef.openAddId()

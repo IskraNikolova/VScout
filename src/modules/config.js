@@ -2,8 +2,9 @@ export default {
   network: {
     ip: 'api.avax.network',
     protocol: 'https',
-    networkId: 4,
+    networkId: 0,
     chainId: 'X',
+    port: 443,
     explorerApiBaseUrl: 'https://explorerapi.avax.network/',
     contract: '0x209D694B5c46B36CBf287BB43cDc999410A2c766',
     endpointCChain: 'api.avax.network/ext/bc/C/rpc',

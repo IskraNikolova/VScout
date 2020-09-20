@@ -13,13 +13,13 @@
       color="accent"
       flat
     />
-    <div v-if="subnet()">
-      <div class="q-pa-md gt-sm">
+    <div v-if="getSubnet($route.params.id)">
+      <div class="q-pa-md gt-xs">
         <div class="q-pl-md text-bold">SUBNET ID</div>
-        <div class="text-regular text-orange q-pl-md q-pb-md">{{ subnet().id }}</div>
+        <div class="text-regular text-orange q-pl-md q-pb-md">{{ subnet.id }}</div>
         <span class="q-pl-md text-light text-h7">BLOCKCHAINS:</span>
         <div class="row q-pl-md">
-          <div class="col text-medium" v-for="id in subnet().blockchainsId" v-bind:key="id">
+          <div class="col text-medium" v-for="id in subnet.blockchainsId" v-bind:key="id">
             <br />
             <small class="text-grey">NAME: </small>{{ blockchainByID(id).name }}
             <br />
@@ -30,17 +30,17 @@
         </div>
         <q-separator class="q-mt-md q-mb-md"/>
         <div class="q-pl-md">
-          <span class="text-light text-h7">THRESHOLD:</span> <span class="text-medium q-pl-xs">{{ subnet().threshold }}</span>
+          <span class="text-light text-h7">THRESHOLD:</span> <span class="text-medium q-pl-xs">{{ subnet.threshold }}</span>
           <br />
-          <span class="text-light text-h7">CONTROL KEYS:</span> <div class="text-medium q-pl-xs" v-for="key in subnet().controlKeys" v-bind:key="key">{{ key }}</div>
+          <span class="text-light text-h7">CONTROL KEYS:</span> <div class="text-medium q-pl-xs" v-for="key in subnet.controlKeys" v-bind:key="key">{{ key }}</div>
           <br />
         </div>
       </div>
-      <div class="q-pa-md lt-md">
+      <div class="q-pa-md lt-sm">
         <div class="text-bold">SUBNET ID</div>
-        <div class="text-regular text-orange q-pb-md">{{ subnet().id }}</div>
+        <div class="text-regular text-orange q-pb-md">{{ subnet.id }}</div>
         <span class="text-light text-h7">BLOCKCHAINS:</span>
-        <div class="text-medium" v-for="id in subnet().blockchainsId" v-bind:key="id">
+        <div class="text-medium" v-for="id in subnet.blockchainsId" v-bind:key="id">
           <br />
           <small class="text-grey">NAME: </small>{{ blockchainByID(id).name }}
           <br />
@@ -50,20 +50,20 @@
           <q-separator class="q-mt-md q-mb-md"/>
         </div>
         <div>
-          <span class="text-light text-h7">THRESHOLD:</span> <span class="text-medium q-pl-xs">{{ subnet().threshold }}</span>
+          <span class="text-light text-h7">THRESHOLD:</span> <span class="text-medium q-pl-xs">{{ subnet.threshold }}</span>
           <br />
-          <span class="text-light text-h7">CONTROL KEYS:</span> <div class="text-medium q-pl-xs" v-for="key in subnet().controlKeys" v-bind:key="key">{{ key }}</div>
+          <span class="text-light text-h7">CONTROL KEYS:</span> <div class="text-medium q-pl-xs" v-for="key in subnet.controlKeys" v-bind:key="key">{{ key }}</div>
           <br />
         </div>
       </div>
     </div>
-    <div v-else-if="validator()">
+    <div v-else-if="getValidator($route.params.id)">
       <div class="text-bold q-pl-xl">VALIDATOR</div>
-      <q-card flat class="gt-sm q-pa-xl">
+      <q-card flat class="gt-xs q-pa-xl">
         <q-item>
-          <q-item-section avatar style="cursor:pointer;" @click="onClick(validator().link)">
+          <q-item-section avatar style="cursor:pointer;" @click="onClick(validator.link)">
             <q-avatar>
-              <q-img :src="validator().avatar">
+              <q-img :src="validator.avatar">
                 <template v-slot:error>
                   <div>
                     ?
@@ -76,32 +76,32 @@
             <q-item-label>
               <small class="text-medium">Rank </small>
               <span class="text-accent">
-                {{ validator().rank }}
+                {{ validator.rank }}
               </span>
             </q-item-label>
             <q-item-label>
-              <span  style="cursor:pointer;" @click="onClick(validator().link)">{{ validator().name }} </span> <small v-if="validator().name !== validator().nodeID" class="text-grey">({{ validator().nodeID }})</small>
+              <span  style="cursor:pointer;" @click="onClick(validator.link)">{{ validator.name }} </span> <small v-if="validator.name !== validator.nodeID" class="text-grey">({{ validator.nodeID }})</small>
               <small>
                 <q-icon
-                  @click="copyToClipboard(validator().nodeID)"
+                  @click="copyToClipboard(validator.nodeID)"
                   color="grey"
                   name="file_copy"
                 />
               </small>
             </q-item-label>
-            <q-item-label v-if="validator().address">
+            <q-item-label v-if="validator.address">
               <small class="text-grey">
-                <span class="text-medium">Owner</span> ({{ validator().address.substr(0, 12)}} ... {{ validator().address.substr(22) }})
+                <span class="text-medium">Owner</span> ({{ validator.address.substr(0, 12)}} ... {{ validator.address.substr(22) }})
                 <q-icon
-                  @click="copyToClipboard(validator().address)"
+                  @click="copyToClipboard(validator.address)"
                   color="grey"
                   name="file_copy"
                 />
               </small>
             </q-item-label>
-            <q-item-label v-if="validator().weight">
+            <q-item-label v-if="validator.weight">
               <small class="text-grey">
-                Weight: <span class="text-accent">{{ validator().weight }}</span>
+                Weight: <span class="text-accent">{{ validator.weight }}</span>
               </small>
             </q-item-label>
           </q-item-section>
@@ -113,58 +113,58 @@
           <q-card-section class="col-7 q-mb-xl">
             <div class="q-mb-md text-medium">Stake (AVAX)</div>
             <small class="text-grey">Own</small>
-            {{ validator().stake > 1 ? getLocalString(validator().stake) : validator().stake }}
+            {{ validator.stake > 1 ? getLocalString(validator.stake) : validator.stake }}
             <small class="text-accent">$AVAX</small>
             <small style="color: grey;">
-              ({{ getLocalString(validator().stakenAva) }} nAvax)
+              ({{ getLocalString(validator.stakenAva) }} nAvax)
             </small>
             <div>
             </div>
             <div>
               <small class="text-grey">Delegated</small>
-              {{ validator().delegateStake }}
+              {{ validator.delegateStake }}
               <small class="text-accent">$AVAX</small>
             </div>
             <div>
               <small class="text-grey">Total</small>
-              {{ validator().total > 1 ? validator().total.toLocaleString() : validator().total }}
+              {{ getLocalString(validator.total) }}
               <small class="text-accent">$AVAX</small>
             </div>
             <q-separator class="q-pa-xs q-mb-md q-mt-md"/>
             <div class="text-medium q-mt-md">Network Share (%) </div>
-            <span class="text-orange q-pl-xs" v-if="validator().percent !== 'NaN'">
-              {{validator().percent }} %
+            <span class="text-orange q-pl-xs" v-if="validator.percent !== 'NaN'">
+              {{validator.percent }} %
             </span>
             <q-separator class="q-pa-xs q-mb-md q-mt-md" />
             <div class="q-pl-xs q-mt-md">
               <div class="text-medium">Staked By</div>
               <div class="text-accent">
-                <small>{{ validator().fromNowST }}</small>
+                <small>{{ validator.fromNowST }}</small>
               </div>
             </div>
             <q-separator class="q-pa-xs q-mb-md q-mt-md" />
             <div class="q-pl-xs q-mt-md">
               <div class="text-medium">Delegations</div>
               <div class="text-accent">
-                <small>{{ validator().delegatorsCount}}</small>
+                <small>{{ validator.delegatorsCount}}</small>
               </div>
             </div>
             <q-separator class="q-pa-xs q-mb-md q-mt-md" />
             <q-card-section>
               <div class="text-grey q-pt-xl">Progress (%)</div>
               <progress-bar-validate-session
-                v-bind:startTime="validator().startTime"
-                v-bind:endTime="validator().endTime"
+                v-bind:startTime="validator.startTime"
+                v-bind:endTime="validator.endTime"
               />
             </q-card-section>
           </q-card-section>
           <q-separator vertical />
           <q-card-section class="col-5">
             <cumulative-stake-chart
-              v-if="validator().cumulativeStake"
-              v-bind:name="validator().nodeID"
-              v-bind:percent="validator().percent"
-              v-bind:percentAll="validator().cumulativeStake ? validator().cumulativeStake : NaN"
+              v-if="validator.cumulativeStake"
+              v-bind:name="validator.nodeID"
+              v-bind:percent="validator.percent"
+              v-bind:percentAll="validator.cumulativeStake ? validator.cumulativeStake : NaN"
             /><div v-else> - </div>
           </q-card-section>
         </q-card-section>
@@ -174,21 +174,21 @@
           <q-card-section class="col-6">
             <small class="text-grey text-bold">Start Time</small>
             <br />
-            <small>{{ formatDate(validator().startTime) }}</small>
+            <small>{{ formatDate(validator.startTime) }}</small>
           </q-card-section>
           <q-separator vertical/>
           <q-card-section class="col-6">
             <small class="text-grey text-bold">End Time</small>
             <br />
-            <small>{{ formatDate(validator().endTime) }}</small>
+            <small>{{ formatDate(validator.endTime) }}</small>
           </q-card-section>
         </q-card-section>
       </q-card>
       <q-card flat class="lt-md">
         <q-item>
-          <q-item-section avatar style="cursor:pointer;" @click="onClick(validator().link)">
+          <q-item-section avatar style="cursor:pointer;" @click="onClick(validator.link)">
             <q-avatar>
-              <q-img :src="validator().avatar">
+              <q-img :src="validator.avatar">
                 <template v-slot:error>
                   <div>
                     ?
@@ -201,32 +201,32 @@
             <q-item-label>
               <small class="text-medium">Rank </small>
               <span class="text-accent">
-                {{ validator().rank }}
+                {{ validator.rank }}
               </span>
             </q-item-label>
             <q-item-label>
-              <span  style="cursor:pointer;" @click="onClick(validator().link)">{{ validator().name }} </span> <small v-if="validator().name !== validator().nodeID" class="text-grey">({{ validator().nodeID }})</small>
+              <span  style="cursor:pointer;" @click="onClick(validator.link)">{{ validator.name }} </span> <small v-if="validator.name !== validator.nodeID" class="text-grey">({{ validator.nodeID }})</small>
               <small>
                 <q-icon
-                  @click="copyToClipboard(validator().nodeID)"
+                  @click="copyToClipboard(validator.nodeID)"
                   color="grey"
                   name="file_copy"
                 />
               </small>
             </q-item-label>
-            <q-item-label v-if="validator().address">
+            <q-item-label v-if="validator.address">
               <small class="text-grey">
-                <span class="text-medium">Owner</span> ({{ validator().address.substr(0, 12)}} ... {{ validator().address.substr(22) }})
+                <span class="text-medium">Owner</span> ({{ validator.address.substr(0, 12)}} ... {{ validator.address.substr(22) }})
                 <q-icon
-                  @click="copyToClipboard(validator().address)"
+                  @click="copyToClipboard(validator.address)"
                   color="grey"
                   name="file_copy"
                 />
               </small>
             </q-item-label>
-            <q-item-label v-if="validator().weight">
+            <q-item-label v-if="validator.weight">
               <small class="text-grey">
-                Weight: <span class="text-accent">{{ validator().weight }}</span>
+                Weight: <span class="text-accent">{{ validator.weight }}</span>
               </small>
             </q-item-label>
           </q-item-section>
@@ -238,53 +238,53 @@
           <q-card-section class="col-7 q-mb-xl">
             <div class="q-mb-md text-medium">Stake (AVAX)</div>
             <small class="text-grey">Own</small>
-            {{ validator().stake > 1 ? getLocalString(validator().stake) : validator().stake }}
+            {{ validator.stake > 1 ? getLocalString(validator.stake) : validator.stake }}
             <small class="text-accent">$AVAX</small>
             <small style="color: grey;">
-              ({{ getLocalString(validator().stakenAva) }} nAvax)
+              ({{ getLocalString(validator.stakenAva) }} nAvax)
             </small>
             <div>
             </div>
             <div>
               <small class="text-grey">Delegated</small>
-              {{ validator().delegateStake }}
+              {{ validator.delegateStake }}
               <small class="text-accent">$AVAX</small>
             </div>
             <div>
               <small class="text-grey">Total</small>
-              {{ validator().total > 1 ? validator().total.toLocaleString() : validator().total }}
+              {{ validator.total > 1 ? validator.total.toLocaleString : validator.total }}
               <small class="text-accent">$AVAX</small>
             </div>
             <q-separator class="q-pa-xs q-mb-md q-mt-md"/>
             <div class="text-medium q-mt-md">Network Share (%) </div>
-            <span class="text-orange q-pl-xs" v-if="validator().percent !== 'NaN'">
-              {{validator().percent }} %
+            <span class="text-orange q-pl-xs" v-if="validator.percent !== 'NaN'">
+              {{validator.percent }} %
             </span>
             <q-separator class="q-pa-xs q-mb-md q-mt-md" />
               <cumulative-stake-chart
-                v-bind:name="validator().nodeID + 2"
-                v-bind:percent="validator().percent"
-                v-bind:percentAll="validator().cumulativeStake ? validator().cumulativeStake : NaN"
+                v-bind:name="validator.nodeID + 2"
+                v-bind:percent="validator.percent"
+                v-bind:percentAll="validator.cumulativeStake ? validator.cumulativeStake : NaN"
               />
             <div class="q-pl-xs q-mt-md">
               <div class="text-medium">Staked By</div>
               <div class="text-accent">
-                <small>{{ validator().fromNowST }}</small>
+                <small>{{ validator.fromNowST }}</small>
               </div>
             </div>
             <q-separator class="q-pa-xs q-mb-md q-mt-md" />
             <div class="q-pl-xs q-mt-md">
               <div class="text-medium">Delegations</div>
               <div class="text-accent">
-                <small>{{ validator().delegatorsCount}}</small>
+                <small>{{ validator.delegatorsCount}}</small>
               </div>
             </div>
             <q-separator class="q-pa-xs q-mb-md q-mt-md" />
             <q-card-section>
               <div class="text-grey q-pt-xl">Progress (%)</div>
               <progress-bar-validate-session
-                v-bind:startTime="validator().startTime"
-                v-bind:endTime="validator().endTime"
+                v-bind:startTime="validator.startTime"
+                v-bind:endTime="validator.endTime"
               />
             </q-card-section>
           </q-card-section>
@@ -295,58 +295,58 @@
           <q-card-section class="col-6">
             <small class="text-grey text-bold">Start Time</small>
             <br />
-            <small>{{ formatDate(validator().startTime) }}</small>
+            <small>{{ formatDate(validator.startTime) }}</small>
           </q-card-section>
           <q-separator vertical/>
           <q-card-section class="col-6">
             <small class="text-grey text-bold">End Time</small>
             <br />
-            <small>{{ formatDate(validator().endTime) }}</small>
+            <small>{{ formatDate(validator.endTime) }}</small>
           </q-card-section>
         </q-card-section>
       </q-card>
     </div>
-    <div v-else-if="blockchain()">
-      <div class="q-pa-md gt-sm">
+    <div v-else-if="getBlockchain($route.params.id)">
+      <div class="q-pa-md gt-xs">
         <div class="text-bold q-pl-md">BLOCKCHAIN ID</div>
-        <div class="text-regular text-orange q-pl-md q-pt-md">{{ blockchain().id }}</div>
+        <div class="text-regular text-orange q-pl-md q-pt-md">{{ blockchain.id }}</div>
         <div class="row q-pt-xl q-pl-md">
           <div class="col-6">
-            <span class="text-light text-h7">NAME:</span> <div class="text-medium">{{ blockchain().name }}</div>
+            <span class="text-light text-h7">NAME:</span> <div class="text-medium">{{ blockchain.name }}</div>
             <br />
             <span class="text-light text-h7">VM (Virtual Machine):</span>
-            <div class="q-pl-xs"><small class="text-grey">ID: </small> <span class="text-medium">{{ blockchain().vmID }}</span></div>
-            <div class="q-pl-xs"><small class="text-grey">NAME: </small> <span class="text-medium">{{ blockchain().vmName }}</span></div>
+            <div class="q-pl-xs"><small class="text-grey">ID: </small> <span class="text-medium">{{ blockchain.vmID }}</span></div>
+            <div class="q-pl-xs"><small class="text-grey">NAME: </small> <span class="text-medium">{{ blockchain.vmName }}</span></div>
           </div>
           <div class="col-6">
-            <span class="text-light text-h7">SUBNET ID:</span> <div class="text-medium">{{ blockchain().subnetID }}</div>
+            <span class="text-light text-h7">SUBNET ID:</span> <div class="text-medium">{{ blockchain.subnetID }}</div>
             <br />
             <span class="text-light text-h7">STATUS:</span>
-            <div :class="'text-medium text-' + getColor(blockchain().status)">
-              {{ blockchain().status }}
-              <q-tooltip>{{ getStatusInfo(blockchain().status )}}</q-tooltip>
+            <div :class="'text-medium text-' + getColor(blockchain.status)">
+              {{ blockchain.status }}
+              <q-tooltip>{{ getStatusInfo(blockchain.status )}}</q-tooltip>
             </div>
           </div>
         </div>
       </div>
       <div class="q-pa-md lt-sm">
         <div class="text-bold">BLOCKCHAIN ID</div>
-        <div class="text-regular text-orange q-pl-xs q-pt-md">{{ blockchain().id }}</div>
+        <div class="text-regular text-orange q-pl-xs q-pt-md">{{ blockchain.id }}</div>
         <div class="row q-pt-xl">
           <div class="col-6">
-            <span class="text-light text-h7">NAME:</span> <div class="text-medium">{{ blockchain().name }}</div>
+            <span class="text-light text-h7">NAME:</span> <div class="text-medium">{{ blockchain.name }}</div>
             <br />
             <span class="text-light text-h7">VM (Virtual Machine):</span>
-            <div class="q-pl-xs"><small class="text-grey">ID: </small> <span class="text-medium">{{ blockchain().vmID }}</span></div>
-            <div class="q-pl-xs"><small class="text-grey">NAME: </small> <span class="text-medium">{{ blockchain().vmName }}</span></div>
+            <div class="q-pl-xs"><small class="text-grey">ID: </small> <span class="text-medium">{{ blockchain.vmID }}</span></div>
+            <div class="q-pl-xs"><small class="text-grey">NAME: </small> <span class="text-medium">{{ blockchain.vmName }}</span></div>
           </div>
           <div class="col-6">
-            <span class="text-light text-h7">SUBNET ID:</span> <div class="text-medium">{{ blockchain().subnetID }}</div>
+            <span class="text-light text-h7">SUBNET ID:</span> <div class="text-medium">{{ blockchain.subnetID }}</div>
             <br />
             <span class="text-light text-h7">STATUS:</span>
-            <div :class="'text-medium text-' + getColor(blockchain().status)">
-              {{ blockchain().status }}
-              <q-tooltip>{{ getStatusInfo(blockchain().status )}}</q-tooltip>
+            <div :class="'text-medium text-' + getColor(blockchain.status)">
+              {{ blockchain.status }}
+              <q-tooltip>{{ getStatusInfo(blockchain.status )}}</q-tooltip>
             </div>
           </div>
         </div>
@@ -360,7 +360,7 @@
         >
       </p>
       <p class="text-bold text-h6">
-        Looks like we don't have any matches for "{{ this.$route.params.id }}"
+        Looks like we don't have any matches for "{{ $route.params.id }}"
       </p>
       <p class="text-faded">
         - Check for typos
@@ -405,8 +405,7 @@ const statusInfo = {
 
 import {
   GET_VALIDATORS,
-  GET_PENDING_VALIDATORS,
-  GET_ASSETS_BY_BLOCKCHAINS
+  GET_PENDING_VALIDATORS
 } from './../store/app/types'
 
 import {
@@ -427,34 +426,45 @@ export default {
       'blockchainByName',
       'networkEndpoint',
       'subnetByID'
-    ])
+    ]),
+    validator: function () {
+      return this.getValidator(this.$route.params.id)
+    },
+    subnet: function () {
+      return this.getSubnet(this.$route.params.id)
+    },
+    blockchain: function () {
+      return this.getBlockchain(this.$route.params.id)
+    }
   },
   methods: {
     ...mapActions({
       getValidators: GET_VALIDATORS,
-      getAssets: GET_ASSETS_BY_BLOCKCHAINS,
       getPendingValidators: GET_PENDING_VALIDATORS
     }),
-    validator () {
-      const validator = this.validatorById(this.$route.params.id)
+    getValidator (param) {
+      const validator = this.validatorById(param)
       if (!validator) return
 
       return validator
     },
-    blockchain () {
-      let blockchain = this.blockchainByID(this.$route.params.id)
+    getBlockchain (param) {
+      let blockchain = this.blockchainByID(param)
       if (!blockchain) {
-        if (!this.$route.params.id) return
-        blockchain = this.blockchainByName(this.$route.params.id)
+        blockchain = this.blockchainByName(param)
       }
 
       if (!blockchain) return
 
       return blockchain
     },
+    getSubnet (param) {
+      const subnet = this.subnetByID(param)
+      if (!subnet) return
+
+      return subnet
+    },
     back () {
-      if (this.blockchain()) this.onSelectBlockchain(this.blockchain())
-      else if (this.subnet()) this.onSelectSubnet(this.subnet())
       this.$router.push('/')
     },
     copyToClipboard (id) {
@@ -468,12 +478,6 @@ export default {
         position: 'center',
         timeout: 1000
       })
-    },
-    subnet () {
-      const subnet = this.subnetByID(this.$route.params.id)
-      if (!subnet) return
-
-      return subnet
     },
     getLocalString (val) {
       if (!val) return val
@@ -493,7 +497,6 @@ export default {
     async onSelectBlockchain (blockchain) {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
       await Promise.all([
-        this.getAssets(),
         this.setData(blockchain.subnetID)
       ])
     },
@@ -504,7 +507,7 @@ export default {
     async setData (id) {
       await this.getValidators({
         subnetID: id,
-        endpoint: this.networkEndpoint
+        endpoint: this.networkEndpoint.url
       })
       this.getPendingValidators({
         subnetID: id

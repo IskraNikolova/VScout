@@ -4,7 +4,7 @@ const { network } = require('./config')
 
 const avax = new Avalanche(
   network.ip,
-  '',
+  network.port,
   network.protocol,
   network.networkId,
   network.chainId
