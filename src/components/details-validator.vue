@@ -44,7 +44,7 @@
           </span>
         </div>
         <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} </div>
-        <div v-if="validator.potentialReward > 0" class="text-grey text-medium">Potential Reward:  {{ Number(validator.potentialReward).toLocaleString() }} <span class="text-accent">$nAVAX</span></div>
+        <div v-if="validator.potentialReward > 0" class="text-grey text-medium">Potential Reward:  {{ Number(validator.potentialReward).toLocaleString() }} <span class="text-accent">nAVAX</span></div>
         <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
         <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
       </q-card-section>

@@ -114,7 +114,7 @@
             <div class="q-mb-md text-medium">Stake (AVAX)</div>
             <small class="text-grey">Own</small>
             {{ validator.stake > 1 ? getLocalString(validator.stake) : validator.stake }}
-            <small class="text-accent">$AVAX</small>
+            <small class="text-accent">AVAX</small>
             <small style="color: grey;">
               ({{ getLocalString(validator.stakenAva) }} nAvax)
             </small>
@@ -123,12 +123,12 @@
             <div>
               <small class="text-grey">Delegated</small>
               {{ validator.delegateStake }}
-              <small class="text-accent">$AVAX</small>
+              <small class="text-accent">AVAX</small>
             </div>
             <div>
               <small class="text-grey">Total</small>
               {{ getLocalString(validator.total) }}
-              <small class="text-accent">$AVAX</small>
+              <small class="text-accent">AVAX</small>
             </div>
             <q-separator class="q-pa-xs q-mb-md q-mt-md"/>
             <div class="text-medium q-mt-md">Network Share (%) </div>
@@ -239,7 +239,7 @@
             <div class="q-mb-md text-medium">Stake (AVAX)</div>
             <small class="text-grey">Own</small>
             {{ validator.stake > 1 ? getLocalString(validator.stake) : validator.stake }}
-            <small class="text-accent">$AVAX</small>
+            <small class="text-accent">AVAX</small>
             <small style="color: grey;">
               ({{ getLocalString(validator.stakenAva) }} nAvax)
             </small>
@@ -248,12 +248,12 @@
             <div>
               <small class="text-grey">Delegated</small>
               {{ validator.delegateStake }}
-              <small class="text-accent">$AVAX</small>
+              <small class="text-accent">AVAX</small>
             </div>
             <div>
               <small class="text-grey">Total</small>
               {{ validator.total > 1 ? validator.total.toLocaleString : validator.total }}
-              <small class="text-accent">$AVAX</small>
+              <small class="text-accent">AVAX</small>
             </div>
             <q-separator class="q-pa-xs q-mb-md q-mt-md"/>
             <div class="text-medium q-mt-md">Network Share (%) </div>

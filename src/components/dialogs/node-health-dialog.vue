@@ -42,22 +42,22 @@
             <div class="q-pt-md">
               <small>Heartbeat: </small>
               <span>{{ heartbeat }}</span>
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Heartbeat is the unix timestamp of the last time the network handled a message.</q-tooltip>
+              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">Heartbeat is the unix timestamp of the last time the network handled a message.</q-tooltip>
             </div>
             <div>
               <small>Duration: </small>
               <span>{{ duration }}</span>
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Duration is the execution duration of the last health check in milliseconds.</q-tooltip>
+              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">Duration is the execution duration of the last health check in milliseconds.</q-tooltip>
             </div>
             <div>
               <small>Time Of First Failure: </small>
               <span>{{ timeOfFirstFailure }}</span>
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Time of first failure is the time of the initial transitional failure.</q-tooltip>
+              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">Time of first failure is the time of the initial transitional failure.</q-tooltip>
             </div>
             <div>
               <small>Contiguous Failures: </small>
               <span>{{ contiguousFailures }}</span>
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Contiguous failures is the number of fails that occurred in a row.</q-tooltip>
+              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">Contiguous failures is the number of fails that occurred in a row.</q-tooltip>
             </div>
           </q-item-section>
           <q-separator vertical />

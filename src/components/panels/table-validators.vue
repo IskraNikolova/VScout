@@ -111,7 +111,7 @@
             </div>
             <div v-else-if="col.name === 'weight'">
               {{ col.value }}
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Weight is the validator’s weight used for sampling.</q-tooltip>
+              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">Weight is the validator’s weight used for sampling.</q-tooltip>
             </div>
             <div v-else-if="col.name === 'percent'">
               <div class="container_row" v-if="props.row.cumulativeStake">
@@ -230,7 +230,7 @@
                 <div>
                   <small class="text-grey">Total</small>
                   {{ getFormatAVAX(props.row.total)}}
-                  <small class="text-accent">$AVAX</small>
+                  <small class="text-accent">AVAX</small>
                 </div>
                 <div class="text-medium q-mt-md">Network Share (%)</div>
                 <span class="text-orange q-pl-xs" v-if="props.row.percent !== 'NaN'">
@@ -255,7 +255,7 @@
                 />
                 <div class="text-medium q-mt-md">Potential Reward</div>
                 <div class="text-grey">
-                  <small>{{ getFormatReward(props.row.potentialReward) }} AVAX</small>
+                  <small>{{ getFormatReward(props.row.potentialReward) }} <span class="text-accent">AVAX</span></small>
                 </div>
               </q-card-section>
             </q-card-section>
