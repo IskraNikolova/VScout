@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div style="height: 3px;width: 100%;background: grey;opacity: 0.5;"></div>
+    <div id="header-line"></div>
     <div style="padding: 1%;">
       <error class="q-pr-md" />
       <node class="q-pr-md" />
@@ -93,5 +93,11 @@ export default {
  #logo {
   width: 190vw;
   max-width: 190px;
+ }
+ #header-line {
+   height: 3px;
+   width: 100%;
+   background: grey;
+   opacity: 0.5;
  }
 </style>
