@@ -105,7 +105,7 @@ module.exports = function (ctx) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'VScout Explorer',
+        name: 'Avalanche Validator Explorer',
         short_name: 'VScout',
         description: 'VScout is an analytical tool for exploring Avalanche Network subnetworks (dynamic validator pools), and an interface for monitoring individual node metrics.',
         display: 'standalone',
