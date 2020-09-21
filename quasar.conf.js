@@ -107,7 +107,7 @@ module.exports = function (ctx) {
       manifest: {
         name: 'VScout Explorer',
         short_name: 'VScout',
-        description: 'Avalanche Validator Explorer',
+        description: 'VScout is an analytical tool for exploring Avalanche Network subnetworks (dynamic validator pools), and an interface for monitoring individual node metrics.',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',

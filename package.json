@@ -1,7 +1,7 @@
 {
   "name": "vscout",
   "version": "0.0.1",
-  "description": "Avalanche Validator Explorer",
+  "description": "VScout is an analytical tool for exploring Avalanche Network subnetworks (dynamic validator pools), and an interface for monitoring individual node metrics.",
   "productName": "VScout",
   "cordovaId": "io.vscout.app",
   "capacitorId": "",
