@@ -44,7 +44,7 @@
           </span>
         </div>
         <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} </div>
-        <div v-if="validator.potentialReward > 0" class="text-grey text-medium">Potential Reward:  {{ Number(validator.potentialReward).toLocaleString() }} <span class="text-accent">nAVAX</span></div>
+        <div v-if="validator.potentialReward > 0" class="text-grey text-medium">Potential Reward:  {{ getFormatReward(validator.potentialReward) }} <span class="text-accent">AVAX</span></div>
         <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
         <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
       </q-card-section>
@@ -56,6 +56,8 @@ import {
   copyToClipboard
 } from 'quasar'
 
+import { getAvaFromnAva } from './../utils/avax.js'
+import { round } from './../utils/commons.js'
 import { date, fromNow, getDurationHumanize, getWeeks } from './../modules/time.js'
 import { UPDATE_UI } from './../store/ui/types'
 
@@ -93,6 +95,11 @@ export default {
         position: 'center',
         timeout: 1000
       })
+    },
+    getFormatReward (val) {
+      if (!val) return 0
+      const avax = getAvaFromnAva(val)
+      return round(avax, 100).toLocaleString()
     },
     getWeeksP () {
       return getWeeks(this.startDate, this.endDate)

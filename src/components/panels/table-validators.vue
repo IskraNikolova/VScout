@@ -446,6 +446,10 @@ export default {
       const avax = getAvaFromnAva(val)
       return this.getLocalString(round(avax, 100))
     },
+    getLocalString (val) {
+      if (val) return val.toLocaleString()
+      return 0
+    },
     getFormatAVAX (val) {
       if (!val) return 0
       return this.getLocalString(round(Number(val), 100))
@@ -473,10 +477,6 @@ export default {
       this.$refs
         .delegateValidatorDialog
         .openDelegate(validator)
-    },
-    getLocalString (val) {
-      if (val) return val.toLocaleString()
-      return 0
     },
     onAddIdentification () {
       this.$refs.addIdentificationRef.openAddId()
