@@ -22,7 +22,7 @@
                   v-model="stakeAmount"
                   label="Staking Amount"
                   input-class="text-right"
-                  suffix="$AVAX"
+                  suffix="AVAX"
                   color="accent"
                   @input="calculate"
                   class="q-pb-md"
@@ -66,12 +66,10 @@
                   <div>
                     <span class="text-accent">
                       {{ rewardAvax }}
-                    </span> $AVAX
-                    <div>
+                    </span> AVAX
                     (<small class="text-grey">
-                      {{ reward.toLocaleString() }} $nAVAX
+                      {{ reward.toLocaleString() }} <span class="text-accent">nAVAX</span>
                     </small>)
-                    </div>
                   </div>
                 </div>
               </q-banner>
@@ -210,7 +208,7 @@
                       v-model="stakeAmount"
                       label="Staking Amount"
                       input-class="text-right"
-                      suffix="$AVAX"
+                      suffix="AVAX"
                       color="accent"
                       @input="calculate"
                       class="q-pb-md"
@@ -254,9 +252,9 @@
                       <div>
                         <span class="text-accent">
                           {{ rewardAvax }}
-                        </span> $AVAX
+                        </span> AVAX
                          (<small class="text-grey">
-                            {{ reward.toLocaleString() }} $nAVAX
+                            {{ reward.toLocaleString() }} nAVAX
                           </small>)
                         <div>
                         </div>

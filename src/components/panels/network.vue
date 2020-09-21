@@ -82,6 +82,16 @@
             </div>
           <div class="q-pt-xs">
             <q-btn-dropdown
+              v-if="assetsCount < 1"
+              disable-dropdown
+              color="grey"
+              outline
+              size="xs"
+              no-caps
+              label="Smart Digital Assets"
+            ></q-btn-dropdown>
+            <q-btn-dropdown
+              v-else
               color="grey"
               outline
               size="xs"
@@ -192,6 +202,7 @@ export default {
     }
   },
   async created () {
+    if (!this.assetsCount) return
     const assets = await _getAssetsWithOffset(0)
     this.items = assets
   },

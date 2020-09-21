@@ -20,11 +20,11 @@ export const _getAssetsCount = async () => {
     const req = await axios
       .get(network.explorerApiBaseUrl + c.listAssests)
 
-    if (!req.data.count) return
+    if (!req.data.count) return 0
 
     return req.data.count
   } catch (err) {
-    return null
+    return 0
   }
 }
 
@@ -50,7 +50,6 @@ export const _getAssetsWithOffset = async (offset) => {
 
     return req.data.assets
   } catch (err) {
-    console.log(err)
     return null
   }
 }

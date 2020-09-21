@@ -15,7 +15,7 @@ export default function () {
     validators: [],
     delegators: [],
     blockchains: [],
-    assetsCount: 1,
+    assetsCount: 0,
     endpointsMemory: [],
     pendingValidators: [],
     defaultValidators: [],
