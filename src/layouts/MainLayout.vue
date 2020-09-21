@@ -8,11 +8,13 @@
           </q-toolbar-title>
           <q-btn push flat id="logo-sim" label="calculator" @click="calculate">
             <q-popup-proxy>
-              <q-banner class="q-pa-md" dense style="width: 300px;">
-                <div class="q-pb-md">Reward Calculator</div>
-                <div class="q-pa-md absolute-top-right">
-                  <small>Current Supply </small>
-                  <q-badge outline size="xs" color="accent" :label="getCurrentSupply() + 'M'" />
+              <q-banner class="q-pa-md" dense style="width: 340px;">
+                <div class="q-pb-md row">
+                  <div class="col-6 text-medium">Reward Calculator</div>
+                  <div class="col-6 q-mt-md" style="margin-bottom: -10px;padding-left: 12px;">
+                    <small class="q-pr-xs">Current Supply </small>
+                    <q-badge outline size="xs" color="accent" :label="getCurrentSupply() + 'M'" />
+                  </div>
                 </div>
                 <q-input
                   label-color="orange"
@@ -194,11 +196,13 @@
             <q-item-section>
               <q-btn push flat no-caps label="Calculator" @click="calculate" style="margin-left: -50px;">
                 <q-popup-proxy>
-                  <q-banner class="q-pa-md" dense style="width: 300px;">
-                    <div class="q-pb-md">Reward Calculator</div>
-                    <div class="q-pa-md absolute-top-right">
-                      <small>Current Supply </small>
-                      <q-badge outline size="xs" color="accent" :label="getCurrentSupply() + 'M'" />
+                  <q-banner class="q-pa-md" dense style="width: 350px;">
+                    <div class="q-pb-md row">
+                      <div class="col-6 text-medium">Reward Calculator</div>
+                      <div class="col-6 q-mt-md" style="margin-bottom: -10px;padding-right: -3px;">
+                        <small class="q-pr-xs">Current Supply </small>
+                        <q-badge outline size="xs" color="accent" :label="getCurrentSupply() + 'M'" />
+                      </div>
                     </div>
                     <q-input
                       label-color="orange"

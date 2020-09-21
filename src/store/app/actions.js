@@ -373,9 +373,11 @@ async function getHeight ({ commit, getters }, { endpoint = getters.networkEndpo
   commit(SET_HEIGHT, { height })
 }
 
-async function getCurrentSupply ({ commit }) {
+async function getCurrentSupply ({ commit, getters }) {
   try {
-    const currentSupply = await pChain.getCurrentSupply()
+    const currentSupply = await pChain(getters.networkEndpoint, getters.nodeInfo.networkID)
+      .getCurrentSupply()
+    console.log(currentSupply)
     commit(SET_CURRENT_SUPPLY, { currentSupply })
   } catch (err) {
   }

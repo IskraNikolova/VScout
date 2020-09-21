@@ -10,7 +10,13 @@
           <q-item-label>{{ endpoint.name }}</q-item-label>
           <q-item-label caption>
            {{ endpoint.url }}
-            <q-icon name="done" style="margin-top: -7px;" size="md" class="text-green q-ml-md" v-if="networkEndpoint.url === endpoint.url" />
+            <q-icon
+              name="done"
+              style="margin-top: -7px;"
+              size="md"
+              class="text-green q-ml-md"
+              v-if="networkEndpoint.url === endpoint.url"
+            />
           </q-item-label>
         </q-item-section>
       </q-item>

@@ -238,8 +238,9 @@
           <q-card-section class="col-7 q-mb-xl">
             <div class="q-mb-md text-medium">Stake (AVAX)</div>
             <small class="text-grey">Own</small>
-            {{ validator.stake > 1 ? getLocalString(validator.stake) : validator.stake }}
+            {{  getLocalString(validator.stake) }}
             <small class="text-accent">AVAX</small>
+            <br />
             <small style="color: grey;">
               ({{ getLocalString(validator.stakenAva) }} nAvax)
             </small>
@@ -252,7 +253,7 @@
             </div>
             <div>
               <small class="text-grey">Total</small>
-              {{ validator.total > 1 ? validator.total.toLocaleString : validator.total }}
+              {{ getLocalString(validator.total)}}
               <small class="text-accent">AVAX</small>
             </div>
             <q-separator class="q-pa-xs q-mb-md q-mt-md"/>
