@@ -72,7 +72,7 @@
             style="padding: 0px!important;height: 50px!important;"
           >
             <div v-if="col.name === 'validator'" class="row q-pl-md">
-              <div :style="'border: solid 1px ' + border(props.row.connected) + ';border-radius: 50px;width: 30px;'">
+              <div :style="'border: solid 1px ' + border(props.row.connected) + ';border-radius: 50px;width: 27px;'">
               <q-avatar size="25px" @click="onClick(props.row.link)">
                 <q-img :src="props.row.avatar">
                   <template v-slot:error>

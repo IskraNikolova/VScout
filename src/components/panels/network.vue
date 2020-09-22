@@ -82,16 +82,6 @@
             </div>
           <div class="q-pt-xs">
             <q-btn-dropdown
-              v-if="assetsCount < 1"
-              disable-dropdown
-              color="grey"
-              outline
-              size="xs"
-              no-caps
-              label="Smart Digital Assets"
-            ></q-btn-dropdown>
-            <q-btn-dropdown
-              v-else
               color="grey"
               outline
               size="xs"
@@ -262,6 +252,8 @@ export default {
       openURL(url)
     },
     async onLoad (index, done) {
+      if (this.items.length < 5) done()
+
       const assets = await _getAssetsWithOffset(index * 100)
       const filter = this.search.toLowerCase()
       if (this.items) {

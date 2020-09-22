@@ -62,15 +62,17 @@
       <q-card flat class="gt-xs q-pa-xl">
         <q-item>
           <q-item-section avatar style="cursor:pointer;" @click="onClick(validator.link)">
-            <q-avatar>
-              <q-img :src="validator.avatar">
-                <template v-slot:error>
-                  <div>
-                    ?
-                  </div>
-                </template>
-              </q-img>
-            </q-avatar>
+            <div :style="'border: solid 1px ' + border(validator.connected) + ';border-radius: 50px;width: 100%;'">
+              <q-avatar>
+                <q-img :src="validator.avatar">
+                  <template v-slot:error>
+                    <div>
+                      ?
+                    </div>
+                  </template>
+                </q-img>
+              </q-avatar>
+            </div>
           </q-item-section>
           <q-item-section>
             <q-item-label>
@@ -89,11 +91,11 @@
                 />
               </small>
             </q-item-label>
-            <q-item-label v-if="validator.address">
+            <q-item-label v-if="rewardOwner">
               <small class="text-grey">
-                <span class="text-medium">Owner</span> ({{ validator.address.substr(0, 12)}} ... {{ validator.address.substr(22) }})
+                <span class="text-medium">Owner</span> ({{ getFormatOwner(rewardOwner)}})
                 <q-icon
-                  @click="copyToClipboard(validator.address)"
+                  @click="copyToClipboard(rewardOwner)"
                   color="grey"
                   name="file_copy"
                 />
@@ -105,6 +107,14 @@
               </small>
             </q-item-label>
           </q-item-section>
+          <q-item-section avatar right>
+            <span>
+              <span class="q-mr-xs q-mt-xl">Up Time</span>
+              <q-badge :color="getColorUptime(validator.uptime)">
+                {{ getUpTime(validator.uptime) }} %
+              </q-badge>
+            </span>
+          </q-item-section>
         </q-item>
 
         <q-separator class="q-mb-xl"/>
@@ -113,7 +123,7 @@
           <q-card-section class="col-7 q-mb-xl">
             <div class="q-mb-md text-medium">Stake (AVAX)</div>
             <small class="text-grey">Own</small>
-            {{ validator.stake > 1 ? getLocalString(validator.stake) : validator.stake }}
+            {{ getLocalString(validator.stake) }}
             <small class="text-accent">AVAX</small>
             <small style="color: grey;">
               ({{ getLocalString(validator.stakenAva) }} nAvax)
@@ -136,20 +146,26 @@
               {{validator.percent }} %
             </span>
             <q-separator class="q-pa-xs q-mb-md q-mt-md" />
+            <div class="text-medium q-mt-md">Potential Reward</div>
+            <span>
+              {{ getFormatAva(validator.potentialReward) }} <span class="text-accent">AVAX</span>
+            </span>
+            <q-separator class="q-pa-xs q-mb-md q-mt-md" />
+            <div class="q-pl-xs q-mt-md">
+              <div class="text-medium">
+                Delegations: <span class="text-accent">{{ validator.delegatorsCount}}</span>
+              </div>
+              <div class="text-medium">
+                Delegation Fee: <span class="text-accent">{{ validator.delegationFee }} %</span>
+              </div>
+            </div>
+            <q-separator class="q-pa-xs q-mb-md q-mt-md" />
             <div class="q-pl-xs q-mt-md">
               <div class="text-medium">Staked By</div>
               <div class="text-accent">
                 <small>{{ validator.fromNowST }}</small>
               </div>
             </div>
-            <q-separator class="q-pa-xs q-mb-md q-mt-md" />
-            <div class="q-pl-xs q-mt-md">
-              <div class="text-medium">Delegations</div>
-              <div class="text-accent">
-                <small>{{ validator.delegatorsCount}}</small>
-              </div>
-            </div>
-            <q-separator class="q-pa-xs q-mb-md q-mt-md" />
             <q-card-section>
               <div class="text-grey q-pt-xl">Progress (%)</div>
               <progress-bar-validate-session
@@ -184,7 +200,7 @@
           </q-card-section>
         </q-card-section>
       </q-card>
-      <q-card flat class="lt-md">
+      <q-card flat class="lt-sm">
         <q-item>
           <q-item-section avatar style="cursor:pointer;" @click="onClick(validator.link)">
             <q-avatar>
@@ -204,8 +220,13 @@
                 {{ validator.rank }}
               </span>
             </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item>
+          <q-item-section>
             <q-item-label>
-              <span  style="cursor:pointer;" @click="onClick(validator.link)">{{ validator.name }} </span> <small v-if="validator.name !== validator.nodeID" class="text-grey">({{ validator.nodeID }})</small>
+              <span  style="cursor:pointer;" @click="onClick(validator.link)">{{ validator.name }} </span>
+              <small v-if="validator.name !== validator.nodeID" class="text-grey">({{ validator.nodeID }})</small>
               <small>
                 <q-icon
                   @click="copyToClipboard(validator.nodeID)"
@@ -214,11 +235,11 @@
                 />
               </small>
             </q-item-label>
-            <q-item-label v-if="validator.address">
+            <q-item-label v-if="rewardOwner">
               <small class="text-grey">
-                <span class="text-medium">Owner</span> ({{ validator.address.substr(0, 12)}} ... {{ validator.address.substr(22) }})
+                <span class="text-medium">Owner</span> ({{ getFormatOwner(rewardOwner)}})
                 <q-icon
-                  @click="copyToClipboard(validator.address)"
+                  @click="copyToClipboard(rewardOwner)"
                   color="grey"
                   name="file_copy"
                 />
@@ -229,16 +250,23 @@
                 Weight: <span class="text-accent">{{ validator.weight }}</span>
               </small>
             </q-item-label>
+            <q-item-label>
+              <span>
+                <span class="q-mr-xs q-mt-xl">Up Time</span>
+                <q-badge :color="getColorUptime(validator.uptime)">
+                  {{ getUpTime(validator.uptime) }} %
+                </q-badge>
+              </span>
+            </q-item-label>
           </q-item-section>
         </q-item>
-
         <q-separator class="q-mb-xl"/>
 
         <q-card-section>
           <q-card-section class="col-7 q-mb-xl">
             <div class="q-mb-md text-medium">Stake (AVAX)</div>
             <small class="text-grey">Own</small>
-            {{  getLocalString(validator.stake) }}
+            {{ getLocalString(validator.stake) }}
             <small class="text-accent">AVAX</small>
             <br />
             <small style="color: grey;">
@@ -268,19 +296,25 @@
                 v-bind:percentAll="validator.cumulativeStake ? validator.cumulativeStake : NaN"
               />
             <div class="q-pl-xs q-mt-md">
-              <div class="text-medium">Staked By</div>
-              <div class="text-accent">
-                <small>{{ validator.fromNowST }}</small>
-              </div>
+              <div class="text-medium q-mt-md">Potential Reward</div>
+            <span>
+              {{ getFormatAva(validator.potentialReward) }} <span class="text-accent">AVAX</span>
+            </span>
             </div>
             <q-separator class="q-pa-xs q-mb-md q-mt-md" />
             <div class="q-pl-xs q-mt-md">
-              <div class="text-medium">Delegations</div>
-              <div class="text-accent">
-                <small>{{ validator.delegatorsCount}}</small>
+              <div class="text-medium">
+                Delegations: <span class="text-accent">{{ validator.delegatorsCount}}</span>
+              </div>
+              <div class="text-medium">
+                Delegation Fee: <span class="text-accent">{{ validator.delegationFee }} %</span>
               </div>
             </div>
             <q-separator class="q-pa-xs q-mb-md q-mt-md" />
+            <div class="text-medium">Staked By</div>
+            <div class="text-accent">
+              <small>{{ validator.fromNowST }}</small>
+            </div>
             <q-card-section>
               <div class="text-grey q-pt-xl">Progress (%)</div>
               <progress-bar-validate-session
@@ -389,6 +423,8 @@ import {
 } from 'quasar'
 
 import { date } from './../modules/time.js'
+import { round } from './../utils/commons.js'
+import { getAvaFromnAva } from './../utils/avax.js'
 
 const colors = {
   Validating: 'accent',
@@ -431,6 +467,11 @@ export default {
     validator: function () {
       return this.getValidator(this.$route.params.id)
     },
+    rewardOwner: function () {
+      const result = this.validator.rewardOwner.addresses
+      if (result) return result[0]
+      return ''
+    },
     subnet: function () {
       return this.getSubnet(this.$route.params.id)
     },
@@ -443,11 +484,27 @@ export default {
       getValidators: GET_VALIDATORS,
       getPendingValidators: GET_PENDING_VALIDATORS
     }),
+    getFormatOwner (val) {
+      if (!val) return
+      return `${val.substr(0, 12)}...${val.substr(22)}`
+    },
+    border (isConnected) {
+      if (isConnected) return '#588da8'
+      else return '#d8345f'
+    },
     getValidator (param) {
       const validator = this.validatorById(param)
       if (!validator) return
 
       return validator
+    },
+    getUpTime (val) {
+      if (!val) return 0
+      return round(val * 100, 100)
+    },
+    getColorUptime (val) {
+      if (val >= 0.6) return 'green'
+      return 'negative'
     },
     getBlockchain (param) {
       let blockchain = this.blockchainByID(param)
@@ -483,6 +540,10 @@ export default {
     getLocalString (val) {
       if (!val) return val
       return val.toLocaleString()
+    },
+    getFormatAva (val) {
+      if (!val) return
+      return this.getLocalString(getAvaFromnAva(val))
     },
     formatDate (time) {
       if (!time) return

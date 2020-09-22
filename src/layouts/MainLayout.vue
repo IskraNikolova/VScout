@@ -120,7 +120,7 @@
           >
             <q-menu>
               <div class="no-wrap q-pa-md text-orange">
-                Switch To Endpoint
+                Networks
               </div>
               <q-separator />
               <switch-endpoint />
