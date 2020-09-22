@@ -50,6 +50,16 @@
         <!--<q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
         <add-identification-dialog ref="addIdentificationRef" />-->
       </template>
+       <template v-slot:header-cell-uptime="props">
+        <q-th :props="props">
+          Up Time
+          <q-icon name="info" class="text-grey q-pb-xs" size="1.5em">
+            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">
+              Up Time is the % of time the queried node has reported the peer as online.
+            </q-tooltip>
+          </q-icon>
+        </q-th>
+      </template>
       <template slot="top-right" v-if="!isGrid">
         <q-input
           borderless
