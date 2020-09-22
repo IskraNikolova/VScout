@@ -22,10 +22,14 @@
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md" />
       <div class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium ">NODE <span v-if="validatorById(nodeID)"> - VALIDATOR </span></div>
-        <div class="text-h7 text-orange q-pb-md q-pt-xs" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
-          {{ nodeID.substr(0, 22) }}...{{nodeID.substr(32)}}
+        <div v-if="validatorById(nodeID)" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
+          <div id="f-size12" class="q-pb-md text-medium">NODE - VALIDATO</div>
+          <div class="text-h7 text-orange q-pb-md q-pt-xs">{{ nodeID.substr(0, 22) }}...{{nodeID.substr(32)}}</div>
           <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">Copy to Clipboard</q-tooltip>
+        </div>
+        <div v-else>
+          <div id="f-size12" class="q-pb-md text-medium ">NODE</div>
+          <div class="text-h7 text-orange q-pb-md q-pt-xs">{{ nodeID.substr(0, 22) }}...{{nodeID.substr(34)}}</div>
         </div>
         <div class="q-pt-md">
           <q-btn :color="color" no-caps outline size="xs" label="Check Health" @click="onOpenHealth"/>

@@ -17,8 +17,7 @@
         <q-btn size="xs" outline label="Load For Default Subnet" @click="onGetDefaultValidators"/>
       </template>
       <template slot="top-left" v-else>
-        <q-badge class="q-pa-md" outline color="accent">Connected: <span class="text-grey text-medium"> {{ nodeID }}</span></q-badge>
-        <br />
+        <q-badge class="q-pa-xs" outline color="grey">Connected To: {{ getFormatNodeID(nodeID) }}</q-badge>
         <br />
         <br />
         <q-btn size="xs" flat icon="apps" @click="isGrid=true"/>
@@ -54,7 +53,7 @@
           Up Time
           <q-icon name="info" class="text-grey q-pb-xs" size="1.5em">
             <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">
-              Up Time is the % of time the queried node <span class="text-accent">({{ nodeID }})</span> has reported the peer as online.
+              Up Time is the % of time the queried node <span class="text-accent">({{ getFormatNodeID(nodeID) }})</span> has reported the peer as online.
             </q-tooltip>
           </q-icon>
         </q-th>
@@ -449,6 +448,10 @@ export default {
     getUpTime (val) {
       if (!val) return 0
       return round(val * 100, 1000)
+    },
+    getFormatNodeID (id) {
+      if (!id) return
+      return `${id.substr(0, 12)}...${id.substr(27)}`
     },
     getFormatReward (val) {
       if (!val) return 0
