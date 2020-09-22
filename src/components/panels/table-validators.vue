@@ -121,7 +121,9 @@
             </div>
             <div v-else-if="col.name === 'weight'">
               {{ col.value }}
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">Weight is the validator’s weight used for sampling.</q-tooltip>
+              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">
+                <q-icon name="info" class="q-pb-xs"/> Weight is the validator’s weight used for sampling.
+              </q-tooltip>
             </div>
             <div v-else-if="col.name === 'percent'">
               <div class="container_row" v-if="props.row.cumulativeStake">

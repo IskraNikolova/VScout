@@ -5,8 +5,14 @@
           <div class="col">
             <div>
               <span class="text-grey text-medium q-pb-md">Connected:</span>
-              <span class="text-accent" v-if="validator.connected"> Yes</span>
+              <span class="text-accent" v-if="validator.connected">
+                Yes
+              </span>
               <span class="text-negative" v-else> No</span>
+              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 14px;border-style: solid;border-width: 0.1px;">
+                <q-icon name="info" class="q-pb-xs"/>
+                Connected is if the node is connected to the network.
+              </q-tooltip>
             </div>
             <div v-if="validator.nodeID !== validator.name">
               <span class="text-grey text-medium">Name: </span>
@@ -44,7 +50,7 @@
             <div v-if="validator.delegationFee"><span class="text-grey text-medium">
               Delegation Fee:</span>   {{ validator.delegationFee }} %
               <q-tooltip content-class="bg-white text-grey" content-style="font-size: 14px;border-style: solid;border-width: 0.1px;">
-                <q-icon name="info"/>
+                <q-icon name="info" class="q-pb-xs"/>
                 <span>
                   Avalanche allows for delegation of stake. This parameter is the percent fee this validator charges when others delegate stake to them. <br />For example, if delegationFeeRate is 1.2345 and someone delegates to this validator, then when the delegation period is over, 1.2345% of the reward <br />goes to the validator and the rest goes to the delegator.
                 </span>
