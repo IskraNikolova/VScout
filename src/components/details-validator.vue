@@ -15,12 +15,6 @@
                 name="file_copy"
               />
             </small>
-            <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} </div>
-            <div v-if="validator.potentialReward > 0" class="text-grey text-medium">Potential Reward:  {{ getFormatReward(validator.potentialReward) }} <span class="text-accent">AVAX</span></div>
-            <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
-            <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
-          </div>
-          <div class="col">
             <div v-if="validator.rewardOwner">
               <span class="text-grey text-medium">Reward Owner: </span>{{ validator.rewardOwner.addresses[0] }}
               <small>
@@ -30,6 +24,12 @@
                 />
               </small>
             </div>
+            <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} </div>
+            <div v-if="validator.potentialReward > 0" class="text-grey text-medium">Potential Reward:  {{ getFormatReward(validator.potentialReward) }} <span class="text-accent">AVAX</span></div>
+            <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
+            <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
+          </div>
+          <div class="col">
             <div>
               <span class="text-grey text-medium">Delegations:</span>
               <span class="text-accent text-h7" style="cursor: pointer;" @click="onGetDelegations">
