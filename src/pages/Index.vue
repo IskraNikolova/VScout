@@ -39,6 +39,8 @@ import {
   GET_PENDING_VALIDATORS
 } from '../store/app/types'
 
+const { network } = require('./../modules/config').default
+
 export default {
   name: 'PageIndex',
   components: {
@@ -81,7 +83,7 @@ export default {
     },
     async getDefaultValidators () {
       await this.getValidators({
-        subnetID: '11111111111111111111111111111111LpoYY',
+        subnetID: network.defaultSubnetID,
         endpoint: this.networkEndpoint.url
       })
     }
