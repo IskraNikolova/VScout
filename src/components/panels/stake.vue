@@ -68,7 +68,7 @@
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
        <div id="f-size12" class="q-pb-md text-medium">VALIDATION / DELEGATED STAKE</div>
-       <div class="text-h5 q-pb-md">
+       <div class="text-h6 q-pb-md">
             <span class="text-orange">
              <small>
                 <animated-number
