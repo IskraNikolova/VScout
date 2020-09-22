@@ -17,9 +17,9 @@
         <q-btn size="xs" outline label="Load For Default Subnet" @click="onGetDefaultValidators"/>
       </template>
       <template slot="top-left" v-else>
-        <q-badge class="q-pa-xs" outline color="grey">Connected To: {{ getFormatNodeID(nodeID) }}</q-badge>
+        <!--<q-badge class="q-pa-xs" outline color="grey">Connected To: {{ getFormatNodeID(nodeID) }}</q-badge>
         <br />
-        <br />
+        <br />-->
         <q-btn size="xs" flat icon="apps" @click="isGrid=true"/>
         <q-btn size="xs" flat icon="reorder" @click="isGrid=false"/>
         <settings />
@@ -48,7 +48,7 @@
         <!--<q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
         <add-identification-dialog ref="addIdentificationRef" />-->
       </template>
-       <template v-slot:header-cell-uptime="props">
+       <!--<template v-slot:header-cell-uptime="props">
         <q-th :props="props">
           Up Time
           <q-icon name="info" class="text-grey q-pb-xs" size="1.5em">
@@ -57,7 +57,7 @@
             </q-tooltip>
           </q-icon>
         </q-th>
-      </template>
+      </template>-->
       <template slot="top-right" v-if="!isGrid">
         <q-input
           borderless
@@ -151,13 +151,13 @@
                 v-bind:endTime="props.row.endTime"
               />
             </div>
-            <div v-else-if="col.name === 'uptime'">
+            <!--<div v-else-if="col.name === 'uptime'">
               <q-badge :color="getColorUptime(props.row.uptime)" v-if="props.row.uptime > 0" style="min-width: 57px;">
                 {{ getUpTime(props.row.uptime) }} %
                 <br />
               </q-badge>
               <span v-else> - </span>
-            </div>
+            </div>-->
             <div v-else>{{ col.value }}</div>
           </q-td>
         </q-tr>
@@ -170,12 +170,12 @@
       <template v-slot:item="props">
         <div style="max-width: 400px;width: 100%;margin:auto;margin-bottom: 5px;">
           <q-card flat bordered>
-            <span class="absolute absolute-top-right q-mt-xs q-mr-md" v-if="props.row.uptime > 0">
+            <!--<span class="absolute absolute-top-right q-mt-xs q-mr-md" v-if="props.row.uptime > 0">
               <small class="q-mr-xs">Up Time</small>
               <q-badge :color="getColorUptime(props.row.uptime)" >
                 {{ getUpTime(props.row.uptime) }} %
               </q-badge>
-            </span>
+            </span>-->
             <q-item>
               <q-item-section avatar style="cursor:pointer;" @click="onClick(props.row.link)">
                 <q-avatar>
@@ -387,13 +387,13 @@ export default {
           field: row => `${row.delegationFee} %`,
           headerClasses: 'text-medium'
         },
-        {
-          name: 'uptime',
-          align: 'center',
-          label: 'Up Time',
-          field: row => row.uptime,
-          headerClasses: 'text-medium'
-        },
+        // {
+        //   name: 'uptime',
+        //   align: 'center',
+        //   label: 'Up Time',
+        //   field: row => row.uptime,
+        //   headerClasses: 'text-medium'
+        // },
         {
           name: 'startTime',
           align: 'center',
@@ -434,21 +434,21 @@ export default {
     visibleColumns: function () {
       const columns = this.columns.map(c => c.name)
       if (this.curentValidators.find(a => a.percent === 'NAN' || !a.percent)) {
-        return columns.filter(c => c !== 'percent' && c !== 'networkShare' && c !== 'weight' && c !== 'uptime')
+        return columns.filter(c => c !== 'percent' && c !== 'networkShare' && c !== 'weight') // && c !== 'uptime')
       } else if (this.curentValidators.find(a => a.weight < 1)) {
         return columns.filter(c => c !== 'weight')
-      } else if (this.curentValidators.find(a => a.weight > 0)) {
-        return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
-      }
+      } // else if (this.curentValidators.find(a => a.weight > 0)) {
+      //   return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
+      // }
 
       return columns.filter(c => c !== 'stake')
     }
   },
   methods: {
-    getUpTime (val) {
-      if (!val) return 0
-      return round(val * 100, 1000)
-    },
+    // getUpTime (val) {
+    //   if (!val) return 0
+    //   return round(val * 100, 1000)
+    // },
     getFormatNodeID (id) {
       if (!id) return
       return `${id.substr(0, 12)}...${id.substr(27)}`
@@ -466,10 +466,10 @@ export default {
       if (!val) return 0
       return this.getLocalString(round(Number(val), 100))
     },
-    getColorUptime (val) {
-      if (val >= 0.6) return 'green'
-      return 'negative'
-    },
+    // getColorUptime (val) {
+    //   if (val >= 0.6) return 'green'
+    //   return 'negative'
+    // },
     getFormatDS (val) {
       if (!val) return 0
       return this.getLocalString(round(val, 100))
