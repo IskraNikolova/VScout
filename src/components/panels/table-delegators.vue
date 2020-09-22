@@ -206,7 +206,7 @@ export default {
     },
     getRewardOwnerFormat (val) {
       if (!val) return
-      return `${val.addresses[0].substr(0, 15)}...${val.addresses[0].substr(40)}`
+      return `${val.addresses[0].substr(0, 15)}...${val.addresses[0].substr(30)}`
     },
     getLocalString (val) {
       if (val) return val.toLocaleString()
