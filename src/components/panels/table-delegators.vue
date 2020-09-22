@@ -147,7 +147,7 @@ export default {
           name: 'rewardOwner',
           align: 'left',
           label: 'Reward Owner',
-          field: row => `${row.rewardOwner.addresses[0].substr(0, 15)}...${row.rewardOwner.addresses[0].substr(40)}`
+          field: row => `${this.getRewardOwnerFormat(row.rewardOwner)}`
         },
         {
           name: 'nodeId',
@@ -203,6 +203,10 @@ export default {
         openURL(props.row.link)
       } catch (err) {
       }
+    },
+    getRewardOwnerFormat (val) {
+      if (!val) return
+      return `${val.addresses[0].substr(0, 15)}...${val.addresses[0].substr(40)}`
     },
     getLocalString (val) {
       if (val) return val.toLocaleString()
