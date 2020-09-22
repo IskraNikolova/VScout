@@ -72,6 +72,7 @@ async function initApp ({ dispatch, getters }) {
     await Promise.all([
       dispatch(INIT_ENDPOINT),
       dispatch(GET_BLOCKCHAINS, {}),
+      dispatch(GET_SUBNETS, {}),
       dispatch(GET_NODE_INFO),
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
@@ -212,9 +213,6 @@ async function getValidators (
     validators = []
     delegators = []
   }
-
-  if ((validators.length === getters.validators.length &&
-    delegators.length === getters.delegators.length) && init) return
 
   const del = mapDelegators(delegators)
   commit(SET_DELEGATORS, { delegators: del })
