@@ -13,15 +13,14 @@
       :visible-columns="visibleColumns"
       :loading="visible"
     >
-      <template v-slot:header-cell-delegate="props">
-        <q-th :props="props">
-          <q-icon name="img:statics/delegate.png" size="3.0em" />
-        </q-th>
-      </template>
       <template slot="top-left" v-if="isActive && curentValidators.length < 1">
-         <q-btn size="xs" outline label="Load For Default Subnet" @click="onGetDefaultValidators"/>
+        <q-btn size="xs" outline label="Load For Default Subnet" @click="onGetDefaultValidators"/>
       </template>
       <template slot="top-left" v-else>
+        <q-badge class="q-pa-md" outline color="accent">Connected: <span class="text-grey text-medium"> {{ nodeID }}</span></q-badge>
+        <br />
+        <br />
+        <br />
         <q-btn size="xs" flat icon="apps" @click="isGrid=true"/>
         <q-btn size="xs" flat icon="reorder" @click="isGrid=false"/>
         <settings />
@@ -55,7 +54,7 @@
           Up Time
           <q-icon name="info" class="text-grey q-pb-xs" size="1.5em">
             <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">
-              Up Time is the % of time the queried node has reported the peer as online.
+              Up Time is the % of time the queried node <span class="text-accent">({{ nodeID }})</span> has reported the peer as online.
             </q-tooltip>
           </q-icon>
         </q-th>
@@ -82,7 +81,6 @@
             style="padding: 0px!important;height: 50px!important;"
           >
             <div v-if="col.name === 'validator'" class="row q-pl-md">
-              <div :style="'border: solid 1px ' + border(props.row.connected) + ';border-radius: 50px;width: 27px;'">
               <q-avatar size="25px" @click="onClick(props.row.link)">
                 <q-img :src="props.row.avatar">
                   <template v-slot:error>
@@ -92,7 +90,6 @@
                 </template>
                 </q-img>
               </q-avatar>
-              </div>
               <div
                 v-if="props.row.name !== props.row.nodeID"
                 style="cursor:pointer;"
@@ -156,9 +153,11 @@
               />
             </div>
             <div v-else-if="col.name === 'uptime'">
-              <q-badge :color="getColorUptime(props.row.uptime)">
-                {{ col.value }}
+              <q-badge :color="getColorUptime(props.row.uptime)" v-if="props.row.uptime > 0" style="min-width: 57px;">
+                {{ getUpTime(props.row.uptime) }} %
+                <br />
               </q-badge>
+              <span v-else> - </span>
             </div>
             <div v-else>{{ col.value }}</div>
           </q-td>
@@ -172,7 +171,7 @@
       <template v-slot:item="props">
         <div style="max-width: 400px;width: 100%;margin:auto;margin-bottom: 5px;">
           <q-card flat bordered>
-            <span class="absolute absolute-top-right q-mt-xs q-mr-md">
+            <span class="absolute absolute-top-right q-mt-xs q-mr-md" v-if="props.row.uptime > 0">
               <small class="q-mr-xs">Up Time</small>
               <q-badge :color="getColorUptime(props.row.uptime)" >
                 {{ getUpTime(props.row.uptime) }} %
@@ -180,17 +179,15 @@
             </span>
             <q-item>
               <q-item-section avatar style="cursor:pointer;" @click="onClick(props.row.link)">
-                <div :style="'border: solid 1px ' + border(props.row.connected) + ';border-radius: 50px;width: 100%;'">
-                  <q-avatar>
-                    <q-img :src="props.row.avatar">
-                      <template v-slot:error>
-                        <div>
-                          ?
-                        </div>
-                      </template>
-                    </q-img>
-                  </q-avatar>
-                </div>
+                <q-avatar>
+                  <q-img :src="props.row.avatar">
+                    <template v-slot:error>
+                      <div>
+                        ?
+                      </div>
+                    </template>
+                  </q-img>
+                </q-avatar>
               </q-item-section>
               <q-item-section>
                 <q-item-label>
@@ -395,7 +392,7 @@ export default {
           name: 'uptime',
           align: 'center',
           label: 'Up Time',
-          field: row => `${Math.round(row.uptime * 100, 2)} %`,
+          field: row => row.uptime,
           headerClasses: 'text-medium'
         },
         {
@@ -451,7 +448,7 @@ export default {
   methods: {
     getUpTime (val) {
       if (!val) return 0
-      return round(val * 100, 100)
+      return round(val * 100, 1000)
     },
     getFormatReward (val) {
       if (!val) return 0
@@ -477,10 +474,6 @@ export default {
     getFormatOwner (val) {
       if (!val.addresses) return
       return `${val.addresses[0].substr(0, 12)}...${val.addresses[0].substr(32)}`
-    },
-    border (isConnected) {
-      if (isConnected) return '#588da8'
-      else return '#d8345f'
     },
     onClick (link) {
       if (link) openURL(link)

@@ -3,17 +3,6 @@
       <q-card-section>
         <div class="row">
           <div class="col">
-            <div>
-              <span class="text-grey text-medium q-pb-md">Connected:</span>
-              <span class="text-accent" v-if="validator.connected">
-                Yes
-              </span>
-              <span class="text-negative" v-else> No</span>
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 14px;border-style: solid;border-width: 0.1px;">
-                <q-icon name="info" class="q-pb-xs"/>
-                Connected is if the node is connected to the network.
-              </q-tooltip>
-            </div>
             <div v-if="validator.nodeID !== validator.name">
               <span class="text-grey text-medium">Name: </span>
               <a :href="validator.link" v-if="validator.link">{{ validator.name }}</a>

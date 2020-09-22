@@ -90,6 +90,7 @@ async function initApp ({ dispatch, getters }) {
   setInterval(async () => {
     try {
       await Promise.all([
+        dispatch(GET_NODE_ID),
         dispatch(GET_NODE_HEALTH),
         dispatch(GET_HEIGHT, {}),
         dispatch(GET_CURRENT_SUPPLY),

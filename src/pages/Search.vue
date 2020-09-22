@@ -62,17 +62,15 @@
       <q-card flat class="gt-xs q-pa-xl">
         <q-item>
           <q-item-section avatar style="cursor:pointer;" @click="onClick(validator.link)">
-            <div :style="'border: solid 1px ' + border(validator.connected) + ';border-radius: 50px;width: 100%;'">
-              <q-avatar>
-                <q-img :src="validator.avatar">
-                  <template v-slot:error>
-                    <div>
-                      ?
-                    </div>
-                  </template>
-                </q-img>
-              </q-avatar>
-            </div>
+            <q-avatar>
+              <q-img :src="validator.avatar">
+                <template v-slot:error>
+                  <div>
+                    ?
+                  </div>
+                </template>
+              </q-img>
+            </q-avatar>
           </q-item-section>
           <q-item-section>
             <q-item-label>
@@ -108,7 +106,7 @@
             </q-item-label>
           </q-item-section>
           <q-item-section avatar right>
-            <span>
+            <span v-if="validator.uptime > 0">
               <span class="q-mr-xs q-mt-xl">Up Time</span>
               <q-badge :color="getColorUptime(validator.uptime)">
                 {{ getUpTime(validator.uptime) }} %
@@ -251,7 +249,7 @@
               </small>
             </q-item-label>
             <q-item-label>
-              <span>
+              <span v-if="validator.uptime > 0">
                 <span class="q-mr-xs q-mt-xl">Up Time</span>
                 <q-badge :color="getColorUptime(validator.uptime)">
                   {{ getUpTime(validator.uptime) }} %
@@ -488,10 +486,6 @@ export default {
       if (!val) return
       return `${val.substr(0, 12)}...${val.substr(22)}`
     },
-    border (isConnected) {
-      if (isConnected) return '#588da8'
-      else return '#d8345f'
-    },
     getValidator (param) {
       const validator = this.validatorById(param)
       if (!validator) return
@@ -500,7 +494,7 @@ export default {
     },
     getUpTime (val) {
       if (!val) return 0
-      return round(val * 100, 100)
+      return round(val * 100, 1000)
     },
     getColorUptime (val) {
       if (val >= 0.6) return 'green'
