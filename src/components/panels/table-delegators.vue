@@ -127,7 +127,6 @@ export default {
     return {
       type: 'active',
       type2: 'delegations',
-      curentValidators: [],
       isGrid: false,
       isActive: true,
       filter: '',
@@ -194,6 +193,15 @@ export default {
         if (this.isActive) return this.delegators
         return this.pendingDelegators
       }
+    },
+    visibleColumns: function () {
+      const columns = this.columns.map(c => c.name)
+      console.log()
+      if (this.curentVal.find(a => !a.rewardOwner)) {
+        return columns.filter(c => c !== 'rewardOwner')
+      }
+
+      return columns
     }
   },
   methods: {
