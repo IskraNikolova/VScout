@@ -95,7 +95,7 @@
               </div>
               <div
                 v-else
-                style="cursor:pointer;font-size: 11.5px;"
+                style="cursor:pointer;font-size: 12px;"
                 @click="props.expand = !props.expand"
                 class="q-pl-xs q-pt-xs text-medium"
               >

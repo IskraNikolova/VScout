@@ -105,7 +105,7 @@
           <div class="text-h7 text-orange">{{ networkEndpoint.name }}</div>
         </div>
         <div id="f-size12" class="q-mt-md">
-          <span class="q-pt-xl" v-if="networkEndpoint.urlView">{{ networkEndpoint.urlView }}</span>
+          <span class="q-pt-xl">{{ networkEndpoint.urlView }}</span>
         </div>
       </div>
       <div class="col-1 q-pt-md q-pl-md">

@@ -164,7 +164,7 @@ export default {
       this.$q.notify({
         textColor: 'black',
         color: 'white',
-        message: `Connected to ${endpoint.name}`,
+        message: `Connected to ${endpoint.name} (${endpoint.url})`,
         position: 'top',
         timeout: 2000,
         icon: 'done'

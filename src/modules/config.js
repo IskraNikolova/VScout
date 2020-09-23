@@ -13,10 +13,7 @@ export default {
     endpointUrls: [
       { name: 'Avalanche Mainnet', url: 'https://api.avax.network:443/', urlView: 'https://api.avax.network:443/' },
       { name: 'Localhost', url: 'http://127.0.0.1:9650/', urlView: 'http://127.0.0.1:9650/' },
-      { name: 'Fuji Testnet', url: 'https://testapi.avax.network:443/', urlView: 'https://testapi.avax.network:443/' },
-      { name: 'Test', url: 'http://135.181.93.94:9654/', urlView: '' }
+      { name: 'Fuji Testnet', url: 'https://testapi.avax.network:443/', urlView: 'https://testapi.avax.network:443/' }
     ]
   }
 }
-
-// 'http://135.181.93.94:9654/'
