@@ -18,7 +18,7 @@
             />
           </q-item-label>
           <q-item-label caption>
-           {{ endpoint.url }}
+           {{ endpoint.urlView }}
           </q-item-label>
         </q-item-section>
       </q-item>

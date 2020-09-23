@@ -6,6 +6,12 @@
           <q-toolbar-title @click="$router.push('/')" style="cursor:pointer;margin-left: 12px;">
             VScout.io <q-icon name="home" color="grey" />
           </q-toolbar-title>
+
+          <img src="~assets/block.svg" id="logo-block"/>
+          <span class="text-medium q-pl-xs q-pr-xl text-grey">
+            {{ height }}
+            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;"> Last accepted block on P-Chain (Height)</q-tooltip>
+          </span>
           <q-btn push flat id="logo-sim" label="calculator" @click="calculate">
             <q-popup-proxy>
               <q-banner class="q-pa-md" dense style="width: 340px;">
@@ -402,6 +408,7 @@ export default {
   computed: {
     ...mapGetters([
       'subnets',
+      'height',
       'blockchains',
       'currentSupply',
       'networkEndpoint',

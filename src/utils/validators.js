@@ -66,7 +66,6 @@ export async function mapValidators (validators, delegators, defaultValidators) 
 
   const res = await Promise.all(validators.map(async (val) => {
     const nodeID = val.nodeID
-
     // const info = await _getValidatorById(nodeID)
     let delegateStake = 0
     let delegatorsCount = 0
@@ -108,7 +107,6 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       link: '' // info.link
     }
   }))
-
   return res
 }
 

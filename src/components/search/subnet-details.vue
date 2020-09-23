@@ -53,7 +53,13 @@ export default {
       'subnetByID'
     ]),
     subnet: function () {
-      return this.getSubnet(this.$route.params.id)
+      return this.getSubnet(this.id)
+    }
+  },
+  props: {
+    id: {
+      type: String,
+      required: true
     }
   },
   methods: {

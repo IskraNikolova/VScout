@@ -48,14 +48,14 @@
             </small>
         </q-item-label>
         </q-item-section>
-        <!--<q-item-section avatar right>
+        <q-item-section avatar right>
         <span v-if="validator.uptime > 0">
             <span class="q-mr-xs q-mt-xl">Up Time</span>
             <q-badge :color="getColorUptime(validator.uptime)">
             {{ getUpTime(validator.uptime) }} %
             </q-badge>
         </span>
-        </q-item-section>-->
+        </q-item-section>
     </q-item>
 
     <q-separator class="q-mb-xl"/>
@@ -134,7 +134,7 @@
             <q-img :src="validator.avatar">
             <template v-slot:error>
                 <div>
-                ?
+                  ?
                 </div>
             </template>
             </q-img>
@@ -177,14 +177,14 @@
             Weight: <span class="text-accent">{{ validator.weight }}</span>
             </small>
         </q-item-label>
-        <!--<q-item-label>
+        <q-item-label>
             <span v-if="validator.uptime > 0">
             <span class="q-mr-xs q-mt-xl">Up Time</span>
             <q-badge :color="getColorUptime(validator.uptime)">
                 {{ getUpTime(validator.uptime) }} %
             </q-badge>
             </span>
-        </q-item-label>-->
+        </q-item-label>
         </q-item-section>
     </q-item>
     <q-separator class="q-mb-xl"/>
@@ -282,7 +282,7 @@ import {
 } from 'quasar'
 
 import { date } from './../../modules/time.js'
-// import { round } from './../../utils/commons.js'
+import { round } from './../../utils/commons.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
 
 export default {
@@ -291,12 +291,18 @@ export default {
     CumulativeStakeChart: () => import('components/cumulative-stake-chart.vue'),
     ProgressBarValidateSession: () => import('components/progress-bar-validatе-session.vue')
   },
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
   computed: {
     ...mapGetters([
       'validatorById'
     ]),
     validator: function () {
-      return this.getValidator(this.$route.params.id)
+      return this.getValidator(this.id)
     },
     rewardOwner: function () {
       const result = this.validator.rewardOwner.addresses
@@ -315,14 +321,14 @@ export default {
 
       return validator
     },
-    // getUpTime (val) {
-    //   if (!val) return 0
-    //   return round(val * 100, 1000)
-    // },
-    // getColorUptime (val) {
-    //   if (val >= 0.6) return 'green'
-    //   return 'negative'
-    // },
+    getUpTime (val) {
+      if (!val) return 0
+      return round(val * 100, 1000)
+    },
+    getColorUptime (val) {
+      if (val >= 0.6) return 'green'
+      return 'negative'
+    },
     copyToClipboard (id) {
       if (!id) return
 

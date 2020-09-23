@@ -16,10 +16,10 @@
               />
             </small>
             <div v-if="validator.rewardOwner">
-              <span class="text-grey text-medium">Reward Owner: </span>{{ validator.rewardOwner.addresses[0] }}
+              <span class="text-grey text-medium">Reward Owner: </span>{{ rewardOwner }}
               <small>
                 <q-icon
-                  @click="copyToClipboard(validator.rewardOwner.addresses[0])"
+                  @click="copyToClipboard(rewardOwner)"
                   name="file_copy"
                 />
               </small>
@@ -87,6 +87,10 @@ export default {
     },
     validatePeriod: function () {
       return getDurationHumanize(this.validator.startTime, this.validator.endTime)
+    },
+    rewardOwner: function () {
+      if (!this.validator.rewardOwner) return
+      return this.validator.rewardOwner.addresses[0]
     }
   },
   methods: {

@@ -26,10 +26,18 @@
       <q-card-section>
         <q-item>
           <q-item-section>
-            <div>
-              Healthy:
-              <span v-if="healthy" class="text-accent"> Yes</span>
-              <span v-else class="text-negative"> No</span>
+            <span v-if="healthy">Healthy: <span class="text-accent">Yes</span></span>
+            <span v-else>Healthy:  <span class="text-negative">No</span></span>
+            <div v-if="upTime">
+              Up Time:
+              <q-badge :color="getColorUptime(upTime)">
+                {{ upTime }} %
+              </q-badge>
+              <div>
+                Connected:
+                <span v-if="connected" class="text-accent"> Yes</span>
+                <span v-else class="text-negative"> No</span>
+              </div>
             </div>
           </q-item-section>
         </q-item>
@@ -89,7 +97,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import { datePickerFormat } from './../../modules/time'
+import { datePickerFormat } from './../../modules/time.js'
+import { round } from './../../utils/commons.js'
 
 import {
   OPEN_NODE_HEALTH,
@@ -98,12 +107,27 @@ import {
 
 export default {
   name: 'NodeHealthDialog',
+  props: {
+    validator: {
+      type: Object,
+      required: true
+    }
+  },
   computed: {
     ...mapGetters([
       'ui',
       'nodeID',
-      'nodeHealth'
+      'nodeHealth',
+      'validators'
     ]),
+    upTime: function () {
+      const result = this.getUpTime(this.validator.uptime)
+      return result
+    },
+    connected: function () {
+      if (!this.validator) return
+      return this.validator.connected
+    },
     nodeHealthInfo: function () {
       return this.nodeHealth(this.nodeID)
     },
@@ -201,7 +225,15 @@ export default {
     ...mapActions({
       open: OPEN_NODE_HEALTH,
       close: CLOSE_NODE_HEALTH
-    })
+    }),
+    getUpTime (val) {
+      if (!val) return
+      return round(val * 100, 1000)
+    },
+    getColorUptime (val) {
+      if (val >= 0.6) return 'green'
+      return 'negative'
+    }
   }
 }
 </script>

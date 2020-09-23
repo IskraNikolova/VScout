@@ -24,16 +24,16 @@
       <div class="col-md-3 col-xs-10">
         <div v-if="validatorById(nodeID)" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
           <div id="f-size12" class="q-pb-md text-medium">NODE - VALIDATO</div>
-          <div class="text-h7 text-orange q-pb-md q-pt-xs">{{ nodeID.substr(0, 22) }}...{{nodeID.substr(32)}}</div>
+          <div class="text-h7 text-orange q-pb-md q-pt-xs">{{ formatNodeID }}</div>
           <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">Copy to Clipboard</q-tooltip>
         </div>
         <div v-else>
           <div id="f-size12" class="q-pb-md text-medium ">NODE</div>
-          <div class="text-h7 text-orange q-pb-md q-pt-xs">{{ nodeID.substr(0, 22) }}...{{nodeID.substr(34)}}</div>
+          <div class="text-h7 text-orange q-pb-md q-pt-xs">{{ formatNodeID }}</div>
         </div>
         <div class="q-pt-md">
           <q-btn :color="color" no-caps outline size="xs" label="Check Health" @click="onOpenHealth"/>
-          <node-health-dialog ref="nodeHealthDialog" />
+          <node-health-dialog ref="nodeHealthDialog" v-bind:validator="validatorById(nodeID) ? validatorById(nodeID) : {}"/>
         </div>
       </div>
       <div class="col-1 q-pt-md">
@@ -105,7 +105,7 @@
           <div class="text-h7 text-orange">{{ networkEndpoint.name }}</div>
         </div>
         <div id="f-size12" class="q-mt-md">
-          <span class="q-pt-xl">{{ networkEndpoint.url }}</span>
+          <span class="q-pt-xl" v-if="networkEndpoint.urlView">{{ networkEndpoint.urlView }}</span>
         </div>
       </div>
       <div class="col-1 q-pt-md q-pl-md">
@@ -148,6 +148,7 @@ export default {
       'networkEndpoint'
     ]),
     filterPeers: function () {
+      if (!this.nodeInfo.peers) return
       const res = this.nodeInfo
         .peers
         .filter(a => a.nodeID.toLowerCase().includes(this.filter.toLowerCase()) || a.ip.includes(this.filter))
@@ -166,6 +167,10 @@ export default {
     color: function () {
       if (this.healthy) return 'green'
       return 'negative'
+    },
+    formatNodeID: function () {
+      if (!this.nodeID) return
+      return `${this.nodeID.substr(0, 22)}...${this.nodeID.substr(32)}`
     }
   },
   methods: {

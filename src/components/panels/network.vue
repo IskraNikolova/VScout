@@ -252,7 +252,7 @@ export default {
       openURL(url)
     },
     async onLoad (index, done) {
-      if (this.items.length < 7) done()
+      if (this.items.length < 99) done()
 
       const assets = await _getAssetsWithOffset(index * 100)
       const filter = this.search.toLowerCase()

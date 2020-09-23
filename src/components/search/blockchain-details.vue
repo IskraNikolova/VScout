@@ -1,47 +1,23 @@
 <template>
-    <div>
-      <div class="q-pa-md gt-xs">
-        <div class="text-bold q-pl-md">BLOCKCHAIN ID</div>
-        <div class="text-regular text-orange q-pl-md q-pt-md">{{ blockchain.id }}</div>
-        <div class="row q-pt-xl q-pl-md">
-          <div class="col-6">
-            <span class="text-light text-h7">NAME:</span> <div class="text-medium">{{ blockchain.name }}</div>
-            <br />
-            <span class="text-light text-h7">VM (Virtual Machine):</span>
-            <div class="q-pl-xs"><small class="text-grey">ID: </small> <span class="text-medium">{{ blockchain.vmID }}</span></div>
-            <div class="q-pl-xs"><small class="text-grey">NAME: </small> <span class="text-medium">{{ blockchain.vmName }}</span></div>
-          </div>
-          <div class="col-6">
-            <span class="text-light text-h7">SUBNET ID:</span> <div class="text-medium">{{ blockchain.subnetID }}</div>
-            <br />
-            <span class="text-light text-h7">STATUS:</span>
-            <div :class="'text-medium text-' + getColor(blockchain.status)">
-              {{ blockchain.status }}
-              <q-tooltip>{{ getStatusInfo(blockchain.status )}}</q-tooltip>
-            </div>
-          </div>
+    <div class="q-pa-md">
+      <div class="text-bold q-pl-md">BLOCKCHAIN ID</div>
+      <div class="text-regular text-orange q-pl-md q-pt-md">{{ blockchainID }}</div>
+      <div class="row q-pt-xl q-pl-md">
+        <div class="col-6">
+        <span class="text-light text-h7">NAME:</span> <div class="text-medium">{{ blockchainName }}</div>
+        <br />
+        <span class="text-light text-h7">VM (Virtual Machine):</span>
+        <div class="q-pl-xs"><small class="text-grey">ID: </small> <span class="text-medium">{{ blockchainVmID }}</span></div>
+        <div class="q-pl-xs"><small class="text-grey">NAME: </small> <span class="text-medium">{{ blockchainVmName }}</span></div>
         </div>
-      </div>
-      <div class="q-pa-md lt-sm">
-        <div class="text-bold">BLOCKCHAIN ID</div>
-        <div class="text-regular text-orange q-pl-xs q-pt-md">{{ blockchain.id }}</div>
-        <div class="row q-pt-xl">
-          <div class="col-6">
-            <span class="text-light text-h7">NAME:</span> <div class="text-medium">{{ blockchain.name }}</div>
-            <br />
-            <span class="text-light text-h7">VM (Virtual Machine):</span>
-            <div class="q-pl-xs"><small class="text-grey">ID: </small> <span class="text-medium">{{ blockchain.vmID }}</span></div>
-            <div class="q-pl-xs"><small class="text-grey">NAME: </small> <span class="text-medium">{{ blockchain.vmName }}</span></div>
-          </div>
-          <div class="col-6">
-            <span class="text-light text-h7">SUBNET ID:</span> <div class="text-medium">{{ blockchain.subnetID }}</div>
-            <br />
-            <span class="text-light text-h7">STATUS:</span>
-            <div :class="'text-medium text-' + getColor(blockchain.status)">
-              {{ blockchain.status }}
-              <q-tooltip>{{ getStatusInfo(blockchain.status )}}</q-tooltip>
-            </div>
-          </div>
+        <div class="col-6">
+        <span class="text-light text-h7">SUBNET ID:</span> <div class="text-medium">{{ blockchainSubnetID }}</div>
+        <br />
+        <span class="text-light text-h7">STATUS:</span>
+        <div :class="'text-medium text-' + getColor(blockchainStatus)">
+            {{ blockchainStatus }}
+            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">{{ getStatusInfo(blockchainStatus)}}</q-tooltip>
+        </div>
         </div>
       </div>
     </div>
@@ -78,7 +54,37 @@ export default {
       'blockchainByName'
     ]),
     blockchain: function () {
-      return this.getBlockchain(this.$route.params.id)
+      return this.getBlockchain(this.id)
+    },
+    blockchainID: function () {
+      if (!this.blockchain) return
+      return this.blockchain.id
+    },
+    blockchainName: function () {
+      if (!this.blockchain) return
+      return this.blockchain.name
+    },
+    blockchainVmID: function () {
+      if (!this.blockchain) return
+      return this.blockchain.vmID
+    },
+    blockchainVmName: function () {
+      if (!this.blockchain) return
+      return this.blockchain.vmName
+    },
+    blockchainStatus: function () {
+      if (!this.blockchain) return
+      return this.blockchain.status
+    },
+    blockchainSubnetID: function () {
+      if (!this.blockchain) return
+      return this.blockchain.subnetID
+    }
+  },
+  props: {
+    id: {
+      type: String,
+      required: true
     }
   },
   methods: {

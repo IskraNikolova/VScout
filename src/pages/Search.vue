@@ -14,13 +14,13 @@
       flat
     />
     <div v-if="getSubnet($route.params.id)">
-      <subnet-details />
+      <subnet-details v-bind:id="$route.params.id"/>
     </div>
     <div v-else-if="getValidator($route.params.id)">
-      <validator-details />
+      <validator-details v-bind:id="$route.params.id" />
     </div>
     <div v-else-if="getBlockchain($route.params.id)">
-     <blockchain-details />
+     <blockchain-details v-bind:id="$route.params.id" />
     </div>
     <div v-else class="fixed-center">
       <p class="flex flex-center q-pt-xl">
