@@ -196,7 +196,6 @@ export default {
     },
     visibleColumns: function () {
       const columns = this.columns.map(c => c.name)
-      console.log()
       if (this.curentVal.find(a => !a.rewardOwner)) {
         return columns.filter(c => c !== 'rewardOwner')
       }
