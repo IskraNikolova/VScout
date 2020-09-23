@@ -3,7 +3,6 @@
     <q-table
       :data="curentVal"
       :columns="columns"
-      :separator="separator"
       :filter="filter"
       row-key="index"
       :visible-columns="visibleColumns"
@@ -14,7 +13,7 @@
     <template v-slot:header-cell-delegate="props">
       <q-th :props="props">
         <q-icon
-          size="3.0em"
+          size="4.5em"
           name="img:statics/delegate.png"
         />
       </q-th>

@@ -4,7 +4,6 @@
       :data="curentValidators"
       :columns="columns"
       row-key="rank"
-      :separator="separator"
       :filter="filter"
       :pagination="pagination"
       :grid="isGrid"
@@ -45,7 +44,7 @@
         <!--<q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
         <add-identification-dialog ref="addIdentificationRef" />-->
       </template>
-      <template v-slot:header-cell-uptime="props">
+      <!--<template v-slot:header-cell-uptime="props">
         <q-th :props="props">
           Up Time
           <q-icon name="info" class="text-grey q-pb-xs" size="1.5em">
@@ -54,7 +53,7 @@
             </q-tooltip>
           </q-icon>
         </q-th>
-      </template>
+      </template>-->
       <template slot="top-right" v-if="!isGrid">
         <q-input
           borderless
@@ -76,7 +75,7 @@
             :props="props"
             style="padding: 0px!important;height: 50px!important;"
           >
-            <div v-if="col.name === 'validator'" class="row q-pl-xs" style="min-width: 340px;">
+            <div v-if="col.name === 'validator'" class="row" style="min-width: 340px;">
               <q-avatar size="25px" @click="onClick(props.row.link)">
                 <q-img :src="props.row.avatar">
                   <template v-slot:error>
@@ -101,6 +100,9 @@
               >
                 {{ col.value }}
               </div>
+            </div>
+            <div v-else-if="col.name === 'rank'" style="padding-left: 25px!important;font-size: 14px;">
+              {{ col.value }}
             </div>
             <div v-else-if="col.name === 'stake'">
               <div>
@@ -133,7 +135,7 @@
                     color="grey">
                     <div
                       class="absolute-full text-bold text-black"
-                      style="font-size: 15px;margin-top: 6%;"
+                      style="font-size: 15px;margin-top: 9.5%;"
                     >
                       {{ props.row.cumulativeStake }} %
                     </div>
@@ -244,7 +246,7 @@
                 </span>
                 <div class="text-medium q-mt-md">Delegation Fee</div>
                 <div class="text-grey">
-                  <small>{{ props.row.delegationFee }} %</small>
+                  {{ props.row.delegationFee }} %
                 </div>
                   <div class="text-medium q-mt-md">Staked By</div>
                   <div class="text-grey">
@@ -275,13 +277,13 @@
               <q-card-section class="col-6">
                 <small class="text-grey text-bold">Start Time</small>
                 <br />
-                <small>{{ formatDate(props.row.startTime) }}</small>
+                <small>{{ formatDate(props.row.startTime, 'MMMM Do YYYY, h:mm:ss a') }}</small>
               </q-card-section>
               <q-separator vertical/>
               <q-card-section class="col-6">
                 <small class="text-grey text-bold">End Time</small>
                 <br />
-                <small>{{ formatDate(props.row.endTime) }}</small>
+                <small>{{ formatDate(props.row.endTime, 'MMMM Do YYYY, h:mm:ss a') }}</small>
               </q-card-section>
             </q-card-section>
           </q-card>
@@ -299,7 +301,7 @@ import {
   openURL
 } from 'quasar'
 
-import { date } from './../../modules/time.js'
+import { dateFormat } from './../../modules/time.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
 import { round } from './../../utils/commons.js'
 const { network } = require('./../../modules/config').default
@@ -327,12 +329,11 @@ export default {
       pagination: {
         rowsPerPage: 21
       },
-      separator: 'cell',
       columns: [
         {
           name: 'rank',
           label: 'Rank',
-          align: 'center',
+          align: 'left',
           field: row => row.rank,
           sortable: true,
           headerClasses: 'text-medium'
@@ -364,8 +365,9 @@ export default {
           name: 'networkShare',
           align: 'center',
           label: 'Network Share',
-          field: row => ` ${row.percent} %`,
+          field: row => ` ${round(Number(row.percent), 1000)} %`,
           sortable: true,
+          style: 'font-size: 15px;',
           headerClasses: 'text-medium'
         },
         {
@@ -379,7 +381,8 @@ export default {
           name: 'delegationFee',
           align: 'center',
           label: 'Delegation Fee',
-          field: row => `${row.delegationFee} %`,
+          field: row => `${round(Number(row.delegationFee), 1000)} %`,
+          style: 'font-size: 15px;',
           headerClasses: 'text-medium'
         },
         // {
@@ -393,9 +396,18 @@ export default {
           name: 'startTime',
           align: 'center',
           label: 'Start Time',
-          field: row => this.formatDate(row.startTime),
+          field: row => this.formatDate(row.startTime, 'll'),
           sortable: true,
-          style: 'font-size: 75%;',
+          style: 'font-size: 85%;',
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'endTime',
+          align: 'center',
+          label: 'End Time',
+          field: row => this.formatDate(row.endTime, 'll'),
+          sortable: true,
+          style: 'font-size: 85%;',
           headerClasses: 'text-medium'
         },
         { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress', headerClasses: 'text-medium' }
@@ -517,8 +529,8 @@ export default {
         }
       })
     },
-    formatDate (time) {
-      if (time) return date(time)
+    formatDate (time, format) {
+      if (time) return dateFormat(time, format)
     }
   }
 }

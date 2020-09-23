@@ -23,7 +23,11 @@ export const timeago = (t) => {
 }
 
 export const date = (time) => {
-  return moment(Number(time) * 1000).format('llll')
+  return moment(Number(time) * 1000).format('YYYY-MM-DD HH:mm')
+}
+
+export const dateFormat = (time, format) => {
+  return moment(Number(time) * 1000).format(format)
 }
 
 export const datePickerFormat = ({ value, label }) => {
