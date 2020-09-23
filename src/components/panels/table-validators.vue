@@ -147,13 +147,13 @@
                 v-bind:endTime="props.row.endTime"
               />
             </div>
-            <div v-else-if="col.name === 'uptime'">
+            <!--<div v-else-if="col.name === 'uptime'">
               <q-badge :color="getColorUptime(props.row.uptime)" v-if="props.row.uptime > 0" style="min-width: 57px;">
                 {{ getUpTime(props.row.uptime) }} %
                 <br />
               </q-badge>
               <span v-else> - </span>
-            </div>
+            </div>-->
             <div v-else>{{ col.value }}</div>
           </q-td>
         </q-tr>
@@ -166,12 +166,12 @@
       <template v-slot:item="props">
         <div style="max-width: 400px;width: 100%;margin:auto;margin-bottom: 5px;">
           <q-card flat bordered>
-            <span class="absolute absolute-top-right q-mt-xs q-mr-md" v-if="props.row.uptime > 0">
+            <!--<span class="absolute absolute-top-right q-mt-xs q-mr-md" v-if="props.row.uptime > 0">
               <small class="q-mr-xs">Up Time</small>
               <q-badge :color="getColorUptime(props.row.uptime)" >
                 {{ getUpTime(props.row.uptime) }} %
               </q-badge>
-            </span>
+            </span>-->
             <q-item>
               <q-item-section avatar style="cursor:pointer;" @click="onClick(props.row.link)">
                 <q-avatar>
@@ -382,13 +382,13 @@ export default {
           field: row => `${row.delegationFee} %`,
           headerClasses: 'text-medium'
         },
-        {
-          name: 'uptime',
-          align: 'center',
-          label: 'Up Time',
-          field: row => row.uptime,
-          headerClasses: 'text-medium'
-        },
+        // {
+        //   name: 'uptime',
+        //   align: 'center',
+        //   label: 'Up Time',
+        //   field: row => row.uptime,
+        //   headerClasses: 'text-medium'
+        // },
         {
           name: 'startTime',
           align: 'center',

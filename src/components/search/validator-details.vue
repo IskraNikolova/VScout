@@ -49,12 +49,12 @@
         </q-item-label>
         </q-item-section>
         <q-item-section avatar right>
-        <span v-if="validator.uptime > 0">
+        <!--<span v-if="validator.uptime > 0">
             <span class="q-mr-xs q-mt-xl">Up Time</span>
             <q-badge :color="getColorUptime(validator.uptime)">
             {{ getUpTime(validator.uptime) }} %
             </q-badge>
-        </span>
+        </span>-->
         </q-item-section>
     </q-item>
 
@@ -178,12 +178,12 @@
             </small>
         </q-item-label>
         <q-item-label>
-            <span v-if="validator.uptime > 0">
+            <!--<span v-if="validator.uptime > 0">
             <span class="q-mr-xs q-mt-xl">Up Time</span>
             <q-badge :color="getColorUptime(validator.uptime)">
                 {{ getUpTime(validator.uptime) }} %
             </q-badge>
-            </span>
+            </span>-->
         </q-item-label>
         </q-item-section>
     </q-item>
@@ -282,7 +282,7 @@ import {
 } from 'quasar'
 
 import { date } from './../../modules/time.js'
-import { round } from './../../utils/commons.js'
+// import { round } from './../../utils/commons.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
 
 export default {
@@ -321,14 +321,14 @@ export default {
 
       return validator
     },
-    getUpTime (val) {
-      if (!val) return 0
-      return round(val * 100, 1000)
-    },
-    getColorUptime (val) {
-      if (val >= 0.6) return 'green'
-      return 'negative'
-    },
+    // getUpTime (val) {
+    //   if (!val) return 0
+    //   return round(val * 100, 1000)
+    // },
+    // getColorUptime (val) {
+    //   if (val >= 0.6) return 'green'
+    //   return 'negative'
+    // },
     copyToClipboard (id) {
       if (!id) return
 
