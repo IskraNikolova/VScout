@@ -11,7 +11,7 @@ export default {
     address: '0x4aBeF613822Fb2031D897E792f89C896dDaFC466',
     defaultSubnetID: '11111111111111111111111111111111LpoYY',
     endpointUrls: [
-      { name: 'Avalanche Mainnet', url: 'http://127.0.0.1:9654/', urlView: '' },
+      { name: 'Avalanche Mainnet', url: 'http://135.181.93.94:9654/', urlView: '' },
       { name: 'Localhost', url: 'http://127.0.0.1:9650/', urlView: 'http://127.0.0.1:9650/' },
       { name: 'Fuji Testnet', url: 'https://testapi.avax.network:443/', urlView: 'https://testapi.avax.network:443/' }
     ]
