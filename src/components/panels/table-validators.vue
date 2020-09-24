@@ -55,7 +55,7 @@
         </q-th>
       </template>-->
       <template slot="top-left" v-if="!isGrid">
-        <small><div v-if="$q.screen.gt.xs" class="col" style="margin-top: 20px;">
+        <small><div class="col" style="margin-top: 20px;">
           <q-toggle size="xs" v-model="visibleColumns" val="networkShare" label="Network Share" />
           <q-toggle size="xs" v-model="visibleColumns" val="percent" label="Cumulative Stake" />
           <q-toggle size="xs" v-model="visibleColumns" val="startTime" label="Start Time" />
