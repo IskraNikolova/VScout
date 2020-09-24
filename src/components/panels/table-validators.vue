@@ -165,7 +165,7 @@
                 {{ getUpTime(props.row.uptime) }} %
               </q-badge>
             </div>-->
-            <countdown class="row" v-bind:countdown="col.value" v-bind:color="'#32353b'" v-else-if="col.name === 'remainingTime'"/>
+            <countdown class="row" v-bind:countdown="col.value" v-bind:color="'#9AD5CA'" v-else-if="col.name === 'remainingTime'" style="min-width: 300px;"/>
             <div v-else>{{ col.value }}</div>
           </q-td>
         </q-tr>

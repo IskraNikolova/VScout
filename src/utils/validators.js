@@ -87,6 +87,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       delegatorsCount = props.delegatorsCount
       // todo (3 * Math.pow(6, 10))
       remainingCapacity = (Number(stakeAmount) * 5) - (Number(stakeAmount) + Number(delegateStake))
+      remainingCapacity = getAvaFromnAva(remainingCapacity)
     }
 
     const avatar = getAvatar(nodeID).monster // info.avatarUrl ? info.avatarUrl : getAvatar(nodeID).monster
@@ -108,7 +109,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       stake: getAvaFromnAva(stakeAmount),
       stakenAva: parseFloat(stakeAmount),
       delegateStake: getAvaFromnAva(delegateStake),
-      remainingCapacity: getAvaFromnAva(remainingCapacity).toLocaleString(),
+      remainingCapacity: round(remainingCapacity, 10).toLocaleString(),
       remainingTime,
       link: '' // info.link
     }
