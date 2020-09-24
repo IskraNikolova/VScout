@@ -1,19 +1,16 @@
 <template>
   <div>
-    <q-linear-progress size="50px" :value="progress" :buffer="progress" color="primary">
+    <q-linear-progress size="50px" :value="progress" :buffer="progress" color="accent">
       <div class="absolute-full text-black progressBadge">
         <span class="text-grey text-bold">{{ progressBadge }} %</span>
       </div>
     </q-linear-progress>
-    <div class="absolute-full timeago text-negative text-medium">
-      <small>{{ endOfDate }}</small>
-    </div>
   </div>
 </template>
 
 <script>
 import { round } from './../utils/commons.js'
-import { getDuration, getEndOfDay } from './../modules/time.js'
+import { getDuration } from './../modules/time.js'
 
 export default {
   name: 'ProgressBarValidateSession',
@@ -33,9 +30,6 @@ export default {
     },
     progress: function () {
       return this.progressM()
-    },
-    endOfDate: function () {
-      return getEndOfDay(this.endTime)
     }
   },
   methods: {

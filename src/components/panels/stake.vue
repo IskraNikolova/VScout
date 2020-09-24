@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="q-mt-md q-pt-md q-pl-xl q-pr-xl q-pb-xs" id="custom-card" >
+    class="q-mt-md q-pt-md q-pl-xl q-pr-xl q-pb-xs" id="custom-card" style="min-height: 130px;">
     <div class="row">
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">VALIDATORS</div>
@@ -68,7 +68,7 @@
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
        <div id="f-size12" class="q-pb-md text-medium">VALIDATION / DELEGATED STAKE</div>
-       <div class="text-h6 q-pb-md">
+       <div class="text-h6 q-pb-md" style="min-width: 350px;">
             <span class="text-orange">
              <small>
                 <animated-number
@@ -82,7 +82,7 @@
             <span class="text-orange">
              <small>
                <animated-number
-                  :value="delegatedStake"
+                  :value="delStake"
                   :formatValue="formatToAvax"
                   :duration="3000"
                 />
@@ -98,6 +98,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import AnimatedNumber from 'animated-number-vue'
+import { round } from './../../utils/commons.js'
 
 export default {
   name: 'Stake',
@@ -113,7 +114,11 @@ export default {
       'delegators',
       'pendingValidators',
       'pendingDelegators'
-    ])
+    ]),
+    delStake: function () {
+      if (!this.delegatedStake) return
+      return round(this.delegatedStake, 10)
+    }
   },
   methods: {
     format (value) {

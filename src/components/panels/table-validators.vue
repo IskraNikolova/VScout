@@ -56,13 +56,13 @@
       </template>-->
       <template slot="top-left" v-if="!isGrid">
         <small><div class="col" style="margin-top: 20px;">
-          <q-toggle size="xs" v-model="visibleColumns" val="networkShare" label="Network Share" />
-          <q-toggle size="xs" v-model="visibleColumns" val="percent" label="Cumulative Stake" />
-          <q-toggle size="xs" v-model="visibleColumns" val="startTime" label="Start Time" />
-          <q-toggle size="xs" v-model="visibleColumns" val="endTime" label="End Time" />
-          <q-toggle size="xs" v-model="visibleColumns" val="progress" label="Progress" />
-          <q-toggle size="xs" v-model="visibleColumns" val="remainingCapacity" label="Remaining Capacity" />
-          <q-toggle size="xs" v-model="visibleColumns" val="remainingTime" label="Remaining Time" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="networkShare" label="Network Share" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="percent" label="Cumulative Stake" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="startTime" label="Start Time" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="endTime" label="End Time" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="progress" label="Progress" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="remainingCapacity" label="Remaining Capacity" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="remainingTime" label="Remaining Time" />
         </div></small>
       </template>
       <template slot="top-right" v-if="!isGrid">
@@ -165,7 +165,7 @@
                 {{ getUpTime(props.row.uptime) }} %
               </q-badge>
             </div>-->
-            <countdown class="row" v-bind:countdown="col.value" v-bind:color="'#9AD5CA'" v-else-if="col.name === 'remainingTime'" style="min-width: 300px;"/>
+            <countdown class="row" v-bind:countdown="col.value" v-bind:color="'#588da8'" v-else-if="col.name === 'remainingTime'" style="min-width: 290px;"/>
             <div v-else>{{ col.value }}</div>
           </q-td>
         </q-tr>
