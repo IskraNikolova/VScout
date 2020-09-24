@@ -10,14 +10,6 @@
       class="light-background shadow-3"
       id="custom-table"
     >
-    <template v-slot:header-cell-delegate="props">
-      <q-th :props="props">
-        <q-icon
-          size="4.5em"
-          name="img:statics/delegate.png"
-        />
-      </q-th>
-    </template>
       <template slot="top-left">
         <q-btn-toggle
           v-model="type"
@@ -45,8 +37,8 @@
       <template v-slot:header-cell-index="props">
         <q-th :props="props">
           <q-icon
-            size="2.0em"
-            class="q-pl-xs"
+            style="margin-left: 13px;"
+            size="3.0em"
             name="img:statics/delegate.png"
           />
         </q-th>
@@ -139,27 +131,31 @@ export default {
           name: 'index',
           label: '#',
           align: 'center',
-          field: row => row.index
+          field: row => `#${row.index}`,
+          headerClasses: 'text-medium'
         },
         {
           name: 'rewardOwner',
           align: 'left',
           label: 'Reward Owner',
-          field: row => `${this.getRewardOwnerFormat(row.rewardOwner)}`
+          field: row => `${this.getRewardOwnerFormat(row.rewardOwner)}`,
+          headerClasses: 'text-medium'
         },
         {
           name: 'nodeId',
           align: 'left',
           label: 'Delegated Node ID',
           field: row => `[${row.nodeId}]`,
-          style: 'font-size: 12px;'
+          style: 'font-size: 12px;',
+          headerClasses: 'text-medium'
         },
         {
           name: 'stake',
           align: 'left',
           label: 'Delegated (AVAX)',
           field: row => `${row.stake.toLocaleString()} AVAX`,
-          sortable: true
+          sortable: true,
+          headerClasses: 'text-medium'
         },
         {
           name: 'startTime',
@@ -167,7 +163,8 @@ export default {
           label: 'Start Time',
           field: row => this.formatDate(row.startTime),
           style: 'font-size: 10px;',
-          sortable: true
+          sortable: true,
+          headerClasses: 'text-medium'
         },
         {
           name: 'endTime',
@@ -175,9 +172,10 @@ export default {
           label: 'End Time',
           field: row => this.formatDate(row.endTime),
           style: 'font-size: 10px;',
-          sortable: true
+          sortable: true,
+          headerClasses: 'text-medium'
         },
-        { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress' }
+        { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress', headerClasses: 'text-medium' }
       ]
     }
   },

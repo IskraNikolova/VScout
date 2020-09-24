@@ -54,6 +54,17 @@
           </q-icon>
         </q-th>
       </template>-->
+      <template slot="top-left" v-if="!isGrid">
+        <small><div v-if="$q.screen.gt.xs" class="col" style="margin-top: 20px;">
+          <q-toggle size="xs" v-model="visibleColumns" val="networkShare" label="Network Share" />
+          <q-toggle size="xs" v-model="visibleColumns" val="percent" label="Cumulative Stake" />
+          <q-toggle size="xs" v-model="visibleColumns" val="startTime" label="Start Time" />
+          <q-toggle size="xs" v-model="visibleColumns" val="endTime" label="End Time" />
+          <q-toggle size="xs" v-model="visibleColumns" val="progress" label="Progress" />
+          <q-toggle size="xs" v-model="visibleColumns" val="remainingCapacity" label="Remaining Capacity" />
+          <q-toggle size="xs" v-model="visibleColumns" val="remainingTime" label="Remaining Time" />
+        </div></small>
+      </template>
       <template slot="top-right" v-if="!isGrid">
         <q-input
           borderless
@@ -150,12 +161,11 @@
               />
             </div>
             <!--<div v-else-if="col.name === 'uptime'">
-              <q-badge :color="getColorUptime(props.row.uptime)" v-if="props.row.uptime > 0" style="min-width: 57px;">
+              <q-badge :color="getColorUptime(props.row.uptime)" style="min-width: 57px;">
                 {{ getUpTime(props.row.uptime) }} %
-                <br />
               </q-badge>
-              <span v-else> - </span>
             </div>-->
+            <countdown class="row" v-bind:countdown="col.value" v-bind:color="'#32353b'" v-else-if="col.name === 'remainingTime'"/>
             <div v-else>{{ col.value }}</div>
           </q-td>
         </q-tr>
@@ -315,8 +325,16 @@ export default {
     Settings: () => import('components/panels/settings'),
     DetailsValidator: () => import('components/details-validator'),
     CumulativeStakeChart: () => import('components/cumulative-stake-chart'),
+    Countdown: () => import('components/items/countdown'),
     // AddIdentificationDialog: () => import('components/dialogs/add-identification-dialog'),
     ProgressBarValidateSession: () => import('components/progress-bar-validatе-session')
+  },
+  watch: {
+    curentValidators: function (newValidators, oldValidators) {
+      if (newValidators.length !== oldValidators.length) {
+        this.visibleColumns = this.getVisibleColumns(this.curentValidators)
+      }
+    }
   },
   data () {
     return {
@@ -327,7 +345,7 @@ export default {
       isGrid: false,
       isActive: true,
       pagination: {
-        rowsPerPage: 21
+        rowsPerPage: 15
       },
       columns: [
         {
@@ -341,7 +359,7 @@ export default {
         {
           name: 'validator',
           align: 'center',
-          label: 'Validator',
+          label: 'Validator (Node ID)',
           field: row => row.name,
           headerClasses: 'text-medium'
         },
@@ -410,11 +428,29 @@ export default {
           style: 'font-size: 85%;',
           headerClasses: 'text-medium'
         },
-        { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress', headerClasses: 'text-medium' }
-      ]
+        { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress', headerClasses: 'text-medium' },
+        {
+          name: 'remainingCapacity',
+          align: 'center',
+          label: 'Remaining Capacity',
+          field: row => `${row.remainingCapacity} AVAX`,
+          sortable: true,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'remainingTime',
+          align: 'center',
+          label: 'Remaining Time (Countdown)',
+          field: row => row.remainingTime,
+          sortable: true,
+          headerClasses: 'text-medium'
+        }
+      ],
+      visibleColumns: []
     }
   },
   created () {
+    this.visibleColumns = this.getVisibleColumns(this.curentValidators)
     this.visible = true
     const i = setInterval(() => {
       if (this.validators.length > 0) {
@@ -437,29 +473,38 @@ export default {
         if (this.isActive) return this.validators
         return this.pendingValidators
       }
-    },
-    visibleColumns: function () {
-      const columns = this.columns.map(c => c.name)
-      if (this.curentValidators.find(a => a.percent === 'NAN' || !a.percent)) {
-        return columns.filter(c => c !== 'percent' && c !== 'networkShare' && c !== 'weight' && c !== 'uptime')
-      } else if (this.curentValidators.find(a => a.weight < 1)) {
-        return columns.filter(c => c !== 'weight')
-      } else if (this.curentValidators.find(a => a.weight > 0)) {
-        return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
-      }
-
-      return columns.filter(c => c !== 'stake')
     }
   },
   methods: {
-    getUpTime (val) {
-      if (!val) return 0
-      return round(val * 100, 1000)
+    getVisibleColumns (curentValidators) {
+      const columns = this.columns.map(c => c.name)
+      if (curentValidators.find(a => a.percent === 'NAN' || !a.percent)) {
+        return columns
+          .filter(c =>
+            c !== 'percent' &&
+            c !== 'networkShare' &&
+            c !== 'weight' &&
+            // c !== 'uptime' &&
+            c !== 'progress' &&
+            c !== 'rank'
+          )
+      } else if (curentValidators.find(a => a.weight < 1)) {
+        return columns.filter(c => c !== 'weight')
+      } else if (curentValidators.find(a => a.weight > 0)) {
+        // return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
+        return columns.filter(c => c !== 'delegationFee')
+      }
+
+      return columns.filter(c => c !== 'stake')
     },
-    getColorUptime (val) {
-      if (val >= 0.6) return 'green'
-      return 'negative'
-    },
+    // getUpTime (val) {
+    //   if (!val) return 0
+    //   return round(val * 100, 1000)
+    // },
+    // getColorUptime (val) {
+    //   if (val >= 0.6) return 'green'
+    //   return 'negative'
+    // },
     getFormatNodeID (id) {
       if (!id) return
       return `${id.substr(0, 12)}...${id.substr(27)}`

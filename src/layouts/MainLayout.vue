@@ -8,7 +8,7 @@
           </q-toolbar-title>
 
           <img src="~assets/block.svg" id="logo-block"/>
-          <span class="text-medium q-pl-xs q-pr-xl text-grey">
+          <span class="q-pl-xs q-pr-xl text-grey">
             {{ height }}
             <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;"> Last accepted block on P-Chain (Height)</q-tooltip>
           </span>
@@ -131,13 +131,17 @@
               <q-separator />
               <switch-endpoint />
             </q-menu>
-            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px">Connect To Node</q-tooltip>
+            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 14px;border-style: solid;border-width: 0.1px;">Connect To Node</q-tooltip>
           </q-btn>
         </q-toolbar>
         <q-toolbar class="background-orange">
           <q-toolbar-title>
             <img src="~assets/vscoutlogo5.svg" style="width: 200px;">
           </q-toolbar-title>
+          <span v-if="validatorById(nodeID)" style="min-width: 300px;margin-right: 15%;">
+            <countdown class="row" v-bind:color="'#ffffff'" v-bind:countdown="validatorById(nodeID).remainingTime" />
+            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 14px;border-style: solid;border-width: 0.1px;">Remaining validation time of {{ nodeID }}</q-tooltip>
+          </span>
           <q-bar>
             <q-input
               outlined
@@ -155,13 +159,18 @@
           </q-bar>
         </q-toolbar>
       </div>
-      <div class="xs">
+      <div class="lt-sm">
         <div class="background-white row">
           <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm class="text-grey"/>
           <div class="col" @click="$router.push('/')" style="cursor:pointer;margin-top: 7px;margin-left: 7px;">
             VScout.io
           </div>
           <a style="text-decoration: none;padding-top: 5px;padding-left: 20px;padding-right: 20px;" class="text-grey" href="#faqs">FAQ</a>
+        </div>
+        <div class="background-white q-pb-md">
+          <span v-if="validatorById(nodeID)" style="max-width: 250px;">
+            <countdown class="row" v-bind:color="'#32353b'" v-bind:countdown="validatorById('nodeID').remainingTime" />
+          </span>
         </div>
         <div class="background-orange q-pb-md">
           <div>
@@ -368,7 +377,7 @@
       <keep-alive>
         <router-view />
       </keep-alive>
-       <!-- place QPageScroller at end of page -->
+       <!-- place QPageScroller at end of page-->
         <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
           <q-btn fab icon="keyboard_arrow_up" color="orange" />
         </q-page-scroller>
@@ -401,14 +410,17 @@ import {
 export default {
   name: 'MainLayout',
   components: {
+    Countdown: () => import('components/items/countdown'),
     ListSubnets: () => import('components/list-subnets'),
     SwitchEndpoint: () => import('components/switch-endpoint'),
     ListBlockchains: () => import('components/list-blockchains')
   },
   computed: {
     ...mapGetters([
+      'nodeID',
       'subnets',
       'height',
+      'validatorById',
       'blockchains',
       'currentSupply',
       'networkEndpoint',

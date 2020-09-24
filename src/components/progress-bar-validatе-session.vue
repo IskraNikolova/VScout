@@ -5,15 +5,15 @@
         <span class="text-grey text-bold">{{ progressBadge }} %</span>
       </div>
     </q-linear-progress>
-    <div class="absolute-full q-pb-md timeago text-negative text-medium">
-      <small>{{ timeago }}</small>
+    <div class="absolute-full timeago text-negative text-medium">
+      <small>{{ endOfDate }}</small>
     </div>
   </div>
 </template>
 
 <script>
 import { round } from './../utils/commons.js'
-import { getDuration, timeago } from './../modules/time.js'
+import { getDuration, getEndOfDay } from './../modules/time.js'
 
 export default {
   name: 'ProgressBarValidateSession',
@@ -34,8 +34,8 @@ export default {
     progress: function () {
       return this.progressM()
     },
-    timeago: function () {
-      return this.timeagoM()
+    endOfDate: function () {
+      return getEndOfDay(this.endTime)
     }
   },
   methods: {
@@ -44,9 +44,6 @@ export default {
     },
     lastDur () {
       return getDuration(this.startTime, Date.now() / 1000 | 0)
-    },
-    timeagoM () {
-      return timeago(this.dur() - this.lastDur())
     },
     progressM () {
       const result = Math.floor(this.lastDur()) / Math.floor(this.dur())

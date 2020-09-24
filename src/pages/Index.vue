@@ -1,5 +1,6 @@
 <template>
   <q-page>
+    <div>
     <div id="header-line"></div>
     <div style="padding: 1%;">
       <error class="q-pr-md" />
@@ -24,6 +25,7 @@
       <div class="flex flex-center q-mt-xl text-white">
         Made with ❤️ for builders everywhere.
       </div>
+    </div>
     </div>
   </q-page>
 </template>

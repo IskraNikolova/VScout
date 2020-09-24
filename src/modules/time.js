@@ -18,6 +18,20 @@ export const getDurationByDayCount = (dur) => {
   return moment.duration(dur, 'days')
 }
 
+export const getEndOfDay = (e) => {
+  return moment(new Date(Number(e) * 1000)).endOf('day').fromNow()
+}
+
+export const countDownCounter = (e) => {
+  const currentTime = moment(new Date() / 1000)
+  const leftTime = moment(new Date(Number(e))) - currentTime
+  let duration = moment.duration(leftTime, 'seconds')
+
+  duration = moment.duration(duration.asSeconds(), 'seconds')
+  const result = `${duration.months().toString().padStart(2, '0')} : ${duration.days().toString().padStart(2, '0')} : ${duration.hours().toString().padStart(2, '0')} : ${duration.minutes().toString().padStart(2, '0')} : ${duration.seconds().toString().padStart(2, '0')}`
+  return result
+}
+
 export const timeago = (t) => {
   return moment.duration(t).humanize(true)
 }

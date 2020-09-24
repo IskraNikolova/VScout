@@ -1,6 +1,6 @@
 const BigNumber = require('bignumber.js')
 
-import { fromNow } from './../modules/time.js'
+import { fromNow, countDownCounter } from './../modules/time.js'
 import { round, getAvatar } from './commons.js'
 import { getAvaFromnAva } from './avax.js'
 // import { _getValidatorById } from './../modules/networkRpc'
@@ -71,6 +71,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
     let delegatorsCount = 0
     let weight = 0
     let stakeAmount = 0
+    let remainingCapacity = 0
 
     if (val.weight) {
       weight = val.weight
@@ -84,11 +85,14 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       const props = getDelegatorsForNode(val, delegators)
       delegateStake = props.delegateStake
       delegatorsCount = props.delegatorsCount
+      // todo (3 * Math.pow(6, 10))
+      remainingCapacity = (Number(stakeAmount) * 5) - (Number(stakeAmount) + Number(delegateStake))
     }
 
     const avatar = getAvatar(nodeID).monster // info.avatarUrl ? info.avatarUrl : getAvatar(nodeID).monster
     const name = nodeID // info.name ? info.name : nodeID
     const total = parseFloat(stakeAmount) + parseFloat(delegateStake)
+    const remainingTime = countDownCounter(val.endTime)
 
     return {
       ...val,
@@ -104,6 +108,8 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       stake: getAvaFromnAva(stakeAmount),
       stakenAva: parseFloat(stakeAmount),
       delegateStake: getAvaFromnAva(delegateStake),
+      remainingCapacity: getAvaFromnAva(remainingCapacity).toLocaleString(),
+      remainingTime,
       link: '' // info.link
     }
   }))

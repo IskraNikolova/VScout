@@ -20,6 +20,27 @@ body {
   background-image: linear-gradient(45deg, #32353b 41.67%, #1c2a33 41.67%, #1c2a33 50%, #32353b 50%, #32353b 91.67%, #1c2a33 91.67%, #1c2a33 100%);
   background-size: 8.49px 8.49px;
 }
+/* width */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-image: linear-gradient(45deg, #32353b 41.67%, #1c2a33 41.67%, #1c2a33 50%, #32353b 50%, #32353b 91.67%, #1c2a33 91.67%, #1c2a33 100%);
+  background-size: 8.49px 8.49px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #000000;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
 
 .text-medium {
   font-family: 'Rubik-Medium',sans-serif;
@@ -104,8 +125,7 @@ body {
 .timeago {
   font-size: 14px;
   text-align: right;
-  margin-top: 17%;
-  margin-right: 1px;
+  margin-top: 30px;
 }
 
 .progressBadge {

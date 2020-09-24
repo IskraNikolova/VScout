@@ -108,11 +108,11 @@
             </div>
         </div>
         <q-card-section>
-            <div class="text-grey q-pt-xl">Progress (%)</div>
-            <progress-bar-validate-session
+          <div class="text-grey q-pt-xl">Progress (%)</div>
+          <progress-bar-validate-session
             v-bind:startTime="validator.startTime"
             v-bind:endTime="validator.endTime"
-            />
+          />
         </q-card-section>
         </q-card-section>
         <q-separator vertical />
@@ -177,14 +177,14 @@
             Weight: <span class="text-accent">{{ validator.weight }}</span>
             </small>
         </q-item-label>
-        <q-item-label>
-            <!--<span v-if="validator.uptime > 0">
+        <!--<q-item-label>
+          <span v-if="validator.uptime > 0">
             <span class="q-mr-xs q-mt-xl">Up Time</span>
             <q-badge :color="getColorUptime(validator.uptime)">
                 {{ getUpTime(validator.uptime) }} %
             </q-badge>
-            </span>-->
-        </q-item-label>
+          </span>
+        </q-item-label>-->
         </q-item-section>
     </q-item>
     <q-separator class="q-mb-xl"/>
