@@ -415,7 +415,6 @@ export default {
           align: 'center',
           label: 'Start Time',
           field: row => this.formatDate(row.startTime, 'll'),
-          sortable: true,
           style: 'font-size: 85%;',
           headerClasses: 'text-medium'
         },
@@ -424,7 +423,6 @@ export default {
           align: 'center',
           label: 'End Time',
           field: row => this.formatDate(row.endTime, 'll'),
-          sortable: true,
           style: 'font-size: 85%;',
           headerClasses: 'text-medium'
         },
@@ -442,7 +440,6 @@ export default {
           align: 'center',
           label: 'Remaining Time (Countdown)',
           field: row => row.remainingTime,
-          sortable: true,
           headerClasses: 'text-medium'
         }
       ],
