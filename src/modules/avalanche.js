@@ -33,6 +33,7 @@ export const pChain = (networkEndpoint, networkID) => {
       network.networkId,
       network.chainId
     )
+
     return avax.PChain()
   }
 }

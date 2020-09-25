@@ -108,21 +108,29 @@ async function initApp ({ dispatch, getters }) {
   }, 6000)
 }
 
-async function initEndpoint ({ commit, getters }) {
-  let endpoint = network.endpointUrls[1]
-  let response = await _getNodeId({ endpoint: endpoint.url })
-  if (response.data.error) {
-    endpoint = getters.networkEndpoint
-    response = await _getNodeId({ endpoint: endpoint.url })
-    if (response.data.error) {
-      endpoint = network.endpointUrls[0]
-      response = await _getNodeId({ endpoint: endpoint.url })
-    }
-  }
+async function initEndpoint ({ commit }) {
+  const endpoint = network.endpointUrls[0]
+  commit(SET_ENDPOINT, { endpoint })
+
+  const response = await _getNodeId({ endpoint: endpoint.url })
+  if (response.data.error) return
 
   const nodeID = response.data.result.nodeID
-  commit(SET_ENDPOINT, { endpoint })
   commit(SET_NODE_ID, { nodeID })
+  // let endpoint = network.endpointUrls[1]
+  // let response = await _getNodeId({ endpoint: endpoint.url })
+  // if (response.data.error) {
+  //   endpoint = getters.networkEndpoint
+  //   response = await _getNodeId({ endpoint: endpoint.url })
+  //   if (response.data.error) {
+  //     endpoint = network.endpointUrls[0]
+  //     response = await _getNodeId({ endpoint: endpoint.url })
+  //   }
+  // }
+
+  // const nodeID = response.data.result.nodeID
+  // commit(SET_ENDPOINT, { endpoint })
+  // commit(SET_NODE_ID, { nodeID })
 }
 
 async function getBlockchains (
@@ -373,6 +381,7 @@ async function getCurrentSupply ({ commit, getters }) {
   try {
     const currentSupply = await pChain(getters.networkEndpoint, getters.nodeInfo.networkID)
       .getCurrentSupply()
+
     commit(SET_CURRENT_SUPPLY, { currentSupply })
   } catch (err) {
   }

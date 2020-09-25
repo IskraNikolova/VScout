@@ -7,7 +7,7 @@
       :filter="filter"
       :pagination="pagination"
       :grid="isGrid"
-      class="light-background shadow-3"
+      class="light-background shadow-3 my-sticky-header-table"
       id="custom-table"
       :visible-columns="visibleColumns"
       :loading="visible"
@@ -86,7 +86,7 @@
             :props="props"
             style="padding: 0px!important;height: 50px!important;"
           >
-            <div v-if="col.name === 'validator'" class="row" style="min-width: 340px;">
+            <div v-if="col.name === 'validator'" class="row" style="min-width: 360px;">
               <q-avatar size="25px" @click="onClick(props.row.link)">
                 <q-img :src="props.row.avatar">
                   <template v-slot:error>
@@ -105,9 +105,9 @@
               </div>
               <div
                 v-else
-                style="cursor:pointer;font-size: 12px;"
+                style="cursor:pointer;font-size: 13px;"
                 @click="props.expand = !props.expand"
-                class="q-pl-xs q-pt-xs text-medium"
+                class="q-pl-xs q-pt-xs"
               >
                 {{ col.value }}
               </div>
@@ -345,7 +345,7 @@ export default {
       isGrid: false,
       isActive: true,
       pagination: {
-        rowsPerPage: 15
+        rowsPerPage: 25
       },
       columns: [
         {
@@ -414,24 +414,35 @@ export default {
           name: 'startTime',
           align: 'center',
           label: 'Start Time',
-          field: row => this.formatDate(row.startTime, 'll'),
+          field: row => row.startTime,
+          format: (val, row) => `${this.formatDate(row.startTime, 'll')}`,
           style: 'font-size: 85%;',
+          sortable: true,
           headerClasses: 'text-medium'
         },
         {
           name: 'endTime',
           align: 'center',
           label: 'End Time',
-          field: row => this.formatDate(row.endTime, 'll'),
+          sortable: true,
+          field: row => row.endTime,
+          format: (val, row) => `${this.formatDate(row.endTime, 'll')}`,
           style: 'font-size: 85%;',
           headerClasses: 'text-medium'
         },
-        { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress', headerClasses: 'text-medium' },
+        {
+          name: 'progress',
+          align: 'left',
+          label: 'Progress (%)',
+          field: 'progress',
+          headerClasses: 'text-medium'
+        },
         {
           name: 'remainingCapacity',
           align: 'center',
           label: 'Remaining Capacity',
-          field: row => `${row.remainingCapacity} AVAX`,
+          field: row => row.remainingCapacity,
+          format: (val, row) => `${this.getFormatReward(val)} AVAX`,
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -589,4 +600,23 @@ export default {
   grid-column: 1;
   grid-row: 1;
 }
+</style>
+<style lang="sass">
+.my-sticky-header-table
+  /* height or max-height is important */
+  max-height: 610px
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th
+    /* bg color is important for th; just specify one */
+    background-color: #ffffff
+  thead tr th
+    position: sticky
+    z-index: 1
+  thead tr:first-child th
+    top: 0
+  /* this is when the loading indicator appears */
+  &.q-table--loading thead tr:last-child th
+    /* height of all previous header rows */
+    top: 48px
 </style>

@@ -168,7 +168,7 @@
           <a style="text-decoration: none;padding-top: 5px;padding-left: 20px;padding-right: 20px;" class="text-grey" href="#faqs">FAQ</a>
         </div>
         <div class="background-white q-pb-md">
-          <span v-if="validatorById(nodeID)" style="max-width: 250px;">
+          <span v-if="validatorById(nodeID)">
             <countdown class="row" v-bind:color="'#32353b'" v-bind:countdown="validatorById('nodeID').remainingTime" />
           </span>
         </div>
