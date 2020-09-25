@@ -142,6 +142,14 @@ export default {
       ]
     }
   },
+  watch: {
+    type: function (newValidators) {
+      if (newValidators === 'validator') {
+        this.delegationFee = 0
+        this.calculate()
+      }
+    }
+  },
   computed: {
     ...mapGetters([
       'currentSupply'
