@@ -7,15 +7,40 @@
       :filter="filter"
       :pagination="pagination"
       :grid="isGrid"
-      class="light-background shadow-3"
+      :class="tableClass"
       id="custom-table"
       :visible-columns="visibleColumns"
       :loading="visible"
     >
-      <template slot="top-left" v-if="isActive && curentValidators.length < 1">
+      <template
+        slot="top-left"
+        v-if="isActive && curentValidators.length < 1"
+      >
         <q-btn size="xs" outline label="Load For Default Subnet" @click="onGetDefaultValidators"/>
       </template>
+
       <template slot="top-left" v-else>
+        <q-btn
+          size="xs"
+          v-if="!isSticky"
+          class="text-accent"
+          flat
+          icon="push_pin"
+          @click="isSticky=true"
+        >
+          <tooltip-style v-bind:text="textStickyNegative" />
+        </q-btn>
+        <q-btn
+          size="xs"
+          v-else
+          class="text-grey"
+          flat
+          icon="push_pin"
+          @click="isSticky=false"
+        >
+          <tooltip-style v-bind:text="textStickyPositive" />
+        </q-btn>
+
         <q-btn size="xs" flat icon="apps" @click="isGrid=true"/>
         <q-btn size="xs" flat icon="reorder" @click="isGrid=false"/>
         <settings />
@@ -54,8 +79,15 @@
           </q-icon>
         </q-th>
       </template>-->
+      <template v-slot:header-cell-rank="props">
+        <q-th :props="props">
+          Rank
+          <q-icon name="img:statics/star.svg" size="1.5em">
+          </q-icon>
+        </q-th>
+      </template>
       <template slot="top-left" v-if="!isGrid">
-        <small><div class="col" style="margin-top: 20px;">
+        <small><div class="col" style="margin-top: 20px; margin-bottom: 10px;">
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="networkShare" label="Network Share" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="percent" label="Cumulative Stake" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="startTime" label="Start Time" />
@@ -112,7 +144,7 @@
                 {{ col.value }}
               </div>
             </div>
-            <div v-else-if="col.name === 'rank'" style="padding-left: 25px!important;font-size: 14px;">
+            <div v-else-if="col.name === 'rank'" id="rank">
               {{ col.value }}
             </div>
             <div v-else-if="col.name === 'stake'">
@@ -126,9 +158,7 @@
             </div>
             <div v-else-if="col.name === 'weight'">
               {{ col.value }}
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">
-                <q-icon name="info" class="q-pb-xs"/> Weight is the validator’s weight used for sampling.
-              </q-tooltip>
+              <tooltip-style v-bind:text="'Weight is the validator’s weight used for sampling.'" v-bind:icon="'info'" />
             </div>
             <div v-else-if="col.name === 'percent'">
               <div class="container_row" v-if="props.row.cumulativeStake">
@@ -323,6 +353,7 @@ export default {
   name: 'TableItem',
   components: {
     Settings: () => import('components/panels/settings'),
+    TooltipStyle: () => import('components/tooltip-style'),
     DetailsValidator: () => import('components/details-validator'),
     CumulativeStakeChart: () => import('components/cumulative-stake-chart'),
     Countdown: () => import('components/items/countdown'),
@@ -334,10 +365,18 @@ export default {
       if (newValidators.length !== oldValidators.length) {
         this.visibleColumns = this.getVisibleColumns(this.curentValidators)
       }
+    },
+    isSticky: function (val) {
+      if (val) this.tableClass = 'light-background shadow-3'
+      else this.tableClass = 'light-background shadow-3 sticky-header-table'
     }
   },
   data () {
     return {
+      textStickyPositive: 'Make a sticky header',
+      textStickyNegative: 'Remove a sticky header',
+      tableClass: 'light-background shadow-3',
+      isSticky: false,
       filter: '',
       visible: false,
       type: 'active',
@@ -345,7 +384,7 @@ export default {
       isGrid: false,
       isActive: true,
       pagination: {
-        rowsPerPage: 25
+        rowsPerPage: 20
       },
       columns: [
         {
@@ -600,9 +639,13 @@ export default {
   grid-column: 1;
   grid-row: 1;
 }
+#rank {
+  padding-left: 25px!important;
+  font-size: 14px;
+}
 </style>
 <style lang="sass">
-.my-sticky-header-table
+.sticky-header-table
   /* height or max-height is important */
   max-height: 610px
   .q-table__top,

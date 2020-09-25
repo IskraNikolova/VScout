@@ -3,84 +3,18 @@
     <q-header reveal>
       <div class="gt-xs">
         <q-toolbar class="background-white">
-          <q-toolbar-title @click="$router.push('/')" style="cursor:pointer;margin-left: 12px;">
+          <q-toolbar-title
+            @click="$router.push('/')"
+            id="toolbar-title">
             VScout.io <q-icon name="home" color="grey" />
           </q-toolbar-title>
 
           <img src="~assets/block.svg" id="logo-block"/>
           <span class="q-pl-xs q-pr-xl text-grey">
             {{ height }}
-            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;"> Last accepted block on P-Chain (Height)</q-tooltip>
+            <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
           </span>
-          <q-btn push flat id="logo-sim" label="calculator" @click="calculate">
-            <q-popup-proxy>
-              <q-banner class="q-pa-md" dense style="width: 340px;">
-                <div class="q-pb-md row">
-                  <div class="col-6 text-medium">Reward Calculator</div>
-                  <div class="col-6 q-mt-md" style="margin-bottom: -10px;padding-left: 12px;">
-                    <small class="q-pr-xs">Current Supply </small>
-                    <q-badge outline size="xs" color="accent" :label="getCurrentSupply() + 'M'" />
-                  </div>
-                </div>
-                <q-input
-                  label-color="orange"
-                  outlined
-                  v-model="stakeAmount"
-                  label="Staking Amount"
-                  input-class="text-right"
-                  suffix="AVAX"
-                  color="accent"
-                  @input="calculate"
-                  class="q-pb-md"
-                />
-                <!--:rules="[value => value >= 2000 || 'Stake Amount must be greater or equal to 2000 $AVAX']"-->
-                <div class="row q-mt-md">
-                  <div class="col-10">
-                    <q-badge outline color="orange" style="height: 27px;" class="q-pb-xs q-pt-xs q-mb-xs">
-                      Staking Time (1 to 365 days)
-                    </q-badge>
-                  </div>
-                  <div class="col-2">
-                    <q-btn icon="event" size="sm" outline color="grey">
-                      <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
-                        <q-date v-model="model" color="orange" range>
-                          <div class="row items-center justify-end q-gutter-sm">
-                            <q-btn label="Cancel" color="grey" flat v-close-popup />
-                            <q-btn label="OK" color="grey" flat @click="save" v-close-popup />
-                          </div>
-                        </q-date>
-                      </q-popup-proxy>
-                    </q-btn>
-                  </div>
-                </div>
-                <q-slider
-                  class="q-ml-xs q-mr-xs q-mt-xl"
-                  v-model="stakeTime"
-                  :min="1"
-                  :max="365"
-                  :step="1"
-                  snap
-                  :label-value="stakeTime + ' days'"
-                  label-always
-                  @input="calculate"
-                  label-text-color="orange"
-                  label-color="white"
-                  color="orange"
-                />
-                <div>
-                  <small>{{ stakeTime }} Days Earning </small>
-                  <div>
-                    <span class="text-accent">
-                      {{ rewardAvax }}
-                    </span> AVAX
-                    (<small class="text-grey">
-                      {{ reward.toLocaleString() }} <span class="text-accent">nAVAX</span>
-                    </small>)
-                  </div>
-                </div>
-              </q-banner>
-            </q-popup-proxy>
-          </q-btn>
+          <calculator />
           <q-btn
             flat
             label="blockchains"
@@ -131,7 +65,7 @@
               <q-separator />
               <switch-endpoint />
             </q-menu>
-            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 14px;border-style: solid;border-width: 0.1px;">Connect To Node</q-tooltip>
+            <tooltip-style v-bind:text="'Connect To Node'" />
           </q-btn>
         </q-toolbar>
         <q-toolbar class="background-orange">
@@ -139,8 +73,8 @@
             <img src="~assets/vscoutlogo5.svg" style="width: 200px;">
           </q-toolbar-title>
           <span v-if="validatorById(nodeID)" style="min-width: 300px;margin-right: 15%;">
-            <countdown class="row" v-bind:color="'#ffffff'" v-bind:countdown="validatorById(nodeID).remainingTime" />
-            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 14px;border-style: solid;border-width: 0.1px;">Remaining validation time of {{ nodeID }}</q-tooltip>
+            <countdown class="row" v-bind:color="'#ffffff'" v-bind:countdown="getRemainigTime()" />
+            <tooltip-style v-bind:text="'Remaining validation time of' + nodeID  + ''" />
           </span>
           <q-bar>
             <q-input
@@ -207,77 +141,7 @@
             </q-item-section>
 
             <q-item-section>
-              <q-btn push flat no-caps label="Calculator" @click="calculate" style="margin-left: -50px;">
-                <q-popup-proxy>
-                  <q-banner class="q-pa-md" dense style="width: 350px;">
-                    <div class="q-pb-md row">
-                      <div class="col-6 text-medium">Reward Calculator</div>
-                      <div class="col-6 q-mt-md" style="margin-bottom: -10px;padding-right: -3px;">
-                        <small class="q-pr-xs">Current Supply </small>
-                        <q-badge outline size="xs" color="accent" :label="getCurrentSupply() + 'M'" />
-                      </div>
-                    </div>
-                    <q-input
-                      label-color="orange"
-                      outlined
-                      v-model="stakeAmount"
-                      label="Staking Amount"
-                      input-class="text-right"
-                      suffix="AVAX"
-                      color="accent"
-                      @input="calculate"
-                      class="q-pb-md"
-                    />
-                    <!--:rules="[value => value >= 2000 || 'Stake Amount must be greater or equal to 2000 $AVAX']"-->
-                    <div class="row q-mt-md">
-                      <div class="col-10">
-                        <q-badge outline color="orange" style="height: 25px;" class="q-pb-xs q-pt-xs q-mb-xs">
-                          Staking Time (1 to 365 days)
-                        </q-badge>
-                      </div>
-                      <div class="col-2">
-                        <q-btn icon="event" size="sm" outline color="grey">
-                          <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
-                            <q-date v-model="model" color="orange" range>
-                              <div class="row items-center justify-end q-gutter-sm">
-                                <q-btn label="Cancel" color="grey" flat v-close-popup />
-                                <q-btn label="OK" color="grey" flat @click="save" v-close-popup />
-                              </div>
-                            </q-date>
-                          </q-popup-proxy>
-                        </q-btn>
-                      </div>
-                    </div>
-                    <q-slider
-                      class="q-ml-xs q-mr-xs q-mt-xl"
-                      v-model="stakeTime"
-                      :min="1"
-                      :max="365"
-                      :step="1"
-                      snap
-                      :label-value="stakeTime + ' days'"
-                      label-always
-                      @input="calculate"
-                      label-text-color="orange"
-                      label-color="white"
-                      color="orange"
-                    />
-                    <div>
-                      <small>{{ stakeTime }} Days Earning </small>
-                      <div>
-                        <span class="text-accent">
-                          {{ rewardAvax }}
-                        </span> AVAX
-                         (<small class="text-grey">
-                            {{ reward.toLocaleString() }} nAVAX
-                          </small>)
-                        <div>
-                        </div>
-                      </div>
-                    </div>
-                  </q-banner>
-                </q-popup-proxy>
-              </q-btn>
+              <calculator style="margin-left: -30px;" />
             </q-item-section>
           </q-item>
 
@@ -388,20 +252,6 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 
-const { Avax, maximumStakingDuration, stakeDurationMs } = require('./../utils/constants.js')
-import { reward } from './../modules/reward.js'
-import { round } from './../utils/commons.js'
-import { getAvaFromnAva } from './../utils/avax.js'
-
-import { date } from 'quasar'
-
-const timeStamp = Date.now()
-const formattedFrom = date.formatDate(timeStamp, 'YYYY/MM/DD')
-
-let to = new Date(timeStamp)
-to = date.addToDate(to, { days: 14 })
-const formattedTo = date.formatDate(to, 'YYYY/MM/DD')
-
 import {
   GET_SUBNETS,
   GET_BLOCKCHAINS
@@ -410,6 +260,8 @@ import {
 export default {
   name: 'MainLayout',
   components: {
+    Calculator: () => import('components/items/calculator'),
+    TooltipStyle: () => import('components/tooltip-style'),
     Countdown: () => import('components/items/countdown'),
     ListSubnets: () => import('components/list-subnets'),
     SwitchEndpoint: () => import('components/switch-endpoint'),
@@ -422,7 +274,6 @@ export default {
       'height',
       'validatorById',
       'blockchains',
-      'currentSupply',
       'networkEndpoint',
       'hasNetworkConnection'
     ])
@@ -433,16 +284,7 @@ export default {
       isB: false,
       isS: false,
       isE: false,
-      stakeTime: 1,
-      reward: 0.00,
-      rewardAvax: 0.00,
-      drawer: false,
-      percentReward: 4,
-      stakeAmount: 2000,
-      yearReward: 0,
-      yearRewardnAvax: 0,
-      model: { from: formattedFrom, to: formattedTo },
-      date: { from: formattedFrom, to: formattedTo }
+      drawer: false
     }
   },
   methods: {
@@ -454,41 +296,6 @@ export default {
       const validator = this.validatorById(this.nodeID)
       if (!validator) return
       return validator.remainingTime
-    },
-    updateProxy () {
-      this.model = this.date
-    },
-    getCurrentSupply () {
-      const currentSupply = this.currentSupply.toString()
-      const currentSupplyAvax = Math.round(getAvaFromnAva(Number(currentSupply)))
-      return Math.round(currentSupplyAvax / 1000000)
-    },
-    save () {
-      const fr = this.model.from.split('/')
-      const t = this.model.to.split('/')
-      const from = new Date(fr[0], fr[1], fr[2])
-      const to = new Date(t[0], t[1], t[2])
-      const unit = 'days'
-
-      const diff = date.getDateDiff(to, from, unit)
-      if (diff > 365) return
-
-      this.stakeTime = diff
-      this.date = this.model
-    },
-    calculate () {
-      const durationMs = stakeDurationMs(this.stakeTime)
-      const rewardNAvax = reward(
-        durationMs,
-        this.stakeAmount * Avax,
-        this.currentSupply,
-        maximumStakingDuration
-      )
-
-      this.reward = round(rewardNAvax, 100)
-      this.rewardAvax = round(getAvaFromnAva(rewardNAvax), 10000)
-      this.yearRewardnAvax = round((rewardNAvax / this.stakeTime) * 365, 100)
-      this.yearReward = round(getAvaFromnAva(this.yearRewardnAvax), 10000)
     },
     async onGetBlockchains () {
       await this.getBlockchains({})
@@ -519,5 +326,9 @@ export default {
     margin-top: -3px;
     padding-left: 20px;
     padding-right: 20px;
+  }
+  #toolbar-title {
+    cursor:pointer;
+    margin-left: 12px;
   }
 </style>

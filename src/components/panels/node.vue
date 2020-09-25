@@ -25,7 +25,7 @@
         <div v-if="validatorById(nodeID)" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
           <div id="f-size12" class="q-pb-md text-medium">NODE - VALIDATO</div>
           <div class="text-h7 text-orange q-pb-md q-pt-xs">{{ formatNodeID }}</div>
-          <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">Copy to Clipboard</q-tooltip>
+          <tooltip-style v-bind:text="'Copy to Clipboard'" />
         </div>
         <div v-else>
           <div id="f-size12" class="q-pb-md text-medium ">NODE</div>
@@ -129,6 +129,7 @@ import { datePickerFormat } from './../../modules/time.js'
 export default {
   name: 'Node',
   components: {
+    TooltipStyle: () => import('components/tooltip-style'),
     NodeHealthDialog: () => import('components/dialogs/node-health-dialog'),
     AnimatedNumber
   },

@@ -49,7 +49,7 @@
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">TOTAL STAKE</div>
-        <div class="text-h5 q-pb-md">
+        <div class="text-h6 q-pb-md">
             <span class="text-orange">
               <small>
                 <animated-number
@@ -68,11 +68,11 @@
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
        <div id="f-size12" class="q-pb-md text-medium">VALIDATION / DELEGATED STAKE</div>
-       <div class="text-h6 q-pb-md" style="min-width: 350px;">
+       <div class="text-h6 q-pb-md" style="min-width: 320px;">
             <span class="text-orange">
              <small>
                 <animated-number
-                  :value="validatedStake"
+                  :value="valStake"
                   :formatValue="formatToAvax"
                   :duration="3000"
                 />
@@ -118,10 +118,15 @@ export default {
     delStake: function () {
       if (!this.delegatedStake) return
       return round(this.delegatedStake, 10)
+    },
+    valStake: function () {
+      if (!this.validatedStake) return
+      return round(this.validatedStake, 10)
     }
   },
   methods: {
     format (value) {
+      if (!value) return
       return `${Math.round(value)}`
     },
     formatToAvax (value) {

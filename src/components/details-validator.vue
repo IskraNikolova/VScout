@@ -38,12 +38,7 @@
             </div>
             <div v-if="validator.delegationFee"><span class="text-grey text-medium">
               Delegation Fee:</span>   {{ validator.delegationFee }} %
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 14px;border-style: solid;border-width: 0.1px;">
-                <q-icon name="info" class="q-pb-xs"/>
-                <span>
-                  Avalanche allows for delegation of stake. This parameter is the percent fee this validator charges when others delegate stake to them. <br />For example, if delegationFeeRate is 1.2345 and someone delegates to this validator, then when the delegation period is over, 1.2345% of the reward <br />goes to the validator and the rest goes to the delegator.
-                </span>
-              </q-tooltip>
+              <tooltip-style v-bind:icon="'info'" v-bind:text="'Avalanche allows for delegation of stake. This parameter is the percent fee this validator charges when others delegate stake to them. <br />For example, if delegationFeeRate is 1.2345 and someone delegates to this validator, then when the delegation period is over, 1.2345% of the reward <br />goes to the validator and the rest goes to the delegator.'" />
             </div>
             <div><span class="text-grey text-medium">Total Stake:</span> {{ getLocaleString(validator.total) }} <span class="text-accent text-medium">AVAX</span></div>
             <div><span class="text-grey text-medium">Own Stake:</span> {{ getLocaleString(validator.stake) }} <span class="text-accent text-medium">AVAX</span></div>
@@ -74,6 +69,9 @@ export default {
       type: Object,
       required: true
     }
+  },
+  components: {
+    TooltipStyle: () => import('components/tooltip-style')
   },
   computed: {
     startDate: function () {

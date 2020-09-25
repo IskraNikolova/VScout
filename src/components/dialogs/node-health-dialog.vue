@@ -50,22 +50,22 @@
             <div class="q-pt-md">
               <small>Heartbeat: </small>
               <span>{{ heartbeat }}</span>
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">Heartbeat is the unix timestamp of the last time the network handled a message.</q-tooltip>
+              <tooltip-style v-bind:text="'Heartbeat is the unix timestamp of the last time the network handled a message.'" />
             </div>
             <div>
               <small>Duration: </small>
               <span>{{ duration }}</span>
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">Duration is the execution duration of the last health check in milliseconds.</q-tooltip>
+              <tooltip-style v-bind:text="'Duration is the execution duration of the last health check in milliseconds.'" />
             </div>
             <div>
               <small>Time Of First Failure: </small>
               <span>{{ timeOfFirstFailure }}</span>
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">Time of first failure is the time of the initial transitional failure.</q-tooltip>
+              <tooltip-style v-bind:text="'Time of first failure is the time of the initial transitional failure.'" />
             </div>
             <div>
               <small>Contiguous Failures: </small>
               <span>{{ contiguousFailures }}</span>
-              <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">Contiguous failures is the number of fails that occurred in a row.</q-tooltip>
+              <tooltip-style v-bind:text="'Contiguous failures is the number of fails that occurred in a row.'" />
             </div>
           </q-item-section>
           <q-separator vertical />
@@ -107,6 +107,9 @@ import {
 
 export default {
   name: 'NodeHealthDialog',
+  components: {
+    TooltipStyle: () => import('components/tooltip-style')
+  },
   props: {
     validator: {
       type: Object,

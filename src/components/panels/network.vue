@@ -12,7 +12,7 @@
           <div class="q-pb-md q-pr-md ">
             <span class="text-h6 text-orange">{{ currentBlockchain.name }}</span>
             <span style="text-transform: uppercase; font-size: 85%;" :class="'q-ml-md text-' + getColor(currentBlockchain.status)">{{ currentBlockchain.status }}</span>
-            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 14px;border-style: solid;border-width: 0.1px;">{{ getStatusInfo(currentBlockchain.status) }}</q-tooltip>
+            <tooltip-style v-bind:text="getStatusInfo(currentBlockchain.status)" />
           </div>
         </div>
         <div id="f-size12" v-if="isDefaultSubnetID(currentBlockchain.id)">
@@ -182,6 +182,7 @@ export default {
   components: {
     AnimatedNumber,
     SubnetBlockchains,
+    TooltipStyle: () => import('components/tooltip-style'),
     AssetInfoDialog: () => import('components/dialogs/asset-info-dialog')
   },
   data () {

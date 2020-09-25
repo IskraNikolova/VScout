@@ -16,7 +16,7 @@
         <span class="text-light text-h7">STATUS:</span>
         <div :class="'text-medium text-' + getColor(blockchainStatus)">
             {{ blockchainStatus }}
-            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">{{ getStatusInfo(blockchainStatus)}}</q-tooltip>
+            <tooltip-style v-bind:text="getStatusInfo(blockchainStatus)" />
         </div>
         </div>
       </div>
@@ -48,6 +48,9 @@ const statusInfo = {
 
 export default {
   name: 'BlockchainDetails',
+  components: {
+    TooltipStyle: () => import('components/tooltip-style')
+  },
   computed: {
     ...mapGetters([
       'blockchainByID',
