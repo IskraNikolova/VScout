@@ -7,7 +7,7 @@
       :filter="filter"
       :pagination="pagination"
       :grid="isGrid"
-      class="light-background shadow-3 my-sticky-header-table"
+      class="light-background shadow-3"
       id="custom-table"
       :visible-columns="visibleColumns"
       :loading="visible"
@@ -86,7 +86,7 @@
             :props="props"
             style="padding: 0px!important;height: 50px!important;"
           >
-            <div v-if="col.name === 'validator'" class="row" style="min-width: 360px;">
+            <div v-if="col.name === 'validator'" class="row" style="min-width: 340px;">
               <q-avatar size="25px" @click="onClick(props.row.link)">
                 <q-img :src="props.row.avatar">
                   <template v-slot:error>
@@ -105,9 +105,9 @@
               </div>
               <div
                 v-else
-                style="cursor:pointer;font-size: 13px;"
+                style="cursor:pointer;font-size: 12px;"
                 @click="props.expand = !props.expand"
-                class="q-pl-xs q-pt-xs"
+                class="q-pl-xs q-pt-xs text-medium"
               >
                 {{ col.value }}
               </div>
@@ -497,7 +497,7 @@ export default {
             c !== 'rank'
           )
       } else if (curentValidators.find(a => a.weight < 1)) {
-        return columns.filter(c => c !== 'weight')
+        return columns.filter(c => c !== 'weight' && c !== 'percent' && c !== 'progress')
       } else if (curentValidators.find(a => a.weight > 0)) {
         // return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
         return columns.filter(c => c !== 'delegationFee')
