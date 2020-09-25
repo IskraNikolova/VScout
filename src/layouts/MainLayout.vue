@@ -169,7 +169,7 @@
         </div>
         <div class="background-white q-pb-md">
           <span v-if="validatorById(nodeID)">
-            <countdown class="row" v-bind:color="'#32353b'" v-bind:countdown="validatorById('nodeID').remainingTime" />
+            <countdown class="row" v-bind:color="'#32353b'" v-bind:countdown="getRemainigTime()" />
           </span>
         </div>
         <div class="background-orange q-pb-md">
@@ -450,6 +450,11 @@ export default {
       getSubnets: GET_SUBNETS,
       getBlockchains: GET_BLOCKCHAINS
     }),
+    getRemainigTime () {
+      const validator = this.validatorById(this.nodeID)
+      if (!validator) return
+      return validator.remainingTime
+    },
     updateProxy () {
       this.model = this.date
     },
