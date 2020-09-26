@@ -1,14 +1,14 @@
 <template>
-    <q-card flat>
-      <q-card-section>
-        <div class="row">
-          <div class="col">
-            <div v-if="validator.nodeID !== validator.name">
-              <span class="text-grey text-medium">Name: </span>
-              <a :href="validator.link" v-if="validator.link">{{ validator.name }}</a>
-              <span v-else>{{ validator.name }}</span>
-            </div>
-            <span class="text-grey text-medium">Node ID:</span> [{{ validator.nodeID }}]
+  <q-card flat>
+    <q-card-section>
+      <div class="row items-center no-wrap">
+        <div class="col">
+          <div v-if="validator.nodeID !== validator.name">
+            <span tyle="font-size: 15px;" class="text-grey">NAME </span>
+            <a :href="validator.link" v-if="validator.link" class="text-grey" style="font-size: 14px;opacity: 0.5;">{{ validator.name }}</a>
+            <span v-else class="text-grey" style="font-size: 15px;opacity: 0.5;">{{ validator.name }}</span>
+          </div>
+          <span style="font-size: 15px;" class="text-grey"><small>NODE ID </small> </span> <span class="text-grey" style="font-size: 14px;opacity: 0.5;">[{{ validator.nodeID }}]</span>
             <small>
               <q-icon
                 @click="copyToClipboard(validator.nodeID)"
@@ -16,7 +16,7 @@
               />
             </small>
             <div v-if="validator.rewardOwner">
-              <span class="text-grey text-medium">Reward Owner: </span>{{ rewardOwner }}
+              <span class="text-grey" style="font-size: 15px;"><small>OWNER  </small></span><span style="font-size: 14px;opacity: 0.5;">{{ rewardOwner }}</span>
               <small>
                 <q-icon
                   @click="copyToClipboard(rewardOwner)"
@@ -24,32 +24,81 @@
                 />
               </small>
             </div>
-            <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} </div>
-            <div v-if="validator.potentialReward > 0" class="text-grey text-medium">Potential Reward:  {{ getFormatReward(validator.potentialReward) }} <span class="text-accent">AVAX</span></div>
-            <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
-            <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
-          </div>
-          <div class="col">
-            <div>
-              <span class="text-grey text-medium">Delegations:</span>
-              <span class="text-accent text-h7" style="cursor: pointer;" @click="onGetDelegations">
-                {{ validator.delegatorsCount }}
-              </span>
-            </div>
-            <div v-if="validator.delegationFee"><span class="text-grey text-medium">
-              Delegation Fee:</span>   {{ validator.delegationFee }} %
-              <tooltip-style v-bind:icon="'info'" v-bind:text="'Avalanche allows for delegation of stake. This parameter is the percent fee this validator charges when others delegate stake to them. <br />For example, if delegationFeeRate is 1.2345 and someone delegates to this validator, then when the delegation period is over, 1.2345% of the reward <br />goes to the validator and the rest goes to the delegator.'" />
-            </div>
-            <div><span class="text-grey text-medium">Total Stake:</span> {{ getLocaleString(validator.total) }} <span class="text-accent text-medium">AVAX</span></div>
-            <div><span class="text-grey text-medium">Own Stake:</span> {{ getLocaleString(validator.stake) }} <span class="text-accent text-medium">AVAX</span></div>
-            <div><span class="text-grey text-medium">Delegate Stake:</span> {{ getLocaleString(validator.delegateStake) }} <span class="text-accent text-medium">AVAX</span></div>
-            <div v-if="validator.weight"><span class="text-grey text-medium">Weight:</span> {{ validator.weight }} <span class="text-accent text-medium">AVAX</span></div>
-            <div>
+        </div>
+        <div class="col">
+          <div><span class="text-grey" style="font-size: 15px;"><small>VALIDATION </small>  </span><span style="font-size: 14px;opacity: 0.5;">{{ validatePeriod }}</span></div>
+          <div class="row">
+            <div class="col"><span class="text-grey" style="font-size: 15px;"><small>START TIME </small> </span> <span style="font-size: 14px;opacity: 0.5;">{{ startDate }} </span><small>({{ fromNowGet }})</small></div>
+            <div class="col"><span class="text-grey" style="font-size: 15px;"><small>END TIME </small> </span>  <span style="font-size: 14px;opacity: 0.5;">{{ endDate }}</span></div>
           </div>
         </div>
       </div>
-      </q-card-section>
-    </q-card>
+    </q-card-section>
+    <div class="row items-start q-gutter-md q-pl-md">
+      <q-card class="my-card bg-grey-1">
+        <q-card-section>
+          <div class="text-h6">Stake</div>
+        </q-card-section>
+
+        <q-card-section>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">OWN </small> {{ getLocaleString(validator.stake) }} <span class="text-accent">AVAX</span></div>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATE </small> {{ getLocaleString(validator.delegateStake) }} <span class="text-accent">AVAX</span></div>
+        </q-card-section>
+
+        <q-separator />
+
+        <q-card-actions>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">TOTAL </small> {{ getLocaleString(validator.total) }} <span class="text-accent">AVAX</span></div>
+        </q-card-actions>
+      </q-card>
+      <q-card class="my-card bg-grey-1">
+        <q-card-section>
+          <div class="text-h6">Reward</div>
+        </q-card-section>
+
+        <q-card-section>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">POTENTIAL REWARD </small> {{ getFormatReward(validator.potentialReward) }} <span class="text-accent">AVAX</span></div>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATE REWARD</small> {{ potentialRewardFromDelegators() }} <span class="text-accent">AVAX</span></div>
+        </q-card-section>
+
+        <q-separator />
+
+        <q-card-actions>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">TOTAL </small> {{ totalReward() }} <span class="text-accent">AVAX</span></div>
+        </q-card-actions>
+      </q-card>
+      <q-card class="my-card bg-grey-1">
+        <q-card-section>
+           <div class="row items-center no-wrap">
+              <div class="text-h6 col">Delegate</div>
+              <div class="col-auto">
+                <span class="text-accent" v-if="getBorderIsDelegatable()">ACTIVE</span>
+                <span class="text-negative" v-else>DISABLE</span>
+              </div>
+           </div>
+        </q-card-section>
+
+        <q-card-section>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATION FEE  </small> {{ validator.delegationFee }} <span class="text-accent">%</span></div>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">REMAINING CAPACITY</small> {{ getFormatReward(validator.remainingCapacity) }} <span class="text-accent">AVAX</span></div>
+          <br />
+          <div class="text-subtitle2"><small style="opacity: 0.5;">REMAINIG TIME </small> <span class="text-accent">Months </span> {{ months }} <span class="text-accent">Days </span> {{ days }} </div>
+        </q-card-section>
+      </q-card>
+       <q-card class="my-card bg-grey-1">
+        <q-card-section>
+          <div class="text-h6">{{ validator.delegatorsCount }} Delegations</div>
+        </q-card-section>
+
+        <q-card-section>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">RANK  </small> <q-icon name="img:statics/star.svg" size="1.5em" /> {{ validator.rank }}</div>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">NETWORK SHARE </small> {{ validator.percent }} <span class="text-accent">%</span></div>
+          <br />
+          <div class="text-subtitle2"><small style="opacity: 0.5;">CUMULATIVE STAKE </small> {{ validator.cumulativeStake }} <span class="text-accent">%</span></div>
+        </q-card-section>
+      </q-card>
+    </div>
+  </q-card>
 </template>
 
 <script>
@@ -57,10 +106,11 @@ import {
   copyToClipboard
 } from 'quasar'
 
-import { getAvaFromnAva } from './../utils/avax.js'
 import { round } from './../utils/commons.js'
-import { date, fromNow, getDurationHumanize, getWeeks } from './../modules/time.js'
 import { UPDATE_UI } from './../store/ui/types'
+import { getAvaFromnAva } from './../utils/avax.js'
+import { getDelegationReward } from './../modules/reward.js'
+import { date, fromNow, getDurationHumanize, getWeeks } from './../modules/time.js'
 
 export default {
   name: 'DetailsValidator',
@@ -71,7 +121,7 @@ export default {
     }
   },
   components: {
-    TooltipStyle: () => import('components/tooltip-style')
+    // TooltipStyle: () => import('components/tooltip-style')
   },
   computed: {
     startDate: function () {
@@ -89,6 +139,21 @@ export default {
     rewardOwner: function () {
       if (!this.validator.rewardOwner) return
       return this.validator.rewardOwner.addresses[0]
+    },
+    dataArray: function () {
+      if (!this.validator.remainingTime) return
+      return this.validator.remainingTime.split(':')
+    },
+    months: function () {
+      return this.dataArray[0]
+    },
+    days: function () {
+      return this.dataArray[1]
+    }
+  },
+  data () {
+    return {
+      delReward: 0
     }
   },
   methods: {
@@ -104,6 +169,10 @@ export default {
         timeout: 1000
       })
     },
+    getBorderIsDelegatable () {
+      if (!this.validator) return
+      return this.validator.isMinimumAmountForStake && this.validator.remainingCapacity > 25
+    },
     getFormatReward (val) {
       if (!val) return 0
       const avax = getAvaFromnAva(val)
@@ -117,8 +186,14 @@ export default {
       return getWeeks(this.startDate, this.endDate)
     },
     potentialRewardFromDelegators () {
-      const percent = parseFloat(this.validator.delegateStakenAva) * parseFloat(this.validator.delegationFee) / 100
+      if (!this.validator) return
+      const percent = getDelegationReward(this.validator.delegateStakenAva, this.validator.delegationFee)
+      this.delReward = percent
       return getAvaFromnAva(percent).toLocaleString()
+    },
+    totalReward () {
+      const total = this.delReward + parseFloat(this.validator.potentialReward)
+      return this.getFormatReward(total)
     },
     onGetDelegations () {
       this.$store.commit(UPDATE_UI, {
@@ -133,5 +208,9 @@ export default {
 <style scoped>
   #identity {
     color: grey;
+  }
+  .my-card {
+    width: 100%;
+    max-width: 300px;
   }
 </style>

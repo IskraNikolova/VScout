@@ -209,7 +209,7 @@
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
-            <details-validator v-bind:validator="props.row" />
+            <details-validator v-bind:validator="props.row"/>
           </q-td>
         </q-tr>
       </template>

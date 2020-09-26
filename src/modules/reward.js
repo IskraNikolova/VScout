@@ -49,13 +49,25 @@ export const reward = (duration, stakedAmount, currentSupply) => {
 
 export const substractDelegationFee = (reward, delegationFee) => {
   const rewardNavax = new BigNumber(reward)
-  const fee = new BigNumber(delegationFee)
-  const divide = new BigNumber(100)
-
-  let percent = rewardNavax.multipliedBy(fee)
-  percent = percent.dividedBy(divide)
+  const percent = getPercentAmount(reward, delegationFee)
 
   const rewardRes = rewardNavax.minus(percent)
 
   return { result: rewardRes.toNumber(), fee: percent }
+}
+
+export const getDelegationReward = (delegationStake, delegationFee) => {
+  const result = getPercentAmount(delegationStake, delegationFee)
+  return result.toNumber()
+}
+
+function getPercentAmount (amount, per) {
+  const stakeNavax = new BigNumber(amount)
+  const fee = new BigNumber(per)
+  const divide = new BigNumber(100)
+
+  let percent = stakeNavax.multipliedBy(fee)
+  percent = percent.dividedBy(divide)
+
+  return percent
 }
