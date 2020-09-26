@@ -58,7 +58,7 @@
 
         <q-card-section>
           <div class="text-subtitle2"><small style="opacity: 0.5;">POTENTIAL REWARD </small> {{ getFormatReward(validator.potentialReward) }} <span class="text-accent">AVAX</span></div>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATIONS REWARD</small> {{ potentialRewardFromDelegators() }} <span class="text-accent">AVAX</span></div>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATION FEES REWARD</small> {{ potentialRewardFromDelegators() }} <span class="text-accent">AVAX</span></div>
         </q-card-section>
 
         <q-separator />
@@ -75,13 +75,13 @@
                 <span class="text-accent" v-if="getBorderIsDelegatable()">
                   AVAILABLE
                   <q-icon name="info">
-                    <tooltip-style v-bind:text="'The validator has available quota and enough remaining time for delegations. '" />
+                    <tooltip-style v-bind:text="'The validator has available remaining capacity and enough remaining time for delegations. '" />
                   </q-icon>
                 </span>
                 <span class="text-negative" v-else>
                   UNAVAILABLE
                   <q-icon name="info">
-                   <tooltip-style v-bind:text="'The validator has no available quota or enough remaining time for delegation.'" />
+                   <tooltip-style v-bind:text="'The validator has no available capacity and/or enough remaining time for delegation.'" />
                   </q-icon>
                 </span>
                 <span></span>
@@ -91,7 +91,7 @@
 
         <q-card-section>
           <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATION FEE  </small> {{ validator.delegationFee }} <span class="text-accent">%</span></div>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">REMAINING CAPACITY</small> {{ getFormatReward(validator.remainingCapacity) }} <span class="text-accent">AVAX</span></div>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATIONS CAPACITY</small> {{ getFormatReward(validator.remainingCapacity) }} <span class="text-accent">AVAX</span></div>
           <br />
           <div class="text-subtitle2"><small style="opacity: 0.5;">REMAINIG TIME </small> <span class="text-accent">Months </span> {{ months }} <span class="text-accent">Days </span> {{ days }} </div>
         </q-card-section>
