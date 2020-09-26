@@ -42,7 +42,7 @@
 
         <q-card-section>
           <div class="text-subtitle2"><small style="opacity: 0.5;">OWN </small> {{ getLocaleString(validator.stake) }} <span class="text-accent">AVAX</span></div>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATE </small> {{ getLocaleString(validator.delegateStake) }} <span class="text-accent">AVAX</span></div>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATED </small> {{ getLocaleString(validator.delegateStake) }} <span class="text-accent">AVAX</span></div>
         </q-card-section>
 
         <q-separator />
@@ -58,7 +58,7 @@
 
         <q-card-section>
           <div class="text-subtitle2"><small style="opacity: 0.5;">POTENTIAL REWARD </small> {{ getFormatReward(validator.potentialReward) }} <span class="text-accent">AVAX</span></div>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATE REWARD</small> {{ potentialRewardFromDelegators() }} <span class="text-accent">AVAX</span></div>
+          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATIONS REWARD</small> {{ potentialRewardFromDelegators() }} <span class="text-accent">AVAX</span></div>
         </q-card-section>
 
         <q-separator />
@@ -72,8 +72,19 @@
            <div class="row items-center no-wrap">
               <div class="text-h6 col">Delegate</div>
               <div class="col-auto">
-                <span class="text-accent" v-if="getBorderIsDelegatable()">ACTIVE</span>
-                <span class="text-negative" v-else>DISABLE</span>
+                <span class="text-accent" v-if="getBorderIsDelegatable()">
+                  AVAILABLE
+                  <q-icon name="info">
+                    <tooltip-style v-bind:text="'The validator has available quota and enough remaining time for delegations. '" />
+                  </q-icon>
+                </span>
+                <span class="text-negative" v-else>
+                  UNAVAILABLE
+                  <q-icon name="info">
+                   <tooltip-style v-bind:text="'The validator has no available quota or enough remaining time for delegation.'" />
+                  </q-icon>
+                </span>
+                <span></span>
               </div>
            </div>
         </q-card-section>
@@ -121,7 +132,7 @@ export default {
     }
   },
   components: {
-    // TooltipStyle: () => import('components/tooltip-style')
+    TooltipStyle: () => import('components/tooltip-style')
   },
   computed: {
     startDate: function () {
@@ -187,7 +198,10 @@ export default {
     },
     potentialRewardFromDelegators () {
       if (!this.validator) return
-      const percent = getDelegationReward(this.validator.delegateStakenAva, this.validator.delegationFee)
+      const percent = getDelegationReward(
+        this.validator.delegatePotentialReward,
+        this.validator.delegationFee
+      )
       this.delReward = percent
       return getAvaFromnAva(percent).toLocaleString()
     },

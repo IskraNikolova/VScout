@@ -43,10 +43,10 @@
           suffix="%"
           color="accent"
           @input="calculate"
-          class="q-pb-md"
+          class="q-pb-xs"
           :rules="[value => value >= 2 || 'The minimum delegation fee rate is 2%']"
         />
-        <div class="row q-mt-md">
+        <div class="row q-mt-xs">
             <div class="col-10">
             <q-badge outline color="orange" style="height: 27px;" class="q-pb-xs q-pt-xs q-mb-xs">
                 Staking Time (14 to 365 days)
@@ -93,7 +93,7 @@
           </div>
           </div>
           <div class="col" v-if="type==='delegator'">
-            <small>Delegation Fee Rate</small>
+            <small>Delegation Fee</small>
             <div>
               <span class="text-negative">
                 {{ feeAmount }}
@@ -136,8 +136,6 @@ export default {
       stakeAmount: 2000,
       feeAmount: 0,
       feeAmountnAvax: 0,
-      //   yearReward: 0,
-      //   yearRewardnAvax: 0,
       model: { from: formattedFrom, to: formattedTo },
       date: { from: formattedFrom, to: formattedTo },
       type: 'validator',
@@ -157,6 +155,8 @@ export default {
     type: function (newValidators) {
       if (newValidators === 'validator') {
         this.delegationFee = 0
+        this.feeAmount = 0
+        this.feeAmountnAvax = 0
         this.calculate()
       }
     }

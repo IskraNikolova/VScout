@@ -381,7 +381,7 @@ export default {
   },
   data () {
     return {
-      textStickyPositive: 'Make a sticky header',
+      textStickyPositive: 'Sticky header',
       textStickyNegative: 'Remove a sticky header',
       tableClass: 'light-background shadow-3',
       isNotSticky: true,

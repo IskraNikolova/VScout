@@ -69,6 +69,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
     const nodeID = val.nodeID
     // const info = await _getValidatorById(nodeID)
     let delegateStake = 0
+    let delegatePotentialReward = 0
     let delegatorsCount = 0
     let weight = 0
     let stakeAmount = 0
@@ -86,6 +87,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       const props = getDelegatorsForNode(val, delegators)
       delegateStake = props.delegateStake
       delegatorsCount = props.delegatorsCount
+      delegatePotentialReward = props.potentialReward
       remainingCapacity = getRemainingCapacity(stakeAmount, delegateStake)
     }
 
@@ -113,6 +115,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       remainingCapacity,
       remainingTime,
       isMinimumAmountForStake,
+      delegatePotentialReward,
       link: '' // info.link
     }
   }))
@@ -123,7 +126,8 @@ export function getDelegatorsForNode (validator, delegators) {
   if (!delegators) {
     return {
       delegateStake: 0,
-      delegatorsCount: 0
+      delegatorsCount: 0,
+      potentialReward: 0
     }
   }
 
@@ -135,9 +139,15 @@ export function getDelegatorsForNode (validator, delegators) {
       return a + parseFloat(b.stakeAmount)
     }, 0.0)
 
+  const potentialReward = currentDelegators
+    .reduce((a, b) => {
+      return a + parseFloat(b.potentialReward)
+    }, 0.0)
+
   return {
     delegateStake,
-    delegatorsCount: currentDelegators.length
+    delegatorsCount: currentDelegators.length,
+    potentialReward
   }
 }
 
