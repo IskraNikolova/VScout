@@ -22,11 +22,11 @@
       <template slot="top-left" v-else>
         <q-btn
           size="xs"
-          v-if="!isSticky"
+          v-if="!isNotSticky"
           class="text-accent"
           flat
           icon="push_pin"
-          @click="isSticky=true"
+          @click="isNotSticky=!isNotSticky"
         >
           <tooltip-style v-bind:text="textStickyNegative" />
         </q-btn>
@@ -36,7 +36,7 @@
           class="text-grey"
           flat
           icon="push_pin"
-          @click="isSticky=false"
+          @click="isNotSticky=!isNotSticky"
         >
           <tooltip-style v-bind:text="textStickyPositive" />
         </q-btn>
@@ -119,14 +119,16 @@
             style="padding: 0px!important;height: 50px!important;"
           >
             <div v-if="col.name === 'validator'" class="row" style="min-width: 340px;">
-              <q-avatar size="25px" @click="onClick(props.row.link)">
-                <q-img :src="props.row.avatar">
-                  <template v-slot:error>
-                    <div class="bg-negative text-white">
-                    </div>
-                </template>
-                </q-img>
-              </q-avatar>
+              <div :style="'border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 50px;width: 30px;'">
+                <q-avatar size="25px" @click="onClick(props.row.link)">
+                  <q-img :src="props.row.avatar">
+                    <template v-slot:error>
+                      <div class="bg-negative text-white">
+                      </div>
+                  </template>
+                  </q-img>
+                </q-avatar>
+              </div>
               <div
                 v-if="props.row.name !== props.row.nodeID"
                 style="cursor:pointer;"
@@ -139,7 +141,7 @@
                 v-else
                 style="cursor:pointer;font-size: 12px;"
                 @click="props.expand = !props.expand"
-                class="q-pl-xs q-pt-xs text-medium"
+                class="q-pl-xs q-pt-xs"
               >
                 {{ col.value }}
               </div>
@@ -195,7 +197,13 @@
                 {{ getUpTime(props.row.uptime) }} %
               </q-badge>
             </div>-->
-            <countdown class="row" v-bind:countdown="col.value" v-bind:color="'#588da8'" v-else-if="col.name === 'remainingTime'" style="min-width: 290px;"/>
+            <countdown
+              class="row"
+              v-bind:countdown="col.value"
+              v-bind:color="getIsDelegatable(props.row.isMinimumAmountForStake)"
+              v-else-if="col.name === 'remainingTime'"
+              style="min-width: 290px;"
+            />
             <div v-else>{{ col.value }}</div>
           </q-td>
         </q-tr>
@@ -366,7 +374,7 @@ export default {
         this.visibleColumns = this.getVisibleColumns(this.curentValidators)
       }
     },
-    isSticky: function (val) {
+    isNotSticky: function (val) {
       if (val) this.tableClass = 'light-background shadow-3'
       else this.tableClass = 'light-background shadow-3 sticky-header-table'
     }
@@ -376,7 +384,7 @@ export default {
       textStickyPositive: 'Make a sticky header',
       textStickyNegative: 'Remove a sticky header',
       tableClass: 'light-background shadow-3',
-      isSticky: false,
+      isNotSticky: true,
       filter: '',
       visible: false,
       type: 'active',
@@ -543,6 +551,20 @@ export default {
       }
 
       return columns.filter(c => c !== 'stake')
+    },
+    getIsDelegatable (isMinimumAmountForStake) {
+      const temp = {
+        true: '#588da8',
+        false: '#e8e8e8'
+      }
+      return temp[isMinimumAmountForStake]
+    },
+    getBorderIsDelegatable (isMinimumAmountForStake, remainingCapacity) {
+      const temp = {
+        true: 'green',
+        false: '#e8e8e8'
+      }
+      return temp[isMinimumAmountForStake && remainingCapacity > 25]
     },
     // getUpTime (val) {
     //   if (!val) return 0

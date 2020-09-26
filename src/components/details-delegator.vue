@@ -4,7 +4,7 @@
         <span class="text-grey text-medium">Node ID:</span> [{{ delegator.nodeID }}]
         <small>
           <q-icon
-            @click="copyToClipboard(validator.nodeID)"
+            @click="copyToClipboard(delegator.nodeID)"
             name="file_copy"
           />
         </small>

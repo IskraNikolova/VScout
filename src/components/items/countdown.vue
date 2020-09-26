@@ -16,10 +16,10 @@
       <div class="text-medium" id="value"> {{ minutes }}</div>
        <div id="label">MINUTES</div>
     </div>
-    <div class="col count-down q-pa-xs" :style="'border-color:' + color">
+    <!--<div class="col count-down q-pa-xs" :style="'border-color:' + color">
       <div class="text-medium" id="value"> {{ seconds }}</div>
-       <div id="label">SECONDS</div>
-    </div>
+      <div id="label">SECONDS</div>
+    </div>-->
   </div>
 </template>
 <script>
@@ -51,10 +51,10 @@ export default {
     },
     minutes: function () {
       return this.dataArray[3]
-    },
-    seconds: function () {
-      return this.dataArray[4]
     }
+    // seconds: function () {
+    //   return this.dataArray[4]
+    // }
   }
 }
 </script>

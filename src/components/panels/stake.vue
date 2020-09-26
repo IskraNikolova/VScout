@@ -126,7 +126,7 @@ export default {
   },
   methods: {
     format (value) {
-      if (!value) return
+      if (value === 'undefined') return
       return `${Math.round(value)}`
     },
     formatToAvax (value) {

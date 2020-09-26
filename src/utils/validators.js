@@ -92,7 +92,9 @@ export async function mapValidators (validators, delegators, defaultValidators) 
     const avatar = getAvatar(nodeID).monster // info.avatarUrl ? info.avatarUrl : getAvatar(nodeID).monster
     const name = nodeID // info.name ? info.name : nodeID
     const total = parseFloat(stakeAmount) + parseFloat(delegateStake)
-    const remainingTime = countDownCounter(val.endTime)
+    const countDownCounterRes = countDownCounter(val.endTime)
+    const remainingTime = countDownCounterRes.countdown
+    const isMinimumAmountForStake = countDownCounterRes.isMinimumAmountForStake
 
     return {
       ...val,
@@ -110,6 +112,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       delegateStake: getAvaFromnAva(delegateStake),
       remainingCapacity,
       remainingTime,
+      isMinimumAmountForStake,
       link: '' // info.link
     }
   }))

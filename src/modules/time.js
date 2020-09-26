@@ -26,10 +26,17 @@ export const countDownCounter = (e) => {
   const currentTime = moment(new Date() / 1000)
   const leftTime = moment(new Date(Number(e))) - currentTime
   let duration = moment.duration(leftTime, 'seconds')
-
   duration = moment.duration(duration.asSeconds(), 'seconds')
-  const result = `${duration.months().toString().padStart(2, '0')} : ${duration.days().toString().padStart(2, '0')} : ${duration.hours().toString().padStart(2, '0')} : ${duration.minutes().toString().padStart(2, '0')} : ${duration.seconds().toString().padStart(2, '0')}`
-  return result
+
+  const isMinimumAmountForStake = (duration.months() < 1 && duration.days() >= 14) || duration.months() > 1
+  const months = duration.months().toString().padStart(2, '0')
+  const days = duration.days().toString().padStart(2, '0')
+  const hours = duration.hours().toString().padStart(2, '0')
+  const minutes = duration.minutes().toString().padStart(2, '0')
+  // const seconds = duration.seconds().toString().padStart(2, '0')
+  const result = `${months} : ${days} : ${hours} : ${minutes}`
+
+  return { countdown: result, isMinimumAmountForStake }
 }
 
 export const timeago = (t) => {

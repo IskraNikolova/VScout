@@ -116,6 +116,10 @@ export default {
     getWeeksP () {
       return getWeeks(this.startDate, this.endDate)
     },
+    potentialRewardFromDelegators () {
+      const percent = parseFloat(this.validator.delegateStakenAva) * parseFloat(this.validator.delegationFee) / 100
+      return getAvaFromnAva(percent).toLocaleString()
+    },
     onGetDelegations () {
       this.$store.commit(UPDATE_UI, {
         typeAccount: {

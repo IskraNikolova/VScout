@@ -7,7 +7,7 @@
     @click="calculate"
   >
     <q-popup-proxy>
-        <q-banner class="q-pa-md" dense style="width: 340px;">
+        <q-banner class="q-pa-md" dense style="width: 370px;">
         <div class="q-pb-md row">
             <div class="col-6 text-medium">Reward Calculator</div>
             <div class="col-6 q-mt-md" style="margin-bottom: -10px;padding-left: 12px;">
@@ -79,16 +79,31 @@
             label-color="white"
             color="orange"
         />
-        <div>
-            <small>{{ stakeTime }} Days Earning </small>
-            <div>
+        <div class="row">
+          <div class="col">
+          <small>{{ stakeTime }} Days Earning </small>
+          <div>
             <span class="text-accent">
-                {{ rewardAvax.toLocaleString() }}
+              {{ rewardAvax.toLocaleString() }}
             </span> AVAX
+            <br />
             (<small class="text-grey">
                 {{ reward.toLocaleString() }} <span class="text-accent">nAVAX</span>
             </small>)
+          </div>
+          </div>
+          <div class="col" v-if="type==='delegator'">
+            <small>Delegation Fee Rate</small>
+            <div>
+              <span class="text-negative">
+                {{ feeAmount }}
+              </span> AVAX
+              <br />
+              (<small class="text-grey">
+                {{ feeAmountnAvax }} <span class="text-accent">nAVAX</span>
+              </small>)
             </div>
+          </div>
         </div>
         </q-banner>
     </q-popup-proxy>
@@ -98,13 +113,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
-const {
-  Avax,
-  maximumStakingDuration,
-  stakeDurationMs
-} = require('./../../utils/constants.js')
-
-import { reward } from './../../modules/reward.js'
+import { reward, substractDelegationFee } from './../../modules/reward.js'
 import { round } from './../../utils/commons.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
 import { date } from 'quasar'
@@ -125,6 +134,8 @@ export default {
       rewardAvax: 0.00,
       percentReward: 4,
       stakeAmount: 2000,
+      feeAmount: 0,
+      feeAmountnAvax: 0,
       //   yearReward: 0,
       //   yearRewardnAvax: 0,
       model: { from: formattedFrom, to: formattedTo },
@@ -157,21 +168,21 @@ export default {
   },
   methods: {
     calculate () {
-      const durationMs = stakeDurationMs(this.stakeTime)
       let rewardNAvax = reward(
-        durationMs,
-        this.stakeAmount * Avax,
-        this.currentSupply,
-        maximumStakingDuration
+        this.stakeTime,
+        this.stakeAmount,
+        this.currentSupply
       )
 
       if (this.delegationFee > 0) {
-        const percent = (rewardNAvax * this.delegationFee) / 100
-        rewardNAvax -= percent
+        const delegation = substractDelegationFee(rewardNAvax, this.delegationFee)
+        rewardNAvax = delegation.result
+        this.feeAmountnAvax = round(parseFloat(delegation.fee), 100).toLocaleString()
+        this.feeAmount = round(getAvaFromnAva(delegation.fee), 100).toLocaleString()
       }
 
-      this.reward = round(rewardNAvax, 100)
-      this.rewardAvax = round(getAvaFromnAva(rewardNAvax), 10000)
+      this.reward = round(rewardNAvax, 100).toLocaleString()
+      this.rewardAvax = round(getAvaFromnAva(rewardNAvax), 100).toLocaleString()
     },
     getCurrentSupply () {
       const currentSupply = this.currentSupply.toString()
