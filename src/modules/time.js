@@ -28,7 +28,7 @@ export const countDownCounter = (e) => {
   let duration = moment.duration(leftTime, 'seconds')
   duration = moment.duration(duration.asSeconds(), 'seconds')
 
-  const isMinimumAmountForStake = (duration.months() < 1 && duration.days() >= 14) || duration.months() > 1
+  const isMinimumAmountForStake = (duration.months() < 1 && duration.days() >= 14) || duration.months() >= 1
   const months = duration.months().toString().padStart(2, '0')
   const days = duration.days().toString().padStart(2, '0')
   const hours = duration.hours().toString().padStart(2, '0')
