@@ -118,8 +118,8 @@
             :props="props"
             style="padding: 0px!important;height: 50px!important;"
           >
-            <div v-if="col.name === 'validator'" class="row" style="min-width: 340px;">
-              <div :style="'border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 50px;width: 30px;'">
+            <div v-if="col.name === 'validator'" class="row" style="min-width: 330px;">
+              <div :style="'border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 50px;width: 27px;'">
                 <q-avatar size="25px" @click="onClick(props.row.link)">
                   <q-img :src="props.row.avatar">
                     <template v-slot:error>
