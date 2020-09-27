@@ -59,18 +59,29 @@ export default {
     BlockchainDetails: () => import('components/search/blockchain-details.vue')
   },
   meta: {
-    title: 'Search Page',
-    titleTemplate: title => `${title} - VScout`,
+    title: 'VScout Search',
+    titleTemplate: title => `Search ${title}.io`,
     // meta tags
     meta: {
-      description: { name: 'description', content: 'Search page for validators, blockchains and subnets' },
+      description: { name: 'description', content: 'search description' },
       keywords: { name: 'keywords', content: 'vscout' },
       equiv: { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' },
       // note: for Open Graph type metadata you will need to use SSR, to ensure page is rendered by the server
-      'og:title': {
+      ogTitle: {
         property: 'og:title',
-        // optional; similar to titleTemplate, but allows templating with other meta properties
-        content: `VScout Search`
+        content: 'VScout'
+      },
+      ogType: {
+        property: 'og:type',
+        content: 'website'
+      },
+      ogUrl: {
+        property: 'og:url',
+        content: 'https://vscout.io/search'
+      },
+      ogImage: {
+        property: 'og:image',
+        content: 'https://i.ibb.co/vCFzBW3/vscout.png'
       }
     }
   },
