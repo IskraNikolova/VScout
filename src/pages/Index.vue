@@ -45,33 +45,6 @@ const { network } = require('./../modules/config').default
 
 export default {
   name: 'PageIndex',
-  meta: {
-    title: 'VScout',
-    titleTemplate: title => `${title}.io`,
-    // meta tags
-    meta: {
-      description: { name: 'description', content: 'VScout is an analytical tool for exploring Avalanche Network subnetworks (dynamic validator pools), and an interface for monitoring individual node metrics.' },
-      keywords: { name: 'keywords', content: 'vscout' },
-      equiv: { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' },
-      // note: for Open Graph type metadata you will need to use SSR, to ensure page is rendered by the server
-      ogTitle: {
-        property: 'og:title',
-        content: 'VScout'
-      },
-      ogType: {
-        property: 'og:type',
-        content: 'website'
-      },
-      ogUrl: {
-        property: 'og:url',
-        content: 'https://vscout.io'
-      },
-      ogImage: {
-        property: 'og:image',
-        content: 'https://i.ibb.co/vCFzBW3/vscout.png'
-      }
-    }
-  },
   components: {
     Node: () => import('components/panels/node'),
     Network: () => import('components/panels/network'),

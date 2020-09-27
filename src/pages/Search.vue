@@ -58,33 +58,6 @@ export default {
     ValidatorDetails: () => import('components/search/validator-details.vue'),
     BlockchainDetails: () => import('components/search/blockchain-details.vue')
   },
-  meta: {
-    title: 'VScout Search',
-    titleTemplate: title => `Search ${title}.io`,
-    // meta tags
-    meta: {
-      description: { name: 'description', content: 'search description' },
-      keywords: { name: 'keywords', content: 'vscout' },
-      equiv: { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' },
-      // note: for Open Graph type metadata you will need to use SSR, to ensure page is rendered by the server
-      ogTitle: {
-        property: 'og:title',
-        content: 'VScout'
-      },
-      ogType: {
-        property: 'og:type',
-        content: 'website'
-      },
-      ogUrl: {
-        property: 'og:url',
-        content: 'https://vscout.io/search'
-      },
-      ogImage: {
-        property: 'og:image',
-        content: 'https://i.ibb.co/vCFzBW3/vscout.png'
-      }
-    }
-  },
   computed: {
     ...mapGetters([
       'validatorById',
