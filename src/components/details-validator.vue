@@ -93,7 +93,19 @@
           <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATION FEE  </small> {{ validator.delegationFee }} <span class="text-accent">%</span></div>
           <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATIONS CAPACITY</small> {{ getFormatReward(validator.remainingCapacity) }} <span class="text-accent">AVAX</span></div>
           <br />
-          <div class="text-subtitle2"><small style="opacity: 0.5;">REMAINIG TIME </small> <span class="text-accent">Months </span> {{ months }} <span class="text-accent">Days </span> {{ days }} </div>
+          <div class="text-subtitle2">
+            <small style="opacity: 0.5;">REMAINIG TIME </small>
+            <span v-if="months > 0">
+              <span class="text-accent">Months </span>
+              {{ months }}
+            </span>
+            <span class="text-accent">Days </span>
+            {{ days }}
+            <span v-if="months < 1">
+              <span class="text-accent"> Hours </span>
+              {{ hours }}
+            </span>
+          </div>
         </q-card-section>
       </q-card>
        <q-card class="my-card bg-grey-1">
@@ -160,6 +172,9 @@ export default {
     },
     days: function () {
       return this.dataArray[1]
+    },
+    hours: function () {
+      return this.dataArray[2]
     }
   },
   data () {

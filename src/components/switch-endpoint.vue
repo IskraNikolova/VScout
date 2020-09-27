@@ -131,7 +131,7 @@ export default {
       this.$store.commit(UPDATE_UI, { doesItConnect: true })
 
       if (isCustom) {
-        endpoint = { name: 'Custom', url: endpoint }
+        endpoint = { name: 'Custom', url: endpoint, urlView: endpoint }
       }
 
       const response = await _getNodeId({ endpoint: endpoint.url })
