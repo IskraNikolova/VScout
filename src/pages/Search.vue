@@ -59,17 +59,10 @@ export default {
     BlockchainDetails: () => import('components/search/blockchain-details.vue')
   },
   // meta tags
-  meta: {
-    description: { name: 'description', content: `${this.$route.params.id}` },
-    keywords: { name: 'keywords', content: 'Validator' },
-    equiv: { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' },
-    // note: for Open Graph type metadata you will need to use SSR, to ensure page is rendered by the server
-    ogTitle: {
-      name: 'og:title',
-      // optional; similar to titleTemplate, but allows templating with other meta properties
-      template (ogTitle) {
-        return `${ogTitle} - ${this.$route.params.id}`
-      }
+  meta () {
+    return {
+      description: this.$route.params.id,
+      title: `Search ${this.$route.params.id}`
     }
   },
   computed: {
