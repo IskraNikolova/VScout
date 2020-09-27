@@ -57,8 +57,8 @@ export const PercentDenominator = 1000000
 // their funds for.
 export const maximumStakingDuration = 365 * 24 * 60
 
-// Stake duration in ms
-export const stakeDurationMs = (stakeTime) => stakeTime * 24 * 60
+// Stake duration
+export const stakeDuration = (stakeTime) => stakeTime * 24 * 60
 
 export const VMDict = {
   '': {

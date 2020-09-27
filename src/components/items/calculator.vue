@@ -7,20 +7,27 @@
     @click="calculate"
   >
     <q-popup-proxy>
-        <q-banner class="q-pa-md" dense style="width: 370px;">
+        <q-banner class="q-pa-md" dense style="width: 375px;">
         <div class="q-pb-md row">
-            <div class="col-6 text-medium">Reward Calculator</div>
-            <div class="col-6 q-mt-md" style="margin-bottom: -10px;padding-left: 12px;">
+          <div class="col-7 text-medium">Reward Calculator</div>
+          <div class="col-5">
             <small class="q-pr-xs">Current Supply </small>
-            <q-badge outline size="xs" color="accent" :label="getCurrentSupply() + 'M'" />
-            </div>
+            <q-badge outline size="xs" color="orange" :label="getCurrentSupply() + ' M'" />
+          </div>
         </div>
-        <small><q-option-group
-            v-model="type"
-            :options="options"
-            color="accent"
-            inline
-          /></small>
+        <div class="row">
+          <small class="col-10 q-pt-xs">
+            <q-option-group
+              v-model="type"
+              :options="options"
+              color="accent"
+              inline
+            />
+          </small>
+          <small class="col-2 q-pt-md">
+            <q-badge outline size="xs" color="accent" :label="percent" />
+          </small>
+        </div>
         <q-input
           label-color="orange"
           outlined
@@ -128,6 +135,7 @@ export default {
   name: 'Calculator',
   data () {
     return {
+      percent: 0,
       stakeTime: 14,
       delegationFee: 0,
       reward: 0.00,
@@ -168,12 +176,13 @@ export default {
   },
   methods: {
     calculate () {
-      let rewardNAvax = reward(
+      let { rewardNAvax, percent } = reward(
         this.stakeTime,
         this.stakeAmount,
         this.currentSupply
       )
 
+      this.percent = `${round(percent, 100)} %`
       if (this.delegationFee > 0) {
         const delegation = substractDelegationFee(rewardNAvax, this.delegationFee)
         rewardNAvax = delegation.result
