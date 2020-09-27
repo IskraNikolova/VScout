@@ -25,7 +25,9 @@
             />
           </small>
           <small class="col-2 q-pt-md">
-            <q-badge outline size="xs" color="accent" :label="percent" />
+            <q-badge outline size="xs" color="accent" :label="percent">
+              <tooltip-style v-bind:text="'Reward percent'" />
+            </q-badge>
           </small>
         </div>
         <q-input
@@ -133,6 +135,9 @@ const formattedTo = date.formatDate(to, 'YYYY/MM/DD')
 
 export default {
   name: 'Calculator',
+  components: {
+    TooltipStyle: () => import('components/tooltip-style')
+  },
   data () {
     return {
       percent: 0,
@@ -213,6 +218,7 @@ export default {
 
       this.stakeTime = diff
       this.date = this.model
+      this.calculate()
     }
   }
 }
