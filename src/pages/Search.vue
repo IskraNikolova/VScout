@@ -61,17 +61,23 @@ export default {
   meta: {
     title: 'Search Page',
     titleTemplate: title => `${title} - VScout`,
-     // meta tags
+    // meta tags
     meta: {
       description: { name: 'description', content: 'Search page for validators, blockchains and subnets' },
       keywords: { name: 'keywords', content: 'vscout' },
       equiv: { 'http-equiv': 'Content-Type', content: 'text/html; charset=UTF-8' },
       // note: for Open Graph type metadata you will need to use SSR, to ensure page is rendered by the server
-      ogTitle:  { 
-        name: 'og:title', 
+      ogTitle: {
+        name: 'og:title',
         // optional; similar to titleTemplate, but allows templating with other meta properties
-        template (ogTitle) {  
-          return `${ogTitle} - Vscout`
+        template (ogTitle) {
+          return `${ogTitle} - VScout`
+        }
+      },
+      ogDescription: {
+        name: 'og:description',
+        template (ogDescription) {
+          return `${ogDescription} - VScout`
         }
       }
     }
