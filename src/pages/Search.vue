@@ -13,16 +13,7 @@
       color="accent"
       flat
     />
-    <div v-if="getSubnet($route.params.id)">
-      <subnet-details v-bind:id="$route.params.id"/>
-    </div>
-    <div v-else-if="getValidator($route.params.id)">
-      <validator-details v-bind:id="$route.params.id" />
-    </div>
-    <div v-else-if="getBlockchain($route.params.id)">
-     <blockchain-details v-bind:id="$route.params.id" />
-    </div>
-    <div v-else class="fixed-center">
+    <div class="fixed-center">
       <p class="flex flex-center q-pt-xl">
         <img
           src="~assets/notfound.svg"
@@ -47,48 +38,9 @@
 </template>
 
 <script>
-import {
-  mapGetters
-} from 'vuex'
-
 export default {
   name: 'PageSearch',
-  components: {
-    SubnetDetails: () => import('components/search/subnet-details.vue'),
-    ValidatorDetails: () => import('components/search/validator-details.vue'),
-    BlockchainDetails: () => import('components/search/blockchain-details.vue')
-  },
-  computed: {
-    ...mapGetters([
-      'validatorById',
-      'blockchainByID',
-      'blockchainByName',
-      'subnetByID'
-    ])
-  },
   methods: {
-    getValidator (param) {
-      const validator = this.validatorById(param)
-      if (!validator) return
-
-      return validator
-    },
-    getBlockchain (param) {
-      let blockchain = this.blockchainByID(param)
-      if (!blockchain) {
-        blockchain = this.blockchainByName(param)
-      }
-
-      if (!blockchain) return
-
-      return blockchain
-    },
-    getSubnet (param) {
-      const subnet = this.subnetByID(param)
-      if (!subnet) return
-
-      return subnet
-    },
     back () {
       this.$router.push('/')
     }

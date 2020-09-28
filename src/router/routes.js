@@ -8,12 +8,32 @@ const routes = [
     ]
   },
   { path: '/faqs', redirect: '/' },
-  { path: '/up', redirect: '/' },
   {
     path: '/search',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '/search/:id', component: () => import('pages/Search.vue') }
+    ]
+  },
+  {
+    path: '/validator',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '/validator/:id', component: () => import('pages/Validator.vue') }
+    ]
+  },
+  {
+    path: '/subnet',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '/subnet/:id', component: () => import('pages/Subnet.vue') }
+    ]
+  },
+  {
+    path: '/blockchain',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '/blockchain/:id', component: () => import('pages/Blockchain.vue') }
     ]
   }
 ]

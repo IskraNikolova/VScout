@@ -127,6 +127,7 @@
           </q-bar>
         </div>
       </div>
+      <div id="header-line"></div>
     </q-header>
     <q-drawer
       v-model="drawer"
@@ -272,10 +273,13 @@ export default {
       'nodeID',
       'subnets',
       'height',
-      'validatorById',
       'blockchains',
       'networkEndpoint',
-      'hasNetworkConnection'
+      'hasNetworkConnection',
+      'validatorById',
+      'blockchainByID',
+      'blockchainByName',
+      'subnetByID'
     ])
   },
   data () {
@@ -313,8 +317,50 @@ export default {
     },
     search () {
       if (!this.filter) return
+      const validator = this.getValidator(this.filter)
+      if (validator) {
+        this.$router.push(`/validator/${this.filter}`)
+        this.filter = ''
+        return
+      }
+
+      const subnet = this.getSubnet(this.filter)
+      if (subnet) {
+        this.$router.push(`/subnet/${this.filter}`)
+        this.filter = ''
+        return
+      }
+
+      const blockchain = this.getBlockchain(this.filter)
+      if (blockchain) {
+        this.$router.push(`/blockchain/${this.filter}`)
+        this.filter = ''
+        return
+      }
       this.$router.push(`/search/${this.filter}`)
       this.filter = ''
+    },
+    getValidator (param) {
+      const validator = this.validatorById(param)
+      if (!validator) return
+
+      return validator
+    },
+    getBlockchain (param) {
+      let blockchain = this.blockchainByID(param)
+      if (!blockchain) {
+        blockchain = this.blockchainByName(param)
+      }
+
+      if (!blockchain) return
+
+      return blockchain
+    },
+    getSubnet (param) {
+      const subnet = this.subnetByID(param)
+      if (!subnet) return
+
+      return subnet
     }
   }
 }
@@ -331,4 +377,10 @@ export default {
     cursor:pointer;
     margin-left: 12px;
   }
+  #header-line {
+   height: 3px;
+   width: 100%;
+   background: #32353b;
+   opacity: 0.5;
+ }
 </style>

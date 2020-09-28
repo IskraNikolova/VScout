@@ -1,7 +1,5 @@
 <template>
   <q-page>
-    <div>
-    <div id="header-line"></div>
     <div style="padding: 1%;">
       <error class="q-pr-md" />
       <node class="q-pr-md" />
@@ -25,7 +23,6 @@
       <div class="flex flex-center q-mt-xl text-white">
         Made with ❤️ for builders everywhere.
       </div>
-    </div>
     </div>
   </q-page>
 </template>
@@ -97,11 +94,5 @@ export default {
  #logo {
   width: 190vw;
   max-width: 190px;
- }
- #header-line {
-   height: 3px;
-   width: 100%;
-   background: grey;
-   opacity: 0.5;
  }
 </style>

@@ -8,7 +8,7 @@
             <a :href="validator.link" v-if="validator.link" class="text-grey" style="font-size: 14px;opacity: 0.5;">{{ validator.name }}</a>
             <span v-else class="text-grey" style="font-size: 15px;opacity: 0.5;">{{ validator.name }}</span>
           </div>
-          <span style="font-size: 15px;" class="text-grey"><small>NODE ID </small> </span> <span class="text-grey" style="font-size: 14px;opacity: 0.5;">[{{ validator.nodeID }}]</span>
+          <span style="font-size: 15px;" class="text-grey"><small>NODE ID </small> </span> <span @click="$router.push(`/validator/${validator.nodeID}`)" class="text-grey" style="cursor: pointer;font-size: 14px;opacity: 0.5;">[{{ validator.nodeID }}]</span>
             <small>
               <q-icon
                 @click="copyToClipboard(validator.nodeID)"
@@ -84,7 +84,6 @@
                    <tooltip-style v-bind:text="'The validator has no available capacity and/or enough remaining time for delegation.'" />
                   </q-icon>
                 </span>
-                <span></span>
               </div>
            </div>
         </q-card-section>

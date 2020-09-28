@@ -23,7 +23,7 @@
         </div>
         <div id="f-size12" style="max-width: 340px;">
           <span class="text-medium">Blockchain ID</span>
-          <span class="text-grey" style="cursor:pointer;" @click="$router.push(`/search/${currentBlockchain.id}`)">
+          <span class="text-grey" style="cursor:pointer;" @click="$router.push(`/blockchain/${currentBlockchain.id}`)">
             {{ currentBlockchain.id }}
           </span>
         </div>
@@ -40,7 +40,7 @@
         <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultSubnetID(currentBlockchain.subnetID)">
           Default Subnet
         </div>
-        <div class="q-pb-md text-orange" style="font-size: 17px;cursor: pointer;max-width: 300px;" @click="$router.push(`/search/${currentBlockchain.subnetID}`)">
+        <div class="q-pb-md text-orange" style="font-size: 17px;cursor: pointer;max-width: 300px;" @click="$router.push(`/subnet/${currentBlockchain.subnetID}`)">
           <small>{{ currentBlockchain.subnetID }}</small>
         </div>
         <div id="f-size12">
@@ -56,7 +56,7 @@
           <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultSubnetID(currentSubnet.id)">
             Default Subnet
           </div>
-          <div class="q-pb-md" style="cursor: pointer;" @click="$router.push(`/search/${currentSubnet.id}`)">
+          <div class="q-pb-md" style="cursor: pointer;" @click="$router.push(`/subnet/${currentSubnet.id}`)">
             <span class="text-orange">{{ currentSubnet.id }}</span>
           </div>
         </div>
