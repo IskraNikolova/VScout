@@ -7,16 +7,16 @@
     @click="calculate"
   >
     <q-popup-proxy>
-        <q-banner class="q-pa-md" dense style="width: 375px;">
-        <div class="q-pb-md row">
-          <div class="col-7 text-medium">Reward Calculator</div>
-          <div class="col-5">
-            <small class="q-pr-xs">Current Supply </small>
-            <q-badge outline size="xs" color="orange" :label="getCurrentSupply() + ' M'" />
+        <q-banner class="q-pa-md" dense style="width: 370px;">
+        <div class="row">
+          <div class="col-6 text-medium">Reward Calculator</div>
+          <div class="col-6" style="text-align: right;">
+            <small>Current Supply
+            <q-badge outline color="orange" :label="getCurrentSupply() + ' M'" /> </small>
           </div>
         </div>
         <div class="row">
-          <small class="col-9 q-pt-xs" style="margin-left: -10px;">
+          <small class="col-9 q-pt-xs" style="text-align: left;">
             <q-option-group
               v-model="type"
               :options="options"
@@ -24,7 +24,7 @@
               inline
             />
           </small>
-          <small class="col-3 q-pt-md" v-if="type!=='delegator'">
+          <small class="col-3 q-pt-md" v-if="type!=='delegator'" style="text-align: right;">
             <q-badge outline size="xs" color="accent" :label="percent + '%'" />
             <q-icon name="info" size="xs" class="text-accent q-pl-xs"><tooltip-style v-bind:text="'The annual interest rate'" /></q-icon>
           </small>
