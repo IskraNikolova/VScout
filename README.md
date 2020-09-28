@@ -5,7 +5,7 @@
   Avalanche Validator Explorer is a DApp application for exploring the validator subsets on Avalanche network. It’s written in
   [Quasar](https://quasar.dev/) (Vue, Nodejs, Webpack, Jest), Solidity and includes multiple useful functionalities such as detailed network validators information (including optional identification), network stats, staking calculator, blockchain switcher, configurable endpoints and a FAQ section.
  
- [See](http://ava-validator-explorer.herokuapp.com/#/)
+ [See](https://vscout.io/)
 
 ## Install the dependencies
 ```bash
