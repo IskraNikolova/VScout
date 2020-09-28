@@ -1,8 +1,9 @@
-# Avalanche Validator Explorer
-
+# VScout - Avalanche Validator Explorer
+![Screenshot](vscout.png)
 ### Project Description:
- Avalanche Validator Explorer is a DApp application for exploring the validator subsets on Avalanche network. It’s written in
- [Quasar](https://quasar.dev/) (Vue, Nodejs, Webpack, Jest), Solidity and includes multiple useful functionalities such as detailed network validators information (including optional identification), network stats, staking calculator, blockchain switcher, configurable endpoints and a FAQ section.
+  VScout is an analytical tool for exploring Avalanche Network subnetworks (dynamic validator pools), and an interface for monitoring individual node metrics.
+  Avalanche Validator Explorer is a DApp application for exploring the validator subsets on Avalanche network. It’s written in
+  [Quasar](https://quasar.dev/) (Vue, Nodejs, Webpack, Jest), Solidity and includes multiple useful functionalities such as detailed network validators information (including optional identification), network stats, staking calculator, blockchain switcher, configurable endpoints and a FAQ section.
  
  [See](http://ava-validator-explorer.herokuapp.com/#/)
 
