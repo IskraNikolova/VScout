@@ -54,13 +54,23 @@ export const reward = (stakeTime, stakedAmount, currentSupply) => {
   rewardRes = rewardRes.dividedBy(currentSupplyBig)
   rewardRes = rewardRes.dividedBy(consumptionInterval)
 
-  var yearly = rewardRes.dividedBy(stakeTime)
+  return rewardRes.toNumber()
+}
+
+export const getYearlyRewardPercent = (reward, stakeTime, stakedAmount) => {
+  const rewardRes = new BigNumber(reward)
+
+  // to nAVAX
+  let stakedAmountNAvax = new BigNumber(stakedAmount)
+  stakedAmountNAvax = stakedAmountNAvax.multipliedBy(new BigNumber(units.Avax))
+
+  let yearly = rewardRes.dividedBy(stakeTime)
   yearly = yearly.multipliedBy(365)
 
-  var percent = yearly.multipliedBy(100)
+  let percent = yearly.multipliedBy(100)
   percent = percent.dividedBy(stakedAmountNAvax)
 
-  return { rewardNAvax: rewardRes.toNumber(), percent: percent.toNumber() }
+  return { percent: percent.toNumber(), yearly: yearly.toNumber() }
 }
 
 export const substractDelegationFee = (reward, delegationFee) => {

@@ -16,7 +16,7 @@
           </div>
         </div>
         <div class="row">
-          <small class="col-10 q-pt-xs">
+          <small class="col-9 q-pt-xs" style="margin-left: -10px;">
             <q-option-group
               v-model="type"
               :options="options"
@@ -24,10 +24,9 @@
               inline
             />
           </small>
-          <small class="col-2 q-pt-md">
-            <q-badge outline size="xs" color="accent" :label="percent">
-              <tooltip-style v-bind:text="'Reward percent'" />
-            </q-badge>
+          <small class="col-3 q-pt-md" v-if="type!=='delegator'">
+            <q-badge outline size="xs" color="accent" :label="percent + '%'" />
+            <q-icon name="info" size="xs" class="text-accent q-pl-xs"><tooltip-style v-bind:text="'Yearly percent rate'" /></q-icon>
           </small>
         </div>
         <q-input
@@ -75,32 +74,39 @@
             </div>
         </div>
         <q-slider
-            class="q-ml-xs q-mr-xs q-mt-xl"
-            v-model="stakeTime"
-            :min="14"
-            :max="365"
-            :step="1"
-            snap
-            :label-value="stakeTime + ' days'"
-            label-always
-            @input="calculate"
-            label-text-color="orange"
-            label-color="white"
-            color="orange"
+          class="q-ml-xs q-mr-xs q-mt-xl"
+          v-model="stakeTime"
+          :min="14"
+          :max="365"
+          :step="1"
+          snap
+          :label-value="stakeTime + ' days'"
+          label-always
+          @input="calculate"
+          label-text-color="orange"
+          label-color="white"
+          color="orange"
         />
         <div class="row">
-          <div class="col">
+          <div class="col - 6">
           <small>{{ stakeTime }} Days Earning </small>
           <div>
             <span class="text-accent">
-              {{ rewardAvax.toLocaleString() }}
+              {{ getFormat(rewardAvax) }}
             </span> AVAX
             <br />
             (<small class="text-grey">
-                {{ reward.toLocaleString() }} <span class="text-accent">nAVAX</span>
+              {{ getFormat(reward) }} <span class="text-accent">nAVAX</span>
             </small>)
           </div>
           </div>
+          <div class="col-3" v-if="type!=='delegator'">
+            <q-icon name="east" size="xs" class="text-orange"/>
+          </div>
+          <small class="col-3" v-if="type!=='delegator'">
+            <small>Yearly Earning </small><br />
+            {{yearly}} <span class="text-accent">AVAX</span>
+          </small>
           <div class="col" v-if="type==='delegator'">
             <small>Delegation Fee</small>
             <div>
@@ -122,7 +128,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import { reward, substractDelegationFee } from './../../modules/reward.js'
+import { reward, substractDelegationFee, getYearlyRewardPercent } from './../../modules/reward.js'
 import { round } from './../../utils/commons.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
 import { date } from 'quasar'
@@ -140,6 +146,7 @@ export default {
   },
   data () {
     return {
+      yearly: 0,
       percent: 0,
       stakeTime: 14,
       delegationFee: 0,
@@ -180,23 +187,31 @@ export default {
     ])
   },
   methods: {
+    getPercent () {
+      const { percent, yearly } = getYearlyRewardPercent(this.reward, this.stakeTime, this.stakeAmount)
+      this.percent = this.getFormat(percent)
+      this.yearly = this.getFormat(getAvaFromnAva(yearly))
+    },
     calculate () {
-      let { rewardNAvax, percent } = reward(
+      let rewardNAvax = reward(
         this.stakeTime,
         this.stakeAmount,
         this.currentSupply
       )
 
-      this.percent = `${round(percent, 100)} %`
       if (this.delegationFee > 0) {
         const delegation = substractDelegationFee(rewardNAvax, this.delegationFee)
         rewardNAvax = delegation.result
-        this.feeAmountnAvax = round(parseFloat(delegation.fee), 100).toLocaleString()
-        this.feeAmount = round(getAvaFromnAva(delegation.fee), 100).toLocaleString()
+        this.feeAmountnAvax = this.getFormat(parseFloat(delegation.fee))
+        this.feeAmount = this.getFormat(getAvaFromnAva(delegation.fee))
       }
 
-      this.reward = round(rewardNAvax, 100).toLocaleString()
-      this.rewardAvax = round(getAvaFromnAva(rewardNAvax), 100).toLocaleString()
+      this.reward = rewardNAvax
+      this.rewardAvax = getAvaFromnAva(rewardNAvax)
+      this.getPercent()
+    },
+    getFormat (val) {
+      return round(val, 100).toLocaleString()
     },
     getCurrentSupply () {
       const currentSupply = this.currentSupply.toString()
