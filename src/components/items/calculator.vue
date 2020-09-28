@@ -26,7 +26,7 @@
           </small>
           <small class="col-3 q-pt-md" v-if="type!=='delegator'">
             <q-badge outline size="xs" color="accent" :label="percent + '%'" />
-            <q-icon name="info" size="xs" class="text-accent q-pl-xs"><tooltip-style v-bind:text="'Yearly percent rate'" /></q-icon>
+            <q-icon name="info" size="xs" class="text-accent q-pl-xs"><tooltip-style v-bind:text="'The annual interest rate'" /></q-icon>
           </small>
         </div>
         <q-input
