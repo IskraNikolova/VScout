@@ -26,7 +26,7 @@
           </small>
           <small class="col-3 q-pt-md" v-if="type!=='delegator'" style="text-align: right;">
             <q-badge outline size="xs" color="accent" :label="percent + '%'" />
-            <q-icon name="info" size="xs" class="text-accent q-pl-xs"><tooltip-style v-bind:text="'The annual interest rate'" /></q-icon>
+            <q-icon name="info" size="xs" class="text-accent q-pl-xs"><tooltip-style v-bind:text="'Reward rate'" /></q-icon>
           </small>
         </div>
         <q-input
@@ -89,7 +89,7 @@
         />
         <div class="row">
           <div class="col - 6">
-          <small>{{ stakeTime }} Days Earning </small>
+          <small>{{ stakeTime }} Days Reward </small>
           <div>
             <span class="text-accent">
               {{ getFormat(rewardAvax) }}
@@ -99,25 +99,6 @@
               {{ getFormat(reward) }} <span class="text-accent">nAVAX</span>
             </small>)
           </div>
-          </div>
-          <div class="col-3" v-if="type!=='delegator'">
-            <q-icon name="east" size="xs" class="text-orange"/>
-          </div>
-          <small class="col-3" v-if="type!=='delegator'">
-            <small>Yearly Earning </small><br />
-            {{yearly}} <span class="text-accent">AVAX</span>
-          </small>
-          <div class="col" v-if="type==='delegator'">
-            <small>Delegation Fee</small>
-            <div>
-              <span class="text-negative">
-                {{ feeAmount }}
-              </span> AVAX
-              <br />
-              (<small class="text-grey">
-                {{ feeAmountnAvax }} <span class="text-accent">nAVAX</span>
-              </small>)
-            </div>
           </div>
         </div>
         </q-banner>

@@ -161,7 +161,8 @@ export default {
           name: 'startTime',
           align: 'left',
           label: 'Start Time',
-          field: row => this.formatDate(row.startTime),
+          field: row => row.startTime,
+          format: (val, row) => `${this.formatDate(row.startTime, 'll')}`,
           style: 'font-size: 10px;',
           sortable: true,
           headerClasses: 'text-medium'
@@ -170,7 +171,8 @@ export default {
           name: 'endTime',
           align: 'left',
           label: 'End Time',
-          field: row => this.formatDate(row.endTime),
+          field: row => row.endTime,
+          format: (val, row) => `${this.formatDate(row.endTime, 'll')}`,
           style: 'font-size: 10px;',
           sortable: true,
           headerClasses: 'text-medium'
