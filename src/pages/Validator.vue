@@ -1,10 +1,8 @@
 <template>
   <q-page>
-    <div style="padding: 1%;">
+    <div style="padding: 3%;">
       <q-card
-        class="q-mt-md q-pt-md q-pb-md"
         id="custom-card"
-        style="padding-top: 3%;min-height: 400px;"
       >
         <q-btn
           @click="back"
@@ -13,7 +11,7 @@
           color="accent"
           flat
         />
-        <validator-details class="q-pr-md" v-bind:id="$route.params.id"/>
+        <validator-details />
       </q-card>
       <div class="flex flex-center">
         <img src="~assets/vscoutlogo5.svg" id="logo">

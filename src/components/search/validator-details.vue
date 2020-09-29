@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="text-bold q-pl-xl">VALIDATOR</div>
     <!--gt-xs-->
-    <q-card flat class="gt-sm q-pa-xl">
+    <q-card flat class="gt-sm q-pr-xl q-pl-xl q-pb-md q-ml-xl q-mr-xs">
+      <div class="text-medium row">VALIDATOR</div>
       <div class="row">
         <q-item class="col-9">
           <q-item-section avatar style="cursor:pointer;" @click="onClick(validator.link)">
@@ -67,8 +67,6 @@
           </span>
         </div>
       </div>
-      <q-separator class="q-mb-xl"/>
-
       <div class="row">
         <q-card flat bordered class="col-5 q-mt-md">
           <q-card-section>
@@ -165,12 +163,12 @@
             <span class="text-orange" style="font-size: 18px;">{{ validator.delegatorsCount }} </span>
             DELEGATIONS
           </div>
-          <q-scroll-area style="height: 100px;">
+          <q-scroll-area style="height: 150px;">
             <div class="row">
               <div class="col-8"><span class="text-subtitle2"><small style="opacity: 0.8;">OWNER</small></span></div>
               <div class="col-4"><span class="text-subtitle2"><small style="opacity: 0.8;">STAKE AMOUNT</small></span></div>
             </div>
-            <q-separator />
+            <q-separator class="q-pb-xs" style="width: 80%;"/>
             <div v-for="(delegation, i) in getDelegationsForNode(validator.nodeID)" :key="i" class="q-py-xs row">
               <div class="col-8" @click="copyToClipboard(delegationRewardOwner(delegation.rewardOwner))">
                 {{ delegationRewardOwner(delegation.rewardOwner) }}
