@@ -73,7 +73,7 @@
           input-class="text-right"
           suffix="%"
           color="accent"
-          @input="calculate"
+          @input="calculateDel"
           class="q-pb-md"
           :rules="[
             value => value >= 2 || 'The minimum delegation fee rate is 2%',
@@ -83,7 +83,7 @@
         <div class="row q-mt-xs">
             <div class="col-10">
             <q-badge outline color="grey" style="height: 27px;" class="q-pb-xs q-pt-xs q-mb-xs">
-                Staking Time (14 to 365 days)
+              Staking Time (14 to 365 days)
             </q-badge>
             </div>
             <div class="col-2">
