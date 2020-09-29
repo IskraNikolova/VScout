@@ -73,23 +73,30 @@
               </q-input>
             </q-item-section>
             </q-item>
-          <q-list
-            v-for="(peer, i) in filterPeers"
-            v-bind:key="i"
-            class="q-pa-md"
-          >
-            <q-item v-close-popup>
-              <q-item-section>
-                <div><small class="text-grey">IP: </small> {{ peer.ip }}<q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.ip)"/></div>
-                <div><small class="text-grey">Public IP: </small> {{ peer.publicIP }}<q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.publicIP)"/></div>
-                <div><small class="text-grey">ID: </small> {{ peer.nodeID }} <q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.nodeID)"/></div>
-                <div><small class="text-grey">Version: </small> <span class="text-accent">{{ peer.version }}</span></div>
-                <div><small class="text-grey">Last Sent: </small> {{ dateFormat(peer.lastSent) }}</div>
-                <div><small class="text-grey">Last Received: </small> {{ dateFormat(peer.lastReceived) }}</div>
-              </q-item-section>
-            </q-item>
-            <q-separator />
-          </q-list>
+          <q-infinite-scroll @load="onLoad" :offset="250">
+            <q-list
+              v-for="(peer, i) in items"
+              v-bind:key="i"
+              class="q-pa-md"
+            >
+              <q-item v-close-popup>
+                <q-item-section>
+                  <div><small class="text-grey">IP: </small> {{ peer.ip }}<q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.ip)"/></div>
+                  <div><small class="text-grey">Public IP: </small> {{ peer.publicIP }}<q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.publicIP)"/></div>
+                  <div><small class="text-grey">ID: </small> {{ peer.nodeID }} <q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.nodeID)"/></div>
+                  <div><small class="text-grey">Version: </small> <span class="text-accent">{{ peer.version }}</span></div>
+                  <div><small class="text-grey">Last Sent: </small> {{ dateFormat(peer.lastSent) }}</div>
+                  <div><small class="text-grey">Last Received: </small> {{ dateFormat(peer.lastReceived) }}</div>
+                </q-item-section>
+              </q-item>
+              <q-separator />
+            </q-list>
+            <template v-slot:loading>
+              <div class="row justify-center q-my-md">
+                <q-spinner-dots color="primary" size="40px" />
+              </div>
+            </template>
+          </q-infinite-scroll>
         </q-btn-dropdown>
       </div>
       <div class="col-1 q-pt-md">
@@ -135,7 +142,17 @@ export default {
   },
   data () {
     return {
-      filter: ''
+      filter: '',
+      items: []
+    }
+  },
+  created () {
+    this.items = this.nodeInfo.peers.slice(0, 10)
+  },
+  watch: {
+    filter: function (newValidators) {
+      this.items = this.filterPeers()
+      this.filter = ''
     }
   },
   computed: {
@@ -148,13 +165,6 @@ export default {
       'validatorById',
       'networkEndpoint'
     ]),
-    filterPeers: function () {
-      if (!this.nodeInfo.peers) return
-      const res = this.nodeInfo
-        .peers
-        .filter(a => a.nodeID.toLowerCase().includes(this.filter.toLowerCase()) || a.ip.includes(this.filter))
-      return res
-    },
     nodeHealthInfo: function () {
       return this.nodeHealth(this.nodeID)
     },
@@ -177,6 +187,21 @@ export default {
   methods: {
     format (value) {
       return `${Math.round(value)} peers`
+    },
+    filterPeers () {
+      if (!this.nodeInfo.peers) return
+      const res = this.nodeInfo
+        .peers
+        .filter(a => a.nodeID.toLowerCase().includes(this.filter.toLowerCase()) || a.ip.includes(this.filter))
+      return res
+    },
+    onLoad (index, done) {
+      setTimeout(() => {
+        if (this.items) {
+          this.items = this.items.concat(this.nodeInfo.peers.slice(0, this.items.length + 10))
+          done()
+        }
+      }, 1000)
     },
     dateFormat (date) {
       return datePickerFormat(date)
