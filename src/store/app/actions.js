@@ -232,7 +232,9 @@ async function getValidators (
   const del = mapDelegators(delegators)
   commit(SET_DELEGATORS, { delegators: del })
 
-  const res = await validatorProcessing(validators, delegators, getters.defaultValidators)
+  let defaultVal = []
+  if (getters.defaultValidators) defaultVal = getters.defaultValidators
+  const res = await validatorProcessing(validators, delegators, defaultVal)
 
   commit(SET_VALIDATORS, {
     validators: res.validators
