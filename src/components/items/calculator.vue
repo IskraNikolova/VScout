@@ -32,6 +32,7 @@
         <q-input
           label-color="orange"
           outlined
+          type="number"
           v-model="stakeAmount"
           label="Staking Amount"
           input-class="text-right"
@@ -39,12 +40,13 @@
           color="accent"
           @input="calculate"
           class="q-pb-md"
-          :rules="[value => value >= 1]"
+          :rules="[value => (value >= 2000 && value <= 3000000) || 'Invalid stake!']"
         />
         <q-input
           v-if="type==='delegator'"
           label-color="orange"
           outlined
+          type="number"
           v-model="delegationFee"
           label="Delegation Fee"
           input-class="text-right"
