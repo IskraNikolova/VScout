@@ -39,7 +39,6 @@ import {
 } from '../store/app/types'
 
 const { network } = require('./../modules/config').default
-import { getRemainingCapacity } from './../utils/stake.js'
 
 export default {
   name: 'PageIndex',
@@ -61,12 +60,6 @@ export default {
       'networkEndpoint',
       'pendingValidators'
     ])
-  },
-  created () {
-    for (let i = 3000000000000000; i > 29999999999000000; i--) {
-      const rm = getRemainingCapacity(i, 0)
-      console.log(rm)
-    }
   },
   methods: {
     ...mapActions({
