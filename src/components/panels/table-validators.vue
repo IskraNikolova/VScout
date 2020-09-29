@@ -536,7 +536,7 @@ export default {
             c !== 'rank'
           )
       } else if (curentValidators.find(a => a.weight < 1)) {
-        return columns.filter(c => c !== 'weight' && c !== 'percent' && c !== 'progress' && c !== 'uptime')
+        return columns.filter(c => c !== 'weight' && c !== 'percent' && c !== 'progress')
       } else if (curentValidators.find(a => a.weight > 0)) {
         return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
       }
