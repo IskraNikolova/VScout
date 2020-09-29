@@ -12,7 +12,7 @@ const routes = [
     path: '/search',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '/search/:id', component: () => import('pages/Search.vue') }
+      { path: '/search/:id', component: () => import('pages/NotFound.vue') }
     ]
   },
   {
