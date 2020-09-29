@@ -30,7 +30,8 @@
           </small>
         </div>
         <q-input
-          label-color="orange"
+          v-if="type==='validator'"
+          label-color="grey"
           outlined
           type="number"
           v-model="stakeAmount"
@@ -39,12 +40,32 @@
           suffix="AVAX"
           color="accent"
           @input="calculate"
-          class="q-pb-md"
-          :rules="[value => (value >= 2000 && value <= 3000000) || 'Invalid stake!']"
+          class="q-pb-xl"
+          :rules="[
+            value => (value >= 2000) || 'The minimum amount that a validator must stake is 2,000 AVAX!',
+            value => (value < 3000000) || 'Invalid amount!'
+          ]"
+        />
+        <q-input
+          v-else
+          label-color="grey"
+          outlined
+          type="number"
+          v-model="stakeAmountDel"
+          label="Staking Amount"
+          input-class="text-right"
+          suffix="AVAX"
+          color="accent"
+          @input="calculateDel"
+          class="q-pb-xl"
+          :rules="[
+            value => (value >= 25) || 'The minimum amount that a delegator must stake is 25 AVAX!',
+            value => (value < 3000000) || 'Invalid amount!'
+          ]"
         />
         <q-input
           v-if="type==='delegator'"
-          label-color="orange"
+          label-color="grey"
           outlined
           type="number"
           v-model="delegationFee"
@@ -53,12 +74,15 @@
           suffix="%"
           color="accent"
           @input="calculate"
-          class="q-pb-xs"
-          :rules="[value => value >= 2 || 'The minimum delegation fee rate is 2%']"
+          class="q-pb-md"
+          :rules="[
+            value => value >= 2 || 'The minimum delegation fee rate is 2%',
+            value => value < 100 || 'Invalid delegation fee rate'
+          ]"
         />
         <div class="row q-mt-xs">
             <div class="col-10">
-            <q-badge outline color="orange" style="height: 27px;" class="q-pb-xs q-pt-xs q-mb-xs">
+            <q-badge outline color="grey" style="height: 27px;" class="q-pb-xs q-pt-xs q-mb-xs">
                 Staking Time (14 to 365 days)
             </q-badge>
             </div>
@@ -76,6 +100,7 @@
             </div>
         </div>
         <q-slider
+          v-if="type==='validator'"
           class="q-ml-xs q-mr-xs q-mt-xl"
           v-model="stakeTime"
           :min="14"
@@ -85,9 +110,24 @@
           :label-value="stakeTime + ' days'"
           label-always
           @input="calculate"
-          label-text-color="orange"
+          label-text-color="accent"
           label-color="white"
-          color="orange"
+          color="accent"
+        />
+        <q-slider
+          v-else
+          class="q-ml-xs q-mr-xs q-mt-xl"
+          v-model="stakeTime"
+          :min="14"
+          :max="365"
+          :step="1"
+          snap
+          :label-value="stakeTime + ' days'"
+          label-always
+          @input="calculateDel"
+          label-text-color="accent"
+          label-color="white"
+          color="accent"
         />
         <div class="row">
           <div class="col - 6">
@@ -132,11 +172,12 @@ export default {
       yearly: 0,
       percent: 0,
       stakeTime: 14,
-      delegationFee: 0,
+      delegationFee: 2,
       reward: 0.00,
       rewardAvax: 0.00,
       percentReward: 4,
       stakeAmount: 2000,
+      stakeAmountDel: 25,
       feeAmount: 0,
       feeAmountnAvax: 0,
       model: { from: formattedFrom, to: formattedTo },
@@ -157,10 +198,9 @@ export default {
   watch: {
     type: function (newValidators) {
       if (newValidators === 'validator') {
-        this.delegationFee = 0
-        this.feeAmount = 0
-        this.feeAmountnAvax = 0
         this.calculate()
+      } else {
+        this.calculateDel()
       }
     }
   },
@@ -176,18 +216,27 @@ export default {
       this.yearly = this.getFormat(getAvaFromnAva(yearly))
     },
     calculate () {
-      let rewardNAvax = reward(
+      const rewardNAvax = reward(
         this.stakeTime,
         this.stakeAmount,
         this.currentSupply
       )
 
-      if (this.delegationFee > 0) {
-        const delegation = substractDelegationFee(rewardNAvax, this.delegationFee)
-        rewardNAvax = delegation.result
-        this.feeAmountnAvax = this.getFormat(parseFloat(delegation.fee))
-        this.feeAmount = this.getFormat(getAvaFromnAva(delegation.fee))
-      }
+      this.reward = rewardNAvax
+      this.rewardAvax = getAvaFromnAva(rewardNAvax)
+      this.getPercent()
+    },
+    calculateDel () {
+      let rewardNAvax = reward(
+        this.stakeTime,
+        this.stakeAmountDel,
+        this.currentSupply
+      )
+
+      const delegation = substractDelegationFee(rewardNAvax, this.delegationFee)
+      rewardNAvax = delegation.result
+      this.feeAmountnAvax = this.getFormat(parseFloat(delegation.fee))
+      this.feeAmount = this.getFormat(getAvaFromnAva(delegation.fee))
 
       this.reward = rewardNAvax
       this.rewardAvax = getAvaFromnAva(rewardNAvax)
@@ -221,3 +270,14 @@ export default {
   }
 }
 </script>
+<style>
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+</style>
