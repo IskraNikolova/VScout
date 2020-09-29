@@ -35,7 +35,7 @@
       </div>
     </q-card-section>
     <div class="row items-start q-gutter-md q-pl-md">
-      <q-card class="my-card bg-grey-1">
+      <q-card class="my-card bg-grey-1 col-3">
         <q-card-section>
           <div class="text-h6">Stake</div>
         </q-card-section>
@@ -51,7 +51,7 @@
           <div class="text-subtitle2"><small style="opacity: 0.5;">TOTAL </small> {{ getLocaleString(validator.total) }} <span class="text-accent">AVAX</span></div>
         </q-card-actions>
       </q-card>
-      <q-card class="my-card bg-grey-1">
+      <q-card class="my-card bg-grey-1 col-3">
         <q-card-section>
           <div class="text-h6">Reward</div>
         </q-card-section>
@@ -67,7 +67,7 @@
           <div class="text-subtitle2"><small style="opacity: 0.5;">TOTAL </small> {{ totalReward() }} <span class="text-accent">AVAX</span></div>
         </q-card-actions>
       </q-card>
-      <q-card class="my-card bg-grey-1">
+      <q-card class="my-card bg-grey-1 col-3">
         <q-card-section>
            <div class="row items-center no-wrap">
               <div class="text-h6 col">Delegate</div>
@@ -107,7 +107,7 @@
           </div>
         </q-card-section>
       </q-card>
-       <q-card class="my-card bg-grey-1">
+      <q-card class="my-card bg-grey-1 col-3">
         <q-card-section>
           <div class="text-h6">{{ validator.delegatorsCount }} Delegations</div>
         </q-card-section>

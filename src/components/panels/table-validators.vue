@@ -69,16 +69,6 @@
         <!--<q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
         <add-identification-dialog ref="addIdentificationRef" />-->
       </template>
-      <!--<template v-slot:header-cell-uptime="props">
-        <q-th :props="props">
-          Up Time
-          <q-icon name="info" class="text-grey q-pb-xs" size="1.5em">
-            <q-tooltip content-class="bg-white text-grey" content-style="font-size: 12px;border-style: solid;border-width: 0.1px;">
-              Up Time is the % of time the queried node has reported the peer as online.
-            </q-tooltip>
-          </q-icon>
-        </q-th>
-      </template>-->
       <template v-slot:header-cell-rank="props">
         <q-th :props="props">
           Rank
@@ -90,6 +80,7 @@
         <small><div class="col" style="margin-top: 20px; margin-bottom: 10px;">
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="networkShare" label="Network Share" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="percent" label="Cumulative Stake" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="uptime" label="Up Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="startTime" label="Start Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="endTime" label="End Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="progress" label="Progress" />
@@ -192,11 +183,11 @@
                 v-bind:endTime="props.row.endTime"
               />
             </div>
-            <!--<div v-else-if="col.name === 'uptime'">
-              <q-badge :color="getColorUptime(props.row.uptime)" style="min-width: 57px;">
+            <div v-else-if="col.name === 'uptime'">
+              <q-badge :color="getColorUptime(props.row.uptime)" outline class="text-medium" style="min-width: 57px;">
                 {{ getUpTime(props.row.uptime) }} %
               </q-badge>
-            </div>-->
+            </div>
             <countdown
               class="row"
               v-bind:countdown="col.value"
@@ -216,12 +207,12 @@
       <template v-slot:item="props">
         <div style="max-width: 400px;width: 100%;margin:auto;margin-bottom: 5px;">
           <q-card flat bordered>
-            <!--<span class="absolute absolute-top-right q-mt-xs q-mr-md" v-if="props.row.uptime > 0">
+            <span class="absolute absolute-top-right q-mt-xs q-mr-md" v-if="props.row.uptime > 0">
               <small class="q-mr-xs">Up Time</small>
               <q-badge :color="getColorUptime(props.row.uptime)" >
                 {{ getUpTime(props.row.uptime) }} %
               </q-badge>
-            </span>-->
+            </span>
             <q-item>
               <q-item-section avatar style="cursor:pointer;" @click="onClick(props.row.link)">
                 <q-avatar>
@@ -450,13 +441,14 @@ export default {
           style: 'font-size: 15px;',
           headerClasses: 'text-medium'
         },
-        // {
-        //   name: 'uptime',
-        //   align: 'center',
-        //   label: 'Up Time',
-        //   field: row => row.uptime,
-        //   headerClasses: 'text-medium'
-        // },
+        {
+          name: 'uptime',
+          align: 'center',
+          label: 'Up Time',
+          sortable: true,
+          field: row => row.upTime,
+          headerClasses: 'text-medium'
+        },
         {
           name: 'startTime',
           align: 'center',
@@ -539,15 +531,14 @@ export default {
             c !== 'percent' &&
             c !== 'networkShare' &&
             c !== 'weight' &&
-            // c !== 'uptime' &&
+            c !== 'uptime' &&
             c !== 'progress' &&
             c !== 'rank'
           )
       } else if (curentValidators.find(a => a.weight < 1)) {
-        return columns.filter(c => c !== 'weight' && c !== 'percent' && c !== 'progress')
+        return columns.filter(c => c !== 'weight' && c !== 'percent' && c !== 'progress' && c !== 'uptime')
       } else if (curentValidators.find(a => a.weight > 0)) {
-        // return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
-        return columns.filter(c => c !== 'delegationFee')
+        return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
       }
 
       return columns.filter(c => c !== 'stake')
@@ -566,14 +557,14 @@ export default {
       }
       return temp[isMinimumAmountForStake && remainingCapacity > 25]
     },
-    // getUpTime (val) {
-    //   if (!val) return 0
-    //   return round(val * 100, 1000)
-    // },
-    // getColorUptime (val) {
-    //   if (val >= 0.6) return 'green'
-    //   return 'negative'
-    // },
+    getUpTime (val) {
+      if (!val) return 0
+      return round(val * 100, 1000)
+    },
+    getColorUptime (val) {
+      if (val >= 0.6) return 'green'
+      return 'negative'
+    },
     getFormatNodeID (id) {
       if (!id) return
       return `${id.substr(0, 12)}...${id.substr(27)}`

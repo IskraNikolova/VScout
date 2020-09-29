@@ -75,11 +75,15 @@ export async function mapValidators (validators, delegators, defaultValidators) 
     let stakeAmount = 0
     let remainingCapacity = 0
 
+    const currentValidator = defaultValidators
+      .find(v => v.nodeID === nodeID)
+
+    // todo issue Incorrect uptime sometimes returned by getCurrentValidators delete after BUGFIX
+    if (currentValidator.uptime * 100 - val.uptime * 100 > 20) val.uptime = currentValidator.uptime
+
     if (val.weight) {
       weight = val.weight
 
-      const currentValidator = defaultValidators
-        .find(v => v.nodeID === nodeID)
       stakeAmount = currentValidator.stakenAva
     } else {
       stakeAmount = val.stakeAmount
@@ -147,7 +151,8 @@ export function getDelegatorsForNode (validator, delegators) {
   return {
     delegateStake,
     delegatorsCount: currentDelegators.length,
-    potentialReward
+    potentialReward,
+    delegations: currentDelegators
   }
 }
 

@@ -28,8 +28,8 @@
           <tooltip-style v-bind:text="'Copy to Clipboard'" />
         </div>
         <div v-else>
-          <div id="f-size12" class="q-pb-md text-medium ">NODE</div>
-          <div class="text-h7 text-orange q-pb-md q-pt-xs">{{ formatNodeID }}</div>
+          <div id="f-size12" class="q-pb-md text-medium">NODE</div>
+          <div class="text-h7 text-orange q-pb-md q-pt-xs" @click="copyToClipboard(nodeID)">{{ formatNodeID }}</div>
         </div>
         <div class="q-pt-md">
           <q-btn :color="color" no-caps outline size="xs" label="Check Health" @click="onOpenHealth"/>

@@ -57,7 +57,7 @@ export default {
       'blockchainByName'
     ]),
     blockchain: function () {
-      return this.getBlockchain(this.id)
+      return this.getBlockchain(this.$route.params.id)
     },
     blockchainID: function () {
       if (!this.blockchain) return
@@ -84,12 +84,6 @@ export default {
       return this.blockchain.subnetID
     }
   },
-  props: {
-    id: {
-      type: String,
-      required: true
-    }
-  },
   methods: {
     getBlockchain (param) {
       let blockchain = this.blockchainByID(param)
@@ -97,7 +91,7 @@ export default {
         blockchain = this.blockchainByName(param)
       }
 
-      if (!blockchain) return
+      if (!blockchain) return {}
 
       return blockchain
     },
@@ -117,7 +111,10 @@ export default {
       return colors[status]
     },
     getStatusInfo (status) {
-      return statusInfo[status]
+      const stat = statusInfo[status]
+      if (!stat) return ''
+
+      return stat
     }
   }
 }

@@ -40,6 +40,12 @@ export function blockchainByID (state) {
     .find(b => b.id === id)
 }
 
+export function getDelegationsForNode (state) {
+  return (id) => state
+    .delegators
+    .filter(d => d.nodeID === id)
+}
+
 export function blockchainByName (state) {
   return (name) => state
     .blockchains
