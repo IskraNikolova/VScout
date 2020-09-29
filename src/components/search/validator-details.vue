@@ -53,7 +53,7 @@
         <div class="col-3 q-mt-md">
           <span class="text-subtitle2 q-mr-xs"><small style="opacity: 0.8;">UP TIME</small></span>
           <q-badge :color="getColorUptime(validator.uptime)" class="text-medium" style="font-size: 16px;padding: 7px;">
-            {{ getUpTime(validator.uptime) }} %
+            <span style="margin: auto;">{{ getUpTime(validator.uptime) }} %</span>
           </q-badge>
           <br />
           <span class="text-subtitle2"><small style="opacity: 0.8;">STAKED BY</small></span>
