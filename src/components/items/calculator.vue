@@ -43,7 +43,7 @@
           class="q-pb-xl"
           :rules="[
             value => (value >= 2000) || 'The minimum amount that a validator must stake is 2,000 AVAX!',
-            value => (value < 3000000) || 'Invalid amount!'
+            value => (value <= 3000000) || 'Invalid amount!'
           ]"
         />
         <q-input
@@ -60,7 +60,7 @@
           class="q-pb-xl"
           :rules="[
             value => (value >= 25) || 'The minimum amount that a delegator must stake is 25 AVAX!',
-            value => (value < 3000000) || 'Invalid amount!'
+            value => (value <= 3000000) || 'Invalid amount!'
           ]"
         />
         <q-input
@@ -77,7 +77,7 @@
           class="q-pb-md"
           :rules="[
             value => value >= 2 || 'The minimum delegation fee rate is 2%',
-            value => value < 100 || 'Invalid delegation fee rate'
+            value => value <= 100 || 'Invalid delegation fee rate'
           ]"
         />
         <div class="row q-mt-xs">
