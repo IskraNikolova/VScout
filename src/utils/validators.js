@@ -79,7 +79,7 @@ export async function mapValidators (validators, delegators, defaultValidators) 
       .find(v => v.nodeID === nodeID)
 
     // todo issue Incorrect uptime sometimes returned by getCurrentValidators delete after BUGFIX
-    if (currentValidator.uptime * 100 - val.uptime * 100 > 20) val.uptime = currentValidator.uptime
+    if ((Number(currentValidator.uptime) * 100 - Number(val.uptime * 100)) > 20) val.uptime = currentValidator.uptime
 
     if (val.weight) {
       weight = val.weight
