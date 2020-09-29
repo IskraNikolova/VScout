@@ -70,7 +70,7 @@
       <q-separator class="q-mb-xl"/>
 
       <div class="row">
-        <q-card flat class="col-6">
+        <q-card flat bordered class="col-5 q-mt-md">
           <q-card-section>
             <div class="q-mb-md text-medium">STAKE (AVAX)</div>
             <div>
@@ -91,11 +91,12 @@
             </div>
           </q-card-section>
         </q-card>
-        <q-card flat class="col-6 q-mt-md">
-          <div class="q-mb-md text-medium">REWARD (AVAX)</div>
-          <div>
+        <div class="col-1"></div>
+        <q-card flat bordered class="col-5 q-mt-md">
+          <div class="q-pa-md text-medium">REWARD (AVAX)</div>
+          <div class="q-pl-md"><div>
             <span class="text-subtitle2"><small style="opacity: 0.8;">POTENTIAL REWARD</small></span>
-            <span class="on-right">{{ getFormatAva(validator.potentialReward) }}</span>
+            <span class="on-right text-h6">{{ getFormatAva(validator.potentialReward) }}</span>
             <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
           </div>
           <div>
@@ -108,8 +109,9 @@
             <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
             <span class="on-right">{{ totalReward() }}</span>
             <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
-          </div>
+          </div></div>
         </q-card>
+        <div class="col-1"></div>
       </div>
       <div class="row">
         <q-card flat bordered class="col-5 q-mt-md">
