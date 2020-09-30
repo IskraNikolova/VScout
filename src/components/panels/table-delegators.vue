@@ -1,16 +1,36 @@
 <template>
   <div class="q-mt-md">
     <q-table
-      :data="curentVal"
+      :data="curentDelegators"
       :columns="columns"
       :filter="filter"
-      row-key="index"
-      :visible-columns="visibleColumns"
+      row-key="nodeID"
       :pagination="pagination"
-      class="light-background shadow-3"
+      :visible-columns="visibleColumns"
+      :class="tableClass"
       id="custom-table"
     >
       <template slot="top-left">
+        <q-btn
+          size="xs"
+          v-if="!isNotSticky"
+          class="text-accent"
+          flat
+          icon="push_pin"
+          @click="isNotSticky=!isNotSticky"
+        >
+          <tooltip-style v-bind:text="textStickyNegative" />
+        </q-btn>
+        <q-btn
+          size="xs"
+          v-else
+          class="text-grey"
+          flat
+          icon="push_pin"
+          @click="isNotSticky=!isNotSticky"
+        >
+          <tooltip-style v-bind:text="textStickyPositive" />
+        </q-btn>
         <q-btn-toggle
           v-model="type"
           flat
@@ -30,7 +50,7 @@
           @click.native="onSwitchAccounts"
           :options="[
             {label: 'Validators', value: 'validators'},
-            {label: 'Delegations', value: 'delegations'}
+            {label: 'Delegations', value: 'delegators'}
           ]"
         />
       </template>
@@ -43,7 +63,7 @@
           />
         </q-th>
       </template>
-      <template slot="top-right" v-if="!isGrid">
+      <template v-slot:top-right="props">
         <q-input
           borderless
           color="accent"
@@ -55,9 +75,22 @@
             <q-icon name="search" color="accent" />
           </template>
         </q-input>
+        <q-btn
+          size="xs"
+          flat round dense
+          :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+          @click="props.toggleFullscreen"
+          class="absolute-top-right"
+          color="grey"
+        />
       </template>
       <template v-slot:body="props">
-        <q-tr :props="props" style="cursor: pointer;" auto-width @click="props.expand = !props.expand">
+        <q-tr
+          :props="props"
+          style="cursor: pointer;"
+          auto-width
+          @click="props.expand = !props.expand"
+        >
           <q-td
             v-for="(col) in props.cols"
             :key="col.name"
@@ -80,6 +113,12 @@
                 v-bind:endTime="props.row.endTime"
               />
             </div>
+            <div v-else-if="col.name === 'stake' || col.name === 'potentialReward'">
+              {{ col.value }}
+              <span class="text-accent text-medium">
+                <small> AVAX</small>
+              </span>
+            </div>
             <div v-else class="q-pl-md">
               {{ col.value }}
             </div>
@@ -99,33 +138,44 @@
 import { mapGetters } from 'vuex'
 
 import {
-  openURL,
   copyToClipboard
 } from 'quasar'
 
 import { date } from './../../modules/time.js'
-import { UPDATE_UI } from './../../store/ui/types'
+import { round } from './../../utils/commons.js'
+import { getAvaFromnAva } from './../../utils/avax.js'
 
 import ProgressBarValidateSession from './../progress-bar-validatе-session'
+
+import { UPDATE_UI } from './../../store/ui/types'
 
 export default {
   name: 'TableDelegators',
   components: {
     DetailsDelegator: () => import('components/details-delegator'),
+    TooltipStyle: () => import('components/tooltip-style'),
     ProgressBarValidateSession
+  },
+  watch: {
+    isNotSticky: function (val) {
+      if (val) this.tableClass = 'light-background shadow-3'
+      else this.tableClass = 'light-background shadow-3 sticky-header-table'
+    }
   },
   data () {
     return {
+      textStickyPositive: 'Sticky header',
+      textStickyNegative: 'Remove a sticky header',
+      tableClass: 'light-background shadow-3',
       type: 'active',
-      type2: 'delegations',
-      isGrid: false,
+      type2: 'delegators',
+      isNotSticky: true,
       isActive: true,
       filter: '',
       pagination: {
         rowsPerPage: 20
       },
       border: '#87C5D6',
-      separator: 'cell',
       columns: [
         {
           name: 'index',
@@ -138,22 +188,30 @@ export default {
           name: 'rewardOwner',
           align: 'left',
           label: 'Reward Owner',
-          field: row => `${this.getRewardOwnerFormat(row.rewardOwner)}`,
+          field: row => this.getRewardOwnerFormat(row.rewardOwner),
           headerClasses: 'text-medium'
         },
         {
-          name: 'nodeId',
+          name: 'nodeID',
           align: 'left',
           label: 'Delegated Node ID',
-          field: row => `[${row.nodeId}]`,
+          field: row => `[${row.nodeID}]`,
           style: 'font-size: 12px;',
           headerClasses: 'text-medium'
         },
         {
           name: 'stake',
-          align: 'left',
-          label: 'Delegated (AVAX)',
-          field: row => `${row.stake.toLocaleString()} AVAX`,
+          align: 'center',
+          label: 'Delegated',
+          field: row => this.getFormatReward(row.stakeAmount),
+          sortable: true,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'potentialReward',
+          align: 'center',
+          label: 'Potential Reward',
+          field: row => this.getFormatReward(row.potentialReward),
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -177,7 +235,13 @@ export default {
           sortable: true,
           headerClasses: 'text-medium'
         },
-        { name: 'progress', align: 'left', label: 'Progress (%)', field: 'progress', headerClasses: 'text-medium' }
+        {
+          name: 'progress',
+          align: 'left',
+          label: 'Progress (%)',
+          field: 'progress',
+          headerClasses: 'text-medium'
+        }
       ]
     }
   },
@@ -187,35 +251,22 @@ export default {
       'delegators',
       'pendingDelegators'
     ]),
-    curentVal: {
-      get: function () {
-        if (this.isActive) return this.delegators
-        return this.pendingDelegators
-      }
+    curentDelegators: function () {
+      if (this.isActive) return this.delegators
+      return this.pendingDelegators
     },
     visibleColumns: function () {
       const columns = this.columns.map(c => c.name)
-      if (this.curentVal.find(a => !a.rewardOwner)) {
-        return columns.filter(c => c !== 'rewardOwner')
+      if (this.curentDelegators.find(a => !a.rewardOwner)) {
+        return columns.filter(c => c !== 'rewardOwner' && c !== 'index' && c !== 'potentialReward')
       }
-
       return columns
     }
   },
   methods: {
-    onClick (props) {
-      if (!props.row.link) return
-      try {
-        openURL(props.row.link)
-      } catch (err) {
-      }
-    },
     getRewardOwnerFormat (val) {
-      if (!val) return
-      return `${val.addresses[0].substr(0, 15)}...${val.addresses[0].substr(30)}`
-    },
-    getLocalString (val) {
-      if (val) return val.toLocaleString()
+      if (!val || !val.addresses) return
+      return val.addresses[0]
     },
     copyToClipboard (id) {
       if (!id) return
@@ -240,13 +291,18 @@ export default {
     onSwitchAccounts () {
       const temp = {
         validators: true,
-        delegations: false
+        delegators: false
       }
       this.$store.commit(UPDATE_UI, {
         typeAccount: {
           isValidators: temp[this.type2]
         }
       })
+    },
+    getFormatReward (val) {
+      if (!val) return 0
+      const avax = getAvaFromnAva(val)
+      return round(avax, 100).toLocaleString()
     },
     formatDate (time) {
       if (!time) return
@@ -259,13 +315,23 @@ export default {
  #custom-table {
    border-right: 2px solid #87C5D6;
  }
- .container_row{
-  display: grid;
-}
-
-.layer1, .layer2{
-  grid-column: 1;
-  grid-row: 1;
-}
-
+</style>
+<style lang="sass">
+.sticky-header-table
+  /* height or max-height is important */
+  max-height: 610px
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th
+    /* bg color is important for th; just specify one */
+    background-color: #ffffff
+  thead tr th
+    position: sticky
+    z-index: 1
+  thead tr:first-child th
+    top: 0
+  /* this is when the loading indicator appears */
+  &.q-table--loading thead tr:last-child th
+    /* height of all previous header rows */
+    top: 48px
 </style>

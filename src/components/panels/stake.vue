@@ -31,7 +31,7 @@
         <div>
           <span class="text-h5 text-orange">
             <animated-number
-              :value="delegators.length"
+              :value="delegationsCount"
               :formatValue="format"
               :duration="3000"
             />
@@ -108,10 +108,10 @@ export default {
   computed: {
     ...mapGetters([
       'stakedAVA',
+      'validators',
       'delegatedStake',
       'validatedStake',
-      'validators',
-      'delegators',
+      'delegationsCount',
       'pendingValidators',
       'pendingDelegators'
     ]),

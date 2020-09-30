@@ -34,16 +34,14 @@ export function blockchains (state) {
   return state.blockchains
 }
 
+export function delegationsCount (state) {
+  return state.delegators.length
+}
+
 export function blockchainByID (state) {
   return (id) => state
     .blockchains
     .find(b => b.id === id)
-}
-
-export function getDelegationsForNode (state) {
-  return (id) => state
-    .delegators
-    .filter(d => d.nodeID === id)
 }
 
 export function blockchainByName (state) {

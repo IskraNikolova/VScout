@@ -11,26 +11,37 @@ import { getAvaFromnAva } from './avax.js'
 * @param {Array} Array of current validators on Default Subnet
 * @returns {Array} Array with processing validators
 */
-export async function validatorProcessing (validators, delegators, defaultValidators) {
-  const val = await mapValidators(validators, delegators, defaultValidators)
+export async function validatorProcessing (validators, defaultValidators) {
+  const validatorsMap = await mapValidators(validators, defaultValidators)
+
+  const validatedStake = validatorsMap.reduce((a, b) => {
+    return BigNumber.sum(a, b.stakeAmount)
+  }, 0.0)
+
+  const delegatedStake = validatorsMap.reduce((a, b) => {
+    return BigNumber.sum(a, b.delegateStake)
+  }, 0.0)
 
   // get all staked AVAX
-  const allStake = val.reduce((a, b) => {
-    return a + parseFloat(b.totalnAva)
-  }, 0.0)
-
-  const validatedStake = val.reduce((a, b) => {
-    return a + parseFloat(b.stakenAva)
-  }, 0.0)
-
-  const delegatedStake = val.reduce((a, b) => {
-    return a + parseFloat(b.delegateStakenAva)
-  }, 0.0)
+  const allStake = BigNumber
+    .sum(validatedStake, delegatedStake)
 
   // get and set percent for total stake (own and delegated)
-  let validatorsResult = val.map((v) => {
-    v.percent = getPercent(v.totalnAva, allStake)
+  let validatorsResult = validatorsMap.map((v) => {
+    v.percent = getPercent(v.totalStakeAmount, allStake)
     return v
+  })
+
+  let delegators = []
+  validatorsMap.forEach((val) => {
+    if (!val.delegators) return
+
+    delegators
+      .push(...mapDelegators(val.delegators))
+  })
+
+  delegators = delegators.map((d, i) => {
+    return { ...d, index: i + 1 }
   })
 
   // sort validators by total stake and duration
@@ -43,17 +54,19 @@ export async function validatorProcessing (validators, delegators, defaultValida
     v.cumulativeStake = cumulativeStake(currentValidators)
     return v
   })
+
   return {
     allStake: getAvaFromnAva(allStake),
     validatedStake: getAvaFromnAva(validatedStake),
     delegatedStake: getAvaFromnAva(delegatedStake),
-    validators: result
+    validators: result,
+    delegators
   }
 }
 
 export function compare (a, b) {
   const get = (a, b) => { return b - a }
-  const compareStake = parseFloat(b.total) - parseFloat(a.total)
+  const compareStake = parseFloat(b.totalStakeAmount) - parseFloat(a.totalStakeAmount)
   const temp = {
     false: compareStake,
     true: get(b.startTime, b.endTime) - get(a.startTime, a.endTime)
@@ -62,115 +75,87 @@ export function compare (a, b) {
   return temp[compareStake === 0]
 }
 
-export async function mapValidators (validators, delegators, defaultValidators) {
+export async function mapValidators (validators, defaultValidators) {
   if (!validators) return []
 
-  const res = await Promise.all(validators.map(async (val) => {
-    const nodeID = val.nodeID
-    // const info = await _getValidatorById(nodeID)
-    let delegateStake = 0
-    let delegatePotentialReward = 0
-    let delegatorsCount = 0
-    let weight = 0
-    let stakeAmount = 0
-    let remainingCapacity = 0
-
+  return await Promise.all(validators.map(async (val) => {
+    // const info = await _getValidatorById(val.nodeID)
     const currentValidator = defaultValidators
-      .find(v => v.nodeID === nodeID)
+      .find(v => v.nodeID === val.nodeID)
 
     // todo issue Incorrect uptime sometimes returned by getCurrentValidators delete after BUGFIX
     if (currentValidator && (Number(currentValidator.uptime) * 100 - Number(val.uptime * 100)) > 20) val.uptime = currentValidator.uptime
 
     if (val.weight) {
-      weight = val.weight
-
-      stakeAmount = currentValidator.stakenAva
-    } else {
-      stakeAmount = val.stakeAmount
-
-      const props = getDelegatorsForNode(val, delegators)
-      delegateStake = props.delegateStake
-      delegatorsCount = props.delegatorsCount
-      delegatePotentialReward = props.potentialReward
-      remainingCapacity = getRemainingCapacity(stakeAmount, delegateStake)
+      val.stakeAmount = currentValidator.stakenAva
     }
 
-    const avatar = getAvatar(nodeID).monster // info.avatarUrl ? info.avatarUrl : getAvatar(nodeID).monster
-    const name = nodeID // info.name ? info.name : nodeID
-    const total = parseFloat(stakeAmount) + parseFloat(delegateStake)
+    const props = getDelegatorDetails(val.delegators)
+    const delegateStake = props.delegateStake
+    const delegatePotentialReward = props.potentialReward
+
     const countDownCounterRes = countDownCounter(val.endTime)
     const remainingTime = countDownCounterRes.countdown
+
+    const totalStakeAmount = parseFloat(val.stakeAmount) + parseFloat(delegateStake)
+    const remainingCapacity = getRemainingCapacity(val.stakeAmount, delegateStake)
     const isMinimumAmountForStake = countDownCounterRes.isMinimumAmountForStake
+
+    const avatar = getAvatar(val.nodeID).monster // info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
+    const name = val.nodeID // info.name ? info.name : val.nodeID
 
     return {
       ...val,
       name,
       avatar,
-      weight,
-      nodeID,
-      delegatorsCount,
-      totalnAva: total,
-      total: getAvaFromnAva(total),
-      fromNowST: fromNow(val.startTime),
-      delegateStakenAva: delegateStake,
-      stake: getAvaFromnAva(stakeAmount),
-      stakenAva: parseFloat(stakeAmount),
-      delegateStake: getAvaFromnAva(delegateStake),
-      remainingCapacity,
+      link: '', // info.link
       remainingTime,
+      delegateStake,
+      totalStakeAmount,
+      remainingCapacity,
       isMinimumAmountForStake,
       delegatePotentialReward,
-      link: '' // info.link
+      fromNowST: fromNow(val.startTime)
     }
   }))
-  return res
 }
 
-export function getDelegatorsForNode (validator, delegators) {
+export function getDelegatorDetails (delegators) {
   if (!delegators) {
     return {
       delegateStake: 0,
-      delegatorsCount: 0,
       potentialReward: 0
     }
   }
 
-  const currentDelegators = delegators
-    .filter(d => d.nodeID === validator.nodeID)
-
-  const delegateStake = currentDelegators
+  const delegateStake = delegators
     .reduce((a, b) => {
       return a + parseFloat(b.stakeAmount)
     }, 0.0)
 
-  const potentialReward = currentDelegators
+  const potentialReward = delegators
     .reduce((a, b) => {
       return a + parseFloat(b.potentialReward)
     }, 0.0)
 
   return {
     delegateStake,
-    delegatorsCount: currentDelegators.length,
-    potentialReward,
-    delegations: currentDelegators
+    potentialReward
   }
 }
 
 export function mapDelegators (delegators) {
   if (!delegators) return []
-  return delegators.map((delegator, i) => {
-    const nodeId = delegator.nodeID
-    const { avatar } = getAvatar(nodeId)
 
-    return {
-      ...delegator,
-      avatar,
-      nodeId,
-      index: i + 1,
-      fromNowST: fromNow(delegator.startTime),
-      stake: getAvaFromnAva(delegator.stakeAmount),
-      stakenAva: parseFloat(delegator.stakeAmount)
+  return delegators.map((delegator) => {
+    if (delegator.rewardOwner) {
+      const { avatar } = getAvatar(delegator.rewardOwner.addresses[0])
+      return {
+        ...delegator,
+        avatar
+      }
     }
+    return delegator
   })
 }
 

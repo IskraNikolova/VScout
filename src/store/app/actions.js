@@ -60,7 +60,6 @@ import {
 } from './../../modules/networkRpc'
 
 import {
-  mapDelegators,
   mapValidators,
   validatorProcessing
 } from './../../utils/validators'
@@ -77,8 +76,7 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(GET_VALIDATORS, {
-        subnetID: getters.subnetID,
-        init: false
+        subnetID: getters.subnetID
       }),
       dispatch(GET_HEIGHT, {}),
       dispatch(GET_CURRENT_SUPPLY)
@@ -117,20 +115,6 @@ async function initEndpoint ({ commit }) {
 
   const nodeID = response.data.result.nodeID
   commit(SET_NODE_ID, { nodeID })
-  // let endpoint = network.endpointUrls[1]
-  // let response = await _getNodeId({ endpoint: endpoint.url })
-  // if (response.data.error) {
-  //   endpoint = getters.networkEndpoint
-  //   response = await _getNodeId({ endpoint: endpoint.url })
-  //   if (response.data.error) {
-  //     endpoint = network.endpointUrls[0]
-  //     response = await _getNodeId({ endpoint: endpoint.url })
-  //   }
-  // }
-
-  // const nodeID = response.data.result.nodeID
-  // commit(SET_ENDPOINT, { endpoint })
-  // commit(SET_NODE_ID, { nodeID })
 }
 
 async function getBlockchains (
@@ -212,7 +196,10 @@ async function getAssetsCount ({ commit }) {
 
 async function getValidators (
   { dispatch, commit, getters },
-  { subnetID = network.defaultSubnetID, endpoint = getters.networkEndpoint.url, init = true }) {
+  {
+    subnetID = network.defaultSubnetID,
+    endpoint = getters.networkEndpoint.url
+  }) {
   const response = await _getValidators({ subnetID, endpoint })
 
   if (response.data.error) {
@@ -221,20 +208,16 @@ async function getValidators (
   }
 
   commit(UPDATE_UI, { doesItConnect: false })
-  let { validators, delegators } = response.data.result
+  let { validators } = response.data.result
 
   if (typeof validators === 'undefined' ||
     validators === null) {
     validators = []
-    delegators = []
   }
-
-  const del = mapDelegators(delegators)
-  commit(SET_DELEGATORS, { delegators: del })
 
   let defaultVal = []
   if (getters.defaultValidators) defaultVal = getters.defaultValidators
-  const res = await validatorProcessing(validators, delegators, defaultVal)
+  const res = await validatorProcessing(validators, defaultVal)
 
   commit(SET_VALIDATORS, {
     validators: res.validators
@@ -245,6 +228,8 @@ async function getValidators (
     validatedStake: res.validatedStake,
     delegatedStake: res.delegatedStake
   })
+
+  commit(SET_DELEGATORS, { delegators: res.delegators })
 
   if (getters.isDefaultSubnetID(subnetID)) {
     commit(SET_DEFAULT_VALIDATORS, {
@@ -269,17 +254,12 @@ async function getPendingValidators (
   if (typeof validators === 'undefined' ||
       validators === null) validators = []
 
-  if (validators.length < 1) {
-    commit(SET_PENDING_DELEGATORS, { delegators: [] })
-    commit(SET_PENDING_VALIDATORS, { validators: [] })
-    return
-  }
+  commit(SET_PENDING_DELEGATORS, { delegators })
 
-  commit(SET_PENDING_DELEGATORS, {
-    delegators: mapDelegators(delegators)
-  })
+  let defaultVal = []
+  if (getters.defaultValidators) defaultVal = getters.defaultValidators
+  const val = await mapValidators(validators, defaultVal)
 
-  const val = await mapValidators(validators)
   commit(SET_PENDING_VALIDATORS, {
     validators: val
   })

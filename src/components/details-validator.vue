@@ -4,11 +4,23 @@
       <div class="row items-center no-wrap">
         <div class="col">
           <div v-if="validator.nodeID !== validator.name">
-            <span tyle="font-size: 15px;" class="text-grey">NAME </span>
-            <a :href="validator.link" v-if="validator.link" class="text-grey" style="font-size: 14px;opacity: 0.5;">{{ validator.name }}</a>
-            <span v-else class="text-grey" style="font-size: 15px;opacity: 0.5;">{{ validator.name }}</span>
+            <span id="font15" class="text-grey">NAME </span>
+            <a :href="validator.link" v-if="validator.link" class="text-grey" id="link">
+              {{ validator.name }}
+            </a>
+            <span v-else class="text-grey" id="link">
+              {{ validator.name }}
+            </span>
           </div>
-          <span style="font-size: 15px;" class="text-grey"><small>NODE ID </small> </span> <span @click="$router.push(`/validator/${validator.nodeID}`)" class="text-grey" style="cursor: pointer;font-size: 14px;opacity: 0.5;">[{{ validator.nodeID }}]</span>
+          <span id="font15" class="text-grey">
+            <small>NODE ID </small> </span>
+            <span
+              @click="$router.push(`/validator/${validator.nodeID}`)"
+              class="text-grey"
+              id="nodeID"
+            >
+              [{{ validator.nodeID }}]
+            </span>
             <small>
               <q-icon
                 @click="copyToClipboard(validator.nodeID)"
@@ -16,7 +28,10 @@
               />
             </small>
             <div v-if="validator.rewardOwner">
-              <span class="text-grey" style="font-size: 15px;"><small>OWNER  </small></span><span style="font-size: 14px;opacity: 0.5;">{{ rewardOwner }}</span>
+              <span class="text-grey" id="font15">
+                <small>OWNER  </small>
+              </span>
+              <span id="link">{{ rewardOwner }}</span>
               <small>
                 <q-icon
                   @click="copyToClipboard(rewardOwner)"
@@ -26,47 +41,100 @@
             </div>
         </div>
         <div class="col">
-          <div><span class="text-grey" style="font-size: 15px;"><small>VALIDATION </small>  </span><span style="font-size: 14px;opacity: 0.5;">{{ validatePeriod }}</span></div>
+          <div>
+            <span class="text-grey" id="font15">
+              <small>VALIDATION </small>
+            </span>
+            <span id="link">
+              {{ validatePeriod }}
+            </span>
+          </div>
           <div class="row">
-            <div class="col"><span class="text-grey" style="font-size: 15px;"><small>START TIME </small> </span> <span style="font-size: 14px;opacity: 0.5;">{{ startDate }} </span><small>({{ fromNowGet }})</small></div>
-            <div class="col"><span class="text-grey" style="font-size: 15px;"><small>END TIME </small> </span>  <span style="font-size: 14px;opacity: 0.5;">{{ endDate }}</span></div>
+            <div class="col">
+              <span class="text-grey" id="font15">
+                <small>START TIME </small>
+              </span>
+              <span id="link">
+                {{ startDate }}
+              </span>
+              <small>
+                ({{ fromNowGet }})
+              </small>
+            </div>
+            <div class="col">
+              <span class="text-grey" id="font15">
+                <small>END TIME </small>
+              </span>
+              <span id="link">
+                {{ endDate }}
+              </span>
+            </div>
           </div>
         </div>
       </div>
     </q-card-section>
     <div class="row items-start q-gutter-md q-pl-md">
+      <!-- STAKE PANEL-->
       <q-card class="my-card bg-grey-1 col-3">
         <q-card-section>
           <div class="text-h6">Stake</div>
         </q-card-section>
 
         <q-card-section>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">OWN </small> {{ getLocaleString(validator.stake) }} <span class="text-accent">AVAX</span></div>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATED </small> {{ getLocaleString(validator.delegateStake) }} <span class="text-accent">AVAX</span></div>
+          <div class="text-subtitle2">
+            <small id="label">OWN </small>
+            <span> {{ getFormatReward(validator.stakeAmount) }}</span>
+            <span class="text-accent text-medium"><small> AVAX</small></span>
+          </div>
+          <div class="text-subtitle2">
+            <small id="label">DELEGATED </small>
+            <span> {{ getFormatReward(validator.delegateStake) }}</span>
+            <span class="text-accent text-medium"><small> AVAX</small></span>
+          </div>
         </q-card-section>
 
         <q-separator />
 
         <q-card-actions>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">TOTAL </small> {{ getLocaleString(validator.total) }} <span class="text-accent">AVAX</span></div>
+          <div class="text-subtitle2">
+            <small id="label">TOTAL </small>
+            <span> {{ getFormatReward(validator.totalStakeAmount) }}</span>
+            <span class="text-accent text-medium"><small> AVAX</small></span>
+          </div>
         </q-card-actions>
       </q-card>
+
+      <!-- REWARD PANEL-->
       <q-card class="my-card bg-grey-1 col-3">
         <q-card-section>
           <div class="text-h6">Reward</div>
         </q-card-section>
 
         <q-card-section>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">POTENTIAL REWARD </small> {{ getFormatReward(validator.potentialReward) }} <span class="text-accent">AVAX</span></div>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATION FEES REWARD</small> {{ potentialRewardFromDelegators() }} <span class="text-accent">AVAX</span></div>
+          <div class="text-subtitle2">
+            <small id="label">POTENTIAL REWARD </small>
+            <span> {{ getFormatReward(validator.potentialReward) }}</span>
+            <span class="text-accent text-medium"><small> AVAX</small></span>
+          </div>
+          <div class="text-subtitle2">
+            <small id="label">DELEGATION FEES REWARD</small>
+            <span> {{ potentialRewardFromDelegators() }}</span>
+            <span class="text-accent text-medium"><small> AVAX</small></span>
+          </div>
         </q-card-section>
 
         <q-separator />
 
         <q-card-actions>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">TOTAL </small> {{ totalReward() }} <span class="text-accent">AVAX</span></div>
+          <div class="text-subtitle2">
+            <small id="label">TOTAL </small>
+            <span> {{ totalReward() }}</span>
+            <span class="text-accent text-medium"><small> AVAX</small></span>
+          </div>
         </q-card-actions>
       </q-card>
+
+      <!-- DELEGATE PANEL-->
       <q-card class="my-card bg-grey-1 col-3">
         <q-card-section>
            <div class="row items-center no-wrap">
@@ -75,13 +143,13 @@
                 <span class="text-accent" v-if="getBorderIsDelegatable()">
                   AVAILABLE
                   <q-icon name="info">
-                    <tooltip-style v-bind:text="'The validator has available remaining capacity and enough remaining time for delegations. '" />
+                    <tooltip-style v-bind:text="available" />
                   </q-icon>
                 </span>
                 <span class="text-negative" v-else>
                   UNAVAILABLE
                   <q-icon name="info">
-                   <tooltip-style v-bind:text="'The validator has no available capacity and/or enough remaining time for delegation.'" />
+                   <tooltip-style v-bind:text="unavailable" />
                   </q-icon>
                 </span>
               </div>
@@ -89,11 +157,18 @@
         </q-card-section>
 
         <q-card-section>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATION FEE  </small> {{ validator.delegationFee }} <span class="text-accent">%</span></div>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">DELEGATIONS CAPACITY</small> {{ getFormatReward(validator.remainingCapacity) }} <span class="text-accent">AVAX</span></div>
-          <br />
           <div class="text-subtitle2">
-            <small style="opacity: 0.5;">REMAINIG TIME </small>
+            <small id="label">DELEGATION FEE  </small>
+            <span> {{ formatValue(validator.delegationFee) }}</span>
+            <span class="text-accent"> %</span>
+          </div>
+          <div class="text-subtitle2">
+            <small id="label">DELEGATIONS CAPACITY</small>
+            <span> {{ getFormatReward(validator.remainingCapacity) }}</span>
+            <span class="text-accent text-medium"><small> AVAX</small></span>
+          </div>
+          <div class="text-subtitle2 q-mt-md">
+            <small id="label">REMAINIG TIME </small>
             <span v-if="months > 0">
               <span class="text-accent">Months </span>
               {{ months }}
@@ -107,16 +182,32 @@
           </div>
         </q-card-section>
       </q-card>
+
+      <!-- DELEGATIONS PANEL-->
       <q-card class="my-card bg-grey-1 col-3">
         <q-card-section>
-          <div class="text-h6">{{ validator.delegatorsCount }} Delegations</div>
+          <div class="text-h6">
+            <span class="text-orange">{{ delegatorsCount }}</span>
+            Delegations
+          </div>
         </q-card-section>
 
         <q-card-section>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">RANK  </small> <q-icon name="img:statics/star.svg" size="1.5em" /> {{ validator.rank }}</div>
-          <div class="text-subtitle2"><small style="opacity: 0.5;">NETWORK SHARE </small> {{ validator.percent }} <span class="text-accent">%</span></div>
-          <br />
-          <div class="text-subtitle2"><small style="opacity: 0.5;">CUMULATIVE STAKE </small> {{ validator.cumulativeStake }} <span class="text-accent">%</span></div>
+          <div class="text-subtitle2 q-mb-md">
+            <small id="label">RANK  </small>
+            <q-icon name="img:statics/star.svg" size="1.5em" />
+            <span>{{ validator.rank }}</span>
+          </div>
+          <div class="text-subtitle2">
+            <small id="label">NETWORK SHARE </small>
+            <span>{{ formatValue(validator.percent) }}</span>
+            <span class="text-accent"> %</span>
+          </div>
+          <div class="text-subtitle2">
+            <small id="label">CUMULATIVE STAKE </small>
+            <span>{{ validator.cumulativeStake }}</span>
+            <span class="text-accent"> %</span>
+          </div>
         </q-card-section>
       </q-card>
     </div>
@@ -129,10 +220,14 @@ import {
 } from 'quasar'
 
 import { round } from './../utils/commons.js'
-import { UPDATE_UI } from './../store/ui/types'
 import { getAvaFromnAva } from './../utils/avax.js'
 import { getDelegationReward } from './../modules/reward.js'
-import { date, fromNow, getDurationHumanize, getWeeks } from './../modules/time.js'
+
+import {
+  date,
+  fromNow,
+  getDurationHumanize
+} from './../modules/time.js'
 
 export default {
   name: 'DetailsValidator',
@@ -146,6 +241,10 @@ export default {
     TooltipStyle: () => import('components/tooltip-style')
   },
   computed: {
+    delegatorsCount: function () {
+      if (!this.validator.delegators) return 0
+      return this.validator.delegators.length
+    },
     startDate: function () {
       return date(this.validator.startTime)
     },
@@ -156,15 +255,22 @@ export default {
       return fromNow(this.validator.startTime)
     },
     validatePeriod: function () {
-      return getDurationHumanize(this.validator.startTime, this.validator.endTime)
+      return getDurationHumanize(
+        this.validator.startTime,
+        this.validator.endTime
+      )
     },
     rewardOwner: function () {
       if (!this.validator.rewardOwner) return
-      return this.validator.rewardOwner.addresses[0]
+      return this.validator
+        .rewardOwner
+        .addresses[0]
     },
     dataArray: function () {
       if (!this.validator.remainingTime) return
-      return this.validator.remainingTime.split(':')
+      return this.validator
+        .remainingTime
+        .split(':')
     },
     months: function () {
       return this.dataArray[0]
@@ -178,7 +284,9 @@ export default {
   },
   data () {
     return {
-      delReward: 0
+      delReward: 0,
+      available: 'The validator has available remaining capacity and enough remaining time for delegations.',
+      unavailable: 'The validator has no available capacity and/or enough remaining time for delegation.'
     }
   },
   methods: {
@@ -196,19 +304,15 @@ export default {
     },
     getBorderIsDelegatable () {
       if (!this.validator) return
-      return this.validator.isMinimumAmountForStake && this.validator.remainingCapacity > 25
+      return this.validator
+        .isMinimumAmountForStake &&
+          this.validator.remainingCapacity > 25
     },
     getFormatReward (val) {
       if (!val) return 0
       const avax = getAvaFromnAva(val)
-      return round(avax, 100).toLocaleString()
-    },
-    getLocaleString (val) {
-      if (!val) return 0
-      return val.toLocaleString()
-    },
-    getWeeksP () {
-      return getWeeks(this.startDate, this.endDate)
+      return round(avax, 100)
+        .toLocaleString()
     },
     potentialRewardFromDelegators () {
       if (!this.validator) return
@@ -217,18 +321,17 @@ export default {
         this.validator.delegationFee
       )
       this.delReward = percent
-      return getAvaFromnAva(percent).toLocaleString()
+      return getAvaFromnAva(percent)
+        .toLocaleString()
     },
     totalReward () {
-      const total = this.delReward + parseFloat(this.validator.potentialReward)
+      const pr = parseFloat(this.validator.potentialReward)
+      const total = this.delReward + pr
       return this.getFormatReward(total)
     },
-    onGetDelegations () {
-      this.$store.commit(UPDATE_UI, {
-        typeAccount: {
-          isValidators: false
-        }
-      })
+    formatValue (val) {
+      if (!val) return
+      return round(parseFloat(val), 100)
     }
   }
 }
@@ -240,5 +343,20 @@ export default {
   .my-card {
     width: 100%;
     max-width: 300px;
+  }
+  #nodeID {
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0.5;
+  }
+  #link {
+    font-size: 14px;
+    opacity: 0.5;
+  }
+  #font15 {
+    font-size: 15px;
+  }
+  #label {
+    opacity: 0.5;
   }
 </style>

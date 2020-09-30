@@ -73,18 +73,18 @@
             <div class="q-mb-md text-medium">STAKE (AVAX)</div>
             <div>
               <span class="text-subtitle2"><small style="opacity: 0.8;">OWN</small></span>
-              <span class="on-right text-medium text-h6">{{ getLocalString(validator.stake) }}</span>
+              <span class="on-right text-medium text-h6">{{ getFormatAva(validator.stakeAmount) }}</span>
               <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
             </div>
             <div>
               <span class="text-subtitle2"><small style="opacity: 0.8;">DELEGATED</small></span>
-              <span class="on-right">{{ getLocalString(validator.delegateStake) }}</span>
+              <span class="on-right">{{ getFormatAva(validator.delegateStake) }}</span>
               <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
             </div>
             <q-separator class="q-mt-xs q-mb-xs" style="width: 180px;"/>
             <div>
               <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
-              <span class="on-right">{{ getLocalString(validator.total) }}</span>
+              <span class="on-right">{{ getFormatAva(validator.totalStakeAmount) }}</span>
               <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
             </div>
           </q-card-section>
@@ -160,7 +160,7 @@
         <div class="col-1"></div>
         <div class="col-6 q-pt-md">
           <div class="q-mb-md text-medium">
-            <span class="text-orange" style="font-size: 18px;">{{ validator.delegatorsCount }} </span>
+            <span class="text-orange" style="font-size: 18px;">{{ delegatorsCount }} </span>
             DELEGATIONS
           </div>
           <q-scroll-area style="height: 150px;">
@@ -169,7 +169,7 @@
               <div class="col-4"><span class="text-subtitle2"><small style="opacity: 0.8;">STAKE AMOUNT</small></span></div>
             </div>
             <q-separator class="q-pb-xs" style="width: 80%;"/>
-            <div v-for="(delegation, i) in getDelegationsForNode(validator.nodeID)" :key="i" class="q-py-xs row">
+            <div v-for="(delegation, i) in validator.delegators" :key="i" class="q-py-xs row">
               <div class="col-8" @click="copyToClipboard(delegationRewardOwner(delegation.rewardOwner))">
                 {{ delegationRewardOwner(delegation.rewardOwner) }}
               </div>
@@ -281,18 +281,18 @@
             <div class="q-mb-md text-medium">STAKE (AVAX)</div>
             <div>
               <span class="text-subtitle2"><small style="opacity: 0.8;">OWN</small></span>
-              <span class="on-right text-medium text-h6">{{ getLocalString(validator.stake) }}</span>
+              <span class="on-right text-medium text-h6">{{ getFormatAva(validator.stakeAmount) }}</span>
               <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
             </div>
             <div>
               <span class="text-subtitle2"><small style="opacity: 0.8;">DELEGATED</small></span>
-              <span class="on-right">{{ getLocalString(validator.delegateStake) }}</span>
+              <span class="on-right">{{ getFormatAva(validator.delegateStake) }}</span>
               <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
             </div>
             <q-separator class="q-mt-xs q-mb-xs" style="width: 180px;"/>
             <div>
               <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
-              <span class="on-right">{{ getLocalString(validator.total) }}</span>
+              <span class="on-right">{{ getFormatAva(validator.totalStakeAmount) }}</span>
               <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
             </div>
           </q-card-section>
@@ -301,7 +301,7 @@
         <q-card flat class="col-12">
           <q-card-section>
             <div class="q-mb-md text-medium">DELEGATE</div>
-            <div >
+            <div>
               <span class="text-accent text-medium" v-if="getBorderIsDelegatable()">
                 AVAILABLE
                 <q-icon name="info">
@@ -367,14 +367,14 @@
       <q-separator />
       <div class="row q-pa-md">
         <div class="col-12">
-          <div class="q-mb-md text-medium"><span class="text-orange" style="font-size: 18px;">{{ validator.delegatorsCount }} </span>DELEGATIONS</div>
+          <div class="q-mb-md text-medium"><span class="text-orange" style="font-size: 18px;">{{ delegatorsCount }} </span>DELEGATIONS</div>
           <q-scroll-area style="height: 100px;">
             <div class="row">
               <div class="col-8"><span class="text-subtitle2"><small style="opacity: 0.8;">OWNER</small></span></div>
               <div class="col-4"><span class="text-subtitle2"><small style="opacity: 0.8;">STAKE AMOUNT</small></span></div>
             </div>
             <q-separator />
-            <div v-for="(delegation, i) in getDelegationsForNode(validator.nodeID)" :key="i" class="row q-py-xs">
+            <div v-for="(delegation, i) in validator.delegators" :key="i" class="row q-py-xs">
               <div class="col-8" @click="copyToClipboard(delegationRewardOwner(delegation.rewardOwner))">
                 {{ getFormatOwner(delegationRewardOwner(delegation.rewardOwner), 12, 34) }}
               </div>
@@ -436,11 +436,14 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'validatorById',
-      'getDelegationsForNode'
+      'validatorById'
     ]),
     validator: function () {
       return this.getValidator(this.$route.params.id)
+    },
+    delegatorsCount: function () {
+      if (!this.validator.delegators) return 0
+      return this.validator.delegators.length
     },
     rewardOwner: function () {
       const result = this.validator.rewardOwner.addresses
@@ -519,7 +522,7 @@ export default {
       return val.toLocaleString()
     },
     getFormatAva (val) {
-      if (!val) return
+      if (!val) return 0
       return this.getLocalString(getAvaFromnAva(val))
     },
     formatDate (time) {

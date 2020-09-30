@@ -12,8 +12,7 @@
       :visible-columns="visibleColumns"
       :loading="visible"
     >
-      <template
-        slot="top-left"
+      <template slot="top-left"
         v-if="isActive && curentValidators.length < 1"
       >
         <q-btn size="xs" outline label="Load For Default Subnet" @click="onGetDefaultValidators"/>
@@ -69,13 +68,6 @@
         <!--<q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
         <add-identification-dialog ref="addIdentificationRef" />-->
       </template>
-      <template v-slot:header-cell-rank="props">
-        <q-th :props="props">
-          Rank
-          <q-icon name="img:statics/star.svg" size="1.5em">
-          </q-icon>
-        </q-th>
-      </template>
       <template slot="top-left" v-if="!isGrid">
         <small><div class="col" style="margin-top: 20px; margin-bottom: 10px;">
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="networkShare" label="Network Share" />
@@ -88,7 +80,7 @@
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="remainingTime" label="Remaining Time" />
         </div></small>
       </template>
-      <template slot="top-right" v-if="!isGrid">
+      <template v-slot:top-right="props" v-if="!isGrid">
         <q-input
           borderless
           color="accent"
@@ -100,6 +92,21 @@
             <q-icon name="search" color="accent" />
           </template>
         </q-input>
+        <q-btn
+          size="xs"
+          flat round dense
+          :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+          @click="props.toggleFullscreen"
+          class="absolute-top-right"
+          color="grey"
+        />
+      </template>
+      <template v-slot:header-cell-rank="props">
+        <q-th :props="props">
+          Rank
+          <q-icon name="img:statics/star.svg" size="1.5em">
+          </q-icon>
+        </q-th>
       </template>
       <template v-slot:body="props">
         <q-tr :props="props" auto-width>
@@ -142,11 +149,11 @@
             </div>
             <div v-else-if="col.name === 'stake'">
               <div>
-                <small class="text-grey">Total:</small> {{ getFormatAVAX(props.row.total) }}
+                <small class="text-grey">Total:</small> {{ getFormatReward(props.row.totalStakeAmount) }}
               </div>
               <div>
-                <small class="text-grey">Own: </small> <span class="text-orange">{{ getFormatAVAX(col.value) }}</span>
-                <small class="text-grey"> D: {{ getFormatDS(props.row.delegateStake) }}</small>
+                <small class="text-grey">Own: </small> <span class="text-orange">{{ getFormatReward(col.value) }}</span>
+                <small class="text-grey"> D: {{ getFormatReward(props.row.delegateStake) }}</small>
               </div>
             </div>
             <div v-else-if="col.name === 'weight'">
@@ -205,9 +212,9 @@
         </q-tr>
       </template>
       <template v-slot:item="props">
-        <div style="max-width: 400px;width: 100%;margin:auto;margin-bottom: 5px;">
+        <div id="item">
           <q-card flat bordered>
-            <span class="absolute absolute-top-right q-mt-xs q-mr-md" v-if="props.row.uptime > 0">
+            <span class="absolute absolute-top-right q-mt-xs q-mr-md">
               <small class="q-mr-xs">Up Time</small>
               <q-badge :color="getColorUptime(props.row.uptime)" >
                 {{ getUpTime(props.row.uptime) }} %
@@ -268,15 +275,15 @@
               <q-card-section class="col-6 q-mb-xl">
                 <div class="text-medium q-mb-md">Stake (AVAX)</div>
                 <small class="text-grey">Own</small>
-                {{ getFormatAVAX(props.row.stake)}}
+                {{ getFormatReward(props.row.stakeAmount)}}
                 <div>
                   <small class="text-grey">Delegated</small>
-                  {{ props.row.delegateStake }}
+                  {{ getFormatReward(props.row.delegateStake) }}
                 </div>
                 <q-separator />
                 <div>
                   <small class="text-grey">Total</small>
-                  {{ getFormatAVAX(props.row.total)}}
+                  {{ getFormatReward(props.row.totalStakeAmount)}}
                   <small class="text-accent">AVAX</small>
                 </div>
                 <div class="text-medium q-mt-md">Network Share (%)</div>
@@ -405,7 +412,7 @@ export default {
           name: 'stake',
           align: 'center',
           label: 'Stake (AVAX)',
-          field: row => row.stake,
+          field: row => row.stakeAmount,
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -535,9 +542,9 @@ export default {
             c !== 'progress' &&
             c !== 'rank'
           )
-      } else if (curentValidators.find(a => a.weight < 1)) {
+      } else if (curentValidators.find(a => !a.weight)) {
         return columns.filter(c => c !== 'weight' && c !== 'percent' && c !== 'progress')
-      } else if (curentValidators.find(a => a.weight > 0)) {
+      } else if (curentValidators.find(a => a.weight)) {
         return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
       }
 
@@ -565,26 +572,13 @@ export default {
       if (val >= 0.6) return 'green'
       return 'negative'
     },
-    getFormatNodeID (id) {
-      if (!id) return
-      return `${id.substr(0, 12)}...${id.substr(27)}`
-    },
     getFormatReward (val) {
       if (!val) return 0
+
       const avax = getAvaFromnAva(val)
-      return this.getLocalString(round(avax, 100))
-    },
-    getLocalString (val) {
-      if (val) return val.toLocaleString()
-      return 0
-    },
-    getFormatAVAX (val) {
-      if (!val) return 0
-      return this.getLocalString(round(Number(val), 100))
-    },
-    getFormatDS (val) {
-      if (!val) return 0
-      return this.getLocalString(round(val, 100))
+
+      return round(avax, 100)
+        .toLocaleString()
     },
     getFormatOwner (val) {
       if (!val.addresses) return
@@ -592,11 +586,6 @@ export default {
     },
     onClick (link) {
       if (link) openURL(link)
-    },
-    onDelegate (validator) {
-      this.$refs
-        .delegateValidatorDialog
-        .openDelegate(validator)
     },
     onAddIdentification () {
       this.$refs.addIdentificationRef.openAddId()
@@ -655,6 +644,12 @@ export default {
 #rank {
   padding-left: 25px!important;
   font-size: 14px;
+}
+#item {
+  max-width: 400px;
+  width: 100%;
+  margin:auto;
+  margin-bottom: 5px;
 }
 </style>
 <style lang="sass">

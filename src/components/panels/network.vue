@@ -247,6 +247,7 @@ export default {
       return colors[status]
     },
     getStatusInfo (status) {
+      if (!statusInfo[status]) return ''
       return statusInfo[status]
     },
     goToDoc (url) {
