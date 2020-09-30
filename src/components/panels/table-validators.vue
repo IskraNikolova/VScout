@@ -114,9 +114,9 @@
             v-for="(col) in props.cols"
             :key="col.name"
             :props="props"
-            style="padding: 0px!important;height: 50px!important;"
+            id="custom-td"
           >
-            <div v-if="col.name === 'validator'" class="row" style="min-width: 330px;">
+            <div v-if="col.name === 'validator'" class="row" id="validator">
               <div :style="'border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 50px;width: 27px;'">
                 <q-avatar size="25px" @click="onClick(props.row.link)">
                   <q-img :src="props.row.avatar">
@@ -130,7 +130,7 @@
               <div
                 v-if="props.row.name !== props.row.nodeID"
                 style="cursor:pointer;"
-                class="q-pt-xs q-ml-md"
+                class="q-pt-xs"
                 @click="props.expand = !props.expand">
                 {{ col.value }}
                 <div class="text-grey">({{ props.row.nodeID }})</div>
@@ -152,16 +152,23 @@
                 <small class="text-grey">Total:</small> {{ getFormatReward(props.row.totalStakeAmount) }}
               </div>
               <div>
-                <small class="text-grey">Own: </small> <span class="text-orange">{{ getFormatReward(col.value) }}</span>
+                <small class="text-grey">Own: </small>
+                <span class="text-orange">{{ getFormatReward(col.value) }}</span>
                 <small class="text-grey"> D: {{ getFormatReward(props.row.delegateStake) }}</small>
               </div>
             </div>
             <div v-else-if="col.name === 'weight'">
               {{ col.value }}
-              <tooltip-style v-bind:text="'Weight is the validator’s weight used for sampling.'" v-bind:icon="'info'" />
+              <tooltip-style
+                v-bind:text="'Weight is the validator’s weight used for sampling.'"
+                v-bind:icon="'info'"
+              />
             </div>
             <div v-else-if="col.name === 'percent'">
-              <div class="container_row" v-if="props.row.cumulativeStake">
+              <div
+                class="container_row"
+                v-if="props.row.cumulativeStake"
+              >
                 <div
                   class="layer1"
                   :style="'border-radius:0px 5px 0px 0px;height: 50px;width:' + props.row.cumulativeStake + '%;background: rgb(50,53,59);background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(50,53,59,1) ' + (props.row.cumulativeStake - props.row.percent) / 5 + '%, rgba(255,96,0,1) 95%);'">
@@ -170,15 +177,15 @@
                   <q-linear-progress
                     size="49px"
                     rounded
-                    :value="(props.row.cumulativeStake - props.row.percent) / 100"
-                    :buffer="(props.row.cumulativeStake - props.row.percent) / 100"
-                    style="opacity:0.5;border-radius:0px 5px 0px 0px;"
+                    :value="getData(props.row, props.row)"
+                    :buffer="getData(props.row, props.row)"
+                    id="pr"
                     color="grey">
                     <div
                       class="absolute-full text-bold text-black"
-                      style="font-size: 15px;margin-top: 9.5%;"
+                      id="lp"
                     >
-                      {{ props.row.cumulativeStake }} %
+                      {{ col.value }} %
                     </div>
                   </q-linear-progress>
                 </div>
@@ -379,10 +386,6 @@ export default {
   },
   data () {
     return {
-      textStickyPositive: 'Sticky header',
-      textStickyNegative: 'Remove a sticky header',
-      tableClass: 'light-background shadow-3',
-      isNotSticky: true,
       filter: '',
       visible: false,
       type: 'active',
@@ -412,7 +415,7 @@ export default {
           name: 'stake',
           align: 'center',
           label: 'Stake (AVAX)',
-          field: row => row.stakeAmount,
+          field: row => Number(row.stakeAmount),
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -500,7 +503,11 @@ export default {
           headerClasses: 'text-medium'
         }
       ],
-      visibleColumns: []
+      isNotSticky: true,
+      visibleColumns: [],
+      textStickyPositive: 'Sticky header',
+      textStickyNegative: 'Remove a sticky header',
+      tableClass: 'light-background shadow-3'
     }
   },
   created () {
@@ -530,6 +537,9 @@ export default {
     }
   },
   methods: {
+    getData (row) {
+      return (row.cumulativeStake - row.percent) / 100
+    },
     getVisibleColumns (curentValidators) {
       const columns = this.columns.map(c => c.name)
       if (curentValidators.find(a => a.percent === 'NAN' || !a.percent)) {
@@ -642,7 +652,7 @@ export default {
   grid-row: 1;
 }
 #rank {
-  padding-left: 25px!important;
+  margin-left: 25px!important;
   font-size: 14px;
 }
 #item {
@@ -650,6 +660,22 @@ export default {
   width: 100%;
   margin:auto;
   margin-bottom: 5px;
+}
+#validator {
+  min-width: 330px;
+  margin-left: -20px;
+}
+#custom-td {
+  padding: 0px!important;
+  height: 50px!important;
+}
+#pr {
+  opacity:0.5;
+  border-radius:0px 5px 0px 0px;
+}
+#lp {
+  font-size: 15px;
+  margin-top: 9.5%;
 }
 </style>
 <style lang="sass">

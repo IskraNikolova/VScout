@@ -14,7 +14,7 @@
           color="accent"
           flat
         />
-          <subnet-details class="q-pr-md" v-bind:id="$route.params.id"/>
+          <subnet-details class="q-pr-md" />
         </q-card>
       <div class="flex flex-center">
         <img src="~assets/vscoutlogo5.svg" id="logo">

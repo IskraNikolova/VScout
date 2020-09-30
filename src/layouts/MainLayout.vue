@@ -74,7 +74,7 @@
           </q-toolbar-title>
           <span v-if="validatorById(nodeID)" style="min-width: 300px;margin-right: 15%;">
             <countdown class="row" v-bind:color="'#ffffff'" v-bind:countdown="getRemainigTime()" />
-            <tooltip-style v-bind:text="'Remaining validation time of' + nodeID  + ''" />
+            <tooltip-style v-bind:text="'Remaining validation time for ' + nodeID  + ''" />
           </span>
           <q-bar>
             <q-input
@@ -99,11 +99,15 @@
           <div class="col" @click="$router.push('/')" style="cursor:pointer;margin-top: 7px;margin-left: 7px;">
             VScout.io
           </div>
-          <a style="text-decoration: none;padding-top: 5px;padding-left: 20px;padding-right: 20px;" class="text-grey" href="#faqs">FAQ</a>
+          <a id="faq2" class="text-grey" href="#faqs">FAQ</a>
         </div>
         <div class="background-white q-pb-md">
           <span v-if="validatorById(nodeID)">
-            <countdown class="row" v-bind:color="'#32353b'" v-bind:countdown="getRemainigTime()" />
+            <countdown
+              class="row"
+              v-bind:color="'#32353b'"
+              v-bind:countdown="getRemainigTime()"
+            />
           </span>
         </div>
         <div class="background-orange q-pb-md">
@@ -370,6 +374,12 @@ export default {
   #faq {
     text-decoration: none;
     margin-top: -3px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  #faq2 {
+    text-decoration: none;
+    padding-top: 5px;
     padding-left: 20px;
     padding-right: 20px;
   }

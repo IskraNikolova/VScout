@@ -130,12 +130,12 @@ export function getDelegatorDetails (delegators) {
 
   const delegateStake = delegators
     .reduce((a, b) => {
-      return a + parseFloat(b.stakeAmount)
+      return BigNumber.sum(a, b.stakeAmount)
     }, 0.0)
 
   const potentialReward = delegators
     .reduce((a, b) => {
-      return a + parseFloat(b.potentialReward)
+      return BigNumber.sum(a, b.potentialReward)
     }, 0.0)
 
   return {
@@ -148,14 +148,15 @@ export function mapDelegators (delegators) {
   if (!delegators) return []
 
   return delegators.map((delegator) => {
-    if (delegator.rewardOwner) {
-      const { avatar } = getAvatar(delegator.rewardOwner.addresses[0])
-      return {
-        ...delegator,
-        avatar
-      }
+    const { avatar } = getAvatar(
+      delegator
+        .rewardOwner
+        .addresses[0]
+    )
+    return {
+      ...delegator,
+      avatar
     }
-    return delegator
   })
 }
 

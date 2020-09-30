@@ -14,7 +14,7 @@
           color="accent"
           flat
         />
-        <blockchain-details class="q-pr-md" v-bind:id="$route.params.id"/>
+        <blockchain-details class="q-pr-md"/>
       </q-card>
       <div class="flex flex-center">
         <img src="~assets/vscoutlogo5.svg" id="logo">

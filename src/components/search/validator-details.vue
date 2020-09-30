@@ -367,7 +367,12 @@
       <q-separator />
       <div class="row q-pa-md">
         <div class="col-12">
-          <div class="q-mb-md text-medium"><span class="text-orange" style="font-size: 18px;">{{ delegatorsCount }} </span>DELEGATIONS</div>
+          <div class="q-mb-md text-medium">
+            <span class="text-orange" style="font-size: 18px;">
+              {{ delegatorsCount }}
+            </span>
+            <span> DELEGATIONS</span>
+          </div>
           <q-scroll-area style="height: 100px;">
             <div class="row">
               <div class="col-8"><span class="text-subtitle2"><small style="opacity: 0.8;">OWNER</small></span></div>

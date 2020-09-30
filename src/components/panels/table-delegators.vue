@@ -97,13 +97,13 @@
             :props="props"
             style="padding: 0px!important;margin:0px!important;"
           >
-            <div v-if="col.name === 'rewardOwner'" class="row q-pl-md">
+            <div v-if="col.name === 'rewardOwner'" class="row q-ml-xs">
               <q-avatar size="25px">
                 <img :src="props.row.avatar" />
               </q-avatar>
               <div
                 style="font-size: 90%;"
-                class="q-pt-xs q-ml-md">
+                class="q-pt-xs q-ml-xs">
                 {{ col.value }}
               </div>
             </div>
@@ -164,16 +164,13 @@ export default {
   },
   data () {
     return {
-      textStickyPositive: 'Sticky header',
-      textStickyNegative: 'Remove a sticky header',
-      tableClass: 'light-background shadow-3',
+      filter: '',
+      isActive: true,
+      isNotSticky: true,
       type: 'active',
       type2: 'delegators',
-      isNotSticky: true,
-      isActive: true,
-      filter: '',
       pagination: {
-        rowsPerPage: 20
+        rowsPerPage: 15
       },
       border: '#87C5D6',
       columns: [
@@ -181,7 +178,7 @@ export default {
           name: 'index',
           label: '#',
           align: 'center',
-          field: row => `#${row.index}`,
+          field: row => row.index,
           headerClasses: 'text-medium'
         },
         {
@@ -203,7 +200,8 @@ export default {
           name: 'stake',
           align: 'center',
           label: 'Delegated',
-          field: row => this.getFormatReward(row.stakeAmount),
+          field: row => Number(row.stakeAmount),
+          format: (val, row) => `${this.getFormatReward(row.stakeAmount)}`,
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -211,7 +209,8 @@ export default {
           name: 'potentialReward',
           align: 'center',
           label: 'Potential Reward',
-          field: row => this.getFormatReward(row.potentialReward),
+          field: row => Number(row.potentialReward),
+          format: (val, row) => `${this.getFormatReward(row.potentialReward)}`,
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -242,7 +241,10 @@ export default {
           field: 'progress',
           headerClasses: 'text-medium'
         }
-      ]
+      ],
+      textStickyPositive: 'Sticky header',
+      textStickyNegative: 'Remove a sticky header',
+      tableClass: 'light-background shadow-3'
     }
   },
   computed: {
@@ -258,14 +260,18 @@ export default {
     visibleColumns: function () {
       const columns = this.columns.map(c => c.name)
       if (this.curentDelegators.find(a => !a.rewardOwner)) {
-        return columns.filter(c => c !== 'rewardOwner' && c !== 'index' && c !== 'potentialReward')
+        return columns
+          .filter(c =>
+            c !== 'rewardOwner' &&
+            c !== 'index' &&
+            c !== 'potentialReward')
       }
       return columns
     }
   },
   methods: {
     getRewardOwnerFormat (val) {
-      if (!val || !val.addresses) return
+      if (!val) return
       return val.addresses[0]
     },
     copyToClipboard (id) {
@@ -302,7 +308,8 @@ export default {
     getFormatReward (val) {
       if (!val) return 0
       const avax = getAvaFromnAva(val)
-      return round(avax, 100).toLocaleString()
+      return round(avax, 100)
+        .toLocaleString()
     },
     formatDate (time) {
       if (!time) return
