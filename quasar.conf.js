@@ -1,6 +1,7 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
-
+const envparser = require('./src/config/envparser.js')
+envparser()
 module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
@@ -60,8 +61,8 @@ module.exports = function (ctx) {
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
+      env: envparser(),
       vueRouterMode: 'history', // available values: 'hash', 'history'
-
 
       // rtl: false, // https://quasar.dev/options/rtl-support
       // showProgress: false,
@@ -82,7 +83,10 @@ module.exports = function (ctx) {
           options: {
             formatter: require('eslint').CLIEngine.getFormatter('stylish')
           }
-        })
+        }),
+        cfg.node = {
+          fs: 'empty'
+        }
       }
     },
 

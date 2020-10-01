@@ -60,7 +60,7 @@
           class="q-pb-xl"
           :rules="[
             value => (value >= 25) || 'The minimum amount that a delegator must stake is 25 AVAX!',
-            value => (value <= 3000000) || 'Invalid amount!'
+            value => (value <= 2400000) || 'Invalid amount!'
           ]"
         />
         <q-input
@@ -81,23 +81,23 @@
           ]"
         />
         <div class="row q-mt-xs">
-            <div class="col-10">
+          <div class="col-10">
             <q-badge outline color="grey" style="height: 27px;" class="q-pb-xs q-pt-xs q-mb-xs">
               Staking Time (14 to 365 days)
             </q-badge>
-            </div>
-            <div class="col-2">
+          </div>
+          <div class="col-2">
             <q-btn icon="event" size="sm" outline color="grey">
-                <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
+              <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
                 <q-date v-model="model" color="orange" range>
-                    <div class="row items-center justify-end q-gutter-sm">
-                    <q-btn label="Cancel" color="grey" flat v-close-popup />
-                    <q-btn label="OK" color="grey" flat @click="save" v-close-popup />
-                    </div>
+                  <div class="row items-center justify-end q-gutter-sm">
+                  <q-btn label="Cancel" color="grey" flat v-close-popup />
+                  <q-btn label="OK" color="grey" flat @click="save" v-close-popup />
+                  </div>
                 </q-date>
-                </q-popup-proxy>
+              </q-popup-proxy>
             </q-btn>
-            </div>
+          </div>
         </div>
         <q-slider
           v-if="type==='validator'"
@@ -131,16 +131,15 @@
         />
         <div class="row">
           <div class="col - 6">
-          <small>{{ stakeTime }} Days Reward </small>
-          <div>
-            <span class="text-accent">
-              {{ getFormat(rewardAvax) }}
-            </span> AVAX
-            <br />
-            (<small class="text-grey">
-              {{ getFormat(reward) }} <span class="text-accent">nAVAX</span>
-            </small>)
-          </div>
+            <small>{{ stakeTime }} Days Reward </small>
+            <div>
+              <span class="text-accent">
+                {{ getFormat(rewardAvax) }}
+              </span> AVAX
+              (<small class="text-grey">
+                {{ getFormat(reward) }} <span class="text-accent">nAVAX</span>
+              </small>)
+            </div>
           </div>
         </div>
         </q-banner>
@@ -149,12 +148,16 @@
 </template>
 
 <script>
+import { date } from 'quasar'
 import { mapGetters } from 'vuex'
 
-import { reward, substractDelegationFee, getYearlyRewardPercent } from './../../modules/reward.js'
+import {
+  reward,
+  substractDelegationFee,
+  getYearlyRewardPercent
+} from './../../modules/reward.js'
 import { round } from './../../utils/commons.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
-import { date } from 'quasar'
 
 const timeStamp = Date.now()
 const formattedFrom = date.formatDate(timeStamp, 'YYYY/MM/DD')
@@ -169,7 +172,6 @@ export default {
   },
   data () {
     return {
-      yearly: 0,
       percent: 0,
       stakeTime: 14,
       delegationFee: 2,
@@ -211,9 +213,11 @@ export default {
   },
   methods: {
     getPercent () {
-      const { percent, yearly } = getYearlyRewardPercent(this.reward, this.stakeTime, this.stakeAmount)
+      const { percent } = getYearlyRewardPercent(
+        this.reward,
+        this.stakeTime,
+        this.stakeAmount)
       this.percent = this.getFormat(percent)
-      this.yearly = this.getFormat(getAvaFromnAva(yearly))
     },
     calculate () {
       const rewardNAvax = reward(
@@ -233,7 +237,10 @@ export default {
         this.currentSupply
       )
 
-      const delegation = substractDelegationFee(rewardNAvax, this.delegationFee)
+      const delegation = substractDelegationFee(
+        rewardNAvax,
+        this.delegationFee
+      )
       rewardNAvax = delegation.result
       this.feeAmountnAvax = this.getFormat(parseFloat(delegation.fee))
       this.feeAmount = this.getFormat(getAvaFromnAva(delegation.fee))

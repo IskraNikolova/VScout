@@ -20,6 +20,7 @@ export default {
     })
   },
   mounted () {
+    console.log(process.env.ADMIN_KEY)
     this.initApp()
     setInterval(() => {
       this.$store.commit(SET_NETWORK_STATUS, { hasNetworkConnection: window.navigator.onLine })
