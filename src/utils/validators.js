@@ -110,7 +110,6 @@ export function mapValidators (validators, delegators, defaultValidators) {
 
     return {
       ...val,
-      delegators: currentDelegators,
       name,
       avatar,
       link: '', // info.link
@@ -120,6 +119,7 @@ export function mapValidators (validators, delegators, defaultValidators) {
       remainingCapacity,
       isMinimumAmountForStake,
       delegatePotentialReward,
+      delegators: currentDelegators,
       fromNowST: fromNow(val.startTime)
     }
   })

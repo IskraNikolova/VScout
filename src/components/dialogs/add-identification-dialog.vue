@@ -17,7 +17,7 @@
             <q-item-label class="text-h6">Add/Update Identification For Your Validator</q-item-label>
             <q-item-label caption>
               You can add some bio for your validator (node).
-              <br/>Data will be stored in smart contract, for this reason you need <a href="https://metamask.io/">MetaMask</a> and C-Chain address <a href="https://medium.com/avalabs/deploy-a-smart-contract-on-ava-using-remix-and-metamask-98933a93f436">see</a> <br /> with minimum amount of C-AVAX.
+              <br/>Data will be stored in smart contract, for this reason you need and C-Chain address <a href="https://medium.com/avalabs/deploy-a-smart-contract-on-ava-using-remix-and-metamask-98933a93f436">see</a> <br /> with minimum amount of C-AVAX.
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -118,7 +118,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import DOMPurify from 'dompurify'
 
-import { _setValidatorInfo } from './../../modules/networkRpc'
+// import { _setValidatorInfo } from './../../modules/networkRpc'
 
 import {
   GET_NODE_ID
