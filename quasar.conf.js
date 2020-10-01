@@ -1,7 +1,7 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 const envparser = require('./src/config/envparser.js')
-envparser()
+
 module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
