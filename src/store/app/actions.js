@@ -217,7 +217,7 @@ async function getValidators (
   const res = validatorProcessing(
     validators,
     delegators,
-    getters.defaultValidator
+    getters.defaultValidators
   )
 
   commit(SET_VALIDATORS, {
