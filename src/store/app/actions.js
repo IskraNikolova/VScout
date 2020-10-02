@@ -144,7 +144,7 @@ async function getValidators (
     getters.defaultValidators,
     isInit
   )
-  console.log(JSON.stringify(res.validators))
+
   commit(SET_STAKED_AVA, {
     all: res.allStake,
     validatedStake: res.validatedStake,

@@ -1,16 +1,22 @@
 const BigNumber = require('bignumber.js')
 
-import { countDownCounter } from './../modules/time.js'
-import { getRemainingCapacity } from './stake.js'
 import { round, getAvatar } from './commons.js'
+import { getRemainingCapacity } from './stake.js'
+import { countDownCounter } from './../modules/time.js'
 // import { _getValidatorById } from './../modules/networkRpc'
 
 /**
 * @param {Array} Array of validators
+* @param {Array} Array of delegators
 * @param {Array} Array of current validators on Default Subnet
-* @returns {Array} Array with processing validators
+* @param {Boolean} is init app processing
+* @returns {Object} Object with { sum of all stake (valiadate + delegate), all validate stake, all delegate stake, processing validators }
 */
-export function validatorProcessing (validators, delegatorsD, defaultValidators, isInit) {
+export function validatorProcessing (
+  validators,
+  delegatorsD,
+  defaultValidators,
+  isInit) {
   if (!validators) {
     return {
       allStake: 0,
@@ -20,11 +26,18 @@ export function validatorProcessing (validators, delegatorsD, defaultValidators,
     }
   }
 
+  const data = mapValidators(
+    validators,
+    delegatorsD,
+    defaultValidators,
+    isInit
+  )
+
   const {
     validatorsMap,
     validatedStake,
     delegatedStake
-  } = mapValidators(validators, delegatorsD, defaultValidators, isInit)
+  } = data
 
   // get all staked AVAX
   const allStake = BigNumber
@@ -77,19 +90,25 @@ export function compare (a, b) {
   return temp[compareStake === 0]
 }
 
-export function mapValidators (validators, delegators, defaultValidators, isInit) {
+export function mapValidators (
+  validators,
+  delegators,
+  defaultValidators,
+  isInit) {
   let validatedStake = new BigNumber(0)
   let delegatedStake = new BigNumber(0)
 
   const validatorsMap = validators.map((val) => {
     // const info = await _getValidatorById(val.nodeID)
-    validatedStake = BigNumber.sum(validatedStake, val.stakeAmount)
+    validatedStake = BigNumber
+      .sum(validatedStake, val.stakeAmount)
 
     if (!defaultValidators) defaultValidators = []
     const currentValidator = defaultValidators
       .find(v => v.nodeID === val.nodeID)
 
-    // todo issue Incorrect uptime sometimes returned by getCurrentValidators delete after BUGFIX
+    // todo issue Incorrect uptime sometimes returned
+    // by getCurrentValidators delete after BUGFIX
     if (!isInit && currentValidator) {
       const prev = parseFloat(currentValidator.uptime)
       const next = parseFloat(val.uptime)
@@ -114,12 +133,21 @@ export function mapValidators (validators, delegators, defaultValidators, isInit
     const countDownCounterRes = countDownCounter(val.endTime)
     const remainingTime = countDownCounterRes.countdown
 
-    const totalStakeAmount = BigNumber.sum(val.stakeAmount, delegateStake)
-    const remainingCapacity = getRemainingCapacity(val.stakeAmount, delegateStake)
-    const isMinimumAmountForStake = countDownCounterRes.isMinimumAmountForStake
+    const totalStakeAmount = BigNumber
+      .sum(val.stakeAmount, delegateStake)
 
-    const avatar = getAvatar(val.nodeID).monster // info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
-    const name = val.nodeID // info.name ? info.name : val.nodeID
+    const remainingCapacity = getRemainingCapacity(
+      val.stakeAmount,
+      delegateStake
+    )
+
+    const isMinimumAmountForStake = countDownCounterRes
+      .isMinimumAmountForStake
+
+    // info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
+    const avatar = getAvatar(val.nodeID).monster
+    // info.name ? info.name : val.nodeID
+    const name = val.nodeID
 
     return {
       ...val,
@@ -143,7 +171,9 @@ export function mapValidators (validators, delegators, defaultValidators, isInit
   }
 }
 
-export function mapPendingValidators (validators, defaultValidators) {
+export function mapPendingValidators (
+  validators,
+  defaultValidators) {
   if (!validators) return []
 
   return validators.map((val) => {
@@ -156,7 +186,8 @@ export function mapPendingValidators (validators, defaultValidators) {
     }
 
     const countDownCounterRes = countDownCounter(val.endTime)
-    const remainingTime = countDownCounterRes.countdown
+    const remainingTime = countDownCounterRes
+      .countdown
 
     const totalStakeAmount = parseFloat(val.stakeAmount)
     const remainingCapacity = getRemainingCapacity(val.stakeAmount, 0)
