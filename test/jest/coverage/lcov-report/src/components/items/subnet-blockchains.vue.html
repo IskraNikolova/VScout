@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -150,7 +150,13 @@
 <a name='L91'></a><a href='#L91'>91</a>
 <a name='L92'></a><a href='#L92'>92</a>
 <a name='L93'></a><a href='#L93'>93</a>
-<a name='L94'></a><a href='#L94'>94</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -214,6 +220,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -224,6 +231,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -245,12 +257,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
   &lt;div&gt;
-    &lt;div id="f-size12" class="q-pb-md"&gt;
+    &lt;div id="f-size12" class="q-pb-md text-medium"&gt;
       BLOCKCHAINS
     &lt;/div&gt;
-    &lt;div class="row q-pb-xs"&gt;
+    &lt;div class="row"&gt;
       &lt;div class="col"&gt;
-        &lt;div class="q-pb-md q-pt-xs" &gt;
+        &lt;div class="q-pb-xs q-pt-xs" &gt;
         &lt;span
           v-if="currentSubnet.blockchainsId"
           class="text-h6 q-pb-md q-pt-xs text-orange"
@@ -258,13 +270,13 @@
           {{ currentSubnet.blockchainsId.length }}
         &lt;/span&gt;
         &lt;span v-else class="text-h6 text-orange"&gt;None &lt;br /&gt;&lt;/span&gt;
-        &lt;small class="text-grey"&gt;Validated by this subnet&lt;/small&gt;
+        &lt;small class="text-grey q-pt-xs"&gt;Validated by this subnet&lt;/small&gt;
         &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
     &lt;div id="f-size12"&gt;
       &lt;q-btn-dropdown
-        color="accent"
+        color="grey"
         outline
         v-if="currentSubnet.blockchainsId"
         size="xs"
@@ -304,24 +316,30 @@
 <span class="cstat-no" title="statement not covered" >import { mapActions, mapGetters } from 'vuex'</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import {</span>
-  GET_VALIDATORS,
-  SET_CURRENT_BLOCKCHAIN
+  GET_STAKING
 } from './../../store/app/types'
+&nbsp;
+<span class="cstat-no" title="statement not covered" >import {</span>
+  SET_CURRENT_BLOCKCHAIN
+} from './../../store/memory/types'
 &nbsp;
 export default {
   name: 'SubnetBlockchains',
-  components: {
-  },
   computed: {
     ...mapGetters([
       'currentSubnet',
-      'blockchainByID',
-      'networkEndpoint'
-    ])
+      'blockchainByID'
+    ]),
+<span class="fstat-no" title="function not covered" >    vmID: function (id) {</span>
+<span class="cstat-no" title="statement not covered" >      if (!id) return</span>
+<span class="cstat-no" title="statement not covered" >      const blockchain = this.blockchainByID(id)</span>
+<span class="cstat-no" title="statement not covered" >      if (!blockchain) return</span>
+<span class="cstat-no" title="statement not covered" >      return `${blockchain.vmID.substr(0, 4)}...${blockchain.vmID.substr(30)}`</span>
+    }
   },
   methods: {
     ...mapActions({
-      getValidators: GET_VALIDATORS
+      getValidators: GET_STAKING
     }),
 <span class="fstat-no" title="function not covered" >    onSelectBlockchain (blockchain) {</span>
 <span class="cstat-no" title="statement not covered" >      this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })</span>
@@ -343,7 +361,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jul 02 2020 15:30:03 GMT+0300 (Eastern European Summer Time)
+                at Fri Oct 02 2020 15:26:18 GMT+0300 (Eastern European Summer Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

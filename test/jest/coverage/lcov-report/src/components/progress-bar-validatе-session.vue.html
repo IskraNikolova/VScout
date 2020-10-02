@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -105,19 +105,7 @@
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
 <a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L49'></a><a href='#L49'>49</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -151,12 +139,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -173,20 +155,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;template&gt;
   &lt;div&gt;
-    &lt;q-linear-progress dark size="49px" :value="progress" :buffer="progress" color="accent"&gt;
+    &lt;q-linear-progress size="50px" :value="progress" :buffer="progress" color="accent"&gt;
       &lt;div class="absolute-full text-black progressBadge"&gt;
-        {{ progressBadge }} %
+        &lt;span class="text-grey text-bold"&gt;{{ progressBadge }} %&lt;/span&gt;
       &lt;/div&gt;
     &lt;/q-linear-progress&gt;
-    &lt;div class="absolute-full timeago"&gt;
-      &lt;div&gt;{{ timeago }}&lt;/div&gt;
-    &lt;/div&gt;
   &lt;/div&gt;
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-<span class="cstat-no" title="statement not covered" >import { round } from './../utils/commons'</span>
-<span class="cstat-no" title="statement not covered" >import { getDuration, timeago } from './../modules/time'</span>
+<span class="cstat-no" title="statement not covered" >import { round } from './../utils/commons.js'</span>
+<span class="cstat-no" title="statement not covered" >import { getDuration } from './../modules/time.js'</span>
 &nbsp;
 export default {
   name: 'ProgressBarValidateSession',
@@ -206,9 +185,6 @@ export default {
     },
 <span class="fstat-no" title="function not covered" >    progress: function () {</span>
 <span class="cstat-no" title="statement not covered" >      return this.progressM()</span>
-    },
-<span class="fstat-no" title="function not covered" >    timeago: function () {</span>
-<span class="cstat-no" title="statement not covered" >      return this.timeagoM()</span>
     }
   },
   methods: {
@@ -217,9 +193,6 @@ export default {
     },
 <span class="fstat-no" title="function not covered" >    lastDur () {</span>
 <span class="cstat-no" title="statement not covered" >      return getDuration(this.startTime, Date.now() / 1000 | 0)</span>
-    },
-<span class="fstat-no" title="function not covered" >    timeagoM () {</span>
-<span class="cstat-no" title="statement not covered" >      return timeago(this.dur() - this.lastDur())</span>
     },
 <span class="fstat-no" title="function not covered" >    progressM () {</span>
 <span class="cstat-no" title="statement not covered" >      const result = Math.floor(this.lastDur()) / Math.floor(this.dur())</span>
@@ -235,7 +208,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Jul 02 2020 15:30:03 GMT+0300 (Eastern European Summer Time)
+                at Fri Oct 02 2020 15:26:18 GMT+0300 (Eastern European Summer Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

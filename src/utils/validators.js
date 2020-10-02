@@ -11,6 +11,13 @@ import { round, getAvatar } from './commons.js'
 * @returns {Array} Array with processing validators
 */
 export function validatorProcessing (validators, delegatorsD, defaultValidators, isInit) {
+  if (!validators) return {
+    allStake: 0,
+    validatedStake: 0,
+    delegatedStake: 0,
+    validators: []
+  }
+
   const {
     validatorsMap,
     validatedStake,
@@ -69,8 +76,6 @@ export function compare (a, b) {
 }
 
 export function mapValidators (validators, delegators, defaultValidators, isInit) {
-  if (!validators) return []
-
   let validatedStake = new BigNumber(0)
   let delegatedStake = new BigNumber(0)
 
@@ -78,11 +83,12 @@ export function mapValidators (validators, delegators, defaultValidators, isInit
     // const info = await _getValidatorById(val.nodeID)
     validatedStake = BigNumber.sum(validatedStake, val.stakeAmount)
 
+    if (!defaultValidators) defaultValidators = []
     const currentValidator = defaultValidators
       .find(v => v.nodeID === val.nodeID)
 
     // todo issue Incorrect uptime sometimes returned by getCurrentValidators delete after BUGFIX
-    if (!isInit) {
+    if (!isInit && currentValidator) {
       const prev = parseFloat(currentValidator.uptime)
       const next = parseFloat(val.uptime)
       if (prev - next > 0.25) val.uptime = currentValidator.uptime
@@ -93,7 +99,7 @@ export function mapValidators (validators, delegators, defaultValidators, isInit
     }
 
     let currentDelegators = val.delegators
-    if (!currentDelegators) {
+    if (!currentDelegators && delegators) {
       currentDelegators = delegators
         .filter(d => d.nodeID === val.nodeID)
     }
