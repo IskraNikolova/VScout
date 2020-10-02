@@ -23,9 +23,9 @@
 import { mapGetters, mapActions } from 'vuex'
 
 import {
+  GET_STAKING,
   SET_SUBNET_ID,
-  GET_VALIDATORS,
-  GET_PENDING_VALIDATORS
+  GET_PENDING_STAKING
 } from './../store/app/types'
 
 import {
@@ -45,8 +45,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      getValidators: GET_VALIDATORS,
-      getPendingValidators: GET_PENDING_VALIDATORS
+      getValidators: GET_STAKING,
+      getPendingValidators: GET_PENDING_STAKING
     }),
     async onSelectBlockchain (blockchain) {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })

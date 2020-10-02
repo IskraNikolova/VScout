@@ -54,7 +54,7 @@
             <span class="text-orange">
               <small>
                 <animated-number
-                  :value="stakedAVA"
+                  :value="allStake"
                   :formatValue="formatToAvax"
                   :duration="3000"
                 />
@@ -100,6 +100,7 @@
 import { mapGetters } from 'vuex'
 import AnimatedNumber from 'animated-number-vue'
 import { round } from './../../utils/commons.js'
+import { getAvaFromnAva } from './../../utils/avax.js'
 
 export default {
   name: 'Stake',
@@ -118,12 +119,22 @@ export default {
       'pendingDelegators'
     ]),
     delStake: function () {
-      if (!this.delegatedStake) return
-      return round(this.delegatedStake, 10)
+      if (!this.delegatedStake) return 0
+      const toAva = getAvaFromnAva(this.delegatedStake)
+      const roundVal = round(toAva, 10)
+      return roundVal
+    },
+    allStake: function () {
+      if (!this.stakedAVA) return 0
+      const toAva = getAvaFromnAva(this.stakedAVA)
+      const roundVal = round(toAva, 10)
+      return roundVal
     },
     valStake: function () {
-      if (!this.validatedStake) return
-      return round(this.validatedStake, 10)
+      if (!this.validatedStake) return 0
+      const toAva = getAvaFromnAva(this.validatedStake)
+      const roundVal = round(toAva, 10)
+      return roundVal
     }
   },
   methods: {
@@ -133,6 +144,7 @@ export default {
     },
     formatToAvax (value) {
       if (!value) return 0
+
       return `${value.toLocaleString()}`
     }
   }

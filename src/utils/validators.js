@@ -3,7 +3,6 @@ const BigNumber = require('bignumber.js')
 import { countDownCounter } from './../modules/time.js'
 import { getRemainingCapacity } from './stake.js'
 import { round, getAvatar } from './commons.js'
-import { getAvaFromnAva } from './avax.js'
 // import { _getValidatorById } from './../modules/networkRpc'
 
 /**
@@ -51,9 +50,9 @@ export function validatorProcessing (validators, delegatorsD, defaultValidators,
   })
 
   return {
-    allStake: getAvaFromnAva(allStake),
-    validatedStake: getAvaFromnAva(validatedStake),
-    delegatedStake: getAvaFromnAva(delegatedStake),
+    allStake,
+    validatedStake,
+    delegatedStake,
     validators: result
   }
 }

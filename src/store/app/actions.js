@@ -1,29 +1,20 @@
-import { pChain } from './../../modules/avalanche.js'
-
 import {
   INIT_APP,
-  GET_SUBNETS,
-  SET_SUBNETS,
   GET_HEIGHT,
-  SET_HEIGHT,
   GET_NODE_ID,
-  SET_NODE_ID,
+  GET_SUBNETS,
   GET_NODE_INFO,
-  SET_NODE_INFO,
+  GET_STAKING,
   INIT_ENDPOINT,
-  GET_VALIDATORS,
+  SET_VALIDATORS,
   SET_DELEGATORS,
   SET_STAKED_AVA,
-  SET_VALIDATORS,
   GET_NODE_HEALTH,
-  SET_NODE_HEALTH,
   GET_BLOCKCHAINS,
-  SET_BLOCKCHAINS,
   SET_ASSETS_COUNT,
   GET_CURRENT_SUPPLY,
-  SET_CURRENT_SUPPLY,
+  GET_PENDING_STAKING,
   SET_DEFAULT_VALIDATORS,
-  GET_PENDING_VALIDATORS,
   SET_PENDING_VALIDATORS,
   SET_PENDING_DELEGATORS,
   GET_ASSETS_BY_BLOCKCHAINS
@@ -61,9 +52,17 @@ import {
   validatorProcessing
 } from './../../utils/validators'
 
-const { network } = require('./../../modules/config').default
+const {
+  network
+} = require('./../../modules/config')
+  .default
 
-async function initApp ({ dispatch, getters }) {
+import {
+  pChain
+} from './../../modules/avalanche.js'
+
+async function initApp (
+  { dispatch, getters }) {
   try {
     await Promise.all([
       dispatch(INIT_ENDPOINT),
@@ -72,13 +71,13 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_NODE_INFO),
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
-      dispatch(GET_VALIDATORS, {
+      dispatch(GET_STAKING, {
         subnetID: getters.subnetID,
         isInit: true
       }),
       dispatch(GET_HEIGHT, {}),
       dispatch(GET_CURRENT_SUPPLY),
-      dispatch(GET_PENDING_VALIDATORS, {})
+      dispatch(GET_PENDING_STAKING, {})
     ])
   } catch (err) {
   }
@@ -88,18 +87,19 @@ async function initApp ({ dispatch, getters }) {
       await Promise.all([
         dispatch(GET_NODE_HEALTH),
         dispatch(GET_HEIGHT, {}),
-        dispatch(GET_VALIDATORS, {
+        dispatch(GET_STAKING, {
           subnetID: getters.subnetID,
           isInit: false
         }),
-        dispatch(GET_PENDING_VALIDATORS, {})
+        dispatch(GET_PENDING_STAKING, {})
       ])
     } catch (err) {
     }
   }, 8000)
 }
 
-async function initEndpoint ({ commit }) {
+async function initEndpoint (
+  { commit }) {
   const endpoint = network.endpointUrls[0]
   commit(SET_ENDPOINT, { endpoint })
 
@@ -110,84 +110,7 @@ async function initEndpoint ({ commit }) {
   if (response.data.error) return
 
   const nodeID = response.data.result.nodeID
-  commit(SET_NODE_ID, { nodeID })
-}
-
-async function getBlockchains (
-  { commit, getters },
-  { endpoint = getters.networkEndpoint.url }) {
-  const response = await _getBlockchains({ endpoint })
-  if (response.data.error) return null
-
-  let { blockchains } = response.data.result
-  if (typeof blockchains === 'undefined' ||
-    blockchains === null) return
-
-  blockchains.push({
-    id: network.defaultSubnetID,
-    subnetID: network.defaultSubnetID,
-    vmID: '',
-    name: 'P-Chain'
-  })
-
-  blockchains = await Promise.all(blockchains
-    .map(async b => {
-      const res = await _getBlockchainStatus({
-        endpoint: getters.networkEndpoint.url,
-        params: {
-          blockchainID: b.id
-        }
-      })
-      if (res.data.error) return b
-      return {
-        ...b,
-        status: res.data.result.status
-      }
-    })
-  )
-
-  commit(SET_BLOCKCHAINS, { blockchains })
-  if (!getters.currentBlockchain.id) {
-    commit(SET_CURRENT_BLOCKCHAIN, { blockchain: blockchains[0] })
-  }
-}
-
-async function getSubnets (
-  { commit, getters },
-  { endpoint = getters.networkEndpoint.url }) {
-  const response = await _getSubnets({
-    endpoint
-  })
-  if (response.data.error) return null
-
-  const { subnets } = response.data.result
-  if (typeof subnets === 'undefined' ||
-    subnets === null) return
-
-  const result = Promise.all(subnets.map(async subnet => {
-    const response = await _validates({
-      endpoint,
-      params: {
-        subnetID: subnet.id
-      }
-    })
-
-    if (response.data.error) return
-    const blockchainsId = response
-      .data.result.blockchainIDs
-
-    return {
-      ...subnet,
-      blockchainsId
-    }
-  }))
-
-  commit(SET_SUBNETS, { subnets: await result })
-}
-
-async function getAssetsCount ({ commit }) {
-  const assetsCount = await _getAssetsCount()
-  commit(SET_ASSETS_COUNT, { assetsCount })
+  commit(GET_NODE_ID, { nodeID })
 }
 
 async function getValidators (
@@ -222,14 +145,14 @@ async function getValidators (
     isInit
   )
 
-  commit(SET_VALIDATORS, {
-    validators: res.validators
-  })
-
   commit(SET_STAKED_AVA, {
     all: res.allStake,
     validatedStake: res.validatedStake,
     delegatedStake: res.delegatedStake
+  })
+
+  commit(SET_VALIDATORS, {
+    validators: res.validators
   })
 
   commit(SET_DELEGATORS, {
@@ -243,7 +166,7 @@ async function getValidators (
   }
 }
 
-async function getPendingValidators (
+async function getPValidators (
   { commit, getters },
   {
     subnetID = getters.subnetID,
@@ -273,7 +196,58 @@ async function getPendingValidators (
   })
 }
 
-async function getNodeId ({ getters, commit }) {
+async function getHeight (
+  { commit, getters },
+  { endpoint = getters.networkEndpoint.url }) {
+  const response = await _getHeight({
+    endpoint
+  })
+
+  if (typeof response === 'undefined' ||
+    response === null) return
+
+  if (response.data.error) return
+
+  const height = response.data.result.height
+
+  commit(GET_HEIGHT, { height })
+}
+
+async function getSubnets (
+  { commit, getters },
+  { endpoint = getters.networkEndpoint.url }) {
+  const response = await _getSubnets({
+    endpoint
+  })
+  if (response.data.error) return null
+
+  const { subnets } = response.data.result
+  if (typeof subnets === 'undefined' ||
+    subnets === null) return
+
+  const result = Promise.all(subnets.map(async subnet => {
+    const response = await _validates({
+      endpoint,
+      params: {
+        subnetID: subnet.id
+      }
+    })
+
+    if (response.data.error) return
+    const blockchainsId = response
+      .data.result.blockchainIDs
+
+    return {
+      ...subnet,
+      blockchainsId
+    }
+  }))
+
+  commit(GET_SUBNETS, { subnets: await result })
+}
+
+async function getNodeId (
+  { getters, commit }) {
   const response = await _getNodeId({
     endpoint: getters.networkEndpoint.url
   })
@@ -287,10 +261,11 @@ async function getNodeId ({ getters, commit }) {
 
   commit(UPDATE_UI, { doesItConnect: false })
   const nodeID = response.data.result.nodeID
-  commit(SET_NODE_ID, { nodeID })
+  commit(GET_NODE_ID, { nodeID })
 }
 
-async function getNodeInfo ({ getters, commit }) {
+async function getNodeInfo (
+  { getters, commit }) {
   const resNetworkID = await _getNetworkID({
     endpoint: getters.networkEndpoint.url
   })
@@ -328,10 +303,11 @@ async function getNodeInfo ({ getters, commit }) {
     peers: resNodePeers.data.result.peers
   }
 
-  commit(SET_NODE_INFO, { nodeInfo })
+  commit(GET_NODE_INFO, { nodeInfo })
 }
 
-async function getNodeHealth ({ commit, getters }) {
+async function getNodeHealth (
+  { commit, getters }) {
   const response = await _health({
     endpoint: getters.networkEndpoint.url
   })
@@ -345,34 +321,68 @@ async function getNodeHealth ({ commit, getters }) {
     nodeHealth = response.data.result
   }
 
-  commit(SET_NODE_HEALTH, {
+  commit(GET_NODE_HEALTH, {
     nodeID: getters.nodeID,
     nodeHealth
   })
   commit(UPDATE_UI, { doesItConnect })
 }
 
-async function getHeight ({ commit, getters }, { endpoint = getters.networkEndpoint.url }) {
-  const response = await _getHeight({
-    endpoint
+async function getBlockchains (
+  { commit, getters },
+  { endpoint = getters.networkEndpoint.url }) {
+  const response = await _getBlockchains({ endpoint })
+  if (response.data.error) return null
+
+  let { blockchains } = response.data.result
+  if (typeof blockchains === 'undefined' ||
+    blockchains === null) return
+
+  blockchains.push({
+    id: network.defaultSubnetID,
+    subnetID: network.defaultSubnetID,
+    vmID: '',
+    name: 'P-Chain'
   })
 
-  if (typeof response === 'undefined' ||
-    response === null) return
+  blockchains = await Promise.all(blockchains
+    .map(async b => {
+      const res = await _getBlockchainStatus({
+        endpoint: getters.networkEndpoint.url,
+        params: {
+          blockchainID: b.id
+        }
+      })
+      if (res.data.error) return b
+      return {
+        ...b,
+        status: res.data.result.status
+      }
+    })
+  )
 
-  if (response.data.error) return
-
-  const height = response.data.result.height
-
-  commit(SET_HEIGHT, { height })
+  commit(GET_BLOCKCHAINS, { blockchains })
+  if (!getters.currentBlockchain.id) {
+    commit(SET_CURRENT_BLOCKCHAIN, { blockchain: blockchains[0] })
+  }
 }
 
-async function getCurrentSupply ({ commit, getters }) {
+async function getAssetsCount (
+  { commit }) {
+  const assetsCount = await _getAssetsCount()
+  commit(SET_ASSETS_COUNT, { assetsCount })
+}
+
+async function getCurrentSupply (
+  { commit, getters }) {
   try {
-    const currentSupply = await pChain(getters.networkEndpoint, getters.nodeInfo.networkID)
+    const currentSupply = await pChain(
+      getters.networkEndpoint,
+      getters.nodeInfo.networkID
+    )
       .getCurrentSupply()
 
-    commit(SET_CURRENT_SUPPLY, { currentSupply })
+    commit(GET_CURRENT_SUPPLY, { currentSupply })
   } catch (err) {
     console.error(err)
   }
@@ -385,10 +395,10 @@ export default {
   [GET_SUBNETS]: getSubnets,
   [GET_NODE_INFO]: getNodeInfo,
   [INIT_ENDPOINT]: initEndpoint,
-  [GET_VALIDATORS]: getValidators,
+  [GET_STAKING]: getValidators,
   [GET_NODE_HEALTH]: getNodeHealth,
   [GET_BLOCKCHAINS]: getBlockchains,
   [GET_CURRENT_SUPPLY]: getCurrentSupply,
-  [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsCount,
-  [GET_PENDING_VALIDATORS]: getPendingValidators
+  [GET_PENDING_STAKING]: getPValidators,
+  [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsCount
 }

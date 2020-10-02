@@ -59,7 +59,7 @@
 import { mapActions, mapGetters } from 'vuex'
 
 import {
-  GET_VALIDATORS
+  GET_STAKING
 } from './../../store/app/types'
 
 import {
@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      getValidators: GET_VALIDATORS
+      getValidators: GET_STAKING
     }),
     onSelectBlockchain (blockchain) {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })

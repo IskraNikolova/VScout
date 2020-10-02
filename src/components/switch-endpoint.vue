@@ -65,12 +65,12 @@ import { mapGetters, mapActions } from 'vuex'
 
 import {
   GET_SUBNETS,
-  SET_NODE_ID,
+  GET_NODE_ID,
   GET_NODE_INFO,
   GET_HEIGHT,
-  GET_VALIDATORS,
+  GET_STAKING,
   GET_BLOCKCHAINS,
-  GET_PENDING_VALIDATORS
+  GET_PENDING_STAKING
 } from '../store/app/types'
 
 import {
@@ -114,9 +114,9 @@ export default {
       getHeight: GET_HEIGHT,
       getSubnets: GET_SUBNETS,
       getNodeInfo: GET_NODE_INFO,
-      getValidators: GET_VALIDATORS,
+      getValidators: GET_STAKING,
       getBlockchains: GET_BLOCKCHAINS,
-      getPendingValidators: GET_PENDING_VALIDATORS
+      getPendingValidators: GET_PENDING_STAKING
     }),
     onRemoveFromMem (endpoint, event) {
       event.stopImmediatePropagation()
@@ -148,7 +148,7 @@ export default {
 
       this.$store.commit(SET_ENDPOINT, { endpoint })
       const nodeID = response.data.result.nodeID
-      this.$store.commit(SET_NODE_ID, { nodeID })
+      this.$store.commit(GET_NODE_ID, { nodeID })
       await this.onSuccess(endpoint)
     },
     async onSuccess (endpoint) {

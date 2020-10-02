@@ -34,8 +34,8 @@ import {
 } from 'vuex'
 
 import {
-  GET_VALIDATORS,
-  GET_PENDING_VALIDATORS
+  GET_STAKING,
+  GET_PENDING_STAKING
 } from '../store/app/types'
 
 const { network } = require('./../modules/config').default
@@ -63,8 +63,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      getValidators: GET_VALIDATORS,
-      getPendingValidators: GET_PENDING_VALIDATORS
+      getValidators: GET_STAKING,
+      getPendingValidators: GET_PENDING_STAKING
     }),
     async getValidatorsV (type) {
       const temp = {
