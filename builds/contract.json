@@ -1,56 +1,5 @@
 [
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_admin",
-				"type": "address"
-			}
-		],
-		"name": "addAdmin",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_id",
-				"type": "string"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "_name",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bytes",
-				"name": "_avatar",
-				"type": "bytes"
-			},
-			{
-				"internalType": "bytes",
-				"name": "_bio",
-				"type": "bytes"
-			},
-			{
-				"internalType": "bytes",
-				"name": "_link",
-				"type": "bytes"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_code",
-				"type": "uint256"
-			}
-		],
-		"name": "setValidatorInfo",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
@@ -61,7 +10,26 @@
 			{
 				"indexed": true,
 				"internalType": "string",
-				"name": "id",
+				"name": "nodeID",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "rating",
+				"type": "uint256"
+			}
+		],
+		"name": "AddRatingEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "string",
+				"name": "nodeID",
 				"type": "string"
 			},
 			{
@@ -93,13 +61,50 @@
 		"type": "event"
 	},
 	{
-		"inputs": [],
-		"name": "getPermissionCode",
-		"outputs": [
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_admin",
+				"type": "address"
+			}
+		],
+		"name": "addAdmin",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_nodeID",
+				"type": "string"
+			},
 			{
 				"internalType": "uint256",
-				"name": "",
+				"name": "_rating",
 				"type": "uint256"
+			}
+		],
+		"name": "addRating",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"name": "isUsed",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -115,6 +120,11 @@
 		],
 		"name": "members",
 		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "rating",
+				"type": "uint256"
+			},
 			{
 				"internalType": "bytes32",
 				"name": "name",
@@ -137,6 +147,39 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_nodeID",
+				"type": "string"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "_name",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_avatar",
+				"type": "bytes"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_bio",
+				"type": "bytes"
+			},
+			{
+				"internalType": "bytes",
+				"name": "_link",
+				"type": "bytes"
+			}
+		],
+		"name": "setValidatorInfo",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]
