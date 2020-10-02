@@ -57,7 +57,7 @@ import {
 
 import {
   mapDelegators,
-  mapValidators,
+  mapPendingValidators,
   validatorProcessing
 } from './../../utils/validators'
 
@@ -73,13 +73,12 @@ async function initApp ({ dispatch, getters }) {
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(GET_VALIDATORS, {
-        subnetID: getters.subnetID
+        subnetID: getters.subnetID,
+        isInit: true
       }),
       dispatch(GET_HEIGHT, {}),
       dispatch(GET_CURRENT_SUPPLY),
-      dispatch(GET_PENDING_VALIDATORS, {
-        subnetID: getters.subnetID
-      })
+      dispatch(GET_PENDING_VALIDATORS, {})
     ])
   } catch (err) {
   }
@@ -87,29 +86,27 @@ async function initApp ({ dispatch, getters }) {
   setInterval(async () => {
     try {
       await Promise.all([
-        dispatch(GET_NODE_ID),
         dispatch(GET_NODE_HEALTH),
         dispatch(GET_HEIGHT, {}),
-        dispatch(GET_CURRENT_SUPPLY),
-        // dispatch(GET_NODE_INFO),
         dispatch(GET_VALIDATORS, {
-          subnetID: getters.subnetID
-        }),
-        dispatch(GET_PENDING_VALIDATORS, {
           subnetID: getters.subnetID,
-          endpoint: getters.networkEndpoint.url
-        })
+          isInit: false
+        }),
+        dispatch(GET_PENDING_VALIDATORS, {})
       ])
     } catch (err) {
     }
-  }, 10000)
+  }, 8000)
 }
 
 async function initEndpoint ({ commit }) {
   const endpoint = network.endpointUrls[0]
   commit(SET_ENDPOINT, { endpoint })
 
-  const response = await _getNodeId({ endpoint: endpoint.url })
+  const response = await _getNodeId({
+    endpoint: endpoint.url
+  })
+
   if (response.data.error) return
 
   const nodeID = response.data.result.nodeID
@@ -197,16 +194,20 @@ async function getValidators (
   { dispatch, commit, getters },
   {
     subnetID = network.defaultSubnetID,
-    endpoint = getters.networkEndpoint.url
+    endpoint = getters.networkEndpoint.url,
+    isInit = true
   }) {
-  const response = await _getValidators({ subnetID, endpoint })
+  const response = await _getValidators({
+    subnetID,
+    endpoint
+  })
 
   if (response.data.error) {
     commit(UPDATE_UI, { doesItConnect: true })
     return null
   }
-
   commit(UPDATE_UI, { doesItConnect: false })
+
   let { validators, delegators } = response.data.result
 
   if (typeof validators === 'undefined' ||
@@ -217,7 +218,8 @@ async function getValidators (
   const res = validatorProcessing(
     validators,
     delegators,
-    getters.defaultValidators
+    getters.defaultValidators,
+    isInit
   )
 
   commit(SET_VALIDATORS, {
@@ -230,19 +232,23 @@ async function getValidators (
     delegatedStake: res.delegatedStake
   })
 
-  commit(SET_DELEGATORS, { delegators: mapDelegators(delegators) })
+  commit(SET_DELEGATORS, {
+    delegators: mapDelegators(delegators)
+  })
 
   if (getters.isDefaultSubnetID(subnetID)) {
     commit(SET_DEFAULT_VALIDATORS, {
       defaultValidators: res.validators
     })
   }
-  dispatch(GET_CURRENT_SUPPLY)
 }
 
 async function getPendingValidators (
   { commit, getters },
-  { subnetID = getters.subnetID, endpoint = getters.networkEndpoint.url }) {
+  {
+    subnetID = getters.subnetID,
+    endpoint = getters.networkEndpoint.url
+  }) {
   const response = await _getPendingValidators({
     subnetID,
     endpoint
@@ -257,7 +263,10 @@ async function getPendingValidators (
 
   commit(SET_PENDING_DELEGATORS, { delegators })
 
-  const val = mapValidators(validators, getters.defaultValidators)
+  const val = mapPendingValidators(
+    validators,
+    getters.defaultValidators
+  )
 
   commit(SET_PENDING_VALIDATORS, {
     validators: val
@@ -365,6 +374,7 @@ async function getCurrentSupply ({ commit, getters }) {
 
     commit(SET_CURRENT_SUPPLY, { currentSupply })
   } catch (err) {
+    console.error(err)
   }
 }
 

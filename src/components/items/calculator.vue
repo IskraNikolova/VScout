@@ -4,7 +4,7 @@
     flat
     id="logo-sim"
     label="calculator"
-    @click="calculate"
+    @click="openCalculator"
   >
     <q-popup-proxy>
         <q-banner class="q-pa-md" dense style="width: 370px;">
@@ -12,7 +12,7 @@
           <div class="col-6 text-medium">Reward Calculator</div>
           <div class="col-6" style="text-align: right;">
             <small>Current Supply
-            <q-badge outline color="orange" :label="getCurrentSupply() + ' M'" /> </small>
+            <q-badge outline color="orange" :label="getCurrentSupplyLable() + ' M'" /> </small>
           </div>
         </div>
         <div class="row">
@@ -149,13 +149,16 @@
 
 <script>
 import { date } from 'quasar'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+
+import { GET_CURRENT_SUPPLY } from './../../store/app/types'
 
 import {
   reward,
   substractDelegationFee,
   getYearlyRewardPercent
 } from './../../modules/reward.js'
+
 import { round } from './../../utils/commons.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
 
@@ -212,12 +215,19 @@ export default {
     ])
   },
   methods: {
+    ...mapActions({
+      getCurrentSupply: GET_CURRENT_SUPPLY
+    }),
     getPercent () {
       const { percent } = getYearlyRewardPercent(
         this.reward,
         this.stakeTime,
         this.stakeAmount)
       this.percent = this.getFormat(percent)
+    },
+    async openCalculator () {
+      await this.getCurrentSupply()
+      this.calculate()
     },
     calculate () {
       const rewardNAvax = reward(
@@ -252,7 +262,7 @@ export default {
     getFormat (val) {
       return round(val, 100).toLocaleString()
     },
-    getCurrentSupply () {
+    getCurrentSupplyLable () {
       const currentSupply = this.currentSupply.toString()
       const currentSupplyAvax = Math.round(getAvaFromnAva(Number(currentSupply)))
       return Math.round(currentSupplyAvax / 1000000)

@@ -302,6 +302,9 @@ export default {
         timeout: 1000
       })
     },
+    stakedBy (date) {
+      return fromNow(date)
+    },
     getBorderIsDelegatable () {
       if (!this.validator) return
       return this.validator

@@ -303,7 +303,7 @@
                 </div>
                   <div class="text-medium q-mt-md">Staked By</div>
                   <div class="text-grey">
-                    <small>{{ props.row.fromNowST }}</small>
+                    <small>{{ stakedBy(props.row.startTime) }}</small>
                   </div>
               </q-card-section>
               <q-separator vertical />
@@ -354,7 +354,7 @@ import {
   openURL
 } from 'quasar'
 
-import { dateFormat } from './../../modules/time.js'
+import { dateFormat, fromNow } from './../../modules/time.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
 import { round } from './../../utils/commons.js'
 const { network } = require('./../../modules/config').default
@@ -539,6 +539,9 @@ export default {
   methods: {
     getData (row) {
       return (row.cumulativeStake - row.percent) / 100
+    },
+    stakedBy (date) {
+      return fromNow(date)
     },
     getVisibleColumns (curentValidators) {
       const columns = this.columns.map(c => c.name)

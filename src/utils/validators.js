@@ -1,6 +1,6 @@
 const BigNumber = require('bignumber.js')
 
-import { fromNow, countDownCounter } from './../modules/time.js'
+import { countDownCounter } from './../modules/time.js'
 import { getRemainingCapacity } from './stake.js'
 import { round, getAvatar } from './commons.js'
 import { getAvaFromnAva } from './avax.js'
@@ -11,16 +11,12 @@ import { getAvaFromnAva } from './avax.js'
 * @param {Array} Array of current validators on Default Subnet
 * @returns {Array} Array with processing validators
 */
-export function validatorProcessing (validators, delegatorsD, defaultValidators) {
-  const validatorsMap = mapValidators(validators, delegatorsD, defaultValidators)
-
-  const validatedStake = validatorsMap.reduce((a, b) => {
-    return BigNumber.sum(a, b.stakeAmount)
-  }, 0.0)
-
-  const delegatedStake = validatorsMap.reduce((a, b) => {
-    return BigNumber.sum(a, b.delegateStake)
-  }, 0.0)
+export function validatorProcessing (validators, delegatorsD, defaultValidators, isInit) {
+  const {
+    validatorsMap,
+    validatedStake,
+    delegatedStake
+  } = mapValidators(validators, delegatorsD, defaultValidators, isInit)
 
   // get all staked AVAX
   const allStake = BigNumber
@@ -73,16 +69,25 @@ export function compare (a, b) {
   return temp[compareStake === 0]
 }
 
-export function mapValidators (validators, delegators, defaultValidators) {
+export function mapValidators (validators, delegators, defaultValidators, isInit) {
   if (!validators) return []
 
-  return validators.map((val) => {
+  let validatedStake = new BigNumber(0)
+  let delegatedStake = new BigNumber(0)
+
+  const validatorsMap = validators.map((val) => {
     // const info = await _getValidatorById(val.nodeID)
+    validatedStake = BigNumber.sum(validatedStake, val.stakeAmount)
+
     const currentValidator = defaultValidators
       .find(v => v.nodeID === val.nodeID)
 
     // todo issue Incorrect uptime sometimes returned by getCurrentValidators delete after BUGFIX
-    if (currentValidator && (Number(currentValidator.uptime) * 100 - Number(val.uptime * 100)) > 20) val.uptime = currentValidator.uptime
+    if (!isInit) {
+      const prev = parseFloat(currentValidator.uptime)
+      const next = parseFloat(val.uptime)
+      if (prev - next > 0.25) val.uptime = currentValidator.uptime
+    }
 
     if (val.weight) {
       val.stakeAmount = currentValidator.stakeAmount
@@ -96,12 +101,13 @@ export function mapValidators (validators, delegators, defaultValidators) {
 
     const props = getDelegatorDetails(currentDelegators)
     const delegateStake = props.delegateStake
+    delegatedStake = BigNumber.sum(delegatedStake, delegateStake)
     const delegatePotentialReward = props.potentialReward
 
     const countDownCounterRes = countDownCounter(val.endTime)
     const remainingTime = countDownCounterRes.countdown
 
-    const totalStakeAmount = parseFloat(val.stakeAmount) + parseFloat(delegateStake)
+    const totalStakeAmount = BigNumber.sum(val.stakeAmount, delegateStake)
     const remainingCapacity = getRemainingCapacity(val.stakeAmount, delegateStake)
     const isMinimumAmountForStake = countDownCounterRes.isMinimumAmountForStake
 
@@ -119,8 +125,47 @@ export function mapValidators (validators, delegators, defaultValidators) {
       remainingCapacity,
       isMinimumAmountForStake,
       delegatePotentialReward,
-      delegators: currentDelegators,
-      fromNowST: fromNow(val.startTime)
+      delegators: currentDelegators
+    }
+  })
+
+  return {
+    validatorsMap,
+    validatedStake,
+    delegatedStake
+  }
+}
+
+export function mapPendingValidators (validators, defaultValidators) {
+  if (!validators) return []
+
+  return validators.map((val) => {
+    let currentValidator = {}
+
+    if (val.weight) {
+      currentValidator = defaultValidators
+        .find(v => v.nodeID === val.nodeID)
+      val.stakeAmount = currentValidator.stakeAmount
+    }
+
+    const countDownCounterRes = countDownCounter(val.endTime)
+    const remainingTime = countDownCounterRes.countdown
+
+    const totalStakeAmount = parseFloat(val.stakeAmount)
+    const remainingCapacity = getRemainingCapacity(val.stakeAmount, 0)
+    const isMinimumAmountForStake = true
+
+    const avatar = getAvatar(val.nodeID).monster
+    const name = val.nodeID
+
+    return {
+      ...val,
+      name,
+      avatar,
+      remainingTime,
+      totalStakeAmount,
+      remainingCapacity,
+      isMinimumAmountForStake
     }
   })
 }

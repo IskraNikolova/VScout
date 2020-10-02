@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import { round } from './../../utils/commons'
 
 import { VMDict } from './../../utils/constants'
 
@@ -45,9 +44,9 @@ const mutations = {
     state.validators = validators
   },
   [SET_STAKED_AVA]: (state, { all, validatedStake, delegatedStake }) => {
-    state.stakedAVA = round(all, 100)
-    state.validatedStake = round(validatedStake, 1000)
-    state.delegatedStake = round(delegatedStake, 1000)
+    state.stakedAVA = all
+    state.validatedStake = validatedStake
+    state.delegatedStake = delegatedStake
   },
   [SET_DELEGATORS]: (state, { delegators }) => {
     state.delegators = delegators

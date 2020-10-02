@@ -1,6 +1,7 @@
 <template>
   <q-card
     class="q-mt-md q-pt-md q-pl-xl q-pr-xl q-pb-xs" id="custom-card" style="min-height: 130px;">
+
     <div class="row">
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">VALIDATORS</div>
@@ -74,7 +75,7 @@
                 <animated-number
                   :value="valStake"
                   :formatValue="formatToAvax"
-                  :duration="3000"
+                  :duration="2000"
                 />
              </small>
             </span>
@@ -84,7 +85,7 @@
                <animated-number
                   :value="delStake"
                   :formatValue="formatToAvax"
-                  :duration="3000"
+                  :duration="2000"
                 />
              </small>
             </span>
@@ -107,6 +108,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'ui',
       'stakedAVA',
       'validators',
       'delegatedStake',
@@ -130,6 +132,7 @@ export default {
       return `${Math.round(value)}`
     },
     formatToAvax (value) {
+      if (!value) return 0
       return `${value.toLocaleString()}`
     }
   }

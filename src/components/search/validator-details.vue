@@ -58,7 +58,7 @@
           <br />
           <span class="text-subtitle2"><small style="opacity: 0.8;">STAKED BY</small></span>
           <span class="q-pl-xs">
-            {{ validator.fromNowST }}
+            {{ stakedBy(validator.startTime) }}
           </span>
           <br />
           <span class="text-subtitle2"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
@@ -265,7 +265,7 @@
       <div class="q-pl-md">
         <span class="text-subtitle2"><small style="opacity: 0.8;">STAKED BY</small></span>
         <span class="q-pl-xs">
-          {{ validator.fromNowST }}
+          {{ stakedBy(validator.startTime) }}
         </span>
         <br />
         <span class="text-subtitle2"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
@@ -429,7 +429,7 @@ import {
 } from 'quasar'
 
 import { getDelegationReward } from './../../modules/reward.js'
-import { date } from './../../modules/time.js'
+import { date, fromNow } from './../../modules/time.js'
 import { round } from './../../utils/commons.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
 
@@ -473,6 +473,9 @@ export default {
     getFormatOwner (val, startIndex, endIndex) {
       if (!val) return
       return `${val.substr(0, startIndex)}...${val.substr(endIndex)}`
+    },
+    stakedBy (date) {
+      return fromNow(date)
     },
     getValidator (param) {
       const validator = this.validatorById(param)
