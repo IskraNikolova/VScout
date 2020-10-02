@@ -11,11 +11,13 @@ import { round, getAvatar } from './commons.js'
 * @returns {Array} Array with processing validators
 */
 export function validatorProcessing (validators, delegatorsD, defaultValidators, isInit) {
-  if (!validators) return {
-    allStake: 0,
-    validatedStake: 0,
-    delegatedStake: 0,
-    validators: []
+  if (!validators) {
+    return {
+      allStake: 0,
+      validatedStake: 0,
+      delegatedStake: 0,
+      validators: []
+    }
   }
 
   const {
