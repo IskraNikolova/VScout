@@ -14,6 +14,7 @@ export default function () {
     nodeHealth: {},
     validators: [],
     delegators: [],
+    avaxUsdPrice: 0,
     delegationsCount: 0,
     blockchains: [],
     assetsCount: 0,

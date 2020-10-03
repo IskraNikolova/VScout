@@ -12,6 +12,7 @@ import {
   SET_STAKED_AVA,
   SET_DELEGATORS,
   GET_BLOCKCHAINS,
+  GET_AVAX_PRICE,
   GET_NODE_HEALTH,
   SET_ASSETS_COUNT,
   SET_NETWORK_STATUS,
@@ -27,6 +28,9 @@ const mutations = {
   },
   [GET_CURRENT_SUPPLY]: (state, { currentSupply }) => {
     state.currentSupply = currentSupply
+  },
+  [GET_AVAX_PRICE]: (state, { avaxUsdPrice }) => {
+    state.avaxUsdPrice = avaxUsdPrice
   },
   [GET_NODE_ID]: (state, { nodeID }) => {
     state.nodeID = nodeID

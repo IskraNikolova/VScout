@@ -1,19 +1,118 @@
 <template>
   <q-layout view="lHh Lpr lFf" >
     <q-header reveal>
-      <div class="gt-xs">
+      <div class="gt-sm">
         <q-toolbar class="background-white">
           <q-toolbar-title
             @click="$router.push('/')"
             id="toolbar-title">
             VScout.io <q-icon name="home" color="grey" />
           </q-toolbar-title>
-
-          <img src="~assets/block.svg" id="logo-block"/>
-          <span class="q-pl-xs q-pr-xl text-grey">
-            {{ height }}
-            <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
+          <q-toolbar-title>
+            <img src="~assets/avax.png" id="logo-xs"/>
+            <small class="text-grey" style="font-size: 15px;">
+              {{ avaxPrice }} | AVAX/USD
+            </small>
+          </q-toolbar-title>
+          <q-toolbar-title>
+            <img src="~assets/block.svg" id="logo-block"/>
+            <small class="text-grey" style="font-size: 15px;padding-top: -20px;">
+              {{ height }}
+              <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
+            </small>
+          </q-toolbar-title>
+          <calculator />
+          <q-btn
+            flat
+            label="blockchains"
+            class="text-regular text-grey"
+            @click="onGetBlockchains"
+          >
+            <q-menu>
+              <div class="no-wrap q-pa-md text-grey">
+                Switch To Blockchain
+                <q-spinner-dots v-if="blockchains.length < 1" />
+              </div>
+              <q-separator />
+              <list-blockchains />
+              </q-menu>
+            </q-btn>
+            <q-btn
+              flat
+              label="subnets"
+              class="text-regular text-grey"
+              @click="onGetSubnets"
+            >
+            <q-menu>
+              <div class="no-wrap q-pa-md text-grey">
+                Switch To Subnet
+                <q-spinner-dots v-if="subnets.length < 1" />
+              </div>
+              <q-separator />
+              <list-subnets />
+            </q-menu>
+            </q-btn>
+            <a
+              id="faq"
+              class="text-grey" href="#faqs">
+              FAQ
+            </a>
+            <q-btn
+              flat
+              no-caps
+              icon="img:statics/flash.svg"
+              :label="networkEndpoint.name"
+              class="text-regular text-grey"
+              id="target-el"
+            >
+              <q-menu>
+                <div class="no-wrap q-pa-md text-orange">
+                  Networks
+                </div>
+                <q-separator />
+                <switch-endpoint />
+              </q-menu>
+              <tooltip-style v-bind:text="'Connect To Node'" />
+          </q-btn>
+        </q-toolbar>
+        <q-toolbar class="background-orange">
+          <q-toolbar-title>
+            <img src="~assets/vscoutlogo5.svg" style="width: 200px;">
+          </q-toolbar-title>
+          <span v-if="validatorById(nodeID)" style="min-width: 300px;margin-right: 15%;">
+            <countdown class="row" v-bind:color="'#ffffff'" v-bind:countdown="getRemainigTime()" />
+            <tooltip-style v-bind:text="'Remaining validation time for ' + nodeID  + ''" />
           </span>
+          <q-bar>
+            <q-input
+              outlined
+              dark
+              stack-label
+              color="white"
+              style="min-width: 450px;"
+              placeholder="Search Validator/Blockchain/Subnet"
+              clearable v-model="filter"
+            >
+              <template v-slot:append>
+                <q-icon name="search" @click="search"/>
+              </template>
+            </q-input>
+          </q-bar>
+        </q-toolbar>
+      </div>
+      <div class="sm background-orange">
+        <q-toolbar class="background-white">
+          <q-toolbar-title
+            @click="$router.push('/')"
+            id="toolbar-title">
+            VScout.io <q-icon name="home" color="grey" />
+          </q-toolbar-title>
+          <q-toolbar-title>
+            <img src="~assets/avax.png" id="logo-xs"/>
+            <small class="text-grey" style="font-size: 15px;">
+              {{ avaxPrice }} | AVAX/USD
+            </small>
+          </q-toolbar-title>
           <calculator />
           <q-btn
             flat
@@ -68,40 +167,58 @@
             <tooltip-style v-bind:text="'Connect To Node'" />
           </q-btn>
         </q-toolbar>
-        <q-toolbar class="background-orange">
+        <q-toolbar>
           <q-toolbar-title>
             <img src="~assets/vscoutlogo5.svg" style="width: 200px;">
           </q-toolbar-title>
-          <span v-if="validatorById(nodeID)" style="min-width: 300px;margin-right: 15%;">
-            <countdown class="row" v-bind:color="'#ffffff'" v-bind:countdown="getRemainigTime()" />
-            <tooltip-style v-bind:text="'Remaining validation time for ' + nodeID  + ''" />
-          </span>
-          <q-bar>
-            <q-input
-              outlined
-              dark
-              stack-label
-              color="white"
-              style="min-width: 450px;"
-              placeholder="Search Validator/Blockchain/Subnet"
-              clearable v-model="filter"
-            >
-              <template v-slot:append>
-                <q-icon name="search" @click="search"/>
-              </template>
-            </q-input>
-          </q-bar>
+        </q-toolbar>
+        <q-toolbar>
+          <div class="row">
+            <div class="col-5" v-if="validatorById(nodeID)">
+              <span>
+                <countdown class="row" v-bind:color="'#ffffff'" v-bind:countdown="getRemainigTime()" />
+                <tooltip-style v-bind:text="'Remaining validation time for ' + nodeID  + ''" />
+              </span>
+            </div>
+            <div class="col-2" v-if="validatorById(nodeID)"></div>
+            <div class="col-5">
+              <q-bar style="min-width: 380px;">
+                <q-input
+                  outlined
+                  dark
+                  stack-label
+                  color="white"
+                  style="min-width: 350px;"
+                  placeholder="Search Validator/Blockchain/Subnet"
+                  clearable v-model="filter"
+                >
+                  <template v-slot:append>
+                    <q-icon name="search" @click="search"/>
+                  </template>
+                </q-input>
+              </q-bar>
+            </div>
+          </div>
         </q-toolbar>
       </div>
-      <div class="lt-sm">
-        <div class="background-white row">
+      <div class="lt-sm background-white">
+        <q-toolbar>
           <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm class="text-grey"/>
-          <div class="col" @click="$router.push('/')" style="cursor:pointer;margin-top: 7px;margin-left: 7px;">
-            VScout.io
-          </div>
+          <q-toolbar-title>
+            <small class="text-grey">
+              $ {{ avaxPrice }}
+            </small>
+          </q-toolbar-title>
+          <q-toolbar-title>
+            <img src="~assets/block.svg" id="logo-block"/>
+            <small class="text-grey">
+              {{ height }}
+              <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
+            </small>
+          </q-toolbar-title>
           <a id="faq2" class="text-grey" href="#faqs">FAQ</a>
-        </div>
-        <div class="background-white q-pb-md">
+        </q-toolbar>
+        <div class="q-pb-md">
           <span v-if="validatorById(nodeID)">
             <countdown
               class="row"
@@ -262,6 +379,7 @@ import {
   GET_BLOCKCHAINS
 } from './../store/app/types'
 
+import { round } from './../utils/commons.js'
 export default {
   name: 'MainLayout',
   components: {
@@ -278,13 +396,17 @@ export default {
       'subnets',
       'height',
       'blockchains',
+      'avaxUsdPrice',
       'networkEndpoint',
       'hasNetworkConnection',
       'validatorById',
       'blockchainByID',
       'blockchainByName',
       'subnetByID'
-    ])
+    ]),
+    avaxPrice: function () {
+      return round(this.avaxUsdPrice, 10000)
+    }
   },
   data () {
     return {
@@ -379,7 +501,6 @@ export default {
   }
   #faq2 {
     text-decoration: none;
-    padding-top: 5px;
     padding-left: 20px;
     padding-right: 20px;
   }

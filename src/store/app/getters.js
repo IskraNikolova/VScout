@@ -92,6 +92,10 @@ export function currentSupply (state) {
   return state.currentSupply
 }
 
+export function avaxUsdPrice (state) {
+  return state.avaxUsdPrice
+}
+
 export function nodeInfo (state) {
   return state.nodeInfo
 }

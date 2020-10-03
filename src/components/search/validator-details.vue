@@ -106,7 +106,9 @@
           <div>
             <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
             <span class="on-right">{{ totalReward() }}</span>
-            <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
+            <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span> /
+            <span>  {{ totalRewardUsd() }}</span>
+            <span class="text-accent text-medium"><small> USD</small></span>
           </div></div>
         </q-card>
         <div class="col-1"></div>
@@ -431,7 +433,7 @@ import {
 import { getDelegationReward } from './../../modules/reward.js'
 import { date, fromNow } from './../../modules/time.js'
 import { round } from './../../utils/commons.js'
-import { getAvaFromnAva } from './../../utils/avax.js'
+import { getAvaFromnAva, getUsdFromnAvax } from './../../utils/avax.js'
 
 export default {
   name: 'ValidatorDetails',
@@ -441,7 +443,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'validatorById'
+      'validatorById',
+      'avaxUsdPrice'
     ]),
     validator: function () {
       return this.getValidator(this.$route.params.id)
@@ -496,9 +499,23 @@ export default {
       this.delReward = percent
       return getAvaFromnAva(percent).toLocaleString()
     },
+    getFormatRewardUsd (val) {
+      if (!val) return 0
+      const usd = getUsdFromnAvax(val, this.avaxUsdPrice)
+      return round(usd, 100)
+        .toLocaleString()
+    },
     totalReward () {
-      const total = this.delReward + parseFloat(this.validator.potentialReward)
+      const total = this.getTotal()
       return this.getFormatAva(total)
+    },
+    totalRewardUsd () {
+      const total = this.getTotal()
+      return this.getFormatRewardUsd(total)
+    },
+    getTotal () {
+      const total = this.delReward + parseFloat(this.validator.potentialReward)
+      return total
     },
     getUpTime (val) {
       if (!val) return 0

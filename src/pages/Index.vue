@@ -38,7 +38,8 @@ import {
   GET_PENDING_STAKING
 } from '../store/app/types'
 
-const { network } = require('./../modules/config').default
+const { network } = require('./../modules/config')
+  .default
 
 export default {
   name: 'PageIndex',
@@ -60,6 +61,11 @@ export default {
       'networkEndpoint',
       'pendingValidators'
     ])
+  },
+  data () {
+    return {
+      price: null
+    }
   },
   methods: {
     ...mapActions({

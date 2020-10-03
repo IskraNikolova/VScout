@@ -1,5 +1,7 @@
 export const INIT_APP = 'INIT_APP'
 
+export const GET_AVAX_PRICE = 'GET_AVAX_PRICE'
+
 export const GET_STAKING = 'GET_STAKING'
 export const GET_PENDING_STAKING = 'GET_PENDING_STAKING'
 

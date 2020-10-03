@@ -28,6 +28,19 @@ export const _getAssetsCount = async () => {
   }
 }
 
+export const _getAssetPrice = async (id) => {
+  try {
+    const req = await axios
+      .get(network.coinApiBase + id)
+
+    if (!req.data) return
+
+    return req.data
+  } catch (err) {
+    return null
+  }
+}
+
 export const _getAssetById = async (id) => {
   try {
     const req = await axios

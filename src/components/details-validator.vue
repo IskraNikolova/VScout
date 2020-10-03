@@ -129,7 +129,9 @@
           <div class="text-subtitle2">
             <small id="label">TOTAL </small>
             <span> {{ totalReward() }}</span>
-            <span class="text-accent text-medium"><small> AVAX</small></span>
+            <span class="text-accent text-medium"><small> AVAX</small></span> /
+            <span>  {{ totalRewardUsd() }}</span>
+            <span class="text-accent text-medium"><small> USD</small></span>
           </div>
         </q-card-actions>
       </q-card>
@@ -215,12 +217,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import {
   copyToClipboard
 } from 'quasar'
 
 import { round } from './../utils/commons.js'
-import { getAvaFromnAva } from './../utils/avax.js'
+import { getAvaFromnAva, getUsdFromnAvax } from './../utils/avax.js'
 import { getDelegationReward } from './../modules/reward.js'
 
 import {
@@ -241,6 +244,9 @@ export default {
     TooltipStyle: () => import('components/tooltip-style')
   },
   computed: {
+    ...mapGetters([
+      'avaxUsdPrice'
+    ]),
     delegatorsCount: function () {
       if (!this.validator.delegators) return 0
       return this.validator.delegators.length
@@ -317,6 +323,12 @@ export default {
       return round(avax, 100)
         .toLocaleString()
     },
+    getFormatRewardUsd (val) {
+      if (!val) return 0
+      const usd = getUsdFromnAvax(val, this.avaxUsdPrice)
+      return round(usd, 100)
+        .toLocaleString()
+    },
     potentialRewardFromDelegators () {
       if (!this.validator) return
       const percent = getDelegationReward(
@@ -328,9 +340,16 @@ export default {
         .toLocaleString()
     },
     totalReward () {
-      const pr = parseFloat(this.validator.potentialReward)
-      const total = this.delReward + pr
+      const total = this.getTotal()
       return this.getFormatReward(total)
+    },
+    totalRewardUsd () {
+      const total = this.getTotal()
+      return this.getFormatRewardUsd(total)
+    },
+    getTotal () {
+      const pr = parseFloat(this.validator.potentialReward)
+      return this.delReward + pr
     },
     formatValue (val) {
       if (!val) return

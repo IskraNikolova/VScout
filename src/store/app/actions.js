@@ -5,6 +5,7 @@ import {
   GET_SUBNETS,
   GET_NODE_INFO,
   GET_STAKING,
+  GET_AVAX_PRICE,
   INIT_ENDPOINT,
   SET_VALIDATORS,
   SET_DELEGATORS,
@@ -36,6 +37,7 @@ import {
   _getHeight,
   _validates,
   _getSubnets,
+  _getAssetPrice,
   _getNetworkID,
   _getValidators,
   _getNetworkName,
@@ -306,6 +308,16 @@ async function getNodeInfo (
   commit(GET_NODE_INFO, { nodeInfo })
 }
 
+function getAvaxPrice (
+  { commit }) {
+  _getAssetPrice('AVAX')
+    .then((data) => {
+      const avaxUsdPrice = data[0].price_usd
+      commit(GET_AVAX_PRICE, { avaxUsdPrice })
+    })
+    .catch((err) => console.log(err))
+}
+
 async function getNodeHealth (
   { commit, getters }) {
   const response = await _health({
@@ -396,6 +408,7 @@ export default {
   [GET_NODE_INFO]: getNodeInfo,
   [INIT_ENDPOINT]: initEndpoint,
   [GET_STAKING]: getValidators,
+  [GET_AVAX_PRICE]: getAvaxPrice,
   [GET_NODE_HEALTH]: getNodeHealth,
   [GET_BLOCKCHAINS]: getBlockchains,
   [GET_CURRENT_SUPPLY]: getCurrentSupply,
