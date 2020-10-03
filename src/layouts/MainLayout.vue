@@ -9,7 +9,7 @@
             VScout.io <q-icon name="home" color="grey" />
           </q-toolbar-title>
           <q-toolbar-title>
-            <img src="~assets/avax.png" id="logo-xs"/>
+            $
             <small class="text-grey" style="font-size: 15px;">
               {{ avaxPrice }} | AVAX/USD
             </small>
@@ -107,12 +107,6 @@
             id="toolbar-title">
             VScout.io <q-icon name="home" color="grey" />
           </q-toolbar-title>
-          <q-toolbar-title>
-            <img src="~assets/avax.png" id="logo-xs"/>
-            <small class="text-grey" style="font-size: 15px;">
-              {{ avaxPrice }} | AVAX/USD
-            </small>
-          </q-toolbar-title>
           <calculator />
           <q-btn
             flat
@@ -168,8 +162,21 @@
           </q-btn>
         </q-toolbar>
         <q-toolbar>
-          <q-toolbar-title>
+          <q-toolbar-title style="margin-right: 10%;">
             <img src="~assets/vscoutlogo5.svg" style="width: 200px;">
+          </q-toolbar-title>
+          <q-toolbar-title class="text-white">
+            $
+            <span>
+              {{ avaxPrice }} | AVAX/USD
+            </span>
+          </q-toolbar-title>
+          <q-toolbar-title class="text-white">
+            <img src="~assets/block.svg" id="logo-block"/>
+            <span style="padding-top: -20px;">
+              {{ height }}
+              <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
+            </span>
           </q-toolbar-title>
         </q-toolbar>
         <q-toolbar>
@@ -205,11 +212,6 @@
         <q-toolbar>
           <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm class="text-grey"/>
           <q-toolbar-title>
-            <small class="text-grey">
-              $ {{ avaxPrice }}
-            </small>
-          </q-toolbar-title>
-          <q-toolbar-title>
             <img src="~assets/block.svg" id="logo-block"/>
             <small class="text-grey">
               {{ height }}
@@ -228,8 +230,16 @@
           </span>
         </div>
         <div class="background-orange q-pb-md">
-          <div>
-            <img src="~assets/vscoutlogo5.svg" style="width: 150px;">
+          <div class="row">
+            <div class="q-ml-md q-mr-xl">
+              <img src="~assets/vscoutlogo5.svg" style="width: 150px;">
+            </div>
+            <div class="q-ml-xl text-white" style="margin-top: 7%;">
+              $
+              <small style="font-size: 15px;">
+                {{ avaxPrice }} | AVAX/USD
+              </small>
+            </div>
           </div>
           <q-bar>
             <q-input
