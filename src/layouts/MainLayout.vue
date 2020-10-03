@@ -231,10 +231,10 @@
         </div>
         <div class="background-orange q-pb-md">
           <div class="row">
-            <div class="q-ml-md">
+            <div class="col-6 q-pl-md">
               <img src="~assets/vscoutlogo5.svg" style="width: 150px;">
             </div>
-            <div class="q-ml-md text-white" style="margin-top: 7%;font-size: 13px;">
+            <div class="text-white col-6 q-pr-md" style="text-align: right;margin-top: 7%;font-size: 15px;">
               $
               <small>
                 {{ avaxPrice }} | AVAX/USD
