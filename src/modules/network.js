@@ -116,6 +116,11 @@ export const _getPendingValidators = async ({ subnetID, endpoint }) => {
   return response
 }
 
+export const _getUTXOs = async ({ endpoint, params }) => {
+  const response = await request(endpoint + c.platform, body(c.getUtxos, params))
+  return response
+}
+
 export const _getNodeId = async ({ endpoint }) => {
   const response = await request(endpoint + c.info, body(c.getNodeID))
   return response

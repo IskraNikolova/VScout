@@ -4,24 +4,26 @@ export const c = {
   listAssests: 'x/assets',
   assestById: (id) => `x/assets/${id}`,
   assetsWithOffset: (offset) => `x/assets?&offset=${offset}&limit=100`,
-  platform: 'ext/P',
-  platformBc: 'ext/bc/P',
-  avm: 'ext/bc/X',
-  admin: 'ext/admin',
-  info: 'ext/info',
-  health: 'ext/health',
 
-  // methods
-  getBlock: 'timestamp.getBlock',
+  // INFO API
+  info: 'ext/info',
   getNodeID: 'info.getNodeID',
   getNetworkID: 'info.getNetworkID',
   getNetworkName: 'info.getNetworkName',
   getNodeVersion: 'info.getNodeVersion',
   peers: 'info.peers',
+
+  // HEALTH API
+  health: 'ext/health',
+  getLiveness: 'health.getLiveness',
+
+  // PLATFORM API
+  platform: 'ext/P',
+  platformBc: 'ext/bc/P',
+  getUtxos: 'platform.getUTXOs',
   validates: 'platform.validates',
   getHeight: 'platform.getHeight',
   getSubnets: 'platform.getSubnets',
-  getLiveness: 'health.getLiveness',
   getBlockchains: 'platform.getBlockchains',
   getBlockchainStatus: 'platform.getBlockchainStatus',
   getCurrentValidators: 'platform.getCurrentValidators',
