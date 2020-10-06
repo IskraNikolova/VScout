@@ -92,6 +92,7 @@
               style="min-width: 450px;"
               placeholder="Search Validator/Blockchain/Subnet/P-address"
               clearable v-model="filter"
+              @keydown.enter.prevent="search"
             >
               <template v-slot:append>
                 <q-icon name="search" @click="search"/>
@@ -198,6 +199,7 @@
                   style="min-width: 350px;"
                   placeholder="Search Validator/Blockchain/Subnet/P-address"
                   clearable v-model="filter"
+                  @keydown.enter.prevent="search"
                 >
                   <template v-slot:append>
                     <q-icon name="search" @click="search"/>
@@ -250,6 +252,7 @@
               style="min-width: 100%;"
               placeholder="Search Validator/Blockchain/Subnet/P-address"
               clearable v-model="filter"
+              @keydown.enter.prevent="search"
             >
               <template v-slot:append>
                 <q-icon name="search" @click="search"/>
@@ -459,7 +462,7 @@ export default {
       await this.getSubnets({})
     },
     async search () {
-      if (!this.filter) return
+      if (!this.filter || this.filter === 'undefined') return
       const validator = this.getValidator(this.filter)
       if (validator) {
         this.$router.push(`/validator/${this.filter}`)
@@ -521,7 +524,7 @@ export default {
         const response = res.data.result
 
         this.$store.commit(SET_BALANCE, { addressBalance: response })
-        return res
+        return true
       } catch (err) {
         this.$store.commit(SET_BALANCE, { addressBalance: {} })
         return null

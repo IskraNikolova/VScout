@@ -147,13 +147,15 @@ import {
 
 import { getAvaFromnAva } from './../../utils/avax.js'
 import { pChain } from './../../modules/avalanche.js'
+import { _getBalance } from './../../modules/network.js'
 
 export default {
   name: 'AddressDetails',
   watch: {
-    addressBalance: function () {
+    address: function () {
       this.outputs = []
       this.getUtxos()
+      this.getBalance(this.address)
     }
   },
   computed: {
@@ -190,19 +192,37 @@ export default {
     if (!val) return
     return val.getLocktime()
   },
-  async created () {
-    await this.getUtxos()
+  created () {
+    Promise.all([
+      this.getBalance(this.address),
+      this.getUtxos()
+    ])
   },
   methods: {
     getAmount (val) {
       if (!val) return
       return getAvaFromnAva(val.amountValue.toString()).toLocaleString()
     },
+    async getBalance (param) {
+      if (!param) return
+      const res = await _getBalance({ endpoint: this.networkEndpoint.url, params: { address: param } })
+      if (res.data.error) return
+
+      const response = res.data.result
+
+      this.$store.commit(SET_BALANCE, { addressBalance: response })
+    },
     async getUtxos () {
-      const utxos = await pChain().getUTXOs(this.address)
-      const keys = Object.keys(utxos.utxos)
-      for (let i = 0; i < keys.length; i++) {
-        this.outputs.push(utxos.utxos[keys[i]].output)
+      try {
+        if (!this.address) return
+        const utxos = await pChain(this.networkEndpoint.url).getUTXOs([`${this.address}`])
+        const keys = Object.keys(utxos.utxos)
+        for (let i = 0; i < keys.length; i++) {
+          this.outputs.push(utxos.utxos[keys[i]].output)
+        }
+      } catch (err) {
+        console.log(err)
+        // this.$router.push(`/search/${this.$route.params.id}`)
       }
     }
   },
