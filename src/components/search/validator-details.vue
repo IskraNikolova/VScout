@@ -51,7 +51,7 @@
           </q-item-section>
         </q-item>
         <div class="col-3 q-mt-md">
-          <span class="text-subtitle2 q-mr-xs"><small style="opacity: 0.8;">UP TIME</small></span>
+          <span class="text-subtitle2 q-mr-xs"><small style="opacity: 0.8;">UPTIME</small></span>
           <q-badge :color="getColorUptime(validator.uptime)" class="text-medium" style="font-size: 16px;padding: 7px;">
             <span style="margin: auto;">{{ getUpTime(validator.uptime) }} %</span>
           </q-badge>
@@ -255,7 +255,7 @@
           </q-item-label>
           <q-item-label>
             <span v-if="validator.uptime > 0">
-              <span class="q-mr-xs q-mt-xl">Up Time</span>
+              <span class="q-mr-xs q-mt-xl">Uptime</span>
               <q-badge :color="getColorUptime(validator.uptime)">
                   {{ getUpTime(validator.uptime) }} %
               </q-badge>

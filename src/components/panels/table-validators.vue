@@ -72,7 +72,7 @@
         <small><div class="col" style="margin-top: 20px; margin-bottom: 10px;">
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="networkShare" label="Network Share" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="percent" label="Cumulative Stake" />
-          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="uptime" label="Up Time" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="uptime" label="Uptime" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="startTime" label="Start Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="endTime" label="End Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="progress" label="Progress" />
@@ -219,10 +219,10 @@
         </q-tr>
       </template>
       <template v-slot:item="props">
-        <div id="item">
+        <div style="max-width: 400px;width: 100%;margin:auto;margin-bottom: 5px;">
           <q-card flat bordered>
             <span class="absolute absolute-top-right q-mt-xs q-mr-md">
-              <small class="q-mr-xs">Up Time</small>
+              <small class="q-mr-xs">Uptime</small>
               <q-badge :color="getColorUptime(props.row.uptime)" >
                 {{ getUpTime(props.row.uptime) }} %
               </q-badge>
@@ -454,7 +454,7 @@ export default {
         {
           name: 'uptime',
           align: 'center',
-          label: 'Up Time',
+          label: 'Uptime',
           sortable: true,
           field: row => row.uptime,
           headerClasses: 'text-medium'
@@ -657,12 +657,6 @@ export default {
 #rank {
   margin-left: 25px!important;
   font-size: 14px;
-}
-#item {
-  max-width: 400px;
-  width: 100%;
-  margin:auto;
-  margin-bottom: 5px;
 }
 #validator {
   min-width: 330px;
