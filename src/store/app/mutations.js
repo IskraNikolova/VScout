@@ -6,6 +6,7 @@ import {
   GET_NODE_ID,
   GET_SUBNETS,
   GET_HEIGHT,
+  SET_BALANCE,
   SET_SUBNET_ID,
   GET_NODE_INFO,
   SET_VALIDATORS,
@@ -37,6 +38,9 @@ const mutations = {
   },
   [GET_SUBNETS]: (state, { subnets }) => {
     state.subnets = subnets
+  },
+  [SET_BALANCE]: (state, { addressBalance }) => {
+    state.addressBalance = addressBalance
   },
   [GET_HEIGHT]: (state, { height }) => {
     state.height = height

@@ -20,10 +20,13 @@ export const c = {
   // PLATFORM API
   platform: 'ext/P',
   platformBc: 'ext/bc/P',
+  getTx: 'platform.getTx',
   getUtxos: 'platform.getUTXOs',
   validates: 'platform.validates',
   getHeight: 'platform.getHeight',
   getSubnets: 'platform.getSubnets',
+  getTxStatus: 'platform.getTxStatus',
+  getBalance: 'platform.getBalance',
   getBlockchains: 'platform.getBlockchains',
   getBlockchainStatus: 'platform.getBlockchainStatus',
   getCurrentValidators: 'platform.getCurrentValidators',

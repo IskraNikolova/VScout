@@ -46,7 +46,7 @@ import {
 } from 'vuex'
 
 export default {
-  name: 'SearchDetails',
+  name: 'SubnetDetails',
   computed: {
     ...mapGetters([
       'blockchainByID',

@@ -23,6 +23,20 @@ const routes = [
     ]
   },
   {
+    path: '/address',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '/address/:id', component: () => import('pages/PAddress.vue') }
+    ]
+  },
+  {
+    path: '/tx',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '/tx/:id/:status', component: () => import('pages/Tx.vue') }
+    ]
+  },
+  {
     path: '/subnet',
     component: () => import('layouts/MainLayout.vue'),
     children: [

@@ -90,7 +90,7 @@
               stack-label
               color="white"
               style="min-width: 450px;"
-              placeholder="Search Validator/Blockchain/Subnet"
+              placeholder="Search Validator/Blockchain/Subnet/P-address"
               clearable v-model="filter"
             >
               <template v-slot:append>
@@ -196,7 +196,7 @@
                   stack-label
                   color="white"
                   style="min-width: 350px;"
-                  placeholder="Search Validator/Blockchain/Subnet"
+                  placeholder="Search Validator/Blockchain/Subnet/P-address"
                   clearable v-model="filter"
                 >
                   <template v-slot:append>
@@ -248,7 +248,7 @@
               stack-label
               color="white"
               style="min-width: 100%;"
-              placeholder="Search Validator/Blockchain/Subnet"
+              placeholder="Search Validator/Blockchain/Subnet/P-address"
               clearable v-model="filter"
             >
               <template v-slot:append>
@@ -385,11 +385,14 @@
 import { mapGetters, mapActions } from 'vuex'
 
 import {
+  SET_BALANCE,
   GET_SUBNETS,
   GET_BLOCKCHAINS
 } from './../store/app/types'
 
 import { round } from './../utils/commons.js'
+import { _getTxStatus, _getBalance } from './../modules/network.js'
+
 export default {
   name: 'MainLayout',
   components: {
@@ -415,7 +418,11 @@ export default {
       'subnetByID'
     ]),
     avaxPrice: function () {
+      if (!this.avaxUsdPrice) return 0
+
       return round(this.avaxUsdPrice, 10000)
+        .toString()
+        .padEnd(4, '0')
     }
   },
   data () {
@@ -451,7 +458,7 @@ export default {
       this.isS = true
       await this.getSubnets({})
     },
-    search () {
+    async search () {
       if (!this.filter) return
       const validator = this.getValidator(this.filter)
       if (validator) {
@@ -473,6 +480,25 @@ export default {
         this.filter = ''
         return
       }
+
+      // const tx = await this.getTx(this.filter)
+      // if (tx) {
+      //   this.$router.push(`/tx/${this.filter}/${tx}`)
+      //   this.filter = ''
+      //   return
+      // }
+      const pAddress = await this.getPAddress(this.filter)
+      if (pAddress) {
+        this.$router.push(`/address/${this.filter}`)
+        this.filter = ''
+        return
+      }
+
+      // if (tx) {
+      //   this.$router.push(`/tx/${this.filter}/${tx}`)
+      //   this.filter = ''
+      //   return
+      // }
       this.$router.push(`/search/${this.filter}`)
       this.filter = ''
     },
@@ -481,6 +507,25 @@ export default {
       if (!validator) return
 
       return validator
+    },
+    async getTx (param) {
+      const tx = await _getTxStatus({ endpoint: this.networkEndpoint.url, params: { txID: param } })
+      if (tx.data.error) return null
+      return tx.data.result
+    },
+    async getPAddress (param) {
+      try {
+        const res = await _getBalance({ endpoint: this.networkEndpoint.url, params: { address: param } })
+        if (res.data.error) return
+
+        const response = res.data.result
+
+        this.$store.commit(SET_BALANCE, { addressBalance: response })
+        return res
+      } catch (err) {
+        this.$store.commit(SET_BALANCE, { addressBalance: {} })
+        return null
+      }
     },
     getBlockchain (param) {
       let blockchain = this.blockchainByID(param)

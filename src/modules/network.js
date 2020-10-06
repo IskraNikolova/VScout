@@ -121,6 +121,21 @@ export const _getUTXOs = async ({ endpoint, params }) => {
   return response
 }
 
+export const _getTxStatus = async ({ endpoint, params }) => {
+  const response = await request(endpoint + c.platform, body(c.getTxStatus, params))
+  return response
+}
+
+export const _getTX = async ({ endpoint, params }) => {
+  const response = await request(endpoint + c.platform, body(c.getTx, params))
+  return response
+}
+
+export const _getBalance = async ({ endpoint, params }) => {
+  const response = await request(endpoint + c.platform, body(c.getBalance, params))
+  return response
+}
+
 export const _getNodeId = async ({ endpoint }) => {
   const response = await request(endpoint + c.info, body(c.getNodeID))
   return response

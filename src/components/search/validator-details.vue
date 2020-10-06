@@ -435,8 +435,6 @@ import { date, fromNow } from './../../modules/time.js'
 import { round } from './../../utils/commons.js'
 import { getAvaFromnAva, getUsdFromnAvax } from './../../utils/avax.js'
 
-// import { _getUTXOs } from './../../modules/network.js'
-
 export default {
   name: 'ValidatorDetails',
   components: {
@@ -480,10 +478,6 @@ export default {
       if (!val) return
       return `${val.substr(0, startIndex)}...${val.substr(endIndex)}`
     },
-    // async getUtxos () {
-    //   const params = { addresses: this.validator.rewardOwner.addresses, limit: 5 }
-    //   const response = await _getUTXOs({ endpoint: this.networkEndpoint.url, params })
-    // },
     stakedBy (date) {
       return fromNow(date)
     },

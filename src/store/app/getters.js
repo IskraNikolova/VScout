@@ -88,6 +88,10 @@ export function nodeID (state) {
   return state.nodeID
 }
 
+export function addressBalance (state) {
+  return state.addressBalance
+}
+
 export function currentSupply (state) {
   return state.currentSupply
 }

@@ -64,7 +64,8 @@ export default {
   },
   data () {
     return {
-      price: null
+      price: null,
+      startIndex: null
     }
   },
   methods: {

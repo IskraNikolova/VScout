@@ -3,6 +3,7 @@ import { BN } from 'avalanche'
 
 export default function () {
   return {
+    addressBalance: {},
     height: 0,
     nodeID: '',
     subnets: [],
