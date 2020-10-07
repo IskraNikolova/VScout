@@ -1,138 +1,86 @@
 <template>
-  <div>
-    <div class="gt-xs q-pa-xl">
-      <div class="text-bold q-pl-md">ADDRESS</div>
-      <div class="text-medium text-orange text-h6 q-pl-md q-pt-md">{{ address }}</div>
-      <div class="row">
-        <q-card flat bordered class="col-5 q-mt-md">
-          <q-card-section>
-            <div class="q-mb-md text-medium">BALANCE (AVAX)</div>
-            <div>
-              <span class="text-subtitle2"><small style="opacity: 0.8;">LOCKED STAKEABLE</small></span>
-              <span class="on-right text-medium text-h6">{{ lockedStakeable }}</span>
-              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
-            </div>
-            <div>
-              <span class="text-subtitle2"><small style="opacity: 0.8;">LOCKED NOT STAKEABLE</small></span>
-              <span class="on-right">{{ lockedNotStakeable }}</span>
-              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
-            </div>
-            <div>
-              <span class="text-subtitle2"><small style="opacity: 0.8;">UNLOCKED</small></span>
-              <span class="on-right">{{ unlocked }}</span>
-              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
-            </div>
-            <q-separator class="q-mt-xs q-mb-xs" style="width: 180px;"/>
-            <div>
-              <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
-              <span class="on-right">{{ balance }}</span>
-              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
-            </div>
-          </q-card-section>
-        </q-card>
-        <div class="col-1"></div>
-        <q-card flat bordered class="col-5 q-mt-md">
-          <q-card-section>
-            <div class="q-mb-md text-medium"><span class="text-orange">{{outputs.length}}</span> UTXOS</div>
-            <q-scroll-area style="height: 150px;">
-              <div v-if="outputs.length >= 1"><div v-for="(output, i) in outputs" v-bind:key="i">
-                <q-card>
-                  <q-card-section>
-                    <div>
-                      <span class="text-subtitle2"><small style="opacity: 0.8;">TYPE NAME</small></span>
-                      <span class="on-right">{{ output._typeName }}</span>
-                    </div>
-                    <div>
-                      <span class="text-subtitle2"><small style="opacity: 0.8;">TYPE ID</small></span>
-                      <span class="on-right">{{ output._typeID }}</span>
-                    </div>
-                    <div>
-                      <span class="text-subtitle2"><small style="opacity: 0.8;">AMOUNT</small></span>
-                      <span class="on-right">{{ getAmount(output) }}</span>
-                      <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
-                    </div>
-                    <div>
-                      <span class="text-subtitle2"><small style="opacity: 0.8;">LOCK TIME</small></span>
-                      <span class="on-right">{{ output.getLocktime() }}</span>
-                    </div>
-                    <div>
-                      <span class="text-subtitle2"><small style="opacity: 0.8;">THRESHOLD</small></span>
-                      <span class="on-right">{{ output.getThreshold() }}</span>
-                    </div>
-                  </q-card-section>
-                </q-card>
-              </div></div>
-              <div v-else>NONE</div>
-            </q-scroll-area>
-          </q-card-section>
-        </q-card>
+  <div class="q-pa-md">
+    <div class="text-medium text-orange text-h6 q-pl-md q-pt-md">{{ address }}</div>
+      <div class="q-pl-md">
+        <div class="q-mb-md q-pt-xl">
+          BALANCE ({{ asset }})
+          <q-btn label="USD" class="q-ml-md" size="xs" color="accent" v-if="!isUsd" outline @click="takeUSD" />
+          <q-btn label="AVAX" class="q-ml-md" size="xs" color="accent" v-else outline @click="takeAVAX" />
+        </div>
+        <div>
+          <span class="text-subtitle2"><small style="opacity: 0.8;">UNLOCKED</small></span>
+          <span class="on-right text-h6">{{ unlocked }}</span>
+          <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">{{ asset }}</span>
+        </div>
+        <div>
+          <span class="text-subtitle2"><small style="opacity: 0.8;">LOCKED NOT STAKEABLE</small></span>
+          <span class="on-right">{{ lockedNotStakeable }}</span>
+          <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">{{ asset }}</span>
+        </div>
+        <div>
+          <span class="text-subtitle2"><small style="opacity: 0.8;">LOCKED STAKEABLE</small></span>
+          <span class="on-right">{{ lockedStakeable }}</span>
+          <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">{{ asset }}</span>
+        </div>
+        <q-separator class="q-mt-xs q-mb-xs" style="width: 180px;"/>
+        <div>
+          <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL BALANCE</small></span>
+          <span class="on-right">{{ balance }}</span>
+          <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">{{ asset }}</span>
+        </div>
       </div>
-    </div>
-    <div class="xs">
-      <div class="text-bold q-pl-md">ADDRESS</div>
-      <div class="text-medium text-orange text-h7 q-pl-md q-pt-md">{{ address }}</div>
-        <q-card flat bordered class="q-mt-md">
-          <q-card-section>
-            <div class="q-mb-md text-medium">BALANCE (AVAX)</div>
-            <div>
-              <span class="text-subtitle2"><small style="opacity: 0.8;">LOCKED STAKEABLE</small></span>
-              <span class="on-right text-medium text-h6">{{ lockedStakeable }}</span>
+      <q-table
+        flat
+        :title="outputs.length + ' UTXOs'"
+        :data="outputs"
+        :columns="columns"
+        :filter="filter"
+        row-key="nodeID"
+        :pagination="pagination"
+      >
+        <template slot="top-left">
+        </template>
+        <template v-slot:top-right="props">
+          <q-input
+            borderless
+            color="accent"
+            stack-label
+            label="Filter utxos..."
+            clearable v-model="filter"
+          >
+            <template v-slot:append>
+              <q-icon name="search" color="accent" />
+            </template>
+          </q-input>
+          <q-btn
+            size="xs"
+            flat round dense
+            :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+            @click="props.toggleFullscreen"
+            class="absolute-top-right"
+            color="grey"
+          />
+        </template>
+        <template v-slot:body="props">
+          <q-tr
+            :props="props"
+            auto-width
+          >
+            <q-td
+              v-for="(col) in props.cols"
+              :key="col.name"
+              :props="props"
+              style="padding: 0px!important;margin:0px!important;"
+            >
+            <div v-if="col.name === 'amount'">
+              <span>{{ col.value }}</span>
               <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
             </div>
-            <div>
-              <span class="text-subtitle2"><small style="opacity: 0.8;">LOCKED NOT STAKEABLE</small></span>
-              <span class="on-right">{{ lockedNotStakeable }}</span>
-              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
-            </div>
-            <div>
-              <span class="text-subtitle2"><small style="opacity: 0.8;">UNLOCKED</small></span>
-              <span class="on-right">{{ unlocked }}</span>
-              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
-            </div>
-            <q-separator class="q-mt-xs q-mb-xs" style="width: 180px;"/>
-            <div>
-              <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
-              <span class="on-right">{{ balance }}</span>
-              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
-            </div>
-          </q-card-section>
-        </q-card>
-        <q-card flat bordered class="q-mt-md">
-          <q-card-section>
-            <div class="q-mb-md text-medium"><span class="text-orange">{{outputs.length}}</span> UTXOS</div>
-            <q-scroll-area style="height: 150px;">
-              <div v-if="outputs.length >= 1"><div v-for="(output, i) in outputs" v-bind:key="i">
-                <q-card>
-                  <q-card-section>
-                    <div>
-                      <span class="text-subtitle2"><small style="opacity: 0.8;">TYPE NAME</small></span>
-                      <span class="on-right">{{ output._typeName }}</span>
-                    </div>
-                    <div>
-                      <span class="text-subtitle2"><small style="opacity: 0.8;">TYPE ID</small></span>
-                      <span class="on-right">{{ output._typeID }}</span>
-                    </div>
-                    <div>
-                      <span class="text-subtitle2"><small style="opacity: 0.8;">AMOUNT</small></span>
-                      <span class="on-right">{{ getAmount(output) }}</span>
-                      <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
-                    </div>
-                    <div>
-                      <span class="text-subtitle2"><small style="opacity: 0.8;">LOCK TIME</small></span>
-                      <span class="on-right">{{ output.getLocktime() }}</span>
-                    </div>
-                    <div>
-                      <span class="text-subtitle2"><small style="opacity: 0.8;">THRESHOLD</small></span>
-                      <span class="on-right">{{ output.getThreshold() }}</span>
-                    </div>
-                  </q-card-section>
-                </q-card>
-              </div></div>
-              <div v-else>NONE</div>
-            </q-scroll-area>
-          </q-card-section>
-        </q-card>
-    </div>
+            <div v-else>{{ col.value }}</div>
+            </q-td>
+          </q-tr>
+        </template>
+      </q-table>
   </div>
 </template>
 
@@ -145,7 +93,7 @@ import {
   SET_BALANCE
 } from './../../store/app/types'
 
-import { getAvaFromnAva } from './../../utils/avax.js'
+import { getAvaFromnAva, getUsdFromnAvax } from './../../utils/avax.js'
 import { pChain } from './../../modules/avalanche.js'
 import { _getBalance } from './../../modules/network.js'
 
@@ -161,31 +109,109 @@ export default {
   computed: {
     ...mapGetters([
       'networkEndpoint',
-      'addressBalance'
+      'addressBalance',
+      'avaxUsdPrice'
     ]),
     address: function () {
       return this.$route.params.id
     },
     balance: function () {
       if (!this.addressBalance) return 0
-      return getAvaFromnAva(this.addressBalance.balance).toLocaleString()
+      if (!this.isUsd) {
+        return getAvaFromnAva(this.addressBalance.balance)
+          .toLocaleString()
+      }
+      return getUsdFromnAvax(this.addressBalance.balance, this.avaxUsdPrice)
+        .toLocaleString()
     },
     lockedNotStakeable: function () {
       if (!this.addressBalance) return 0
-      return getAvaFromnAva(this.addressBalance.lockedNotStakeable).toLocaleString()
+      if (!this.isUsd) {
+        return getAvaFromnAva(this.addressBalance.lockedNotStakeable)
+          .toLocaleString()
+      }
+      return getUsdFromnAvax(this.addressBalance.lockedNotStakeable, this.avaxUsdPrice)
+        .toLocaleString()
     },
     lockedStakeable: function () {
       if (!this.addressBalance) return 0
-      return getAvaFromnAva(this.addressBalance.lockedStakeable).toLocaleString()
+      if (!this.isUsd) {
+        return getAvaFromnAva(this.addressBalance.lockedStakeable)
+          .toLocaleString()
+      }
+      return getUsdFromnAvax(this.addressBalance.lockedStakeable, this.avaxUsdPrice)
+        .toLocaleString()
     },
     unlocked: function () {
       if (!this.addressBalance) return 0
-      return getAvaFromnAva(this.addressBalance.unlocked).toLocaleString()
+      if (!this.isUsd) {
+        return getAvaFromnAva(this.addressBalance.unlocked)
+          .toLocaleString()
+      }
+      return getUsdFromnAvax(this.addressBalance.unlocked, this.avaxUsdPrice)
+        .toLocaleString()
     }
   },
   data () {
     return {
-      outputs: []
+      pagination: {
+        rowsPerPage: 5
+      },
+      isUsd: false,
+      asset: 'AVAX',
+      filter: '',
+      outputs: [],
+      columns: [
+        {
+          name: 'index',
+          label: '#',
+          align: 'center',
+          field: row => row.index,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'id',
+          align: 'left',
+          label: 'UTXO ID',
+          field: row => row.id,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'typeId',
+          align: 'center',
+          label: 'TYPE ID',
+          field: row => row._typeID,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'typeName',
+          align: 'center',
+          label: 'TYPE NAME',
+          field: row => row._typeName,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'amount',
+          align: 'center',
+          label: 'AMOUNT (AVAX)',
+          field: row => row.amount,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'threshold',
+          align: 'center',
+          label: 'THRESHOLD',
+          field: row => row.threshold,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'locktime',
+          align: 'center',
+          label: 'LOCKTIME',
+          field: row => row.locktime,
+          headerClasses: 'text-medium'
+        }
+      ]
     }
   },
   getLocktime (val) {
@@ -199,6 +225,14 @@ export default {
     ])
   },
   methods: {
+    takeUSD () {
+      this.isUsd = true
+      this.asset = 'USD'
+    },
+    takeAVAX () {
+      this.isUsd = false
+      this.asset = 'AVAX'
+    },
     getAmount (val) {
       if (!val) return
       return getAvaFromnAva(val.amountValue.toString()).toLocaleString()
@@ -215,14 +249,31 @@ export default {
     async getUtxos () {
       try {
         if (!this.address) return
-        const utxos = await pChain(this.networkEndpoint.url).getUTXOs([`${this.address}`])
+        const utxos = await pChain(this.networkEndpoint.url)
+          .getUTXOs([`${this.address}`])
+
         const keys = Object.keys(utxos.utxos)
-        for (let i = 0; i < keys.length; i++) {
-          this.outputs.push(utxos.utxos[keys[i]].output)
+        for (let i = 1; i <= keys.length; i++) {
+          const output = utxos.utxos[keys[i]].output
+          const tableObj = {
+            index: 0,
+            id: '',
+            _typeID: '',
+            _typeName: '',
+            amount: 0,
+            locktime: 0,
+            threshold: ''
+          }
+          tableObj.index = i
+          tableObj.id = keys[i]
+          tableObj._typeID = output._typeID
+          tableObj._typeName = output._typeName
+          tableObj.amount = this.getAmount(output)
+          tableObj.locktime = output.getLocktime()
+          tableObj.threshold = output.getThreshold()
+          this.outputs.push(tableObj)
         }
       } catch (err) {
-        console.log(err)
-        // this.$router.push(`/search/${this.$route.params.id}`)
       }
     }
   },

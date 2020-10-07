@@ -164,6 +164,9 @@
                 v-bind:icon="'info'"
               />
             </div>
+            <div v-else-if="col.name === 'delegationFee'">
+              {{ col.value }} %
+            </div>
             <div v-else-if="col.name === 'percent'">
               <div
                 class="container_row"
@@ -447,7 +450,8 @@ export default {
           name: 'delegationFee',
           align: 'center',
           label: 'Delegation Fee',
-          field: row => `${round(Number(row.delegationFee), 1000)} %`,
+          field: row => round(Number(row.delegationFee), 1000),
+          sortable: true,
           style: 'font-size: 15px;',
           headerClasses: 'text-medium'
         },
