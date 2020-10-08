@@ -2,20 +2,20 @@
   <q-page>
     <div style="padding: 1%;">
       <q-card
-        class="q-mt-md q-pt-md q-pb-md"
+        class="q-pb-md"
         id="custom-card"
         style="padding-top: 3%;min-height: 400px;"
       >
         <q-btn
           @click="back"
           icon="arrow_back"
-          label="Back"
           no-caps
           color="accent"
           flat
         />
-        <div>
-          <span class="text-h6 q-pl-md q-pt-md">Peers Connected with</span> <span class="text-medium text-orange"> {{ nodeID }}</span></div>
+        <div class="q-pt-md">
+          <span class="text-h6 q-pl-md">Peers Connected with</span> <span class="text-medium text-orange"> {{ getNodeFormat(nodeID) }}</span></div>
+          <div class="text-h7 q-pl-md q-pt-md q-pb-md"><q-icon name="info" color="grey" /> "Uptime" shows the stat from the perspective of the connected endpoint.</div>
         <q-table
           flat
           :data="peers"
@@ -92,6 +92,13 @@ export default {
       filter: '',
       columns: [
         {
+          name: 'index',
+          align: 'left',
+          label: '#',
+          field: row => `${row.index}.`,
+          headerClasses: 'text-medium'
+        },
+        {
           name: 'id',
           align: 'left',
           label: 'NODE ID',
@@ -99,10 +106,10 @@ export default {
           headerClasses: 'text-medium'
         },
         {
-          name: 'ip',
+          name: 'uptime',
           align: 'center',
-          label: 'IP',
-          field: row => row.ip,
+          label: 'UPTIME',
+          field: row => row.uptime,
           headerClasses: 'text-medium'
         },
         {
@@ -138,16 +145,28 @@ export default {
     peers: function () {
       const peersRes = []
       this.nodeInfo
-        .peers.forEach(peer => {
-          const isValidator = this.validators.find(v => v.nodeID === peer.nodeID)
+        .peers.forEach((peer, i) => {
+          const isValidator = this.validators
+            .find(v => v.nodeID === peer.nodeID)
           const p = { ...peer }
-          p.isValidator = isValidator !== undefined
+          if (isValidator) {
+            p.isValidator = true
+            p.uptime = `${Math.round(Number(isValidator.uptime) * 100, 2)} %`
+          } else {
+            p.isValidator = false
+            p.uptime = ''
+          }
+          p.index = i + 1
           peersRes.push(p)
         })
       return peersRes
     }
   },
   methods: {
+    getNodeFormat (val) {
+      if (!val) return
+      return `${val.substr(0, 22)}...${val.substr(32)}`
+    },
     dateFormat (date) {
       return datePickerFormat(date)
     },
