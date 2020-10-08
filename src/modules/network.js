@@ -30,14 +30,27 @@ export const _getAssetsCount = async () => {
 
 export const _getAssetPrice = async (id) => {
   try {
-    const req = await axios
-      .get(network.coinApiBase + id)
+    const req2 = await axios
+      .get('https://api.coingecko.com/api/v3/coins/avalanche-2')
 
-    if (!req.data) return
+    if (!req2.data) {
+      throw new Error()
+    }
 
-    return req.data
+    return req2.data.market_data.current_price.usd
   } catch (err) {
-    return null
+    try {
+      const req = await axios
+        .get(network.coinApiBase + id)
+
+      if (!req.data) {
+        throw new Error()
+      }
+
+      return req.data[0].price_usd
+    } catch (err) {
+      return null
+    }
   }
 }
 

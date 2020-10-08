@@ -30,6 +30,13 @@ const routes = [
     ]
   },
   {
+    path: '/peers',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '/peers/:nodeID', component: () => import('pages/Peers.vue') }
+    ]
+  },
+  {
     path: '/tx',
     component: () => import('layouts/MainLayout.vue'),
     children: [

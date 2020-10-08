@@ -35,7 +35,7 @@
         :data="outputs"
         :columns="columns"
         :filter="filter"
-        row-key="nodeID"
+        row-key="index"
         :pagination="pagination"
       >
         <template slot="top-left">

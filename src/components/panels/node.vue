@@ -23,7 +23,7 @@
       <q-separator class="q-mt-md q-mb-md lt-md" />
       <div class="col-md-3 col-xs-10">
         <div v-if="validatorById(nodeID)" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
-          <div id="f-size12" class="q-pb-md text-medium">NODE - VALIDATO</div>
+          <div id="f-size12" class="q-pb-md text-medium">NODE - VALIDATOR</div>
           <div class="text-h7 text-orange q-pb-md q-pt-xs">{{ formatNodeID }}</div>
           <tooltip-style v-bind:text="'Copy to Clipboard'" />
         </div>
@@ -53,51 +53,7 @@
             />
          </div>
         </div>
-        <q-btn-dropdown
-          color="grey"
-          outline
-          size="xs"
-          no-caps
-          label="Peers"
-        >
-          <q-item>
-            <q-item-section caption>
-              <q-input
-                color="accent"
-                label="Search Peer..."
-                v-model="filter"
-              >
-                <template v-slot:append>
-                  <q-icon name="search" color="accent" />
-                </template>
-              </q-input>
-            </q-item-section>
-            </q-item>
-          <q-infinite-scroll @load="onLoad" :offset="250">
-            <q-list
-              v-for="(peer, i) in items"
-              v-bind:key="i"
-              class="q-pa-md"
-            >
-              <q-item v-close-popup>
-                <q-item-section>
-                  <div><small class="text-grey">IP: </small> {{ peer.ip }}<q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.ip)"/></div>
-                  <div><small class="text-grey">Public IP: </small> {{ peer.publicIP }}<q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.publicIP)"/></div>
-                  <div><small class="text-grey">ID: </small> {{ peer.nodeID }} <q-btn icon="file_copy" color="grey" flat size="xs" @click="copyToClipboard(peer.nodeID)"/></div>
-                  <div><small class="text-grey">Version: </small> <span class="text-accent">{{ peer.version }}</span></div>
-                  <div><small class="text-grey">Last Sent: </small> {{ dateFormat(peer.lastSent) }}</div>
-                  <div><small class="text-grey">Last Received: </small> {{ dateFormat(peer.lastReceived) }}</div>
-                </q-item-section>
-              </q-item>
-              <q-separator />
-            </q-list>
-            <template v-slot:loading>
-              <div class="row justify-center q-my-md">
-                <q-spinner-dots color="primary" size="40px" />
-              </div>
-            </template>
-          </q-infinite-scroll>
-        </q-btn-dropdown>
+        <q-btn outline label="Peers" size="xs" @click="$router.push('/peers/' + nodeID)" />
       </div>
       <div class="col-1 q-pt-md">
         <img src="~/assets/peers.svg" id="logo2"/>
