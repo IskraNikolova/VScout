@@ -75,6 +75,9 @@
               <span>{{ col.value }}</span>
               <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
             </div>
+            <!--<div v-else-if="col.name === 'txID'">
+              <router-link :to="'/tx/' + col.value">{{ col.value }}</router-link>
+            </div>-->
             <div v-else>{{ col.value }}</div>
             </q-td>
           </q-tr>

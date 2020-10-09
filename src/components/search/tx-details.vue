@@ -78,9 +78,7 @@ export default {
       }
 
       // const code = '0x' + b58Str.substr(0, 4)
-      // console.log(code)
       const typeIndex = '0x' + b58Str.substr(4, 8)
-      // console.log(typeIndex)
       // const typeBase = '0x' + b58Str.substr(12, 8)
       // console.log(typeBase)
       // const networkID = '0x' + b58Str.substr(20, 8)
@@ -91,6 +89,7 @@ export default {
       // console.log(numberOfOutpust)
       // console.log(bintools)
       // console.log(b58Str.substr(228, 40))
+      // console.log(b58Str)
       this.txType = type[typeIndex]
       this.tx = txResponse
     }

@@ -18,7 +18,7 @@
           </small>
         </div>
         <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} </div>
-        <div v-if="delegator.potentialReward > 0" class="text-grey text-medium">Potential Reward:  {{ Number(delegator.potentialReward).toLocaleString() }} <span class="text-accent">nAVAX</span></div>
+        <div v-if="delegator.potentialReward > 0" class="text-grey text-medium">Potential Reward:  {{ getAvaxFromNAvax(delegator.potentialReward) }} <span class="text-accent">AVAX</span> | <span class="text-accent">$</span> {{ getUsdFromAvax(delegator.potentialReward) }}</div>
         <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
         <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
       </q-card-section>
@@ -26,11 +26,15 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import {
   copyToClipboard
 } from 'quasar'
 
 import { date, fromNow, getDurationHumanize, getWeeks } from './../modules/time.js'
+import { getAvaFromnAva, getUsdFromnAvax } from './../utils/avax.js'
+import { round } from './../utils/commons'
 
 export default {
   name: 'DetailsDelegator',
@@ -41,6 +45,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'avaxUsdPrice'
+    ]),
     startDate: function () {
       return date(this.delegator.startTime)
     },
@@ -55,6 +62,14 @@ export default {
     }
   },
   methods: {
+    getAvaxFromNAvax (val) {
+      return getAvaFromnAva(val).toLocaleString()
+    },
+    getUsdFromAvax (val) {
+      const usd = getUsdFromnAvax(val, this.avaxUsdPrice)
+      if (!usd) return
+      return round(usd, 1000).toLocaleString()
+    },
     copyToClipboard (id) {
       if (!id) return
 
