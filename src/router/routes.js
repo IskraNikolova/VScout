@@ -40,7 +40,7 @@ const routes = [
     path: '/tx',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '/tx/:id/:status', component: () => import('pages/Tx.vue') }
+      { path: '/tx/:txID', component: () => import('pages/Tx.vue') }
     ]
   },
   {

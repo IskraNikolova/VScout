@@ -31,11 +31,11 @@
       </div>
       <q-table
         flat
-        :title="outputs.length + ' UTXOs'"
+        :title="outputs.length + ' Output UTXOs'"
         :data="outputs"
         :columns="columns"
         :filter="filter"
-        row-key="index"
+        row-key="txID"
         :pagination="pagination"
       >
         <template slot="top-left">
@@ -70,7 +70,6 @@
               v-for="(col) in props.cols"
               :key="col.name"
               :props="props"
-              style="padding: 0px!important;margin:0px!important;"
             >
             <div v-if="col.name === 'amount'">
               <span>{{ col.value }}</span>
@@ -92,6 +91,9 @@ import {
 import {
   SET_BALANCE
 } from './../../store/app/types'
+
+import { BinTools } from 'avalanche'
+const bintools = BinTools.getInstance()
 
 import { getAvaFromnAva, getUsdFromnAvax } from './../../utils/avax.js'
 import { pChain } from './../../modules/avalanche.js'
@@ -163,52 +165,45 @@ export default {
       outputs: [],
       columns: [
         {
-          name: 'index',
-          label: '#',
-          align: 'center',
-          field: row => row.index,
-          headerClasses: 'text-medium'
-        },
-        {
-          name: 'id',
-          align: 'left',
-          label: 'UTXO ID',
-          field: row => row.id,
-          headerClasses: 'text-medium'
-        },
-        {
           name: 'typeId',
-          align: 'center',
-          label: 'TYPE ID',
+          align: 'left',
+          label: '#TYPE',
           field: row => row._typeID,
           headerClasses: 'text-medium'
         },
         {
-          name: 'typeName',
-          align: 'center',
-          label: 'TYPE NAME',
-          field: row => row._typeName,
+          name: 'txID',
+          align: 'left',
+          label: 'TX',
+          field: row => row.txID,
           headerClasses: 'text-medium'
         },
         {
           name: 'amount',
-          align: 'center',
+          align: 'left',
           label: 'AMOUNT (AVAX)',
           field: row => row.amount,
           headerClasses: 'text-medium'
         },
         {
           name: 'threshold',
-          align: 'center',
+          align: 'left',
           label: 'THRESHOLD',
           field: row => row.threshold,
           headerClasses: 'text-medium'
         },
         {
           name: 'locktime',
-          align: 'center',
+          align: 'left',
           label: 'LOCKTIME',
           field: row => row.locktime,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'typeName',
+          align: 'left',
+          label: 'TYPE NAME',
+          field: row => row._typeName,
           headerClasses: 'text-medium'
         }
       ]
@@ -225,6 +220,10 @@ export default {
     ])
   },
   methods: {
+    getSubstrTX (val) {
+      if (!val) return
+      return `${val.substr(0, 15)}...${val.substr(42)}`
+    },
     takeUSD () {
       this.isUsd = true
       this.asset = 'USD'
@@ -251,21 +250,20 @@ export default {
         if (!this.address) return
         const utxos = await pChain(this.networkEndpoint.url)
           .getUTXOs([`${this.address}`])
-
         const keys = Object.keys(utxos.utxos)
-        for (let i = 1; i <= keys.length; i++) {
+
+        for (let i = 0; i < keys.length; i++) {
           const output = utxos.utxos[keys[i]].output
           const tableObj = {
-            index: 0,
-            id: '',
+            txID: '',
             _typeID: '',
             _typeName: '',
             amount: 0,
             locktime: 0,
             threshold: ''
           }
-          tableObj.index = i
-          tableObj.id = keys[i]
+
+          tableObj.txID = bintools.cb58Encode(utxos.utxos[keys[i]].getTxID())
           tableObj._typeID = output._typeID
           tableObj._typeName = output._typeName
           tableObj.amount = this.getAmount(output)

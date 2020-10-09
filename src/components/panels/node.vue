@@ -1,6 +1,12 @@
 <template>
   <q-card
     class="q-mt-md q-pt-md q-pl-xl q-pr-xl q-pb-md" id="custom-card" >
+    <!--<div style="text-align: right;font-size: 10px;margin-bottom: 5px;">
+      <q-icon name="info" style="font-size: 17px;" color="grey">
+        <tooltip-style v-bind:brandColoring="['VScout']" v-bind:bold="[`${nodeID}`, `${networkEndpoint.url}`]" v-bind:text="'On this panel you can get information about node to which the VScout is connected and to which it submits a request for data visualization (health, peers, node version, network name, validators/uptime etc.). You are currently using ' + networkEndpoint.url + ' with ' + nodeID + '. To switch to another node, use the menu at the top right.'" />
+      </q-icon>
+      <span class="text-orange"> VScout</span> Connection Info
+    </div>-->
     <div class="row">
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium ">NETWORK</div>
@@ -47,7 +53,7 @@
          <small>Connected with</small>
          <div class="text-orange">
             <animated-number
-              :value="nodeInfo.peers.length"
+              :value="nodeInfo.peers.numPeers"
               :formatValue="format"
               :duration="3000"
             />
@@ -87,8 +93,6 @@ import {
   copyToClipboard
 } from 'quasar'
 
-import { datePickerFormat } from './../../modules/time.js'
-
 export default {
   name: 'Node',
   components: {
@@ -98,17 +102,7 @@ export default {
   },
   data () {
     return {
-      filter: '',
-      items: []
-    }
-  },
-  created () {
-    this.items = this.nodeInfo.peers.slice(0, 10)
-  },
-  watch: {
-    filter: function (newValidators) {
-      this.items = this.filterPeers()
-      this.filter = ''
+      filter: ''
     }
   },
   computed: {
@@ -143,24 +137,6 @@ export default {
   methods: {
     format (value) {
       return `${Math.round(value)} peers`
-    },
-    filterPeers () {
-      if (!this.nodeInfo.peers) return
-      const res = this.nodeInfo
-        .peers
-        .filter(a => a.nodeID.toLowerCase().includes(this.filter.toLowerCase()) || a.ip.includes(this.filter))
-      return res
-    },
-    onLoad (index, done) {
-      setTimeout(() => {
-        if (this.items) {
-          this.items = this.items.concat(this.nodeInfo.peers.slice(0, this.items.length + 10))
-          done()
-        }
-      }, 1000)
-    },
-    dateFormat (date) {
-      return datePickerFormat(date)
     },
     copyToClipboard (text) {
       copyToClipboard(text)

@@ -87,6 +87,7 @@ async function initApp (
   setInterval(async () => {
     try {
       await Promise.all([
+        dispatch(GET_NODE_ID),
         dispatch(GET_NODE_HEALTH),
         dispatch(GET_HEIGHT, {}),
         dispatch(GET_STAKING, {
@@ -302,7 +303,7 @@ async function getNodeInfo (
     networkID: resNetworkID.data.result.networkID,
     networkName: resNetworkName.data.result.networkName,
     nodeVersion: resNodeVersion.data.result.version,
-    peers: resNodePeers.data.result.peers
+    peers: { peers: resNodePeers.data.result.peers, numPeers: resNodePeers.data.result.numPeers }
   }
 
   commit(GET_NODE_INFO, { nodeInfo })

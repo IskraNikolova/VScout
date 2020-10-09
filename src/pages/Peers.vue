@@ -84,11 +84,20 @@ export default {
   name: 'PagePeers',
   components: {
   },
+  watch: {
+    validators: function () {
+      this.peers = this.getPeers()
+    }
+  },
+  created () {
+    this.peers = this.getPeers()
+  },
   data () {
     return {
       pagination: {
         rowsPerPage: 15
       },
+      peers: [],
       filter: '',
       columns: [
         {
@@ -141,11 +150,13 @@ export default {
       'nodeInfo',
       'nodeID',
       'validators'
-    ]),
-    peers: function () {
+    ])
+  },
+  methods: {
+    getPeers () {
       const peersRes = []
       this.nodeInfo
-        .peers.forEach((peer, i) => {
+        .peers.peers.forEach((peer, i) => {
           const isValidator = this.validators
             .find(v => v.nodeID === peer.nodeID)
           const p = { ...peer }
@@ -160,9 +171,7 @@ export default {
           peersRes.push(p)
         })
       return peersRes
-    }
-  },
-  methods: {
+    },
     getNodeFormat (val) {
       if (!val) return
       return `${val.substr(0, 22)}...${val.substr(32)}`

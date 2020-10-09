@@ -95,57 +95,57 @@ export const request = async (endpoint, body) => {
 }
 
 export const _getBlockchains = async ({ endpoint }) => {
-  const response = await request(endpoint + c.platform, body(c.getBlockchains))
+  const response = await request(endpoint + c.platformBc, body(c.getBlockchains))
   return response
 }
 
 export const _getHeight = async ({ endpoint }) => {
-  const response = await request(endpoint + c.platform, body(c.getHeight))
+  const response = await request(endpoint + c.platformBc, body(c.getHeight))
   return response
 }
 
 export const _getBlockchainStatus = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platform, body(c.getBlockchainStatus, params))
+  const response = await request(endpoint + c.platformBc, body(c.getBlockchainStatus, params))
   return response
 }
 
 export const _getSubnets = async ({ endpoint }) => {
-  const response = await request(endpoint + c.platform, body(c.getSubnets))
+  const response = await request(endpoint + c.platformBc, body(c.getSubnets))
   return response
 }
 
 export const _validates = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platform, body(c.validates, params))
+  const response = await request(endpoint + c.platformBc, body(c.validates, params))
   return response
 }
 
 export const _getValidators = async ({ subnetID, endpoint }) => {
-  const response = await request(endpoint + c.platform, body(c.getCurrentValidators, { subnetID }))
+  const response = await request(endpoint + c.platformBc, body(c.getCurrentValidators, { subnetID }))
   return response
 }
 
 export const _getPendingValidators = async ({ subnetID, endpoint }) => {
-  const response = await request(endpoint + c.platform, body(c.getPendingValidators, { subnetID }))
+  const response = await request(endpoint + c.platformBc, body(c.getPendingValidators, { subnetID }))
   return response
 }
 
 export const _getUTXOs = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platform, body(c.getUtxos, params))
+  const response = await request(endpoint + c.platformBc, body(c.getUtxos, params))
   return response
 }
 
 export const _getTxStatus = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platform, body(c.getTxStatus, params))
+  const response = await request(endpoint + c.platformBc, body(c.getTxStatus, params))
   return response
 }
 
 export const _getTX = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platform, body(c.getTx, params))
+  const response = await request(endpoint + c.platformBc, body(c.getTx, params))
   return response
 }
 
 export const _getBalance = async ({ endpoint, params }) => {
-  const response = await request(endpoint + c.platform, body(c.getBalance, params))
+  const response = await request(endpoint + c.platformBc, body(c.getBalance, params))
   return response
 }
 
