@@ -67,6 +67,10 @@
           </span>
         </div>
       </div>
+      <div v-if="validator.website">
+        <q-img style="width: 30vw;max-width: 30px;margin: auto;" src="~assets/website.svg" /><a :href="validator.link">{{ validator.website }}</a>
+      </div>
+      <p class="q-pt-md">{{ validator.bio }}</p>
       <div class="row">
         <q-card flat bordered class="col-5 q-mt-md">
           <q-card-section>
@@ -263,6 +267,13 @@
           </q-item-label>
         </q-item-section>
       </q-item>
+      <q-separator class="q-mb-xl"/>
+      <div class="q-pa-md">
+        <div v-if="validator.website">
+          <q-img style="width: 30vw;max-width: 30px;margin: auto;" src="~assets/website.svg" /><a :href="validator.link">{{ validator.website }}</a>
+        </div>
+        <p class="q-pt-md">{{ validator.bio }}</p>
+      </div>
       <q-separator class="q-mb-xl"/>
       <div class="q-pl-md">
         <span class="text-subtitle2"><small style="opacity: 0.8;">STAKED BY</small></span>

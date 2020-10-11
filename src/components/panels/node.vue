@@ -53,7 +53,7 @@
          <small>Connected with</small>
          <div class="text-orange">
             <animated-number
-              :value="nodeInfo.peers.numPeers"
+              :value="nodeInfo.peers.peers.length"
               :formatValue="format"
               :duration="3000"
             />

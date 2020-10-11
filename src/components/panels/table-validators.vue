@@ -65,8 +65,8 @@
             {label: 'Delegations', value: 'delegations'}
           ]"
         />
-        <!--<q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
-        <add-identification-dialog ref="addIdentificationRef" />-->
+        <q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
+        <add-identification-dialog ref="addIdentificationRef" />
       </template>
       <template slot="top-left" v-if="!isGrid">
         <small><div class="col" style="margin-top: 20px; margin-bottom: 10px;">
@@ -130,10 +130,9 @@
               <div
                 v-if="props.row.name !== props.row.nodeID"
                 style="cursor:pointer;"
-                class="q-pt-xs"
+                class="q-pl-xs q-pt-xs"
                 @click="props.expand = !props.expand">
-                {{ col.value }}
-                <div class="text-grey">({{ props.row.nodeID }})</div>
+                {{ col.value }} ({{ getFormatNodeID(props.row.nodeID) }})
               </div>
               <div
                 v-else
@@ -222,7 +221,7 @@
         </q-tr>
       </template>
       <template v-slot:item="props">
-        <div style="max-width: 400px;width: 100%;margin:auto;margin-bottom: 5px;">
+        <div style="max-width: 420px;width: 100%;margin:auto;margin-bottom: 5px;">
           <q-card flat bordered>
             <span class="absolute absolute-top-right q-mt-xs q-mr-md">
               <small class="q-mr-xs">Uptime</small>
@@ -373,7 +372,7 @@ export default {
     DetailsValidator: () => import('components/details-validator'),
     CumulativeStakeChart: () => import('components/cumulative-stake-chart'),
     Countdown: () => import('components/items/countdown'),
-    // AddIdentificationDialog: () => import('components/dialogs/add-identification-dialog'),
+    AddIdentificationDialog: () => import('components/dialogs/add-identification-dialog'),
     ProgressBarValidateSession: () => import('components/progress-bar-validatе-session')
   },
   watch: {
@@ -600,6 +599,10 @@ export default {
     getFormatOwner (val) {
       if (!val.addresses) return
       return `${val.addresses[0].substr(0, 12)}...${val.addresses[0].substr(32)}`
+    },
+    getFormatNodeID (val) {
+      if (!val) return
+      return `${val.substr(0, 20)}...${val.substr(32)}`
     },
     onClick (link) {
       if (link) openURL(link)

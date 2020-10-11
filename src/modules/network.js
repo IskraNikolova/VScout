@@ -28,6 +28,19 @@ export const _getAssetsCount = async () => {
   }
 }
 
+export const _getTxApi = async (id) => {
+  try {
+    const req = await axios
+      .get(network.explorerApiBaseUrl + c.getTxApi(id))
+
+    if (!req.data) return ''
+
+    return req.data
+  } catch (err) {
+    return ''
+  }
+}
+
 export const _getAssetPrice = async (id) => {
   try {
     const req2 = await axios

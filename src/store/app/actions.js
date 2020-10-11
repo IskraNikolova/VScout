@@ -46,18 +46,22 @@ import {
   _getAssetsCount,
   _getBlockchainStatus,
   _getPendingValidators
-} from './../../modules/network'
+} from './../../modules/network.js'
 
 import {
   mapDelegators,
   mapPendingValidators,
   validatorProcessing
-} from './../../utils/validators'
+} from './../../utils/validators.js'
 
 const {
   network
-} = require('./../../modules/config')
+} = require('./../../modules/config.js')
   .default
+
+import {
+  _initializeNetwork
+} from './../../modules/networkCChain.js'
 
 import {
   pChain
@@ -79,7 +83,8 @@ async function initApp (
       }),
       dispatch(GET_HEIGHT, {}),
       dispatch(GET_CURRENT_SUPPLY),
-      dispatch(GET_PENDING_STAKING, {})
+      dispatch(GET_PENDING_STAKING, {}),
+      _initializeNetwork()
     ])
   } catch (err) {
   }
@@ -98,19 +103,31 @@ async function initApp (
       ])
     } catch (err) {
     }
-  }, 8000)
+  }, 20000)
 }
 
 async function initEndpoint (
-  { commit }) {
-  const endpoint = network.endpointUrls[0]
+  { commit, getters }) {
+  const endpoint = getters.networkEndpoint
   commit(SET_ENDPOINT, { endpoint })
 
   const response = await _getNodeId({
     endpoint: endpoint.url
   })
 
-  if (response.data.error) return
+  if (response.data.error) {
+    const endpoint = network.endpointUrls[0]
+    commit(SET_ENDPOINT, { endpoint })
+
+    const response = await _getNodeId({
+      endpoint: endpoint.url
+    })
+
+    if (response.data.error) return
+
+    const nodeID = response.data.result.nodeID
+    commit(GET_NODE_ID, { nodeID })
+  }
 
   const nodeID = response.data.result.nodeID
   commit(GET_NODE_ID, { nodeID })
@@ -141,7 +158,7 @@ async function getValidators (
     validators = []
   }
 
-  const res = validatorProcessing(
+  const res = await validatorProcessing(
     validators,
     delegators,
     getters.defaultValidators,

@@ -2,6 +2,7 @@ export const c = {
   // enpoints
   cChainWs: 'ext/C/ws',
   listAssests: 'x/assets',
+  getTxApi: (id) => `x/transactions/${id}`,
   assestById: (id) => `x/assets/${id}`,
   assetsWithOffset: (offset) => `x/assets?&offset=${offset}&limit=100`,
 

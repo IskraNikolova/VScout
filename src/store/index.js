@@ -4,6 +4,7 @@ import VuexPersistence from 'vuex-persist'
 
 import ui from './ui'
 import app from './app'
+import access from './access'
 import memory from './memory'
 
 Vue.use(Vuex)
@@ -14,7 +15,7 @@ const vuexLocal = new VuexPersistence({
     const persistState = { ...state }
     // don't persist UI and App state
     delete persistState.ui
-    // delete persistState.app
+    delete persistState.access
     return persistState
   }
 })
@@ -31,7 +32,8 @@ const Store = new Vuex.Store({
   modules: {
     ui,
     app,
-    memory
+    memory,
+    access
   },
   plugins: [vuexLocal.plugin],
   strict: process.env.DEV

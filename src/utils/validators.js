@@ -3,7 +3,7 @@ const BigNumber = require('bignumber.js')
 import { round, getAvatar } from './commons.js'
 import { getRemainingCapacity } from './stake.js'
 import { countDownCounter } from './../modules/time.js'
-// import { _getValidatorById } from './../modules/networkRpc'
+import { _getValidatorById } from './../modules/networkCChain.js'
 
 /**
 * @param {Array} Array of validators
@@ -12,7 +12,7 @@ import { countDownCounter } from './../modules/time.js'
 * @param {Boolean} is init app processing
 * @returns {Object} Object with { sum of all stake (valiadate + delegate), all validate stake, all delegate stake, processing validators }
 */
-export function validatorProcessing (
+export async function validatorProcessing (
   validators,
   delegatorsD,
   defaultValidators,
@@ -26,7 +26,7 @@ export function validatorProcessing (
     }
   }
 
-  const data = mapValidators(
+  const data = await mapValidators(
     validators,
     delegatorsD,
     defaultValidators,
@@ -90,7 +90,7 @@ export function compare (a, b) {
   return temp[compareStake === 0]
 }
 
-export function mapValidators (
+export async function mapValidators (
   validators,
   delegators,
   defaultValidators,
@@ -98,8 +98,13 @@ export function mapValidators (
   let validatedStake = new BigNumber(0)
   let delegatedStake = new BigNumber(0)
 
-  const validatorsMap = validators.map((val) => {
-    // const info = await _getValidatorById(val.nodeID)
+  const validatorsMap = await Promise.all(validators.map(async (val) => {
+    let info = {}
+    try {
+      info = await _getValidatorById(val.nodeID)
+    } catch (err) {
+    }
+
     validatedStake = BigNumber
       .sum(validatedStake, val.stakeAmount)
 
@@ -144,16 +149,16 @@ export function mapValidators (
     const isMinimumAmountForStake = countDownCounterRes
       .isMinimumAmountForStake
 
-    // info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
-    const avatar = getAvatar(val.nodeID).monster
-    // info.name ? info.name : val.nodeID
-    const name = val.nodeID
+    const avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
+    const name = info.name ? info.name : val.nodeID
 
     return {
       ...val,
       name,
       avatar,
-      link: '', // info.link
+      link: info.link,
+      bio: info.bio,
+      website: info.website,
       remainingTime,
       delegateStake,
       totalStakeAmount,
@@ -162,7 +167,7 @@ export function mapValidators (
       delegatePotentialReward,
       delegators: currentDelegators
     }
-  })
+  }))
 
   return {
     validatorsMap,

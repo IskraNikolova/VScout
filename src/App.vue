@@ -25,7 +25,7 @@ export default {
     setInterval(() => {
       this.$store.commit(SET_NETWORK_STATUS, { hasNetworkConnection: window.navigator.onLine })
       this.$store.dispatch(GET_AVAX_PRICE)
-    }, 1000)
+    }, 5000)
   }
 }
 </script>

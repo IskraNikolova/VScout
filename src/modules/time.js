@@ -18,6 +18,13 @@ export const getDurationByDayCount = (dur) => {
   return moment.duration(dur, 'days')
 }
 
+export const getDurationByMinutesCount = (dur) => {
+  const a = moment()
+  const b = moment(new Date(dur))
+  const result = a.diff(b, 'minutes')
+  return result
+}
+
 export const getEndOfDay = (e) => {
   return moment(new Date(Number(e) * 1000)).endOf('day').fromNow()
 }

@@ -17,6 +17,7 @@ import {
 import { _getTX, _getTxStatus } from './../../modules/network.js'
 
 import { BinTools } from 'avalanche'
+import { bufferToNodeIDString } from 'avalanche/dist/utils/helperfunctions.js'
 const bintools = BinTools.getInstance()
 
 export default {
@@ -87,8 +88,8 @@ export default {
       // console.log(blockcID)
       // const numberOfOutpust = b58Str.substr(92, 72)
       // console.log(numberOfOutpust)
-      // console.log(bintools)
-      // console.log(b58Str.substr(228, 40))
+      console.log(bintools, b58Str)
+      console.log(bufferToNodeIDString(Buffer.from('0x' + b58Str.substr(228, 40))))
       // console.log(b58Str)
       this.txType = type[typeIndex]
       this.tx = txResponse
