@@ -132,7 +132,7 @@
                 style="cursor:pointer;"
                 class="q-pl-xs q-pt-xs"
                 @click="props.expand = !props.expand">
-                {{ col.value }} ({{ getFormatNodeID(props.row.nodeID) }})
+                {{ col.value }}
               </div>
               <div
                 v-else
@@ -408,7 +408,7 @@ export default {
         },
         {
           name: 'validator',
-          align: 'center',
+          align: 'left',
           label: 'Validator (Node ID)',
           field: row => row.name,
           headerClasses: 'text-medium'
