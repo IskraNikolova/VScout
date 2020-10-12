@@ -125,7 +125,7 @@
             :props="props"
             id="custom-td"
           >
-            <div v-if="col.name === 'validator'" class="row" id="validator">
+            <div v-if="col.name === 'validator'" class="row">
               <div :style="'border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 50px;width: 27px;'">
                 <q-avatar size="25px" @click="onClick(props.row.link)">
                   <q-img :src="props.row.avatar">
@@ -149,7 +149,7 @@
                 @click="props.expand = !props.expand"
                 class="q-pl-xs q-pt-xs"
               >
-                {{ col.value }}
+                {{ getFormatNodeID(col.value) }}
               </div>
             </div>
             <div v-else-if="col.name === 'rank'" id="rank">
@@ -161,22 +161,9 @@
               </div>
               <div>
                 <small class="text-grey">Own: </small>
-                <span class="text-orange">{{ format(col.value) }}</span>
+                <span class="text-orange">{{ col.value }}</span>
                 <small class="text-grey"> D: {{ getFormatReward(props.row.delegateStake) }}</small>
               </div>
-            </div>
-            <div v-else-if="col.name === 'startTime' || col.name === 'endTime'">
-              {{ formatDate(col.value, 'll') }}
-            </div>
-            <div v-else-if="col.name === 'weight'">
-              {{ col.value }}
-              <tooltip-style
-                v-bind:text="'Weight is the validator’s weight used for sampling.'"
-                v-bind:icon="'info'"
-              />
-            </div>
-            <div v-else-if="col.name === 'delegationFee'">
-              {{ col.value }} %
             </div>
             <div v-else-if="col.name === 'percent'">
               <div
@@ -381,8 +368,8 @@ function wrapCsvValue (val, formatFn) {
    * Excel accepts \n and \r in strings, but some other CSV parsers do not
    * Uncomment the next two lines to escape new lines
    */
-  // .split('\n').join('\\n')
-  // .split('\r').join('\\r')
+    .split('\n').join('\\n')
+    .split('\r').join('\\r')
   return `"${formatted}"`
 }
 
@@ -438,15 +425,17 @@ export default {
         {
           name: 'validator',
           align: 'left',
-          label: 'Validator (Node ID)',
+          label: 'Validator (Name/Node ID)',
           field: row => row.name,
+          sortable: true,
           headerClasses: 'text-medium'
         },
         {
           name: 'stake',
           align: 'center',
           label: 'Stake (AVAX)',
-          field: row => round(getAvaFromnAva(row.stakeAmount), 1000),
+          field: row => Number(row.stakeAmount),
+          format: (val, row) => `${this.getFormatReward(val)}`,
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -462,7 +451,8 @@ export default {
           name: 'networkShare',
           align: 'center',
           label: 'Network Share',
-          field: row => ` ${round(Number(row.percent), 1000)} %`,
+          field: row => Number(row.percent),
+          format: (val, row) => `${round(Number(val), 1000)} %`,
           sortable: true,
           style: 'font-size: 15px;',
           headerClasses: 'text-medium'
@@ -478,7 +468,8 @@ export default {
           name: 'delegationFee',
           align: 'center',
           label: 'Delegation Fee',
-          field: row => round(Number(row.delegationFee), 1000),
+          field: row => Number(row.delegationFee),
+          format: (val, row) => `${round(Number(val), 1000)} %`,
           sortable: true,
           style: 'font-size: 15px;',
           headerClasses: 'text-medium'
@@ -495,7 +486,8 @@ export default {
           name: 'startTime',
           align: 'center',
           label: 'Start Time',
-          field: row => row.startTime,
+          field: row => Number(row.startTime),
+          format: (val, row) => `${this.formatDate(val, 'll')}`,
           style: 'font-size: 85%;',
           sortable: true,
           headerClasses: 'text-medium'
@@ -505,7 +497,8 @@ export default {
           align: 'center',
           label: 'End Time',
           sortable: true,
-          field: row => row.endTime,
+          field: row => Number(row.endTime),
+          format: (val, row) => `${this.formatDate(val, 'll')}`,
           style: 'font-size: 85%;',
           headerClasses: 'text-medium'
         },
@@ -520,7 +513,7 @@ export default {
           name: 'remainingCapacity',
           align: 'center',
           label: 'Remaining Capacity',
-          field: row => row.remainingCapacity,
+          field: row => Number(row.remainingCapacity),
           format: (val, row) => `${this.getFormatReward(val)} AVAX`,
           sortable: true,
           headerClasses: 'text-medium'
@@ -576,7 +569,6 @@ export default {
       }
     },
     exportTable () {
-      // naive encoding to csv format
       const content = [this.columns.map(col => wrapCsvValue(col.label))].concat(
         this.curentValidators.map(row => this.columns.map(col => wrapCsvValue(
           typeof col.field === 'function'
@@ -654,10 +646,6 @@ export default {
       return round(avax, 100)
         .toLocaleString()
     },
-    format (v) {
-      if (!v) return
-      return v.toLocaleString()
-    },
     getFormatOwner (val) {
       if (!val.addresses) return
       return `${val.addresses[0].substr(0, 12)}...${val.addresses[0].substr(32)}`
@@ -726,10 +714,6 @@ export default {
 #rank {
   margin-left: 25px!important;
   font-size: 14px;
-}
-#validator {
-  min-width: 330px;
-  margin-left: -20px;
 }
 #custom-td {
   padding: 0px!important;
