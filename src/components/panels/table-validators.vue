@@ -5,6 +5,7 @@
       :columns="columns"
       row-key="rank"
       :filter="filter"
+      :filter-method="filterMethod"
       :pagination="pagination"
       :grid="isGrid"
       :class="tableClass"
@@ -417,7 +418,6 @@ export default {
   },
   data () {
     return {
-      filter: '',
       visible: false,
       type: 'active',
       type2: 'validators',
@@ -533,6 +533,8 @@ export default {
           headerClasses: 'text-medium'
         }
       ],
+      stakers: [],
+      filter: '',
       isNotSticky: true,
       visibleColumns: [],
       textStickyPositive: 'Sticky header',
@@ -549,6 +551,7 @@ export default {
         clearInterval(i)
       }
     }, 500)
+    this.stakers = this.curentValidators
   },
   computed: {
     ...mapGetters([
@@ -559,14 +562,19 @@ export default {
     isYourNode: function (id) {
       return id === this.nodeID
     },
-    curentValidators: {
-      get: function () {
-        if (this.isActive) return this.validators
-        return this.pendingValidators
-      }
+    curentValidators: function () {
+      if (this.isActive) return this.validators
+      return this.pendingValidators
     }
   },
   methods: {
+    filterMethod () {
+      if (this.curentValidators) {
+        return this.curentValidators
+          .filter(row => row.nodeID.includes(this.filter) ||
+          row.name.includes(this.filter))
+      }
+    },
     exportTable () {
       // naive encoding to csv format
       const content = [this.columns.map(col => wrapCsvValue(col.label))].concat(
