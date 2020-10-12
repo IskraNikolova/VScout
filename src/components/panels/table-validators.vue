@@ -65,8 +65,16 @@
             {label: 'Delegations', value: 'delegations'}
           ]"
         />
-        <q-btn size="xs" outline label="Add Identification" icon="img:statics/id.svg" @click.native="onAddIdentification" />
+        <q-btn no-caps color="accent" label="Add Identification" icon="perm_identity" @click.native="onAddIdentification" />
         <add-identification-dialog ref="addIdentificationRef" />
+        <q-btn
+          class="q-ml-md"
+          color="accent"
+          icon-right="archive"
+          label="Export to csv"
+          no-caps
+          @click="exportTable"
+        />
       </template>
       <template slot="top-left" v-if="!isGrid">
         <small><div class="col" style="margin-top: 20px; margin-bottom: 10px;">
@@ -152,9 +160,12 @@
               </div>
               <div>
                 <small class="text-grey">Own: </small>
-                <span class="text-orange">{{ getFormatReward(col.value) }}</span>
+                <span class="text-orange">{{ format(col.value) }}</span>
                 <small class="text-grey"> D: {{ getFormatReward(props.row.delegateStake) }}</small>
               </div>
+            </div>
+            <div v-else-if="col.name === 'startTime' || col.name === 'endTime'">
+              {{ formatDate(col.value, 'll') }}
             </div>
             <div v-else-if="col.name === 'weight'">
               {{ col.value }}
@@ -353,8 +364,26 @@ import { mapGetters } from 'vuex'
 
 import {
   copyToClipboard,
+  exportFile,
   openURL
 } from 'quasar'
+
+function wrapCsvValue (val, formatFn) {
+  let formatted = formatFn !== undefined
+    ? formatFn(val)
+    : val
+  formatted = formatted === undefined || formatted === null
+    ? ''
+    : String(formatted)
+  formatted = formatted.split('"').join('""')
+  /**
+   * Excel accepts \n and \r in strings, but some other CSV parsers do not
+   * Uncomment the next two lines to escape new lines
+   */
+  // .split('\n').join('\\n')
+  // .split('\r').join('\\r')
+  return `"${formatted}"`
+}
 
 import { dateFormat, fromNow } from './../../modules/time.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
@@ -417,7 +446,7 @@ export default {
           name: 'stake',
           align: 'center',
           label: 'Stake (AVAX)',
-          field: row => Number(row.stakeAmount),
+          field: row => round(getAvaFromnAva(row.stakeAmount), 1000),
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -467,7 +496,6 @@ export default {
           align: 'center',
           label: 'Start Time',
           field: row => row.startTime,
-          format: (val, row) => `${this.formatDate(row.startTime, 'll')}`,
           style: 'font-size: 85%;',
           sortable: true,
           headerClasses: 'text-medium'
@@ -478,7 +506,6 @@ export default {
           label: 'End Time',
           sortable: true,
           field: row => row.endTime,
-          format: (val, row) => `${this.formatDate(row.endTime, 'll')}`,
           style: 'font-size: 85%;',
           headerClasses: 'text-medium'
         },
@@ -540,6 +567,29 @@ export default {
     }
   },
   methods: {
+    exportTable () {
+      // naive encoding to csv format
+      const content = [this.columns.map(col => wrapCsvValue(col.label))].concat(
+        this.curentValidators.map(row => this.columns.map(col => wrapCsvValue(
+          typeof col.field === 'function'
+            ? col.field(row)
+            : row[col.field === undefined ? col.name : col.field],
+          col.format
+        )).join(','))
+      ).join('\r\n')
+      const status = exportFile(
+        'table-export.csv',
+        content,
+        'text/csv'
+      )
+      if (status !== true) {
+        this.$q.notify({
+          message: 'Browser denied file download...',
+          color: 'negative',
+          icon: 'warning'
+        })
+      }
+    },
     getData (row) {
       return (row.cumulativeStake - row.percent) / 100
     },
@@ -595,6 +645,10 @@ export default {
 
       return round(avax, 100)
         .toLocaleString()
+    },
+    format (v) {
+      if (!v) return
+      return v.toLocaleString()
     },
     getFormatOwner (val) {
       if (!val.addresses) return
