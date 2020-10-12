@@ -230,13 +230,13 @@ export default {
       isPaidSuccess: false,
       vCode: '',
       loading: null,
-      name: null,
-      link: null,
-      bio: null,
+      name: '',
+      link: '',
+      bio: '',
       error: null,
-      avatar: null,
-      notify: null,
-      nodeIDModel: null,
+      avatar: '',
+      notify: '',
+      nodeIDModel: '',
       dialog: false,
       admin: ''
     }
@@ -296,6 +296,7 @@ export default {
         return
       }
       if (this.searchToAddress(outputs)) {
+        this.onSubmit()
         this.dialog = false
         this.isPaidSuccess = true
       } else {
@@ -335,26 +336,6 @@ export default {
         timeout: 1000
       })
     },
-    // async testCode () {
-    //   this.isValidCode = await _isValidCode(this.vCode, this.nodeIDModel)
-    //   if (this.isValidCode) {
-    //     this.$q.notify({
-    //       timeout: 3000,
-    //       position: 'center',
-    //       color: 'white',
-    //       textColor: 'black',
-    //       message: `${this.vCode} is valid for ${this.nodeIDModel}`
-    //     })
-    //   } else {
-    //     this.$q.notify({
-    //       timeout: 3000,
-    //       position: 'center',
-    //       color: 'black',
-    //       textColor: 'white',
-    //       message: `${this.vCode} is not valid for ${this.nodeIDModel}`
-    //     })
-    //   }
-    // },
     onClose () {
       this.closeAddId()
       this.onReset()
@@ -411,13 +392,13 @@ export default {
       }
     },
     onReset () {
-      this.name = null
-      this.link = null
-      this.bio = null
-      this.error = null
-      this.notify = null
-      this.avatar = null
-      this.nodeIDModel = null
+      this.name = ''
+      this.link = ''
+      this.bio = ''
+      this.error = ''
+      this.notify = ''
+      this.avatar = ''
+      this.nodeIDModel = ''
     },
     onVerify () {
       const validator = this.validatorById(this.nodeIDModel)

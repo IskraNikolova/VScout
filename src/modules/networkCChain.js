@@ -84,7 +84,7 @@ const executeMethod = async (method, from) => {
       })
       .on('confirmation', (confirmationNumber, receipt) => {
         if (confirmationNumber === 1) {
-          console.log('Transaction is confirmed!' + transactionHash)
+          console.log('Transaction is confirmed! ' + transactionHash)
         }
       })
       .on('error', (err) => {
@@ -106,11 +106,11 @@ export const _getValidatorById = async (id) => {
       .call()
 
     return {
-      name: hexStringToAsciiString(validator.name),
-      website: hexStringToAsciiString(validator.website),
-      avatarUrl: hexStringToAsciiString(validator.avatar),
-      bio: hexStringToAsciiString(validator.bio),
-      link: hexStringToAsciiString(validator.link)
+      name: hexStringToAsciiString(validator.name ? validator.name : ''),
+      website: hexStringToAsciiString(validator.website ? validator.website : ''),
+      avatarUrl: hexStringToAsciiString(validator.avatar ? validator.avatar : ''),
+      bio: hexStringToAsciiString(validator.bio ? validator.bio : ''),
+      link: hexStringToAsciiString(validator.link ? validator.link : '')
     }
   } catch (err) {
     return false
@@ -149,11 +149,17 @@ export const _setValidatorInfo = async ({ nodeID, name, website, avatar, bio, li
       .members(nodeID)
       .call()
 
-    const byteName = name ? stringToHex(name) : account.name
-    const byteWebsite = website ? stringToHex(website) : account.website
-    const byteAvatar = avatar ? stringToHex(avatar) : account.avatar
-    const byteBio = bio ? stringToHex(bio) : account.bio
-    const byteLink = link ? stringToHex(link) : account.link
+    const accountN = account.name ? account.name : stringToHex('')
+    const accountW = account.website ? account.website : stringToHex('')
+    const accountA = account.avatar ? account.avatar : stringToHex('')
+    const accountB = account.bio ? account.bio : stringToHex('')
+    const accountL = account.link ? account.link : stringToHex('')
+
+    const byteName = name ? stringToHex(name) : accountN
+    const byteWebsite = website ? stringToHex(website) : accountW
+    const byteAvatar = avatar ? stringToHex(avatar) : accountA
+    const byteBio = bio ? stringToHex(bio) : accountB
+    const byteLink = link ? stringToHex(link) : accountL
     const codeHex = stringToHex(code)
 
     const method = contract
@@ -194,7 +200,6 @@ export const _setVerifyCode = async ({ code, nodeID }) => {
 
     return executeMethod(method, admin)
   } catch (err) {
-    console.log(err)
     throw new Error(err.message)
   }
 }
