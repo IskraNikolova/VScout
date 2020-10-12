@@ -66,11 +66,12 @@
             {label: 'Delegations', value: 'delegations'}
           ]"
         />
-        <q-btn no-caps color="accent" label="Add Identification" icon="perm_identity" @click.native="onAddIdentification" />
+        <q-btn no-caps color="secondary" size="sm" label="Add Identification" icon="perm_identity" @click.native="onAddIdentification" />
         <add-identification-dialog ref="addIdentificationRef" />
         <q-btn
+          size="sm"
           class="q-ml-md"
-          color="accent"
+          color="secondary"
           icon-right="archive"
           label="Export to csv"
           no-caps
@@ -240,7 +241,7 @@
                   </q-img>
                 </q-avatar>
               </q-item-section>
-              <q-item-section>
+              <q-item-section style="min-height: 80px;">
                 <q-item-label>
                   <small>Rank </small>
                   <span class="text-accent">
@@ -248,9 +249,12 @@
                   </span>
                 </q-item-label>
                 <q-item-label class="q-mt-md">
-                  <span style="cursor:pointer;font-size: 11.5px;" @click="onClick(props.row.link)">
-                    {{ props.row.name }} <small v-if="props.row.name !== props.row.nodeID" class="text-grey">({{props.row.nodeID}})</small>
+                  <span v-if="props.row.name !== props.row.nodeID" style="cursor:pointer;font-size: 11.5px;" @click="onClick(props.row.link)">
+                    <span class="text-medium">{{ props.row.name }}</span>
+                    <br />
+                    <small class="text-grey">{{ props.row.nodeID }}</small>
                   </span>
+                  <span v-else>{{ getFormatSubstr(props.row.nodeID) }}</span>
                   <small>
                     <q-icon
                       @click="copyToClipboard(props.row.nodeID)"
@@ -261,9 +265,9 @@
                 </q-item-label>
                 <q-item-label>
                   <small class="text-grey">
-                    Owner ({{ getFormatOwner(props.row.rewardOwner)}})
+                    Owner ({{ getFormatSubstr(getRewardOwner(props.row.rewardOwner)) }})
                     <q-icon
-                      @click="copyToClipboard(props.row.rewardOwner.addresses[0])"
+                      @click="copyToClipboard(getRewardOwner(props.row.rewardOwner))"
                       color="grey"
                       name="file_copy"
                     />
@@ -331,13 +335,13 @@
               <q-card-section class="col-6">
                 <small class="text-grey text-bold">Start Time</small>
                 <br />
-                <small>{{ formatDate(props.row.startTime, 'MMMM Do YYYY, h:mm:ss a') }}</small>
+                <small>{{ formatDate(props.row.startTime, 'MMMM Do YYYY, h:mm') }}</small>
               </q-card-section>
               <q-separator vertical/>
               <q-card-section class="col-6">
                 <small class="text-grey text-bold">End Time</small>
                 <br />
-                <small>{{ formatDate(props.row.endTime, 'MMMM Do YYYY, h:mm:ss a') }}</small>
+                <small>{{ formatDate(props.row.endTime, 'MMMM Do YYYY, h:mm') }}</small>
               </q-card-section>
             </q-card-section>
           </q-card>
@@ -568,6 +572,10 @@ export default {
           row.name.includes(this.filter))
       }
     },
+    getRewardOwner (val) {
+      if (!val) return
+      return val.addresses[0]
+    },
     exportTable () {
       const content = [this.columns.map(col => wrapCsvValue(col.label))].concat(
         this.curentValidators.map(row => this.columns.map(col => wrapCsvValue(
@@ -642,17 +650,16 @@ export default {
       if (!val) return 0
 
       const avax = getAvaFromnAva(val)
-
       return round(avax, 100)
         .toLocaleString()
     },
-    getFormatOwner (val) {
-      if (!val.addresses) return
-      return `${val.addresses[0].substr(0, 12)}...${val.addresses[0].substr(32)}`
+    getFormatSubstr (val) {
+      if (!val) return
+      return `${val.substr(0, 12)}...${val.substr(32)}`
     },
     getFormatNodeID (val) {
       if (!val) return
-      return `${val.substr(0, 20)}...${val.substr(32)}`
+      return `${val.substr(0, 20)}...${val.substr(28)}`
     },
     onClick (link) {
       if (link) openURL(link)

@@ -1,18 +1,15 @@
 <template>
   <div>
     <!--gt-xs-->
-    <q-card flat class="gt-sm q-pr-xl q-pl-xl q-pb-md q-ml-xl q-mr-xs">
-      <div class="text-medium row">VALIDATOR</div>
+    <q-card flat class="gt-xs q-pl-md q-pb-md q-ml-md">
       <div class="row">
         <q-item class="col-9">
           <q-item-section avatar style="cursor:pointer;" @click="onClick(validator.link)">
-            <q-avatar>
-              <q-img :src="validator.avatar">
-                <template v-slot:error>
-                  <div>?</div>
-                </template>
-              </q-img>
-            </q-avatar>
+            <q-img :src="validator.avatar" style=" width:80vw; max-width:80px;">
+              <template v-slot:error>
+                <div>?</div>
+              </template>
+            </q-img>
           </q-item-section>
           <q-item-section>
             <q-item-label>
@@ -22,20 +19,21 @@
               </span><q-icon name="img:statics/star.svg" size="1.5em" style="margin-bottom: 2px"/>
             </q-item-label>
             <q-item-label>
-              <span
-                style="cursor:pointer;font-size: 16px;"
-                @click="onClick(validator.link)">{{ validator.name }} </span> <small v-if="validator.name !== validator.nodeID" class="text-grey">({{ validator.nodeID }})</small>
-              <small>
-              <q-icon
+              <div class="text-medium q-pb-sm" v-if="validator.name !== validator.nodeID">
+                <a :href="validator.link" style="text-decoration: none;">{{ validator.name }}</a>
+              </div>
+              <div>
+                [{{ validator.nodeID }}]
+                <q-icon
                   @click="copyToClipboard(validator.nodeID)"
                   color="grey"
                   name="file_copy"
-              />
-              </small>
+                />
+              </div>
             </q-item-label>
             <q-item-label v-if="rewardOwner">
               <small class="text-grey">
-              <span class="text-medium">Owner</span> ({{ getFormatOwner(rewardOwner, 12, 22)}})
+              <span class="text-medium">Owner</span> ({{ rewardOwner }})
               <q-icon
                   @click="copyToClipboard(rewardOwner)"
                   color="grey"
@@ -70,8 +68,8 @@
       <div v-if="validator.website">
         <q-img style="width: 30vw;max-width: 30px;margin: auto;" src="~assets/website.svg" /><a :href="validator.link">{{ validator.website }}</a>
       </div>
-      <p class="q-pt-md">{{ validator.bio }}</p>
-      <div class="row">
+      <div><q-item>{{ validator.bio }}</q-item></div>
+      <div class="row q-pl-md">
         <q-card flat bordered class="col-5 q-mt-md">
           <q-card-section>
             <div class="q-mb-md text-medium">STAKE (AVAX)</div>
@@ -117,7 +115,7 @@
         </q-card>
         <div class="col-1"></div>
       </div>
-      <div class="row">
+      <div class="row q-pl-md">
         <q-card flat bordered class="col-5 q-mt-md">
           <q-card-section>
             <div class="row">
@@ -184,7 +182,7 @@
           </q-scroll-area>
         </div>
       </div>
-      <div class="row">
+      <div class="row q-pl-md">
         <div class="col-6">
           <div class="text-grey q-pt-xl">Progress (%)</div>
           <progress-bar-validate-session
@@ -208,39 +206,39 @@
     </q-card>
 
     <!--lt-sm-->
-    <q-card flat class="lt-md">
+    <q-card flat class="lt-sm">
       <q-item>
         <q-item-section avatar style="cursor:pointer;" @click="onClick(validator.link)">
-        <q-avatar>
-          <q-img :src="validator.avatar">
-            <template v-slot:error>
-              <div>?</div>
-            </template>
-          </q-img>
-        </q-avatar>
+        <q-img :src="validator.avatar" style=" width:50vw; max-width:50px;">
+          <template v-slot:error>
+            <div>?</div>
+          </template>
+        </q-img>
         </q-item-section>
-        <q-item-section>
-        <q-item-label>
-          <small class="text-medium">Rank </small>
-          <span class="text-accent">
-            {{ validator.rank }}
-          </span>
-          <q-icon name="img:statics/star.svg" size="1.5em" style="margin-bottom: 2px"/>
-        </q-item-label>
+        <q-item-section  class="q-mt-xl">
+          <q-item-label>
+            <small class="text-medium">Rank </small>
+            <span class="text-accent">
+              {{ validator.rank }}
+            </span>
+            <q-icon name="img:statics/star.svg" size="1.5em" style="margin-bottom: 2px"/>
+          </q-item-label>
         </q-item-section>
       </q-item>
       <q-item>
         <q-item-section>
           <q-item-label>
-            <span  style="cursor:pointer;" @click="onClick(validator.link)">{{ validator.name }} </span>
-            <small v-if="validator.name !== validator.nodeID" class="text-grey">({{ validator.nodeID }})</small>
-            <small>
-              <q-icon
-                 @click="copyToClipboard(validator.nodeID)"
-                color="grey"
-                name="file_copy"
-              />
-            </small>
+           <div class="text-medium q-pb-sm" v-if="validator.name !== validator.nodeID">
+                <a :href="validator.link" style="text-decoration: none;">{{ validator.name }}</a>
+              </div>
+              <div>
+                [{{ validator.nodeID }}]
+                <q-icon
+                  @click="copyToClipboard(validator.nodeID)"
+                  color="grey"
+                  name="file_copy"
+                />
+              </div>
           </q-item-label>
           <q-item-label v-if="rewardOwner">
             <small class="text-grey">
@@ -261,20 +259,21 @@
             <span v-if="validator.uptime > 0">
               <span class="q-mr-xs q-mt-xl">Uptime</span>
               <q-badge :color="getColorUptime(validator.uptime)">
-                  {{ getUpTime(validator.uptime) }} %
+                {{ getUpTime(validator.uptime) }} %
               </q-badge>
             </span>
           </q-item-label>
         </q-item-section>
       </q-item>
       <q-separator class="q-mb-xl"/>
-      <div class="q-pa-md">
+      <div class="q-pl-md q-pr-md">
         <div v-if="validator.website">
-          <q-img style="width: 30vw;max-width: 30px;margin: auto;" src="~assets/website.svg" /><a :href="validator.link">{{ validator.website }}</a>
+          <q-img style="width: 30vw;max-width: 30px;margin: auto;" src="~assets/website.svg" />
+          <a :href="validator.link">{{ validator.website }}</a>
         </div>
-        <p class="q-pt-md">{{ validator.bio }}</p>
+        <span v-if="validator.bio"><p class="q-pt-xs">{{ validator.bio }}</p>
+        <q-separator class="q-mb-xl"/></span>
       </div>
-      <q-separator class="q-mb-xl"/>
       <div class="q-pl-md">
         <span class="text-subtitle2"><small style="opacity: 0.8;">STAKED BY</small></span>
         <span class="q-pl-xs">

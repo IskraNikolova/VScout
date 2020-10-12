@@ -21,6 +21,7 @@
               <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
             </small>
           </q-toolbar-title>
+          <q-btn flat label="Add Identification" icon="perm_identity" @click.native="onAddIdentification" />
           <calculator />
           <q-btn
             flat
@@ -103,11 +104,7 @@
       </div>
       <div class="sm background-orange">
         <q-toolbar class="background-white">
-          <q-toolbar-title
-            @click="$router.push('/')"
-            id="toolbar-title">
-            VScout.io <q-icon name="home" color="grey" />
-          </q-toolbar-title>
+          <q-btn flat label="Add Identification" @click.native="onAddIdentification" />
           <calculator />
           <q-btn
             flat
@@ -262,6 +259,7 @@
         </div>
       </div>
       <div id="header-line"></div>
+      <add-identification-dialog ref="addIdentificationRef" />
     </q-header>
     <q-drawer
       v-model="drawer"
@@ -404,7 +402,8 @@ export default {
     Countdown: () => import('components/items/countdown'),
     ListSubnets: () => import('components/list-subnets'),
     SwitchEndpoint: () => import('components/switch-endpoint'),
-    ListBlockchains: () => import('components/list-blockchains')
+    ListBlockchains: () => import('components/list-blockchains'),
+    AddIdentificationDialog: () => import('components/dialogs/add-identification-dialog')
   },
   computed: {
     ...mapGetters([
@@ -460,6 +459,9 @@ export default {
     async onSubnetClick () {
       this.isS = true
       await this.getSubnets({})
+    },
+    onAddIdentification () {
+      this.$refs.addIdentificationRef.openAddId()
     },
     async search () {
       if (!this.filter || this.filter === 'undefined') return

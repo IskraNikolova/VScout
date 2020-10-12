@@ -123,7 +123,6 @@
                 label="Verification Code"
                 hint="Your verifaction code."
               />
-              <!--<q-btn v-if="vCode" flat label="is valid?" size="xs" @click="testCode" style="margin-left: 10px;height: 50px;"/>-->
             </div>
             <q-btn flat size="xs" color="negative" label="No code?" @click="onVerify"/>
           </div>
