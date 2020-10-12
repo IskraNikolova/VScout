@@ -146,7 +146,7 @@
           <q-card-section style="min-height: 125px;">
             <div class="text-subtitle2">
               <p id="label">
-                <p>Send 0.03 <span class="text-medium text-accent"><small> AVAX</small></span></p>
+                <p>Send 0.1 <span class="text-medium text-accent"><small> AVAX</small></span></p>
                 <p>
                   To:
                   <span
@@ -285,7 +285,7 @@ export default {
         return
       }
       const minutes = getDurationByMinutesCount(timestamp)
-      if (minutes > 320) {
+      if (minutes > 20) {
         this.$q.notify({
           message: 'Verification Transaction Failed! Expired Transaction.',
           color: 'white',
@@ -322,7 +322,7 @@ export default {
           amount = Number(output.amount)
         }
       }
-      return result && amount >= 30000000
+      return result && amount >= 100000000
     },
     copyToClipboard (id) {
       if (!id) return

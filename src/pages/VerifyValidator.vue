@@ -34,7 +34,7 @@
                 Note: For this option you need to have a node running on localhost.</small>
               </div>
               <div class="text-subtitle2">
-                <small id="label"> Send 0.03 AVAX to <span style="cursor: pointer;font-size: 13px;" class="text-secondary text-bold" @click="copyToClipboard(admin)">{{ admin }}</span> for smart contract writing fees!</small>
+                <small id="label"> Send 0.1 AVAX to <span style="cursor: pointer;font-size: 13px;" class="text-secondary text-bold" @click="copyToClipboard(admin)">{{ admin }}</span> for smart contract writing fees!</small>
               </div>
             </q-card-section>
           </q-card>
@@ -50,7 +50,7 @@
             </q-card-section>
             <q-card-section style="min-height: 125px;">
               <div class="text-subtitle2">
-                <small>Send 0.03 AVAX to <span style="font-size: 13px;cursor: pointer;" @click="copyToClipboard(admin)" class="text-secondary text-bold">{{ admin }}</span> <br />for owner address verification & smart contract writing fees!</small>
+                <small>Send 0.1 AVAX to <span style="font-size: 13px;cursor: pointer;" @click="copyToClipboard(admin)" class="text-secondary text-bold">{{ admin }}</span> <br />for owner address verification & smart contract writing fees!</small>
               </div>
             </q-card-section>
           </q-card>
@@ -74,7 +74,7 @@
             </div>
             <div class="text-subtitle2" v-else>
               <p id="label">
-                Send 0.03 AVAX  <br />to <span style="cursor: pointer;font-size: 15px;" class="text-secondary text-bold" @click="copyToClipboard(admin)">{{ admin }}</span> for smart contract writing fees!
+                Send 0.1 AVAX  <br />to <span style="cursor: pointer;font-size: 15px;" class="text-secondary text-bold" @click="copyToClipboard(admin)">{{ admin }}</span> for smart contract writing fees!
               </p>
               <p>
                 Grab your TXID, paste it in the field below and click "Send" to obtain your verification code!
@@ -122,7 +122,7 @@
           <q-card-section style="min-height: 125px;" v-if="!isSearchSuccess">
             <div class="text-subtitle2">
               <p id="label">
-                <p>Send 0.03 <span class="text-medium text-accent"><small> AVAX</small></span></p>
+                <p>Send 0.1 <span class="text-medium text-accent"><small> AVAX</small></span></p>
                 <p>
                   From: Validator Node Owner Address
                 </p>
@@ -285,7 +285,7 @@ export default {
           amount = Number(output.amount)
         }
       }
-      return result && amount >= 30000000
+      return result && amount >= 100000000
     },
     async firstSearch (txID) {
       try {

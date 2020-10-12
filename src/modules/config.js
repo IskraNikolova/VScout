@@ -30,6 +30,7 @@ export default {
 // admin: 'X-avax18u9njlrvx76ap6rpdxsf27v7cawu278rw83yyf',
 
 // DEV
+// cChainId: 43113,
 // explorerApiBaseUrl: 'https://explorerapi.avax-test.network/',
 // contract: '0x46897F5a28D5fafF39A423780A758FB2E8540Bb2',
 // endpointCChain: 'api.avax-test.network/ext/bc/C/rpc',
