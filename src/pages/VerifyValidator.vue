@@ -124,7 +124,7 @@
               <p id="label">
                 <p>Send 0.1 <span class="text-medium text-accent"><small> AVAX</small></span></p>
                 <p>
-                  From: Validator Node Owner Address
+                  From: {{ getXAddress(rewardOwner) }}
                 </p>
                 <p>
                   To:
