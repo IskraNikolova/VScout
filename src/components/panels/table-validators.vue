@@ -86,8 +86,8 @@
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="startTime" label="Start Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="endTime" label="End Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="progress" label="Progress" />
-          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="remainingCapacity" label="Remaining Capacity" />
-          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="remainingTime" label="Remaining Time" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="remainingCapacity" label="Capacity" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="remainingTime" label="Coutdown" />
         </div></small>
       </template>
       <template v-slot:top-right="props" v-if="!isGrid">
@@ -460,7 +460,7 @@ export default {
         },
         {
           name: 'networkShare',
-          align: 'center',
+          align: 'left',
           label: 'NETWORK SHARE',
           field: row => Number(row.percent),
           format: (val, row) => `${round(Number(val), 1000)} %`,
@@ -470,7 +470,7 @@ export default {
         },
         {
           name: 'percent',
-          align: 'center',
+          align: 'left',
           label: 'CUMULATIVE STAKE',
           field: 'cumulativeStake',
           headerClasses: 'text-medium'
@@ -532,7 +532,7 @@ export default {
         {
           name: 'remainingTime',
           align: 'center',
-          label: 'REMAINING TIME (Countdown)',
+          label: 'COUNTDOWN',
           field: row => row.remainingTime,
           headerClasses: 'text-medium'
         }
@@ -573,9 +573,9 @@ export default {
   },
   methods: {
     filterMethod () {
-      if (this.curentValidators) {
+      if (this.curentValidators && this.curentValidators.length > 0) {
         return this.curentValidators
-          .filter(row => row.nodeID.includes(this.filter) ||
+          .filter(row => row.nodeID.toLowerCase().includes(this.filter.toLowerCase()) ||
           row.name.includes(this.filter))
       }
     },
