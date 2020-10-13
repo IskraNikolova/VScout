@@ -62,9 +62,6 @@ export default {
       'pendingValidators'
     ])
   },
-  created () {
-    console.log(process.env.TEST)
-  },
   data () {
     return {
       price: null,
