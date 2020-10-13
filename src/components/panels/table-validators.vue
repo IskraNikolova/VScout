@@ -113,14 +113,14 @@
       </template>
       <template v-slot:header-cell-rank="props">
         <q-th :props="props">
-          Rank
+          RANK
           <q-icon name="img:statics/star.svg" size="1.5em">
           </q-icon>
         </q-th>
       </template>
       <template v-slot:header-cell-validator="props">
         <q-th :props="props">
-          <span style="margin-left: -60px!important;">Validator (Name / Node ID)</span>
+          <span style="margin-left: -60px!important;">VALIDATOR (NAME / NODE ID)</span>
         </q-th>
       </template>
       <template v-slot:body="props">
@@ -422,7 +422,6 @@ export default {
       columns: [
         {
           name: 'rank',
-          label: 'Rank',
           align: 'left',
           field: row => row.rank,
           style: 'padding-left: 20px;',
@@ -438,7 +437,6 @@ export default {
         {
           name: 'validator',
           align: 'left',
-          label: 'Validator (Name/Node ID)',
           field: row => row.name,
           sortable: true,
           headerClasses: 'text-medium'
@@ -446,7 +444,7 @@ export default {
         {
           name: 'stake',
           align: 'left',
-          label: 'Stake (AVAX)',
+          label: 'STAKE (AVAX)',
           field: row => Number(row.stakeAmount),
           format: (val, row) => `${this.getFormatReward(val)}`,
           sortable: true,
@@ -455,7 +453,7 @@ export default {
         {
           name: 'weight',
           align: 'center',
-          label: 'Weight',
+          label: 'WEIGHT',
           field: row => row.weight,
           sortable: true,
           headerClasses: 'text-medium'
@@ -463,7 +461,7 @@ export default {
         {
           name: 'networkShare',
           align: 'center',
-          label: 'Network Share',
+          label: 'NETWORK SHARE',
           field: row => Number(row.percent),
           format: (val, row) => `${round(Number(val), 1000)} %`,
           sortable: true,
@@ -473,14 +471,14 @@ export default {
         {
           name: 'percent',
           align: 'center',
-          label: 'Cumulative Stake',
+          label: 'CUMULATIVE STAKE',
           field: 'cumulativeStake',
           headerClasses: 'text-medium'
         },
         {
           name: 'delegationFee',
           align: 'left',
-          label: 'Fee',
+          label: 'FEE',
           field: row => Number(row.delegationFee),
           format: (val, row) => `${round(Number(val), 1000)} %`,
           sortable: true,
@@ -490,7 +488,7 @@ export default {
         {
           name: 'uptime',
           align: 'left',
-          label: 'Uptime',
+          label: 'UPTIME',
           sortable: true,
           field: row => row.uptime,
           headerClasses: 'text-medium'
@@ -498,7 +496,7 @@ export default {
         {
           name: 'startTime',
           align: 'left',
-          label: 'Start Time',
+          label: 'START TIME',
           field: row => Number(row.startTime),
           format: (val, row) => `${this.formatDate(val, 'MMMM Do YYYY')}`,
           style: 'font-size: 85%;',
@@ -508,7 +506,7 @@ export default {
         {
           name: 'endTime',
           align: 'left',
-          label: 'End Time',
+          label: 'END TIME',
           sortable: true,
           field: row => Number(row.endTime),
           format: (val, row) => `${this.formatDate(val, 'MMMM Do YYYY')}`,
@@ -518,14 +516,14 @@ export default {
         {
           name: 'progress',
           align: 'left',
-          label: 'Progress (%)',
+          label: 'PROGRESS (%)',
           field: 'progress',
           headerClasses: 'text-medium'
         },
         {
           name: 'remainingCapacity',
           align: 'left',
-          label: 'Capacity',
+          label: 'CAPACITY',
           field: row => Number(row.remainingCapacity),
           format: (val, row) => `${this.getFormatReward(val)}`,
           sortable: true,
@@ -534,7 +532,7 @@ export default {
         {
           name: 'remainingTime',
           align: 'center',
-          label: 'Remaining Time (Countdown)',
+          label: 'REMAINING TIME (Countdown)',
           field: row => row.remainingTime,
           headerClasses: 'text-medium'
         }
