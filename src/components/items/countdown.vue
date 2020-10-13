@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="col count-down q-pa-xs q-ml-md" :style="'border-color:' + color">
+    <div class="col count-down q-pa-xs" :style="'border-color:' + color">
       <div class="text-medium" id="value">{{ months }}</div>
       <div id="label">MONTHS</div>
     </div>

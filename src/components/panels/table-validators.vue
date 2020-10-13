@@ -59,7 +59,7 @@
           v-model="type2"
           flat
           size="xs"
-          toggle-color="orange"
+          toggle-color="secondary"
           @click.native="onSwitchAccounts"
           :options="[
             {label: 'Validators', value: 'validators'},
@@ -118,6 +118,11 @@
           </q-icon>
         </q-th>
       </template>
+      <template v-slot:header-cell-validator="props">
+        <q-th :props="props">
+          <span style="margin-left: -60px!important;">Validator (Name / Node ID)</span>
+        </q-th>
+      </template>
       <template v-slot:body="props">
         <q-tr :props="props" auto-width>
           <q-td
@@ -126,8 +131,8 @@
             :props="props"
             id="custom-td"
           >
-          <div v-if="col.name === 'avatar'">
-              <q-img :src="col.value" :style="'width: 35vw;max-width: 35px;border-radius: 5px;border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 5px;'">
+            <div v-if="col.name === 'avatar'">
+              <q-img :src="col.value" :style="'margin-left: -15px;width: 35vw;max-width: 35px;border-radius: 5px;border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 5px;'">
                 <template v-slot:error>
                   <div class="bg-negative text-white">
                   </div>
@@ -136,14 +141,19 @@
             </div>
             <div v-else-if="col.name === 'validator'" class="row">
               <div
-                style="cursor:pointer;"
-                class="q-pl-xs q-pt-xs"
+                style="cursor:pointer;margin-left: -25px;"
                 @click="props.expand = !props.expand">
                 {{ getFormatValidator(col.value) }}
               </div>
             </div>
-            <div v-else-if="col.name === 'rank'" id="rank">
+            <div v-else-if="col.name === 'rank'">
               {{ col.value }}
+            </div>
+            <div v-else-if="col.name === 'remainingCapacity'">
+               {{ col.value }}
+               <span class="text-accent text-medium">
+                 <small> AVAX</small>
+               </span>
             </div>
             <div v-else-if="col.name === 'stake'">
               <div>
@@ -151,7 +161,7 @@
               </div>
               <div>
                 <small class="text-grey">Own: </small>
-                <span class="text-orange">{{ col.value }}</span>
+                <span class="text-secondary text-medium">{{ col.value }}</span>
                 <small class="text-grey"> D: {{ getFormatReward(props.row.delegateStake) }}</small>
               </div>
             </div>
@@ -198,7 +208,7 @@
               v-bind:countdown="col.value"
               v-bind:color="getIsDelegatable(props.row.isMinimumAmountForStake)"
               v-else-if="col.name === 'remainingTime'"
-              style="min-width: 200px;"
+              style="min-width: 180px;"
             />
             <div v-else>{{ col.value }}</div>
           </q-td>
@@ -361,8 +371,8 @@ function wrapCsvValue (val, formatFn) {
    * Excel accepts \n and \r in strings, but some other CSV parsers do not
    * Uncomment the next two lines to escape new lines
    */
-    .split('\n').join('\\n')
-    .split('\r').join('\\r')
+  // .split('\n').join('\\n')
+  // .split('\r').join('\\r')
   return `"${formatted}"`
 }
 
@@ -404,6 +414,9 @@ export default {
       isGrid: false,
       isActive: true,
       pagination: {
+        sortBy: 'validator',
+        descending: false,
+        page: 1,
         rowsPerPage: 20
       },
       columns: [
@@ -412,6 +425,7 @@ export default {
           label: 'Rank',
           align: 'left',
           field: row => row.rank,
+          style: 'padding-left: 20px;',
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -431,7 +445,7 @@ export default {
         },
         {
           name: 'stake',
-          align: 'center',
+          align: 'left',
           label: 'Stake (AVAX)',
           field: row => Number(row.stakeAmount),
           format: (val, row) => `${this.getFormatReward(val)}`,
@@ -465,8 +479,8 @@ export default {
         },
         {
           name: 'delegationFee',
-          align: 'center',
-          label: 'Delegation Fee',
+          align: 'left',
+          label: 'Fee',
           field: row => Number(row.delegationFee),
           format: (val, row) => `${round(Number(val), 1000)} %`,
           sortable: true,
@@ -475,7 +489,7 @@ export default {
         },
         {
           name: 'uptime',
-          align: 'center',
+          align: 'left',
           label: 'Uptime',
           sortable: true,
           field: row => row.uptime,
@@ -483,21 +497,21 @@ export default {
         },
         {
           name: 'startTime',
-          align: 'center',
+          align: 'left',
           label: 'Start Time',
           field: row => Number(row.startTime),
-          format: (val, row) => `${this.formatDate(val, 'll')}`,
+          format: (val, row) => `${this.formatDate(val, 'MMMM Do YYYY')}`,
           style: 'font-size: 85%;',
           sortable: true,
           headerClasses: 'text-medium'
         },
         {
           name: 'endTime',
-          align: 'center',
+          align: 'left',
           label: 'End Time',
           sortable: true,
           field: row => Number(row.endTime),
-          format: (val, row) => `${this.formatDate(val, 'll')}`,
+          format: (val, row) => `${this.formatDate(val, 'MMMM Do YYYY')}`,
           style: 'font-size: 85%;',
           headerClasses: 'text-medium'
         },
@@ -510,10 +524,10 @@ export default {
         },
         {
           name: 'remainingCapacity',
-          align: 'center',
-          label: 'Remaining Capacity',
+          align: 'left',
+          label: 'Capacity',
           field: row => Number(row.remainingCapacity),
-          format: (val, row) => `${this.getFormatReward(val)} AVAX`,
+          format: (val, row) => `${this.getFormatReward(val)}`,
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -714,12 +728,9 @@ export default {
   grid-column: 1;
   grid-row: 1;
 }
-#rank {
-  margin-left: 25px!important;
-  font-size: 14px;
-}
 #custom-td {
-  padding: 0px!important;
+  padding-top: 0px!important;
+  padding-bottom: 0px!important;
   height: 50px!important;
 }
 #pr {

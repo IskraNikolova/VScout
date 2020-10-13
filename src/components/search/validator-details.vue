@@ -149,14 +149,14 @@
             <div class="text-subtitle2">
               <small style="opacity: 0.8;">REMAINIG TIME </small>
               <span v-if="months > 0">
-                <span class="text-accent">Months </span>
                 {{ months }}
+                <span class="text-accent"> Months </span>
               </span>
-              <span class="text-accent">Days </span>
               {{ days }}
+              <span class="text-accent"> Days </span>
               <span v-if="months < 1">
-                <span class="text-accent"> Hours </span>
                 {{ hours }}
+                <span class="text-accent"> Hours</span>
               </span>
             </div>
           </q-card-section>
@@ -305,7 +305,9 @@
             <div>
               <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
               <span class="on-right">{{ getFormatAva(validator.totalStakeAmount) }}</span>
-              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
+              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span> /
+              <span>  {{ totalRewardUsd() }}</span>
+              <span class="text-accent text-medium"><small> USD</small></span>
             </div>
           </q-card-section>
         </q-card>

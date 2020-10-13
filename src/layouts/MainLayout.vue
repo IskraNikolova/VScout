@@ -14,13 +14,11 @@
               {{ avaxPrice }} | AVAX/USD
             </small>
           </q-toolbar-title>
-          <q-toolbar-title>
-            <img src="~assets/block.svg" id="logo-block"/>
-            <small class="text-grey" style="font-size: 15px;padding-top: -20px;">
-              {{ height }}
-              <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
-            </small>
-          </q-toolbar-title>
+          <img src="~assets/block.svg" id="logo-block"/>
+          <small class="text-grey" style="font-size: 15px;">
+            {{ height }}
+            <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
+          </small>
           <q-btn flat label="Add Identification" icon="perm_identity" @click.native="onAddIdentification" />
           <calculator />
           <q-btn
