@@ -331,6 +331,17 @@ export default {
     async searchAddress (txID, index) {
       const tx = await _getTxApi(txID.trim())
       const inputs = tx.inputs
+      if (!inputs) {
+        this.visible = false
+        this.$q.notify({
+          message: 'Verification Failed!',
+          color: 'white',
+          textColor: 'black',
+          position: 'center',
+          timeout: 1000
+        })
+        return
+      }
       for (let i = 0; i < inputs.length; i++) {
         const output = inputs[i].output
         const addresses = output.addresses

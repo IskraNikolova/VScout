@@ -619,7 +619,6 @@ export default {
             c !== 'percent' &&
             c !== 'networkShare' &&
             c !== 'weight' &&
-            c !== 'uptime' &&
             c !== 'progress' &&
             c !== 'rank'
           )
