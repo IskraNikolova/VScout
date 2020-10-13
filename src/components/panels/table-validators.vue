@@ -623,7 +623,7 @@ export default {
             c !== 'rank'
           )
       } else if (curentValidators.find(a => !a.weight)) {
-        return columns.filter(c => c !== 'weight' && c !== 'percent' && c !== 'progress' && c !== 'networkShare' && c !== 'uptime')
+        return columns.filter(c => c !== 'weight' && c !== 'percent' && c !== 'progress' && c !== 'networkShare')
       } else if (curentValidators.find(a => a.weight)) {
         return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
       }
