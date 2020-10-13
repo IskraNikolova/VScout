@@ -114,11 +114,11 @@ export async function mapValidators (
 
     // todo issue Incorrect uptime sometimes returned
     // by getCurrentValidators delete after BUGFIX
-    if (!isInit && currentValidator) {
-      const prev = parseFloat(currentValidator.uptime)
-      const next = parseFloat(val.uptime)
-      if (prev - next > 0.25) val.uptime = currentValidator.uptime
-    }
+    // if (!isInit && currentValidator) {
+    //   const prev = parseFloat(currentValidator.uptime)
+    //   const next = parseFloat(val.uptime)
+    //   if (prev - next > 0.25) val.uptime = currentValidator.uptime
+    // }
 
     if (val.weight) {
       val.stakeAmount = currentValidator.stakeAmount

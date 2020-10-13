@@ -4,19 +4,19 @@
       <div class="row items-center no-wrap">
         <div class="col">
           <div v-if="validator.nodeID !== validator.name">
-            <span id="font15" class="text-grey">NAME </span>
-            <a :href="validator.link" v-if="validator.link" class="text-grey" id="link">
-              {{ validator.name }}
-            </a>
-            <span v-else class="text-grey" id="link">
+            <span id="font15" class="text-grey"><small>NAME </small></span>
+            <span id="nodeID" class="text-grey text-medium" @click="$router.push(`/validator/${validator.nodeID}`)">
               {{ validator.name }}
             </span>
+            <a :href="validator.link" class="text-accent">
+              visit
+            </a>
           </div>
           <span id="font15" class="text-grey">
             <small>NODE ID </small> </span>
             <span
               @click="$router.push(`/validator/${validator.nodeID}`)"
-              class="text-grey"
+              class="text-secondary text-medium"
               id="nodeID"
             >
               [{{ validator.nodeID }}]
@@ -369,7 +369,6 @@ export default {
   #nodeID {
     cursor: pointer;
     font-size: 14px;
-    opacity: 0.5;
   }
   #link {
     font-size: 14px;

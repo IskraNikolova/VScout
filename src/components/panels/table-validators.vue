@@ -126,31 +126,20 @@
             :props="props"
             id="custom-td"
           >
-            <div v-if="col.name === 'validator'" class="row">
-              <div :style="'border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 50px;width: 27px;'">
-                <q-avatar size="25px" @click="onClick(props.row.link)">
-                  <q-img :src="props.row.avatar">
-                    <template v-slot:error>
-                      <div class="bg-negative text-white">
-                      </div>
-                  </template>
-                  </q-img>
-                </q-avatar>
-              </div>
+          <div v-if="col.name === 'avatar'">
+              <q-img :src="col.value" :style="'width: 35vw;max-width: 35px;border-radius: 5px;border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 5px;'">
+                <template v-slot:error>
+                  <div class="bg-negative text-white">
+                  </div>
+                </template>
+              </q-img>
+            </div>
+            <div v-else-if="col.name === 'validator'" class="row">
               <div
-                v-if="props.row.name !== props.row.nodeID"
                 style="cursor:pointer;"
                 class="q-pl-xs q-pt-xs"
                 @click="props.expand = !props.expand">
-                {{ col.value }}
-              </div>
-              <div
-                v-else
-                style="cursor:pointer;font-size: 12px;"
-                @click="props.expand = !props.expand"
-                class="q-pl-xs q-pt-xs"
-              >
-                {{ getFormatNodeID(col.value) }}
+                {{ getFormatValidator(col.value) }}
               </div>
             </div>
             <div v-else-if="col.name === 'rank'" id="rank">
@@ -427,6 +416,12 @@ export default {
           headerClasses: 'text-medium'
         },
         {
+          name: 'avatar',
+          align: 'right',
+          label: '',
+          field: row => row.avatar
+        },
+        {
           name: 'validator',
           align: 'left',
           label: 'Validator (Name/Node ID)',
@@ -657,9 +652,10 @@ export default {
       if (!val) return
       return `${val.substr(0, 12)}...${val.substr(32)}`
     },
-    getFormatNodeID (val) {
+    getFormatValidator (val) {
       if (!val) return
-      return `${val.substr(0, 20)}...${val.substr(28)}`
+      if (val.length > 20) return `${val.substr(0, 20)}...${val.substr(28)}`
+      return val
     },
     onClick (link) {
       if (link) openURL(link)
