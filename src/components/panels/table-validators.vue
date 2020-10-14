@@ -576,11 +576,11 @@ export default {
       if (this.curentValidators && this.curentValidators.length > 0) {
         return this.curentValidators
           .filter(row => row.nodeID.toLowerCase().includes(this.filter.toLowerCase()) ||
-          row.name.includes(this.filter))
+          row.name.includes(this.filter) || this.getRewardOwner(row.rewardOwner).toLowerCase().includes(this.filter.toLowerCase()))
       }
     },
     getRewardOwner (val) {
-      if (!val) return
+      if (!val) return ''
       return val.addresses[0]
     },
     exportTable () {

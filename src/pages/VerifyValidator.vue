@@ -124,7 +124,14 @@
               <p id="label">
                 <p>Send 0.1 <span class="text-medium text-accent"><small> AVAX</small></span></p>
                 <p>
-                  From: {{ getXAddress(rewardOwner) }}
+                  From:
+                  <span
+                    style="font-size: 15px;cursor: pointer;"
+                    @click="copyToClipboard(admin)"
+                    class="text-secondary text-medium"
+                  >
+                  {{ getXAddress(rewardOwner) }}
+                  </span>
                 </p>
                 <p>
                   To:
@@ -238,6 +245,10 @@ export default {
     }
   },
   methods: {
+    // async test () {
+    //   const code = this.getRandom()
+    //   await _setVerifyCode({ code, nodeID: this.validator.nodeID })
+    // },
     async sendTx (txID) {
       const isSuccess = await this.check(txID)
       if (isSuccess) {
@@ -260,7 +271,7 @@ export default {
       const { outputs, timestamp } = tx
       if (!outputs) return
       const minutes = getDurationByMinutesCount(timestamp)
-      if (minutes > 20) {
+      if (minutes > 60) {
         this.$q.notify({
           message: 'Verification Failed! Expired Transaction.',
           color: 'white',
@@ -293,7 +304,7 @@ export default {
         const { outputs, timestamp } = tx
         if (!outputs) return
         const minutes = getDurationByMinutesCount(timestamp)
-        if (minutes > 20) {
+        if (minutes > 60) {
           this.$q.notify({
             message: 'Verification Failed! Expired Transaction.',
             color: 'white',
@@ -352,7 +363,10 @@ export default {
             this.visible = false
             this.isSearchSuccess = true
             this.code = this.getRandom()
-            await _setVerifyCode({ code: this.code, nodeID: this.validator.nodeID })
+            await _setVerifyCode({
+              code: this.code,
+              nodeID: this.validator.nodeID
+            })
             this.$store.commit(SET_CODE, { code: this.code })
             return
           }
