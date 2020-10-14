@@ -575,7 +575,8 @@ export default {
       if (this.curentValidators && this.curentValidators.length > 0) {
         return this.curentValidators
           .filter(row => row.nodeID.toLowerCase().includes(this.filter.toLowerCase()) ||
-          row.name.includes(this.filter) || this.getRewardOwner(row.rewardOwner).toLowerCase().includes(this.filter.toLowerCase()))
+          row.name.includes(this.filter) ||
+          this.getRewardOwner(row.rewardOwner).toLowerCase().includes(this.filter.toLowerCase()))
       }
     },
     getRewardOwner (val) {
@@ -628,7 +629,7 @@ export default {
           c !== 'percent' &&
           c !== 'progress' &&
           c !== 'networkShare' &&
-          c !== 'networkShare'
+          c !== 'endTime'
         )
       } else if (curentValidators.find(a => a.weight)) {
         return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
