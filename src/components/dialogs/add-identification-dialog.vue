@@ -284,7 +284,7 @@ export default {
         return
       }
       const minutes = getDurationByMinutesCount(timestamp)
-      if (minutes > 120) {
+      if (minutes > 1120) {
         this.$q.notify({
           message: 'Verification Transaction Failed! Expired Transaction.',
           color: 'white',

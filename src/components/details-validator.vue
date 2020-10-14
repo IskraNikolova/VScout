@@ -8,9 +8,13 @@
             <span id="nodeID" class="text-grey text-medium" @click="$router.push(`/validator/${validator.nodeID}`)">
               {{ validator.name }}
             </span>
-            <a :href="validator.link" class="text-accent">
+            <a :href="validator.link" v-if="validator.link" class="text-accent">
               visit
             </a>
+            <span
+              @click="$router.push('/validator/' + validator.nodeID)" v-else class="text-accent" style="cursor: pointer;text-decoration: underline;">
+              visit
+            </span>
           </div>
           <span id="font15" class="text-grey">
             <small>NODE ID </small> </span>
