@@ -132,9 +132,10 @@
             id="custom-td"
           >
             <div v-if="col.name === 'avatar'">
-              <q-img :src="col.value" :style="'margin-left: -15px;width: 35vw;max-width: 35px;border-radius: 5px;border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 5px;'">
+              <q-img :src="col.value" :style="'margin-left: -15px;width: 35vw;max-width: 35px;min-height: 35px;border-radius: 5px;border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 5px;'">
                 <template v-slot:error>
-                  <div class="bg-negative text-white">
+                  <div class="bg-white text-grey absolute-center">
+                    ?
                   </div>
                 </template>
               </q-img>
@@ -230,15 +231,13 @@
             </span>
             <q-item>
               <q-item-section avatar style="cursor:pointer;" @click="onClick(props.row.link)">
-                <q-avatar>
-                  <q-img :src="props.row.avatar">
-                    <template v-slot:error>
-                      <div>
-                        ?
-                      </div>
-                    </template>
-                  </q-img>
-                </q-avatar>
+                <q-img :src="props.row.avatar" :style="'width: 65vw;max-width: 65px;min-height: 65px;border-radius: 5px;border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 5px;'">
+                  <template v-slot:error>
+                    <div class="bg-white text-grey absolute-center">
+                      ?
+                    </div>
+                </template>
+                </q-img>
               </q-item-section>
               <q-item-section style="min-height: 80px;">
                 <q-item-label>
@@ -620,10 +619,17 @@ export default {
             c !== 'networkShare' &&
             c !== 'weight' &&
             c !== 'progress' &&
+            c !== 'uptime' &&
             c !== 'rank'
           )
       } else if (curentValidators.find(a => !a.weight)) {
-        return columns.filter(c => c !== 'weight' && c !== 'percent' && c !== 'progress' && c !== 'networkShare')
+        return columns.filter(
+          c => c !== 'weight' &&
+          c !== 'percent' &&
+          c !== 'progress' &&
+          c !== 'networkShare' &&
+          c !== 'networkShare'
+        )
       } else if (curentValidators.find(a => a.weight)) {
         return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
       }

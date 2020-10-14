@@ -5,9 +5,11 @@
       <div class="row">
         <q-item class="col-9">
           <q-item-section avatar style="cursor:pointer;" @click="onClick(validator.link)">
-            <q-img :src="validator.avatar" style=" width:80vw; max-width:80px;">
+            <q-img :src="validator.avatar" style=" width:80vw; max-width:80px;height: 80px;border-radius: 5px;">
               <template v-slot:error>
-                <div>?</div>
+                <div style="font-size: 27px;" class="bg-white text-grey absolute-center">
+                  ?
+                </div>
               </template>
             </q-img>
           </q-item-section>
@@ -211,7 +213,9 @@
         <q-item-section avatar style="cursor:pointer;" @click="onClick(validator.link)">
         <q-img :src="validator.avatar" style=" width:50vw; max-width:50px;">
           <template v-slot:error>
-            <div>?</div>
+            <div class="bg-white text-grey absolute-center">
+              ?
+            </div>
           </template>
         </q-img>
         </q-item-section>
