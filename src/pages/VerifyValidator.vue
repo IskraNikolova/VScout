@@ -187,6 +187,7 @@
 <script>
 import { mapGetters } from 'vuex'
 const crypto = require('crypto')
+const GENEZIS_ID = 'FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z'
 
 import {
   _getTxApi
@@ -272,13 +273,7 @@ export default {
       if (!outputs) return
       const minutes = getDurationByMinutesCount(timestamp)
       if (minutes > 60) {
-        this.$q.notify({
-          message: 'Verification Failed! Expired Transaction.',
-          color: 'white',
-          textColor: 'black',
-          position: 'center',
-          timeout: 1000
-        })
+        this.onFailed('Verification Failed! Expired Transaction.')
         return
       }
       return this.searchToAddress(outputs)
@@ -298,6 +293,26 @@ export default {
       }
       return result && amount >= 100000000
     },
+    async onSuccess () {
+      this.visible = false
+      this.isSearchSuccess = true
+      this.code = this.getRandom()
+      await _setVerifyCode({
+        code: this.code,
+        nodeID: this.validator.nodeID
+      })
+      this.$store.commit(SET_CODE, { code: this.code })
+    },
+    onFailed (message) {
+      this.visible = false
+      this.$q.notify({
+        message,
+        color: 'white',
+        textColor: 'black',
+        position: 'center',
+        timeout: 1000
+      })
+    },
     async firstSearch (txID) {
       try {
         const tx = await _getTxApi(txID.trim())
@@ -305,97 +320,65 @@ export default {
         if (!outputs) return
         const minutes = getDurationByMinutesCount(timestamp)
         if (minutes > 60) {
-          this.$q.notify({
-            message: 'Verification Failed! Expired Transaction.',
-            color: 'white',
-            textColor: 'black',
-            position: 'center',
-            timeout: 1000
-          })
+          this.onFailed('Verification Failed! Expired Transaction.')
           return
         }
         const isSuccess = this.searchToAddress(outputs)
         if (!isSuccess) {
-          this.visible = false
-          this.$q.notify({
-            message: 'Verification Failed!',
-            color: 'white',
-            textColor: 'black',
-            position: 'center',
-            timeout: 1000
-          })
+          this.onFailed('Verification Failed!')
           return
         }
         this.visible = true
         this.searchAddress(txID, 1)
       } catch (err) {
-        this.visible = false
-        this.$q.notify({
-          message: 'Verification Failed!',
-          color: 'white',
-          textColor: 'black',
-          position: 'center',
-          timeout: 1000
-        })
+        this.onFailed('Verification Failed!')
       }
     },
     async searchAddress (txID, index) {
-      const tx = await _getTxApi(txID.trim())
-      const inputs = tx.inputs
-      if (!inputs) {
-        this.visible = false
-        this.$q.notify({
-          message: 'Verification Failed!',
-          color: 'white',
-          textColor: 'black',
-          position: 'center',
-          timeout: 1000
-        })
-        return
-      }
-      for (let i = 0; i < inputs.length; i++) {
-        const output = inputs[i].output
-        const addresses = output.addresses
-        for (let i = 0; i < addresses.length; i++) {
-          const address = addresses[i]
-          if (!this.rewardOwner) return false
-          if (address === this.rewardOwner.substr(2)) {
-            this.visible = false
-            this.isSearchSuccess = true
-            this.code = this.getRandom()
-            await _setVerifyCode({
-              code: this.code,
-              nodeID: this.validator.nodeID
-            })
-            this.$store.commit(SET_CODE, { code: this.code })
-            return
-          }
+      try {
+        const tx = await _getTxApi(txID.trim())
+        const inputs = tx.inputs
+        if (!inputs) {
+          if (this.isSearchSuccess) return
+          await this.searchFromGenezis(tx)
+          return
         }
-        try {
+        for (let i = 0; i < inputs.length; i++) {
+          const output = inputs[i].output
+          const addresses = output.addresses
+          for (let i = 0; i < addresses.length; i++) {
+            const address = addresses[i]
+            if (address === this.rewardOwner.substr(2)) {
+              await this.onSuccess()
+              return
+            }
+          }
           if (index > 100) {
-            this.visible = false
-            this.$q.notify({
-              message: 'Verification Failed!',
-              color: 'white',
-              textColor: 'black',
-              position: 'center',
-              timeout: 1000
-            })
+            this.onFailed('Verification Failed!')
             return
           }
 
-          this.searchAddress(output.transactionID, index++)
-        } catch (err) {
-          this.visible = false
-          this.$q.notify({
-            message: 'Verification Failed!',
-            color: 'white',
-            textColor: 'black',
-            position: 'center',
-            timeout: 1000
-          })
-          return
+          await this.searchAddress(output.transactionID, index++)
         }
+      } catch (err) {
+        this.onFailed('Verification Failed!')
+      }
+    },
+    async searchFromGenezis (tx) {
+      if (tx.id === GENEZIS_ID) {
+        const outputs = tx.outputs
+        if (!outputs) return false
+        for (let i = 0; i <= outputs.length; i++) {
+          const addresses = outputs[i].addresses
+          for (let j = 0; j < addresses.length; j++) {
+            if (addresses[j] === this.rewardOwner.substr(2)) {
+              await this.onSuccess()
+              return
+            }
+          }
+        }
+      } else {
+        this.onFailed('Verification Failed!')
       }
     },
     getRandom () {
