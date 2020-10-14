@@ -2,6 +2,7 @@
   <q-btn
     push
     flat
+    color="secondary"
     id="logo-sim"
     label="calculator"
     @click="openCalculator"
@@ -12,7 +13,7 @@
           <div class="col-6 text-medium">Reward Calculator</div>
           <div class="col-6" style="text-align: right;">
             <small>Current Supply
-            <q-badge outline color="orange" :label="getCurrentSupplyLable() + ' M'" /> </small>
+            <q-badge outline color="secondary" :label="getCurrentSupplyLable() + ' M'" /> </small>
           </div>
         </div>
         <div class="row">
@@ -89,7 +90,7 @@
           <div class="col-2">
             <q-btn icon="event" size="sm" outline color="grey">
               <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
-                <q-date v-model="model" color="orange" range>
+                <q-date v-model="model" color="secondary" range>
                   <div class="row items-center justify-end q-gutter-sm">
                   <q-btn label="Cancel" color="grey" flat v-close-popup />
                   <q-btn label="OK" color="grey" flat @click="save" v-close-popup />

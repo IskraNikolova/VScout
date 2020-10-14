@@ -10,18 +10,18 @@
     <div class="row">
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium ">NETWORK</div>
-        <div style="text-transform: uppercase;" class="text-h6 text-orange">
+        <div style="text-transform: uppercase;" class="text-h6 text-secondary">
           {{ nodeInfo.networkName }}
         </div>
         <div class="q-pt-md" id="f-size12">
           <span class="text-medium">Network ID</span>
-          <span class="text-grey">
+          <span class="text-secondary">
             {{ nodeInfo.networkID }}
           </span>
         </div>
         <div id="f-size12">
           <span class="text-medium">Version</span>
-          <span class="text-grey">
+          <span class="text-secondary">
             {{ nodeInfo.nodeVersion }}
           </span>
         </div>
@@ -30,12 +30,12 @@
       <div class="col-md-3 col-xs-10">
         <div v-if="validatorById(nodeID)" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
           <div id="f-size12" class="q-pb-md text-medium">NODE - VALIDATOR</div>
-          <div class="text-h7 text-orange q-pb-md q-pt-xs">{{ formatNodeID }}</div>
+          <div class="text-h7 text-secondary q-pb-md q-pt-xs">{{ formatNodeID }}</div>
           <tooltip-style v-bind:text="'Copy to Clipboard'" />
         </div>
         <div v-else>
           <div id="f-size12" class="q-pb-md text-medium">NODE</div>
-          <div class="text-h7 text-orange q-pb-md q-pt-xs">{{ formatNodeID }}</div>
+          <div class="text-h7 text-secondary q-pb-md q-pt-xs">{{ formatNodeID }}</div>
         </div>
         <div class="q-pt-md">
           <q-btn :color="color" no-caps outline size="xs" label="Check Health" @click="onOpenHealth"/>
@@ -51,7 +51,7 @@
         <div id="f-size12" class="q-pb-md text-medium">PEER CONNECTIONS</div>
         <div class="q-pb-md">
          <small>Connected with</small>
-         <div class="text-orange">
+         <div class="text-secondary">
             <animated-number
               :value="nodeInfo.peers.peers.length"
               :formatValue="format"
@@ -71,7 +71,7 @@
           <q-spinner-ball v-if="ui.doesItConnect" />
         </div>
         <div class="q-pb-md">
-          <div class="text-h7 text-orange">{{ networkEndpoint.name }}</div>
+          <div class="text-h7 text-secondary">{{ networkEndpoint.name }}</div>
         </div>
         <div id="f-size12" class="q-mt-md">
           <span class="q-pt-xl">{{ networkEndpoint.urlView }}</span>

@@ -10,20 +10,20 @@
         </div>
         <div class="q-mb-md">
           <div class="q-pb-md q-pr-md ">
-            <span class="text-h6 text-orange">{{ currentBlockchain.name }}</span>
+            <span class="text-h6 text-secondary">{{ currentBlockchain.name }}</span>
             <span style="text-transform: uppercase; font-size: 85%;" :class="'q-ml-md text-' + getColor(currentBlockchain.status)">{{ currentBlockchain.status }}</span>
             <tooltip-style v-bind:text="getStatusInfo(currentBlockchain.status)" />
           </div>
         </div>
         <div id="f-size12" v-if="isDefaultSubnetID(currentBlockchain.id)">
           <span class="text-medium">Height</span>
-          <span class="text-grey">
+          <span class="text-secondary">
             {{ height }}
           </span>
         </div>
         <div id="f-size12" style="max-width: 340px;">
           <span class="text-medium">Blockchain ID</span>
-          <span class="text-grey" style="cursor:pointer;" @click="$router.push(`/blockchain/${currentBlockchain.id}`)">
+          <span class="text-secondary" style="cursor:pointer;" @click="$router.push(`/blockchain/${currentBlockchain.id}`)">
             {{ currentBlockchain.id }}
           </span>
         </div>
@@ -40,12 +40,12 @@
         <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultSubnetID(currentBlockchain.subnetID)">
           Default Subnet
         </div>
-        <div class="q-pb-md text-orange" style="font-size: 17px;cursor: pointer;max-width: 300px;" @click="$router.push(`/subnet/${currentBlockchain.subnetID}`)">
+        <div class="q-pb-md text-secondary" style="font-size: 17px;cursor: pointer;max-width: 300px;" @click="$router.push(`/subnet/${currentBlockchain.subnetID}`)">
           <small>{{ currentBlockchain.subnetID }}</small>
         </div>
         <div id="f-size12">
           <span class="text-medium">VM ID</span>
-          <div class="text-grey" style="max-width: 360px;cursor: pointer;" @click="goToDoc(currentBlockchain.vmDocumentation)">
+          <div class="text-secondary" style="max-width: 360px;cursor: pointer;" @click="goToDoc(currentBlockchain.vmDocumentation)">
             {{ currentBlockchain.vmID ?  currentBlockchain.vmID : currentBlockchain.vmName }}
           </div>
         </div>
@@ -57,7 +57,7 @@
             Default Subnet
           </div>
           <div class="q-pb-md" style="cursor: pointer;" @click="$router.push(`/subnet/${currentSubnet.id}`)">
-            <span class="text-orange">{{ currentSubnet.id }}</span>
+            <span class="text-secondary">{{ currentSubnet.id }}</span>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
         <div v-if="isBlockchainView">
           <div id="f-size12" class="q-pb-md text-medium">ASSETS</div>
             <div class="q-pb-md q-pr-md ">
-              <span class="text-h6 text-orange">
+              <span class="text-h6 text-secondary">
                 <animated-number
                   :value="assetsCount"
                   :formatValue="format"
@@ -120,7 +120,7 @@
           <div id="f-size12" class="q-pb-md text-medium">CONTROL KEYS</div>
           <div >
             <div class="col-4 q-mt-xs" id="f-size12">
-              <span class="text-h6 text-orange"> {{ currentSubnet.threshold }}</span> Threshold
+              <span class="text-h6 text-secondary"> {{ currentSubnet.threshold }}</span> Threshold
             </div>
             <q-btn-dropdown
               size="xs" no-caps
@@ -270,7 +270,7 @@ export default {
 
 <style scoped>
   #custom-card {
-    border-right: 2px solid #ff6000;
+    border-right: 2px solid #588da8;
   }
   #logo {
     width:45vw;

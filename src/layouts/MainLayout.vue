@@ -19,7 +19,7 @@
             {{ height }}
             <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
           </small>
-          <q-btn flat label="Add Identification" icon="perm_identity" @click.native="onAddIdentification" />
+          <q-btn color="secondary" flat label="Add Identification" icon="perm_identity" @click.native="onAddIdentification" />
           <calculator />
           <q-btn
             flat
@@ -366,7 +366,7 @@
           round
           icon="wifi_off"
           size="lg"
-          color="grey"
+          color="secondary"
         />
       </q-page-sticky>
       <keep-alive>
@@ -374,7 +374,7 @@
       </keep-alive>
        <!-- place QPageScroller at end of page-->
         <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
-          <q-btn fab icon="keyboard_arrow_up" color="orange" />
+          <q-btn fab icon="keyboard_arrow_up" color="secondary" />
         </q-page-scroller>
     </q-page-container>
   </q-layout>
@@ -569,7 +569,7 @@ export default {
   #header-line {
    height: 3px;
    width: 100%;
-   background: #32353b;
+   background:#aa7dc9;
    opacity: 0.5;
  }
 </style>

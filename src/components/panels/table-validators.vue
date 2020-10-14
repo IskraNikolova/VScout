@@ -66,11 +66,19 @@
             {label: 'Delegations', value: 'delegations'}
           ]"
         />
-        <q-btn no-caps color="secondary" size="sm" label="Add Identification" icon="perm_identity" @click.native="onAddIdentification" />
+        <q-btn
+          class="q-ml-sm"
+          no-caps color="secondary"
+          outline size="sm"
+          label="Add Identification"
+          icon="perm_identity"
+          @click.native="onAddIdentification"
+        />
         <add-identification-dialog ref="addIdentificationRef" />
         <q-btn
           size="sm"
-          class="q-ml-md"
+          flat
+          class="q-ml-sm"
           color="secondary"
           icon-right="archive"
           label="Export to csv"

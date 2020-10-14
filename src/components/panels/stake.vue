@@ -6,14 +6,14 @@
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">VALIDATORS</div>
         <div>
-          <span class="text-h5 text-orange">
+          <span class="text-h5 text-secondary">
             <animated-number
               :value="validators.length"
               :formatValue="format"
               :duration="3000"
             />
           </span>
-          <span id="f-size12"> active </span>  /  <span class="text-orange">
+          <span id="f-size12"> active </span>  /  <span class="text-secondary">
             <animated-number
               :value="pendingValidators.length"
               :formatValue="format"
@@ -30,13 +30,13 @@
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">DELEGATIONS</div>
         <div>
-          <span class="text-h5 text-orange">
+          <span class="text-h5 text-secondary">
             <animated-number
               :value="delegationsCount"
               :formatValue="format"
               :duration="3000"
             />
-          </span> <span id="f-size12"> active</span>  /  <span class="text-orange">
+          </span> <span id="f-size12"> active</span>  /  <span class="text-secondary">
             <animated-number
               :value="pendingDelegators.length"
               :formatValue="format"
@@ -51,7 +51,7 @@
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">TOTAL STAKE</div>
         <div class="text-h6 q-pb-md">
-            <span class="text-orange">
+            <span class="text-secondary">
               <small>
                 <animated-number
                   :value="allStake"
@@ -60,7 +60,7 @@
                 />
               </small>
             </span>
-            <span style="font-size: 13px;"> AVAX</span>
+            <span style="font-size: 13px;" class="text-medium text-accent"> <small>AVAX</small></span>
         </div>
       </div>
       <div class="col-1 q-pt-md">
@@ -70,7 +70,7 @@
       <div class="col-md-3 col-xs-10">
        <div id="f-size12" class="q-pb-md text-medium">VALIDATION / DELEGATED STAKE</div>
        <div class="text-h6 q-pb-md" style="min-width: 320px;">
-            <span class="text-orange">
+            <span class="text-secondary">
              <small>
                 <animated-number
                   :value="valStake"
@@ -80,7 +80,7 @@
              </small>
             </span>
             /
-            <span class="text-orange">
+            <span class="text-secondary">
              <small>
                <animated-number
                   :value="delStake"
@@ -89,7 +89,7 @@
                 />
              </small>
             </span>
-            <span style="font-size: 13px;"> AVAX</span>
+            <span style="font-size: 13px;" class="text-medium text-accent"> <small> AVAX</small></span>
         </div>
       </div>
     </div>

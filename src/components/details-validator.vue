@@ -176,14 +176,14 @@
           <div class="text-subtitle2 q-mt-md">
             <small id="label">REMAINIG TIME </small>
             <span v-if="months > 0">
-              <span class="text-accent">Months </span>
               {{ months }}
+              <span class="text-accent"> Months </span>
             </span>
-            <span class="text-accent">Days </span>
             {{ days }}
+            <span class="text-accent">Days </span>
             <span v-if="months < 1">
-              <span class="text-accent"> Hours </span>
               {{ hours }}
+              <span class="text-accent"> Hours </span>
             </span>
           </div>
         </q-card-section>
