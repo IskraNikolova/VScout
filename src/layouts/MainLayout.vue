@@ -105,7 +105,10 @@
       </div>
       <div class="sm background-orange">
         <q-toolbar class="background-white">
-          <q-btn flat label="Add Identification" @click.native="onAddIdentification" />
+          <q-btn color="secondary" flat label="Add Identification">
+            <tooltip-style v-bind:text="'The Identity service not available. Please, try again later!'" />
+          </q-btn>
+          <!-- @click.native="onAddIdentification"-->
           <calculator />
           <q-btn
             flat
