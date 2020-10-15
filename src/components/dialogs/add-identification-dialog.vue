@@ -284,7 +284,7 @@ export default {
         return
       }
       const minutes = getDurationByMinutesCount(timestamp)
-      if (minutes > 40) {
+      if (minutes > 120) {
         this.$q.notify({
           message: 'Verification Transaction Failed! Expired Transaction.',
           color: 'white',
@@ -366,9 +366,9 @@ export default {
           code: this.vCode
         })
         this.$q.notify({
-          timeout: 3000,
+          timeout: 5000,
+          color: 'white',
           position: 'center',
-          color: 'radial-gradient(circle, #FFFFFF 0%, #000709 70%)',
           message: `Transaction hash is ${txHash}.Your transaction is being broadcasted to the blockchain! Please hold on!`
         })
         this.$store.commit(SET_CODE, { code: null })

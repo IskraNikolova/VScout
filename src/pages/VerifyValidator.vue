@@ -143,6 +143,14 @@
                     {{ admin }}
                   </span>
                 </p>
+                <p>
+                  Memo:
+                  <span
+                    class="text-secondary text-medium"
+                  >
+                    {{ validator.nodeID }}
+                  </span>
+                </p>
                 <p>The transaction authorizes your ownership and supplies the fees required to make an ID record in the smart contract!</p>
             </div>
             <div class="text-subtitle2">
@@ -257,28 +265,25 @@ export default {
         await _setVerifyCode({ code: this.code, nodeID: this.validator.nodeID })
         this.$store.commit(SET_CODE, { code: this.code })
         this.isSuccessSend = true
-      } else {
-        this.$q.notify({
-          message: 'Something Wrong!',
-          color: 'white',
-          textColor: 'black',
-          position: 'center',
-          timeout: 1000
-        })
       }
     },
     async check (txID) {
-      const tx = await _getTxApi(txID.trim())
-      const { outputs, timestamp } = tx
-      if (!outputs) return
-      const minutes = getDurationByMinutesCount(timestamp)
-      if (minutes > 60) {
-        this.onFailed('Verification Failed! Expired Transaction.')
-        return
+      try {
+        const tx = await _getTxApi(txID.trim())
+        const { outputs, timestamp } = tx
+        if (!outputs) return
+        const minutes = getDurationByMinutesCount(timestamp)
+        if (minutes > 120) {
+          this.onFailed('Verification Failed! Expired Transaction.')
+          return
+        }
+        return this.searchToAddress(outputs)
+      } catch (err) {
+        this.onFailed('Verification Failed!' + err.message)
       }
-      return this.searchToAddress(outputs)
     },
     searchToAddress (outputs) {
+      if (!outputs) return
       let result = false
       let amount = 0
       for (let i = 0; i < outputs.length; i++) {
@@ -293,45 +298,25 @@ export default {
       }
       return result && amount >= 100000000
     },
-    async onSuccess () {
-      this.visible = false
-      this.isSearchSuccess = true
-      this.code = this.getRandom()
-      await _setVerifyCode({
-        code: this.code,
-        nodeID: this.validator.nodeID
-      })
-      this.$store.commit(SET_CODE, { code: this.code })
-    },
-    onFailed (message) {
-      this.visible = false
-      this.$q.notify({
-        message,
-        color: 'white',
-        textColor: 'black',
-        position: 'center',
-        timeout: 1000
-      })
-    },
     async firstSearch (txID) {
+      this.visible = true
       try {
         const tx = await _getTxApi(txID.trim())
         const { outputs, timestamp } = tx
-        if (!outputs) return
         const minutes = getDurationByMinutesCount(timestamp)
-        if (minutes > 60) {
+        if (minutes > 120) {
           this.onFailed('Verification Failed! Expired Transaction.')
           return
         }
         const isSuccess = this.searchToAddress(outputs)
         if (!isSuccess) {
+          this.visible = false
           this.onFailed('Verification Failed!')
           return
         }
-        this.visible = true
         this.searchAddress(txID, 1)
       } catch (err) {
-        this.onFailed('Verification Failed!')
+        this.onFailed('Verification Failed! ' + err.message)
       }
     },
     async searchAddress (txID, index) {
@@ -361,7 +346,7 @@ export default {
           await this.searchAddress(output.transactionID, index++)
         }
       } catch (err) {
-        this.onFailed('Verification Failed!')
+        this.onFailed('Verification Failed!' + err.message)
       }
     },
     async searchFromGenezis (tx) {
@@ -380,6 +365,37 @@ export default {
       } else {
         this.onFailed('Verification Failed!')
       }
+    },
+    async onSuccess () {
+      this.visible = false
+      this.isSearchSuccess = true
+      this.code = this.getRandom()
+      try {
+        await _setVerifyCode({
+          code: this.code,
+          nodeID: this.validator.nodeID
+        })
+        this.$store.commit(SET_CODE, { code: this.code })
+      } catch (err) {
+        console.log(err)
+        this.$q.notify({
+          message: 'Something Wrong! Try again!',
+          color: 'white',
+          textColor: 'black',
+          position: 'center',
+          timeout: 1000
+        })
+      }
+    },
+    onFailed (message) {
+      this.visible = false
+      this.$q.notify({
+        message,
+        color: 'white',
+        textColor: 'black',
+        position: 'center',
+        timeout: 20000
+      })
     },
     getRandom () {
       const id = crypto

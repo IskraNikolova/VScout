@@ -80,17 +80,22 @@ const executeMethod = async (method, from) => {
   return new Promise((resolve, reject) => {
     web3.eth.sendSignedTransaction(serializedTransaction)
       .on('transactionHash', (hash) => {
-        resolve(hash)
+        console.log('Transaction hash' + hash)
       })
       .on('confirmation', (confirmationNumber, receipt) => {
         if (confirmationNumber === 1) {
+          resolve(transactionHash)
           console.log('Transaction is confirmed! ' + transactionHash)
         }
       })
       .on('error', (err) => {
         if (err.message && err.message.includes('insufficient funds')) {
           console.log('Insufficient funds')
+        } else if (err.message.includes('Transaction has been reverted by the EVM:')) {
+          console.log(err)
+          reject(new Error('Transaction Error! Possible reasons: the name is taken. if you don\'t change the name, remove it from the field or enter a new name.'))
         }
+        console.log(err)
         reject(err)
       })
   })

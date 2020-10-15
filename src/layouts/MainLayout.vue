@@ -87,7 +87,7 @@
               outlined
               dark
               stack-label
-              color="white"
+              color="purple"
               style="min-width: 450px;"
               placeholder="Search Validator/Blockchain/Subnet/P-address"
               clearable v-model="filter"
@@ -190,7 +190,7 @@
                   outlined
                   dark
                   stack-label
-                  color="white"
+                  color="purple"
                   style="min-width: 350px;"
                   placeholder="Search Validator/Blockchain/Subnet/P-address"
                   clearable v-model="filter"
@@ -243,7 +243,7 @@
               outlined
               dark
               stack-label
-              color="white"
+              color="purple"
               style="min-width: 100%;"
               placeholder="Search Validator/Blockchain/Subnet/P-address"
               clearable v-model="filter"
@@ -570,6 +570,6 @@ export default {
    height: 3px;
    width: 100%;
    background:#aa7dc9;
-   opacity: 0.5;
+   opacity: 0.75;
  }
 </style>

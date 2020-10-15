@@ -37,7 +37,7 @@ export const _getTxApi = async (id) => {
 
     return req.data
   } catch (err) {
-    return ''
+    throw new Error(err.message)
   }
 }
 

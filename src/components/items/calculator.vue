@@ -2,7 +2,7 @@
   <q-btn
     push
     flat
-    color="secondary"
+    color="purple"
     id="logo-sim"
     label="calculator"
     @click="openCalculator"
