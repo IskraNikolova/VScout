@@ -58,7 +58,7 @@
                 :key="col.name"
                 :props="props"
                 >
-                  <span v-if="props.row.isValidator" class="text-orange">{{ col.value }}</span>
+                  <span v-if="props.row.isValidator" class="text-purple">{{ col.value }}</span>
                   <span v-else>{{ col.value }}</span>
                 </q-td>
             </q-tr>
