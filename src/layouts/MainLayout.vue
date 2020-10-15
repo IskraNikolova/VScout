@@ -19,7 +19,10 @@
             {{ height }}
             <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
           </small>
-          <q-btn color="secondary" flat label="Add Identification" icon="perm_identity" @click.native="onAddIdentification" />
+          <q-btn color="secondary" flat label="Add Identification" icon="perm_identity">
+            <tooltip-style v-bind:text="'The Identity service not available. Please, try again later!'" />
+          </q-btn>
+          <!-- @click.native="onAddIdentification"-->
           <calculator />
           <q-btn
             flat

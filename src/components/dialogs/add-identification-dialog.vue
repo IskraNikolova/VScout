@@ -369,6 +369,7 @@ export default {
           timeout: 5000,
           color: 'white',
           position: 'center',
+
           message: `Transaction hash is ${txHash}.Your transaction is being broadcasted to the blockchain! Please hold on!`
         })
         this.$store.commit(SET_CODE, { code: null })

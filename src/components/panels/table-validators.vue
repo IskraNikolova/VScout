@@ -72,8 +72,10 @@
           outline size="sm"
           label="Add Identification"
           icon="perm_identity"
-          @click.native="onAddIdentification"
-        />
+        >
+        <tooltip-style v-bind:text="'The Identity service not available. Please, try again later!'" />
+        </q-btn>
+        <!--@click.native="onAddIdentification"-->
         <add-identification-dialog ref="addIdentificationRef" />
         <q-btn
           size="sm"
