@@ -309,7 +309,7 @@
             <div>
               <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
               <span class="on-right">{{ getFormatAva(validator.totalStakeAmount) }}</span>
-              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span> /
+              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
             </div>
           </q-card-section>
         </q-card>
@@ -375,7 +375,7 @@
             <div>
               <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
               <span class="on-right">{{ totalReward() }}</span>
-              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
+              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span> /
               <span>  {{ totalRewardUsd() }}</span>
               <span class="text-accent text-medium"><small> USD</small></span>
             </div>
