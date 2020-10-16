@@ -72,10 +72,9 @@
           outline size="sm"
           label="Add Identification"
           icon="perm_identity"
-        >
-        <tooltip-style v-bind:text="'The Identity service not available. Please, try again later!'" />
-        </q-btn>
-        <!--@click.native="onAddIdentification"-->
+          disable
+          @click.native="onAddIdentification"
+        />
         <add-identification-dialog ref="addIdentificationRef" />
         <q-btn
           size="sm"
@@ -502,6 +501,14 @@ export default {
           field: row => row.uptime,
           headerClasses: 'text-medium'
         },
+        // {
+        //   name: 'connected',
+        //   align: 'left',
+        //   label: 'CONNECTED',
+        //   sortable: true,
+        //   field: row => row.connected,
+        //   headerClasses: 'text-medium'
+        // },
         {
           name: 'startTime',
           align: 'left',

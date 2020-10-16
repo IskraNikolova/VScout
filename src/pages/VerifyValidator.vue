@@ -246,7 +246,9 @@ export default {
       'nodeID'
     ]),
     validator: function () {
-      return this.validatorById(this.$route.params.nodeID)
+      const validator = this.validatorById(this.$route.params.nodeID)
+      if (!validator) return {}
+      return validator
     },
     rewardOwner: function () {
       if (!this.validator || !this.validator.rewardOwner) return
@@ -254,9 +256,11 @@ export default {
     }
   },
   methods: {
-    // async test () {
-    //   const code = this.getRandom()
-    //   await _setVerifyCode({ code, nodeID: this.validator.nodeID })
+    // test () {
+    //   this.code = this.getRandom()
+    //   await _setVerifyCode({ code: this.code, nodeID: this.validator.nodeID })
+    //   this.$store.commit(SET_CODE, { code: this.code })
+    //   this.isSuccessSend = true
     // },
     async sendTx (txID) {
       const isSuccess = await this.check(txID)

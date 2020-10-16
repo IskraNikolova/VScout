@@ -1,5 +1,7 @@
 export default function () {
   return {
-    code: ''
+    code: '',
+    txAVM: {},
+    txHash: ''
   }
 }

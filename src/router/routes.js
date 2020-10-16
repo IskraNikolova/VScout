@@ -29,13 +29,13 @@ const routes = [
       { path: '/address/:id', component: () => import('pages/PAddress.vue') }
     ]
   },
-  // {
-  //   path: '/verify',
-  //   component: () => import('layouts/MainLayout.vue'),
-  //   children: [
-  //     { path: '/verify/:nodeID', component: () => import('pages/VerifyValidator.vue') }
-  //   ]
-  // },
+  {
+    path: '/verify',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '/verify/:nodeID', component: () => import('pages/VerifyValidator.vue') }
+    ]
+  },
   {
     path: '/peers',
     component: () => import('layouts/MainLayout.vue'),

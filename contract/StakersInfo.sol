@@ -4,11 +4,11 @@ pragma solidity >=0.4.16 <0.7.0;
  * @title StakersInfo
  */
 contract StakersInfo {
-    event SetValidatorInfoEvent(string indexed nodeID, bytes32 name, bytes32 website, bytes avatar, bytes bio, bytes link);
-    event AddRatingEvent(string indexed nodeID, uint256 rating);
+    event SetValidatorInfoEvent(bytes32 indexed nodeID, bytes32 name, bytes32 website, bytes avatar, bytes bio, bytes32 link);
+    event AddRatingEvent(bytes32 indexed nodeID, uint256 rating);
 
     address private admin;
-    address owner;
+    address private owner;
 
     constructor() public {
         owner = msg.sender;
@@ -20,12 +20,12 @@ contract StakersInfo {
         bytes32 website;
         bytes avatar;
         bytes bio;
-        bytes link;
+        bytes32 link;
     }
     
-    mapping (string => Member) public members;
+    mapping (bytes32 => Member) public members;
     mapping (bytes32 => bool) public  isUsed;
-    mapping (bytes32 => mapping(string => bool)) codes;
+    mapping (bytes32 => bool) codes;
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Caller is not owner");
@@ -37,11 +37,6 @@ contract StakersInfo {
         _;
     }
     
-    modifier hasPermision(bytes32 _code, string memory _nodeID) {
-        require(msg.sender == admin || isValidCode(_code, _nodeID), "Not permission" );
-        _;
-    }
-    
     function addAdmin(address _admin)
         public
         onlyOwner() {
@@ -49,17 +44,16 @@ contract StakersInfo {
     }
     
     function setValidatorInfo(
-        string memory _nodeID,
+        bytes32 _nodeID,
         bytes32 _name,
         bytes32 _website,
         bytes memory _avatar,
         bytes memory  _bio,
-        bytes memory _link,
-        bytes32 _code)
-        hasPermision(_code, _nodeID)
+        bytes32 _link)
+        onlyAdmin()
         public {
             if (members[_nodeID].name != _name) {
-                require(!isUsed[_name]);
+                require(!isUsed[_name], 'The name is taken');
 
                 members[_nodeID].name = _name;
                 isUsed[members[_nodeID].name] = false;
@@ -75,19 +69,16 @@ contract StakersInfo {
     }
     
     function setPermissionCode(
-        string memory _nodeID,
-        bytes32 _code)
+        bytes32  _data)
         onlyAdmin()
         public {
-        codes[_code][_nodeID] = true;
+        codes[_data] = true;
     }
     
     function addRating(
-        string memory _pAddress,
-        string memory _nodeID,
-        uint256 _rating,
-        bytes32 _code)
-        hasPermision(_code, _pAddress)
+        bytes32 _nodeID,
+        uint256 _rating)
+        onlyAdmin()
         public {
           members[_nodeID].rating = _rating;
 
@@ -95,11 +86,10 @@ contract StakersInfo {
     }
     
     function isValidCode(
-        bytes32 _code,
-        string memory _nodeID)
+        bytes32  _data)
         public
         view
         returns(bool) {
-          return codes[_code][_nodeID];
+          return codes[_data];
     }
 }

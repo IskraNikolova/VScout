@@ -9,9 +9,7 @@
       <q-card-section class="row">
         <q-item class="col-10">
           <q-item-section avatar>
-            <q-avatar>
-              <img src="~assets/id.svg" />
-            </q-avatar>
+            <q-icon name="perm_identity" size="xl" class="q-pt-xs" color="secondary"/>
           </q-item-section>
           <q-item-section>
             <q-item-label class="text-h6">Add/Update Validator Identification</q-item-label>
@@ -32,7 +30,7 @@
         <q-form
           @submit="onSubmit"
           @reset="onReset"
-          class="q-gutter-md q-pt-xl"
+          class="q-gutter-md q-pt-sm"
         >
           <div class="row">
             <div class="col-md-5 col-12 q-mr-xl q-pb-md">
@@ -46,7 +44,14 @@
                 hint="The validator node ID."
               >
                 <template v-slot:append>
-                  <q-btn round dense @click="onGetNodeID" :loading="loading" flat no-caps color="accent" icon="add">
+                  <q-btn
+                    round dense
+                    @click="onGetNodeID"
+                    :loading="loading"
+                    flat no-caps
+                    color="accent"
+                    icon="add"
+                  >
                     <template v-slot:loading>
                       <q-spinner-ball />
                     </template>
@@ -76,7 +81,6 @@
                 :error="validateData.errors.avatar"
               />
             </div>
-            <q-separator vertical class="q-mr-xl" />
             <div class="col-md-5 col-12 q-pr-xl">
                 <q-input
                   type="textarea"
@@ -111,98 +115,97 @@
             </div>
           </div>
         <div class="row q-pr-xl">
-          <div>
-            <div class="row">
-              <q-input
-                size="xs"
-                outlined
-                color="accent"
-                label-color="orange"
-                v-model="vCode"
-                clearable
-                label="Verification Code"
-                hint="Your verifaction code."
-              />
-            </div>
-            <q-btn flat size="xs" color="negative" label="No code?" @click="onVerify"/>
+          <div class="row">
+            <q-input
+              size="xs"
+              outlined
+              color="accent"
+              label-color="orange"
+              v-model="vCode"
+              clearable
+              label="Verification Code"
+              hint="Your verifaction code."
+            />
           </div>
+          <q-btn flat size="sm" color="negative" label="No code?" @click="onVerifyNodeID"/>
           <q-space />
-          <q-btn label="Add To Contract" flat outline type="submit" color="accent"/>
-          <q-btn size="xs" label="Reset" type="reset" color="grey" flat class="q-ml-sm" />
+          <q-btn label="Add To Contract" flat type="submit" color="secondary"/>
+          <q-btn size="xs" label="Reset" type="reset" color="grey" flat class="q-mr-sm" />
         </div>
         </q-form>
       </q-card-section>
     </q-card>
     <q-dialog v-model="dialog">
-        <q-card flat class="q-pb-md">
-          <q-card-section class="row items-center bg-secondary">
-            <q-img
-              style="width: 30vw;max-width: 30px;margin: auto;"
-              src="https://wallet.avax.network/img/diamond-primary.6818c3c7.svg"
-            />
-            <q-btn icon="close" class="text-white" flat round dense v-close-popup />
-          </q-card-section>
-          <q-card-section style="min-height: 125px;">
-            <div class="text-subtitle2">
-              <p id="label">
-                <p>Send 0.1 <span class="text-medium text-accent"><small> AVAX</small></span></p>
-                <p>
-                  To:
-                  <span
-                    style="font-size: 15px;cursor: pointer;"
-                    @click="copyToClipboard(admin)"
-                    class="text-secondary text-medium"
-                  >
-                    {{ admin }}
-                  </span>
-                </p>
-                <p>Supplies the fees required to make an ID record in the smart contract!</p>
-            </div>
-          </q-card-section>
+      <q-card flat class="q-pb-md">
+        <q-card-section class="row items-center bg-secondary">
+          <q-img
+            style="width: 30vw;max-width: 30px;margin: auto;"
+            src="https://wallet.avax.network/img/diamond-primary.6818c3c7.svg"
+          />
+          <q-btn icon="close" class="text-white" flat round dense v-close-popup />
+        </q-card-section>
+        <q-card-section style="min-height: 125px;">
+          <div class="text-subtitle2">
+            <p id="label">
+              <p>Send 0.1 <span class="text-medium text-accent"><small> AVAX</small></span></p>
+              <p>
+                To:
+                <span
+                  style="font-size: 15px;cursor: pointer;"
+                  @click="copyToClipboard(admin)"
+                  class="text-secondary text-medium"
+                >
+                  {{ admin }}
+                </span>
+              </p>
+              <p>Supplies the fees required to make an ID record in the smart contract!</p>
+          </div>
+        </q-card-section>
 
-          <q-card-actions class="q-mt-md" v-if="!isPaidSuccess">
-            <q-input
-              class="col-8"
-              size="xs"
-              outlined
-              color="grey"
-              v-model="txID"
-              clearable
-              label="Tx ID..."
-            />
-            <q-card-actions align="right" class="col-4">
-              <q-btn flat no-caps label="Confirm" @click="check"/>
-            </q-card-actions>
+        <q-card-actions class="q-mt-md" v-if="!isPaidSuccess">
+          <q-input
+            class="col-8"
+            size="xs"
+            outlined
+            color="grey"
+            v-model="txID"
+            clearable
+            label="Tx ID..."
+          />
+          <q-card-actions align="right" class="col-4">
+            <q-btn flat no-caps label="Confirm" @click="check"/>
           </q-card-actions>
-        </q-card>
-      </q-dialog>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-dialog>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import DOMPurify from 'dompurify'
 
 import {
-  SET_CODE
-} from './../../store/access/types.js'
+  copyToClipboard
+} from 'quasar'
+
+import DOMPurify from 'dompurify'
 
 import {
   getDurationByMinutesCount
 } from './../../modules/time.js'
 
 import {
-  _getTxApi
-} from './../../modules/network.js'
+  errorNodeID,
+  successTxHash
+} from './../../utils/constants.js'
 
 import {
-  copyToClipboard
-} from 'quasar'
-
-import {
-  _setValidatorInfo,
   _isValidCode
 } from './../../modules/networkCChain.js'
+
+import {
+  _verifyReceiveFundsTx
+} from './../../modules/transactions.js'
 
 const {
   network
@@ -211,33 +214,38 @@ const {
 
 import {
   GET_NODE_ID
-} from './../../store/app/types'
+} from './../../store/app/types.js'
+
+import {
+  GET_TX_AVM,
+  SET_VALIDATOR_INFO
+} from './../../store/access/types.js'
 
 import {
   UPDATE_UI,
   OPEN_ADD_IDENTIFICATION,
   CLOSE_ADD_IDENTIFICATION
-} from './../../store/ui/types'
+} from './../../store/ui/types.js'
 
 export default {
   name: 'AddIdentificationDialog',
   data () {
     return {
-      txID: '',
-      website: '',
-      isValidCode: false,
-      isPaidSuccess: false,
-      vCode: '',
-      loading: null,
       name: '',
       link: '',
       bio: '',
-      error: null,
+      txID: '',
+      vCode: '',
+      admin: '',
       avatar: '',
       notify: '',
+      website: '',
       nodeIDModel: '',
+      error: null,
+      loading: null,
       dialog: false,
-      admin: ''
+      isValidCode: false,
+      isPaidSuccess: false
     }
   },
   created () {
@@ -245,9 +253,11 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'nodeID',
-      'code',
       'ui',
+      'code',
+      'txAVM',
+      'txHash',
+      'nodeID',
       'validatorById',
       'networkEndpoint'
     ]),
@@ -266,78 +276,65 @@ export default {
   },
   methods: {
     ...mapActions({
+      getTxAVM: GET_TX_AVM,
       getNodeId: GET_NODE_ID,
       openAddId: OPEN_ADD_IDENTIFICATION,
-      closeAddId: CLOSE_ADD_IDENTIFICATION
+      closeAddId: CLOSE_ADD_IDENTIFICATION,
+      setValidatorInfo: SET_VALIDATOR_INFO
     }),
     async check () {
-      const tx = await _getTxApi(this.txID.trim())
-      const { outputs, timestamp } = tx
-      if (!outputs) {
-        this.$q.notify({
-          message: 'Something Wrong!',
-          color: 'white',
-          textColor: 'black',
-          position: 'center',
-          timeout: 1000
-        })
-        return
-      }
-      const minutes = getDurationByMinutesCount(timestamp)
-      if (minutes > 120) {
-        this.$q.notify({
-          message: 'Verification Transaction Failed! Expired Transaction.',
-          color: 'white',
-          textColor: 'black',
-          position: 'center',
-          timeout: 1000
-        })
-        return
-      }
-      if (this.searchToAddress(outputs)) {
-        this.onSubmit()
-        this.dialog = false
-        this.isPaidSuccess = true
-      } else {
-        this.$q.notify({
-          message: 'Verification Transaction Failed!',
-          color: 'white',
-          textColor: 'black',
-          position: 'center',
-          timeout: 1000
-        })
-      }
-    },
-    searchToAddress (outputs) {
-      let result = false
-      let amount = 0
-      for (let i = 0; i < outputs.length; i++) {
-        const output = outputs[i]
-        const isIncl = output
-          .addresses
-          .includes(this.admin.substr(2))
-        if (isIncl) {
-          result = isIncl
-          amount = Number(output.amount)
+      try {
+        await this.getTxAVM(this.txID)
+        const { outputs, timestamp } = this.txAVM
+        if (!outputs) {
+          // todo dialog with tx
+          this.onFailed('Something Wrong! Try again.')
+          return
         }
+        const minutes = getDurationByMinutesCount(timestamp)
+        if (minutes > 30) {
+          this.onFailed('Verification Transaction Failed! Expired Transaction.')
+          return
+        }
+        const isReceiveFunds = _verifyReceiveFundsTx(
+          this.admin,
+          outputs
+        )
+        if (isReceiveFunds) {
+          this.onSubmit()
+          this.dialog = false
+          this.isPaidSuccess = true
+        } else {
+          this.onFailed('Verification Transaction Failed!')
+        }
+      } catch (err) {
+        this.onFailed(`Something Wrong! ${err.message}`)
       }
-      return result && amount >= 100000000
     },
-    copyToClipboard (id) {
-      if (!id) return
-
-      copyToClipboard(id)
+    onFailed (msg) {
       this.$q.notify({
-        message: 'Copied to clipboard!',
+        message: msg,
         color: 'white',
         textColor: 'black',
         position: 'center',
-        timeout: 1000
+        timeout: 2000
       })
     },
     onClose () {
       this.closeAddId()
       this.onReset()
+    },
+    onGetNodeID () {
+      this.loading = true
+      this.nodeIDModel = this.nodeID
+      const validator = this.validatorById(this.nodeIDModel)
+      if (!validator) {
+        this.loading = null
+        this.error = errorNodeID
+      } else if (validator && this.networkEndpoint.url.startsWith('http://127.0.0.1')) {
+        this.loading = null
+        this.$store.commit(UPDATE_UI, { addIdentification: { isAuth: true } })
+      }
     },
     async onSubmit () {
       if (!this.link && !this.name && !this.avatar && !this.bio) {
@@ -356,39 +353,27 @@ export default {
       }
 
       try {
-        const txHash = await _setValidatorInfo({
+        this.setValidatorInfo({
           link: this.link,
           name: this.name,
           website: this.website,
           bio: this.bio,
           avatar: this.avatar,
-          nodeID: this.nodeIDModel,
-          code: this.vCode
+          nodeID: this.nodeIDModel
         })
+
         this.$q.notify({
           timeout: 5000,
           color: 'white',
           position: 'center',
-
-          message: `Transaction hash is ${txHash}.Your transaction is being broadcasted to the blockchain! Please hold on!`
+          textColor: 'orange',
+          message: successTxHash(this.txHash)
         })
-        this.$store.commit(SET_CODE, { code: null })
+
         this.isPaidSuccess = false
         this.closeAddId()
       } catch (err) {
         this.error = err.message
-      }
-    },
-    onGetNodeID () {
-      this.loading = true
-      this.nodeIDModel = this.nodeID
-      const validator = this.validatorById(this.nodeIDModel)
-      if (!validator) {
-        this.loading = null
-        this.error = 'Something Wrong! Check if your connection endpoint is healthy and synced with the network OR non-existent validator!'
-      } else if (validator && this.networkEndpoint.url.startsWith('http://127.0.0.1')) {
-        this.loading = null
-        this.$store.commit(UPDATE_UI, { addIdentification: { isAuth: true } })
       }
     },
     onReset () {
@@ -400,7 +385,7 @@ export default {
       this.avatar = ''
       this.nodeIDModel = ''
     },
-    onVerify () {
+    onVerifyNodeID () {
       const validator = this.validatorById(this.nodeIDModel)
       if (!this.nodeIDModel || !validator) {
         this.error = 'Node ID is invalid!'
@@ -408,6 +393,18 @@ export default {
       }
       this.closeAddId()
       this.$router.push('/verify/' + this.nodeIDModel)
+    },
+    copyToClipboard (id) {
+      if (!id) return
+
+      copyToClipboard(id)
+      this.$q.notify({
+        message: 'Copied to clipboard!',
+        color: 'white',
+        textColor: 'black',
+        position: 'center',
+        timeout: 1000
+      })
     }
   }
 }

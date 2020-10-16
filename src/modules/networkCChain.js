@@ -5,6 +5,8 @@ const abiDecoder = require('abi-decoder')
 import config from './config'
 import contractAbi from './../../builds/contract.json'
 
+import { _generateHashedCode } from './crypto.js'
+
 import { getPrivateKeyBuffer, initializeKeys } from './keys.js'
 
 import {
@@ -103,11 +105,11 @@ const executeMethod = async (method, from) => {
 
 export const _getValidatorById = async (id) => {
   if (!id) return
-
   try {
+    const hexID = hexNodeID(id)
     const validator = await contract
       .methods
-      .members(id)
+      .members(hexID)
       .call()
 
     return {
@@ -123,12 +125,11 @@ export const _getValidatorById = async (id) => {
 }
 
 export const _isValidCode = async (code, nodeID) => {
-  if (!code) return
-  const codeHex = stringToHex(code)
+  const data = _encode(code, nodeID)
   try {
     const isValidCode = await contract
       .methods
-      .isValidCode(codeHex, nodeID)
+      .isValidCode(data)
       .call()
 
     return isValidCode
@@ -141,17 +142,20 @@ export const _isValidCode = async (code, nodeID) => {
  * Send a validator info to the contract
  * @param {Object} params parameters
  * @param {string} params.nodeID
+ * @param {string} params.website
  * @param {string} params.name
  * @param {string} params.avatar
  * @param {string} params.bio
  * @param {string} params.link
  */
 
-export const _setValidatorInfo = async ({ nodeID, name, website, avatar, bio, link, code }) => {
+export const _setValidatorInfo = async ({ nodeID, name, website, avatar, bio, link }) => {
   try {
+    const hexID = hexNodeID(nodeID)
+
     const account = await contract
       .methods
-      .members(nodeID)
+      .members(hexID)
       .call()
 
     const accountN = account.name ? account.name : stringToHex('')
@@ -165,18 +169,16 @@ export const _setValidatorInfo = async ({ nodeID, name, website, avatar, bio, li
     const byteAvatar = avatar ? stringToHex(avatar) : accountA
     const byteBio = bio ? stringToHex(bio) : accountB
     const byteLink = link ? stringToHex(link) : accountL
-    const codeHex = stringToHex(code)
 
     const method = contract
       .methods
       .setValidatorInfo(
-        nodeID,
+        hexNodeID,
         byteName,
         byteWebsite,
         byteAvatar,
         byteBio,
-        byteLink,
-        codeHex
+        byteLink
       )
 
     return executeMethod(method, admin)
@@ -194,14 +196,11 @@ export const _setValidatorInfo = async ({ nodeID, name, website, avatar, bio, li
 
 export const _setVerifyCode = async ({ code, nodeID }) => {
   try {
-    const codeHex = stringToHex(code)
-
+    const data = _encode(code, nodeID)
+    if (!data) return
     const method = contract
       .methods
-      .setPermissionCode(
-        nodeID,
-        codeHex
-      )
+      .setPermissionCode(data)
 
     return executeMethod(method, admin)
   } catch (err) {
@@ -209,9 +208,16 @@ export const _setVerifyCode = async ({ code, nodeID }) => {
   }
 }
 
+export const hexNodeID = (id) => web3.eth.abi.encodeParameter('bytes32', stringToHex(id.substr(15)))
 export const stringToHex = input => web3.utils.asciiToHex(input)
 
 export const getBlockNumber = () => web3.eth.getBlockNumber()
+
+export const _encode = (a, b) => {
+  if (!a || !b) return
+  const hash = _generateHashedCode(a, b)
+  return web3.eth.abi.encodeParameter('bytes32', '0x' + hash)
+}
 
 export const utf8StringToHex = input => web3.utils.utf8ToHex(input).padEnd(66, '0')
 

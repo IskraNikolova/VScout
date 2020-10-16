@@ -19,10 +19,13 @@
             {{ height }}
             <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
           </small>
-          <q-btn color="secondary" flat label="Add Identification" icon="perm_identity">
-            <tooltip-style v-bind:text="'The Identity service not available. Please, try again later!'" />
-          </q-btn>
-          <!-- @click.native="onAddIdentification"-->
+          <q-btn
+            disable
+            color="secondary"
+            flat label="Add Identification"
+            icon="perm_identity"
+            @click.native="onAddIdentification"
+          />
           <calculator />
           <q-btn
             flat
@@ -91,6 +94,7 @@
               dark
               stack-label
               color="purple"
+              autofocus
               style="min-width: 450px;"
               placeholder="Search Validator/Blockchain/Subnet/P-address"
               clearable v-model="filter"
@@ -105,10 +109,12 @@
       </div>
       <div class="sm background-orange">
         <q-toolbar class="background-white">
-          <q-btn color="secondary" flat label="Add Identification">
-            <tooltip-style v-bind:text="'The Identity service not available. Please, try again later!'" />
-          </q-btn>
-          <!-- @click.native="onAddIdentification"-->
+          <q-btn
+            disable
+            color="secondary" flat
+            label="Add Identification"
+            @click.native="onAddIdentification"
+          />
           <calculator />
           <q-btn
             flat
@@ -183,21 +189,23 @@
         </q-toolbar>
         <q-toolbar>
           <div class="row">
-            <div class="col-5" v-if="validatorById(nodeID)">
+            <div class="col-5 q-pb-md" v-if="validatorById(nodeID)">
               <span>
                 <countdown class="row" v-bind:color="'#ffffff'" v-bind:countdown="getRemainigTime()" />
                 <tooltip-style v-bind:text="'Remaining validation time for ' + nodeID  + ''" />
               </span>
             </div>
             <div class="col-2" v-if="validatorById(nodeID)"></div>
-            <div class="col-5">
-              <q-bar style="min-width: 380px;">
+            <div class="col-8 q-pb-md" v-else></div>
+            <div class="col-4 q-pb-md">
+              <q-bar style="min-width: 420px;">
                 <q-input
                   outlined
                   dark
                   stack-label
                   color="purple"
-                  style="min-width: 350px;"
+                  autofocus
+                  style="min-width: 390px;"
                   placeholder="Search Validator/Blockchain/Subnet/P-address"
                   clearable v-model="filter"
                   @keydown.enter.prevent="search"
@@ -244,12 +252,13 @@
               </small>
             </div>
           </div>
-          <q-bar>
+          <q-bar class="q-pb-sm">
             <q-input
               outlined
               dark
               stack-label
               color="purple"
+              autofocus
               style="min-width: 100%;"
               placeholder="Search Validator/Blockchain/Subnet/P-address"
               clearable v-model="filter"

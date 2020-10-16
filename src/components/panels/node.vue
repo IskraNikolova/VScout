@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="q-mt-md q-pt-md q-pl-xl q-pr-xl q-pb-md" id="custom-card" >
+    class="q-pt-md q-pl-xl q-pr-xl q-pb-md" id="custom-card" >
     <!--<div style="text-align: right;font-size: 10px;margin-bottom: 5px;">
       <q-icon name="info" style="font-size: 17px;" color="grey">
         <tooltip-style v-bind:brandColoring="['VScout']" v-bind:bold="[`${nodeID}`, `${networkEndpoint.url}`]" v-bind:text="'On this panel you can get information about node to which the VScout is connected and to which it submits a request for data visualization (health, peers, node version, network name, validators/uptime etc.). You are currently using ' + networkEndpoint.url + ' with ' + nodeID + '. To switch to another node, use the menu at the top right.'" />
