@@ -31,23 +31,21 @@ async function getTxAvm ({ commit },
   }
 }
 
+let isSearchSuccess = false
 async function verifyOwner ({ dispatch },
-  { txID, index, rewardOwner, isSearchSuccess }) {
+  { txID, index, rewardOwner }) {
   try {
-    let isSuccess = isSearchSuccess
     const txAVM = await _getTxApi(txID.trim())
     const inputs = txAVM.inputs
     if (!inputs) {
-      if (isSuccess) {
-        return true
-      } else {
-        const searchResult = _outputSearch(
-          txAVM,
-          rewardOwner
-        )
-        isSuccess = searchResult
-        return searchResult
-      }
+      if (isSearchSuccess) return true
+      const searchResult = _outputSearch(
+        txAVM,
+        rewardOwner
+      )
+      console.log(searchResult)
+      isSearchSuccess = searchResult
+      return searchResult
     } else {
       for (let i = 0; i < inputs.length; i++) {
         const output = inputs[i].output
@@ -66,8 +64,7 @@ async function verifyOwner ({ dispatch },
         await dispatch(VERIFY_OWNER, {
           txID: output.transactionID,
           index,
-          rewardOwner,
-          isSearchSuccess: isSuccess
+          rewardOwner
         })
       }
     }

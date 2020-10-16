@@ -21,7 +21,6 @@
           </small>
           <q-btn
             color="secondary"
-            disable
             flat label="Add Identification"
             icon="perm_identity"
             @click.native="onAddIdentification"
@@ -111,7 +110,6 @@
         <q-toolbar class="background-white">
           <q-btn
             color="secondary" flat
-            disable
             label="Add Identification"
             @click.native="onAddIdentification"
           />

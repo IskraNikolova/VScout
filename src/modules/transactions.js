@@ -21,7 +21,7 @@ export const _verifyReceiveFundsTx = ({ outputs, admin }) => {
 export const _outputSearch = (tx, rewardOwner) => {
   if (tx.id === GENEZIS_ID) {
     const outputs = tx.outputs
-    if (!outputs) throw new Error('Owner not found!')
+    if (!outputs) return
     for (let i = 0; i <= outputs.length; i++) {
       const addresses = outputs[i].addresses
       for (let j = 0; j < addresses.length; j++) {

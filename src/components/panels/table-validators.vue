@@ -70,7 +70,6 @@
           class="q-ml-sm"
           no-caps color="secondary"
           outline size="sm"
-          disable
           label="Add Identification"
           icon="perm_identity"
           @click.native="onAddIdentification"

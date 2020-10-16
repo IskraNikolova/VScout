@@ -317,9 +317,7 @@ export default {
           this.onFailed('Verification Failed!')
           return
         }
-        const resultRecursion = await this.verifyOwner({ txID, index: 1, rewardOwner: this.rewardOwner }) // this.searchAddress(txID, 1)
-        if (resultRecursion) await this.onSuccess()
-        else this.onFailed('Verification Failed!')
+        await this.searchAddress(txID, 1)
       } catch (err) {
         this.onFailed('Verification Failed! ' + err.message)
       }
@@ -368,21 +366,21 @@ export default {
       this.visible = false
       this.isSearchSuccess = true
       this.code = this.getRandom()
-      // try {
-      //   await this.setVerifyCode({
-      //     code: this.code,
-      //     nodeID: this.validator.nodeID
-      //   })
-      // } catch (err) {
-      //   console.log(err)
-      //   this.$q.notify({
-      //     message: 'Something Wrong! Try again!',
-      //     color: 'white',
-      //     textColor: 'black',
-      //     position: 'center',
-      //     timeout: 1000
-      //   })
-      // }
+      try {
+        await this.setVerifyCode({
+          code: this.code,
+          nodeID: this.validator.nodeID
+        })
+      } catch (err) {
+        console.log(err)
+        this.$q.notify({
+          message: 'Something Wrong! Try again!',
+          color: 'white',
+          textColor: 'black',
+          position: 'center',
+          timeout: 1000
+        })
+      }
     },
     onFailed (message) {
       this.visible = false
