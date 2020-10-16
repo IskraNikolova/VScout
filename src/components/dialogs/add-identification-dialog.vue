@@ -311,31 +311,6 @@ export default {
         this.onFailed(`Something Wrong! ${err.message}`)
       }
     },
-    onFailed (msg) {
-      this.$q.notify({
-        message: msg,
-        color: 'white',
-        textColor: 'black',
-        position: 'center',
-        timeout: 2000
-      })
-    },
-    onClose () {
-      this.closeAddId()
-      this.onReset()
-    },
-    onGetNodeID () {
-      this.loading = true
-      this.nodeIDModel = this.nodeID
-      const validator = this.validatorById(this.nodeIDModel)
-      if (!validator) {
-        this.loading = null
-        this.error = errorNodeID
-      } else if (validator && this.networkEndpoint.url.startsWith('http://127.0.0.1')) {
-        this.loading = null
-        this.$store.commit(UPDATE_UI, { addIdentification: { isAuth: true } })
-      }
-    },
     async onSubmit () {
       if (!this.link && !this.name && !this.avatar && !this.bio) {
         this.error = 'Empty fields!'
@@ -374,6 +349,31 @@ export default {
         this.closeAddId()
       } catch (err) {
         this.error = err.message
+      }
+    },
+    onFailed (msg) {
+      this.$q.notify({
+        message: msg,
+        color: 'white',
+        textColor: 'black',
+        position: 'center',
+        timeout: 2000
+      })
+    },
+    onClose () {
+      this.closeAddId()
+      this.onReset()
+    },
+    onGetNodeID () {
+      this.loading = true
+      this.nodeIDModel = this.nodeID
+      const validator = this.validatorById(this.nodeIDModel)
+      if (!validator) {
+        this.loading = null
+        this.error = errorNodeID
+      } else if (validator && this.networkEndpoint.url.startsWith('http://127.0.0.1')) {
+        this.loading = null
+        this.$store.commit(UPDATE_UI, { addIdentification: { isAuth: true } })
       }
     },
     onReset () {

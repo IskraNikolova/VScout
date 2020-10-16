@@ -70,9 +70,9 @@
           class="q-ml-sm"
           no-caps color="secondary"
           outline size="sm"
+          disable
           label="Add Identification"
           icon="perm_identity"
-          disable
           @click.native="onAddIdentification"
         />
         <add-identification-dialog ref="addIdentificationRef" />
@@ -209,8 +209,10 @@
               />
             </div>
             <div v-else-if="col.name === 'uptime'">
-              <q-badge :color="getColorUptime(props.row.uptime)" outline class="text-medium" style="min-width: 57px;">
-                <span style="margin: auto;">{{ getUpTime(props.row.uptime) }} %</span>
+              <q-badge :color="getColorUptime(col.value)" outline class="text-medium" style="min-width: 57px;">
+                <q-icon name="north" v-if="props.row.connected && col.value < 0.6" />
+                <q-icon name="south" v-else-if="!props.row.connected && col.value < 0.6" />
+                <span style="margin: auto;">{{ getUpTime(col.value) }} %</span>
               </q-badge>
             </div>
             <countdown

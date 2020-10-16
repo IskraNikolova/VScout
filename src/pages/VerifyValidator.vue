@@ -193,17 +193,19 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 const crypto = require('crypto')
-const GENEZIS_ID = 'FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z'
 
 import {
-  _getTxApi
-} from './../modules/network.js'
+  _outputSearch,
+  _verifyReceiveFundsTx
+} from './../modules/transactions.js'
 
 import {
-  _setVerifyCode
-} from './../modules/networkCChain.js'
+  GET_TX_AVM,
+  VERIFY_OWNER,
+  SET_VERIFY_CODE
+} from './../store/access/types.js'
 
 const {
   network
@@ -215,8 +217,6 @@ import {
 } from 'quasar'
 
 import { getDurationByMinutesCount } from './../modules/time.js'
-
-import { SET_CODE } from './../store/access/types.js'
 
 export default {
   name: 'PageVerifyValidator',
@@ -241,6 +241,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'txAVM',
       'validatorById',
       'networkEndpoint',
       'nodeID'
@@ -256,6 +257,11 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      getTxAVM: GET_TX_AVM,
+      verifyOwner: VERIFY_OWNER,
+      setVerifyCode: SET_VERIFY_CODE
+    }),
     // test () {
     //   this.code = this.getRandom()
     //   await _setVerifyCode({ code: this.code, nodeID: this.validator.nodeID })
@@ -263,133 +269,120 @@ export default {
     //   this.isSuccessSend = true
     // },
     async sendTx (txID) {
-      const isSuccess = await this.check(txID)
-      if (isSuccess) {
-        this.code = this.getRandom()
-        await _setVerifyCode({ code: this.code, nodeID: this.validator.nodeID })
-        this.$store.commit(SET_CODE, { code: this.code })
-        this.isSuccessSend = true
-      }
-    },
-    async check (txID) {
       try {
-        const tx = await _getTxApi(txID.trim())
-        const { outputs, timestamp } = tx
-        if (!outputs) return
-        const minutes = getDurationByMinutesCount(timestamp)
-        if (minutes > 120) {
-          this.onFailed('Verification Failed! Expired Transaction.')
-          return
+        const isSuccess = await this.check(txID)
+        if (isSuccess) {
+          this.code = this.getRandom()
+          await this.setVerifyCode({
+            code: this.code,
+            nodeID: this.validator.nodeID
+          })
+
+          this.isSuccessSend = true
         }
-        return this.searchToAddress(outputs)
       } catch (err) {
         this.onFailed('Verification Failed!' + err.message)
       }
     },
-    searchToAddress (outputs) {
+    async check (txID) {
+      await this.getTxAVM({ txID })
+      const { outputs, timestamp } = this.txAVM
       if (!outputs) return
-      let result = false
-      let amount = 0
-      for (let i = 0; i < outputs.length; i++) {
-        const output = outputs[i]
-        const isIncl = output
-          .addresses
-          .includes(this.admin.substr(2))
-        if (isIncl) {
-          result = isIncl
-          amount = Number(output.amount)
-        }
+      const minutes = getDurationByMinutesCount(timestamp)
+      if (minutes > 120) {
+        this.onFailed('Verification Failed! Expired Transaction.')
+        return
       }
-      return result && amount >= 100000000
+      return _verifyReceiveFundsTx({
+        outputs,
+        admin: this.admin
+      })
     },
     async firstSearch (txID) {
       this.visible = true
       try {
-        const tx = await _getTxApi(txID.trim())
-        const { outputs, timestamp } = tx
+        await this.getTxAVM({ txID })
+        const { outputs, timestamp } = this.txAVM
         const minutes = getDurationByMinutesCount(timestamp)
-        if (minutes > 120) {
+        if (minutes > 18820) {
           this.onFailed('Verification Failed! Expired Transaction.')
           return
         }
-        const isSuccess = this.searchToAddress(outputs)
+        const isSuccess = _verifyReceiveFundsTx({
+          outputs,
+          admin: this.admin
+        })
         if (!isSuccess) {
           this.visible = false
           this.onFailed('Verification Failed!')
           return
         }
-        this.searchAddress(txID, 1)
+        const resultRecursion = await this.verifyOwner({ txID, index: 1, rewardOwner: this.rewardOwner }) // this.searchAddress(txID, 1)
+        if (resultRecursion) await this.onSuccess()
+        else this.onFailed('Verification Failed!')
       } catch (err) {
         this.onFailed('Verification Failed! ' + err.message)
       }
     },
     async searchAddress (txID, index) {
       try {
-        const tx = await _getTxApi(txID.trim())
-        const inputs = tx.inputs
+        await this.getTxAVM({ txID })
+        const inputs = this.txAVM.inputs
         if (!inputs) {
           if (this.isSearchSuccess) return
-          await this.searchFromGenezis(tx)
-          return
-        }
-        for (let i = 0; i < inputs.length; i++) {
-          const output = inputs[i].output
-          const addresses = output.addresses
-          for (let i = 0; i < addresses.length; i++) {
-            const address = addresses[i]
-            if (address === this.rewardOwner.substr(2)) {
-              await this.onSuccess()
+          const searchResult = _outputSearch(
+            this.txAVM,
+            this.rewardOwner
+          )
+          if (searchResult) {
+            await this.onSuccess()
+          } else {
+            this.onFailed('Verification Failed!')
+          }
+        } else {
+          for (let i = 0; i < inputs.length; i++) {
+            const output = inputs[i].output
+            const addresses = output.addresses
+            for (let i = 0; i < addresses.length; i++) {
+              const address = addresses[i]
+              if (address === this.rewardOwner.substr(2)) {
+                await this.onSuccess()
+                return
+              }
+            }
+            if (index > 100) {
+              this.onFailed('Verification Failed!')
               return
             }
-          }
-          if (index > 100) {
-            this.onFailed('Verification Failed!')
-            return
-          }
 
-          await this.searchAddress(output.transactionID, index++)
+            await this.searchAddress(output.transactionID, index++)
+          }
         }
       } catch (err) {
+        console.log(err)
+        // todo check for status 400 uknown transaction message
         this.onFailed('Verification Failed!' + err.message)
-      }
-    },
-    async searchFromGenezis (tx) {
-      if (tx.id === GENEZIS_ID) {
-        const outputs = tx.outputs
-        if (!outputs) return false
-        for (let i = 0; i <= outputs.length; i++) {
-          const addresses = outputs[i].addresses
-          for (let j = 0; j < addresses.length; j++) {
-            if (addresses[j] === this.rewardOwner.substr(2)) {
-              await this.onSuccess()
-              return
-            }
-          }
-        }
-      } else {
-        this.onFailed('Verification Failed!')
       }
     },
     async onSuccess () {
       this.visible = false
       this.isSearchSuccess = true
       this.code = this.getRandom()
-      try {
-        await _setVerifyCode({
-          code: this.code,
-          nodeID: this.validator.nodeID
-        })
-        this.$store.commit(SET_CODE, { code: this.code })
-      } catch (err) {
-        console.log(err)
-        this.$q.notify({
-          message: 'Something Wrong! Try again!',
-          color: 'white',
-          textColor: 'black',
-          position: 'center',
-          timeout: 1000
-        })
-      }
+      // try {
+      //   await this.setVerifyCode({
+      //     code: this.code,
+      //     nodeID: this.validator.nodeID
+      //   })
+      // } catch (err) {
+      //   console.log(err)
+      //   this.$q.notify({
+      //     message: 'Something Wrong! Try again!',
+      //     color: 'white',
+      //     textColor: 'black',
+      //     position: 'center',
+      //     timeout: 1000
+      //   })
+      // }
     },
     onFailed (message) {
       this.visible = false

@@ -53,7 +53,7 @@
          <small>Connected with</small>
          <div class="text-secondary">
             <animated-number
-              :value="nodeInfo.peers.peers.length"
+              :value="peersLength"
               :formatValue="format"
               :duration="3000"
             />
@@ -117,6 +117,10 @@ export default {
     ]),
     nodeHealthInfo: function () {
       return this.nodeHealth(this.nodeID)
+    },
+    peersLength: function () {
+      if (this.nodeInfo.peers && this.nodeInfo.peers.peers) return this.nodeInfo.peers.peers.length
+      return 0
     },
     healthy: function () {
       try {

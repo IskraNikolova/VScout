@@ -66,6 +66,8 @@ export const maximumStakingDuration = 365 * 24 * 60
 // Stake duration
 export const stakeDuration = (stakeTime) => stakeTime * 24 * 60
 
+export const GENEZIS_ID = 'FvwEAhmxKfeiG8SnEvq42hc6whRyY3EFYAvebMqDNDGCgxN5Z'
+
 // messages
 export const successTxHash = (txHash) => `Transaction hash is ${txHash}. Your transaction is being broadcasted to the blockchain! Please hold on!`
 export const errorNodeID = 'Something Wrong! Check if your connection endpoint is healthy and synced with the network OR non-existent validator!'

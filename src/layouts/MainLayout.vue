@@ -20,8 +20,8 @@
             <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
           </small>
           <q-btn
-            disable
             color="secondary"
+            disable
             flat label="Add Identification"
             icon="perm_identity"
             @click.native="onAddIdentification"
@@ -110,8 +110,8 @@
       <div class="sm background-orange">
         <q-toolbar class="background-white">
           <q-btn
-            disable
             color="secondary" flat
+            disable
             label="Add Identification"
             @click.native="onAddIdentification"
           />
