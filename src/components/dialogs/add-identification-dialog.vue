@@ -296,8 +296,7 @@ export default {
           return
         }
         const isReceiveFunds = _verifyReceiveFundsTx(
-          this.admin,
-          outputs
+          { admin: this.admin, outputs }
         )
         if (isReceiveFunds) {
           this.onSubmit()
