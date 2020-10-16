@@ -111,7 +111,7 @@
                   label="Link"
                   hint="Your business link or other.(optional)"
                   :rules="[
-                    value => (value.length <= 32) || 'Maximum URL length is 32 symbols.'
+                    value => (value.length <= 32) || 'Maximum length of URL is 32 symbols.'
                   ]"
                   :error="validateData.errors.link"
                 />
@@ -317,6 +317,12 @@ export default {
         this.error = 'Empty fields!'
         return
       }
+
+      if (this.link.length > 32) {
+        this.error = 'Maximum length of URL is 32 symbols.'
+        return
+      }
+
       this.isValidCode = await _isValidCode(this.vCode, this.nodeIDModel)
       if (!this.vCode || !this.isValidCode) {
         this.error = 'Invalid code!'
