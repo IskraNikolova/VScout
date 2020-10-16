@@ -209,8 +209,6 @@
             </div>
             <div v-else-if="col.name === 'uptime'">
               <q-badge :color="getColorUptime(col.value)" outline class="text-medium" style="min-width: 57px;">
-                <q-icon name="north" v-if="props.row.connected && col.value < 0.6" />
-                <q-icon name="south" v-else-if="!props.row.connected && col.value < 0.6" />
                 <span style="margin: auto;">{{ getUpTime(col.value) }} %</span>
               </q-badge>
             </div>
@@ -218,7 +216,7 @@
               class="row"
               v-bind:countdown="col.value"
               v-bind:color="getIsDelegatable(props.row.isMinimumAmountForStake)"
-              v-else-if="col.name === 'remainingTime'"
+              v-else-if="col.name === 'remainingTime '"
               style="min-width: 180px;"
             />
             <div v-else>{{ col.value }}</div>

@@ -110,6 +110,9 @@
                   v-model="link"
                   label="Link"
                   hint="Your business link or other.(optional)"
+                  :rules="[
+                    value => (value.length <= 32) || 'Maximum URL length is 32 symbols.'
+                  ]"
                   :error="validateData.errors.link"
                 />
             </div>
@@ -291,7 +294,7 @@ export default {
           return
         }
         const minutes = getDurationByMinutesCount(timestamp)
-        if (minutes > 230) {
+        if (minutes > 30) {
           this.onFailed('Verification Transaction Failed! Expired Transaction.')
           return
         }
