@@ -216,7 +216,7 @@
               class="row"
               v-bind:countdown="col.value"
               v-bind:color="getIsDelegatable(props.row.isMinimumAmountForStake)"
-              v-else-if="col.name === 'remainingTime '"
+              v-else-if="col.name === 'remainingTime'"
               style="min-width: 180px;"
             />
             <div v-else>{{ col.value }}</div>
