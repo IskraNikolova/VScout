@@ -326,13 +326,13 @@ export default {
       }
 
       try {
-        this.setValidatorInfo({
-          link: this.link,
+        await this.setValidatorInfo({
+          nodeID: this.nodeIDModel,
           name: this.name,
           website: this.website,
-          bio: this.bio,
           avatar: this.avatar,
-          nodeID: this.nodeIDModel
+          bio: this.bio,
+          link: this.link
         })
 
         this.$q.notify({

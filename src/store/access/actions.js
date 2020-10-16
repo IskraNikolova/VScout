@@ -85,15 +85,10 @@ async function setVerifyCode ({ commit },
 }
 
 async function setValidatorInfo (
-  { commit }, { link, name, website, bio, avatar, nodeID }) {
+  { commit }, { nodeID, name, website, avatar, bio, link }) {
   try {
     const txHash = await _setValidatorInfo({
-      link,
-      name,
-      website,
-      bio,
-      avatar,
-      nodeID
+      nodeID, name, website, avatar, bio, link
     })
     commit(SET_TX_HASH_EVM, { txHash })
     commit(SET_CODE, { code: null })

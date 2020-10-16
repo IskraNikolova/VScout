@@ -173,7 +173,7 @@ export const _setValidatorInfo = async ({ nodeID, name, website, avatar, bio, li
     const method = contract
       .methods
       .setValidatorInfo(
-        hexNodeID,
+        hexID,
         byteName,
         byteWebsite,
         byteAvatar,
