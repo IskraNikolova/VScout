@@ -287,7 +287,6 @@ export default {
         await this.getTxAVM({ txID: this.txID })
         const { outputs, timestamp } = this.txAVM
         if (!outputs) {
-          // todo dialog with tx
           this.onFailed('Something Wrong! Try again.')
           return
         }
