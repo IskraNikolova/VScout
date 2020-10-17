@@ -151,7 +151,7 @@
             </div>
 
             <div class="text-subtitle2">
-              <small style="opacity: 0.8;">REMAINIG TIME </small>
+              <small style="opacity: 0.8;">REMAINING TIME </small>
               <span v-if="months > 0">
                 {{ months }}
                 <span class="text-accent"> Months </span>
@@ -346,7 +346,7 @@
             </div>
 
             <div class="text-subtitle2">
-              <small style="opacity: 0.8;">REMAINIG TIME </small>
+              <small style="opacity: 0.8;">REMAINING TIME </small>
               <span v-if="months > 0">
                 {{ months }}
                 <span class="text-accent"> Months </span>

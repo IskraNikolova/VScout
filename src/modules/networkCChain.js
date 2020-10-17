@@ -19,8 +19,11 @@ abiDecoder.addABI(contractAbi)
 const admin = config.network.address
 
 export const _initializeNetwork = async () => {
-  web3 = new Web3(`https://${config.network.endpointCChain}`)
-  contract = await new web3.eth.Contract(contractAbi, config.network.contract)
+  try {
+    web3 = new Web3(`https://${config.network.endpointCChain}`)
+    contract = await new web3.eth.Contract(contractAbi, config.network.contract)
+  } catch (err) {
+  }
 }
 
 const getEstimatedGas = async ({ data, from }) => {

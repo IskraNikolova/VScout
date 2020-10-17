@@ -174,7 +174,7 @@
             <span class="text-accent text-medium"><small> AVAX</small></span>
           </div>
           <div class="text-subtitle2 q-mt-md">
-            <small id="label">REMAINIG TIME </small>
+            <small id="label">REMAINING TIME </small>
             <span v-if="months > 0">
               {{ months }}
               <span class="text-accent"> Months </span>
