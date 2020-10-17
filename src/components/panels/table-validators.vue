@@ -6,6 +6,7 @@
       row-key="rank"
       :filter="filter"
       :filter-method="filterMethod"
+      :sort-method="customSort"
       :pagination="pagination"
       :grid="isGrid"
       :class="tableClass"
@@ -594,6 +595,26 @@ export default {
           row.name.includes(this.filter) ||
           this.getRewardOwner(row.rewardOwner).toLowerCase().includes(this.filter.toLowerCase()))
       }
+    },
+    customSort (rows, sortBy, descending) {
+      const data = [...rows]
+      if (!data) return
+      if (sortBy) {
+        data.sort((a, b) => {
+          const x = descending ? b : a
+          const y = descending ? a : b
+          if (sortBy === 'validator') {
+            // string sort
+            const first = x.name !== x.nodeID
+            const second = y.name !== y.nodeID
+            return first - second
+          } else {
+            // numeric sort
+            return parseFloat(x[sortBy]) - parseFloat(y[sortBy])
+          }
+        })
+      }
+      return data
     },
     getRewardOwner (val) {
       if (!val) return ''
