@@ -323,6 +323,10 @@ export default {
       }
     },
     async searchAddress (txID, index) {
+      if (index > 100) {
+        this.onFailed('Verification Failed!')
+        return
+      }
       try {
         await this.getTxAVM({ txID })
         const inputs = this.txAVM.inputs
@@ -335,9 +339,23 @@ export default {
           if (searchResult) {
             await this.onSuccess()
           } else {
-            this.onFailed('Verification Failed!')
+            const outputs = this.txAVM.outputs
+            if (!outputs) return
+            for (let i = 0; i < outputs.length; i++) {
+              const addresses = outputs[i].addresses
+              if (addresses) {
+                for (let j = 0; j < addresses.length; j++) {
+                  if (addresses[j] === this.rewardOwner.substr(2)) {
+                    await this.onSuccess()
+                    return
+                  }
+                }
+              }
+              await this.searchAddress(outputs[i].redeemingTransactionID, index++)
+            }
           }
         } else {
+          if (this.isSearchSuccess) return
           for (let i = 0; i < inputs.length; i++) {
             const output = inputs[i].output
             const addresses = output.addresses
@@ -347,10 +365,6 @@ export default {
                 await this.onSuccess()
                 return
               }
-            }
-            if (index > 100) {
-              this.onFailed('Verification Failed!')
-              return
             }
 
             await this.searchAddress(output.transactionID, index++)
