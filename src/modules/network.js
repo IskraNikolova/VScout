@@ -43,11 +43,11 @@ export const _getTxApi = async (id) => {
 
 export const _getAssetPrice = async (id) => {
   try {
-    const res = await getFirstApi(id)
+    const res = await getSecondApi(id)
     return res
   } catch (err) {
     try {
-      const res = await getSecondApi(id)
+      const res = await getFirstApi(id)
       return res
     } catch (err) {
       return null

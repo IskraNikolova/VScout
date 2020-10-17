@@ -110,9 +110,6 @@
                   v-model="link"
                   label="Link"
                   hint="Your business link or other.(optional)"
-                  :rules="[
-                    value => (value.length <= 32) || 'Maximum length of URL is 32 symbols.'
-                  ]"
                   :error="validateData.errors.link"
                 />
             </div>
@@ -315,11 +312,6 @@ export default {
     async onSubmit () {
       if (!this.link && !this.name && !this.avatar && !this.bio) {
         this.error = 'Empty fields!'
-        return
-      }
-
-      if (this.link.length > 32) {
-        this.error = 'Maximum length of URL is 32 symbols.'
         return
       }
 

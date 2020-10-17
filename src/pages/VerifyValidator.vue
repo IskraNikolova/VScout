@@ -304,7 +304,7 @@ export default {
         await this.getTxAVM({ txID })
         const { outputs, timestamp } = this.txAVM
         const minutes = getDurationByMinutesCount(timestamp)
-        if (minutes > 18820) {
+        if (minutes > 120) {
           this.onFailed('Verification Failed! Expired Transaction.')
           return
         }

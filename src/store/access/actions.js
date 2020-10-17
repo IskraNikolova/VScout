@@ -43,7 +43,6 @@ async function verifyOwner ({ dispatch },
         txAVM,
         rewardOwner
       )
-      console.log(searchResult)
       isSearchSuccess = searchResult
       return searchResult
     } else {

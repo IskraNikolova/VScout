@@ -1,6 +1,5 @@
 [
 	{
-		"constant": false,
 		"inputs": [
 			{
 				"internalType": "address",
@@ -10,12 +9,10 @@
 		],
 		"name": "addAdmin",
 		"outputs": [],
-		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": false,
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -30,12 +27,10 @@
 		],
 		"name": "addRating",
 		"outputs": [],
-		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"constant": false,
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -45,13 +40,11 @@
 		],
 		"name": "setPermissionCode",
 		"outputs": [],
-		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
 		"inputs": [],
-		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
@@ -75,7 +68,6 @@
 		"type": "event"
 	},
 	{
-		"constant": false,
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -103,14 +95,13 @@
 				"type": "bytes"
 			},
 			{
-				"internalType": "bytes32",
+				"internalType": "bytes",
 				"name": "_link",
-				"type": "bytes32"
+				"type": "bytes"
 			}
 		],
 		"name": "setValidatorInfo",
 		"outputs": [],
-		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
@@ -149,16 +140,15 @@
 			},
 			{
 				"indexed": false,
-				"internalType": "bytes32",
+				"internalType": "bytes",
 				"name": "link",
-				"type": "bytes32"
+				"type": "bytes"
 			}
 		],
 		"name": "SetValidatorInfoEvent",
 		"type": "event"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -174,12 +164,10 @@
 				"type": "bool"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -195,12 +183,10 @@
 				"type": "bool"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"constant": true,
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -236,12 +222,11 @@
 				"type": "bytes"
 			},
 			{
-				"internalType": "bytes32",
+				"internalType": "bytes",
 				"name": "link",
-				"type": "bytes32"
+				"type": "bytes"
 			}
 		],
-		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
 	}
