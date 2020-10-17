@@ -95,7 +95,7 @@
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="endTime" label="End Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="progress" label="Progress" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="remainingCapacity" label="Capacity" />
-          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="remainingTime" label="Coutdown" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="remainingTime" label="Countdown" />
         </div></small>
       </template>
       <template v-slot:top-right="props" v-if="!isGrid">

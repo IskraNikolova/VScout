@@ -4,7 +4,7 @@ pragma solidity >=0.4.16 <0.7.0;
  * @title StakersInfo
  */
 contract StakersInfo {
-    event SetValidatorInfoEvent(bytes32 indexed nodeID, bytes32 name, bytes32 website, bytes avatar, bytes bio, bytes32 link);
+    event SetValidatorInfoEvent(bytes32 indexed nodeID, bytes32 name, bytes32 website, bytes avatar, bytes bio, bytes link);
     event AddRatingEvent(bytes32 indexed nodeID, uint256 rating);
 
     address private admin;
@@ -20,7 +20,7 @@ contract StakersInfo {
         bytes32 website;
         bytes avatar;
         bytes bio;
-        bytes32 link;
+        bytes link;
     }
     
     mapping (bytes32 => Member) public members;
@@ -49,7 +49,7 @@ contract StakersInfo {
         bytes32 _website,
         bytes memory _avatar,
         bytes memory  _bio,
-        bytes32 _link)
+        bytes memory _link)
         onlyAdmin()
         public {
             if (members[_nodeID].name != _name) {
