@@ -69,8 +69,8 @@
       </div>
       <div v-if="validator.website" class="q-pl-sm">
         <q-img style="width: 30vw;max-width: 30px;margin: auto;"  src="~assets/website.svg" />
-        <a  v-if="validator.link" :href="validator.link">{{ validator.website }}</a>
-        <a  v-else :href="'https://vscout.io/validator/' + validator.nodeID">{{ validator.website }}</a>
+        <a v-if="validator.link" :href="validator.link">{{ validator.website }}</a>
+        <a v-else :href="'https://vscout.io/validator/' + validator.nodeID">{{ validator.website }}</a>
       </div>
       <div><q-item>{{ validator.bio }}</q-item></div>
       <div class="row q-pl-md">
