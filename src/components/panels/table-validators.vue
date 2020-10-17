@@ -423,7 +423,7 @@ export default {
       isActive: true,
       pagination: {
         sortBy: 'validator',
-        descending: false,
+        descending: true,
         page: 1,
         rowsPerPage: 20
       },
