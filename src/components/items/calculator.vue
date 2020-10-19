@@ -131,7 +131,7 @@
           color="accent"
         />
         <div class="row">
-          <div class="col-6">
+          <div class="col-12">
             <small style="opacity: 0.5;">{{ stakeTime }} Days Reward </small>
             <div>
               <span>

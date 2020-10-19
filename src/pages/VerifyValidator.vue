@@ -262,10 +262,13 @@ export default {
       verifyOwner: VERIFY_OWNER,
       setVerifyCode: SET_VERIFY_CODE
     }),
-    // test () {
+    // async test () {
     //   this.code = this.getRandom()
-    //   await _setVerifyCode({ code: this.code, nodeID: this.validator.nodeID })
-    //   this.$store.commit(SET_CODE, { code: this.code })
+    //   console.log(this.code)
+    //   await this.setVerifyCode({
+    //     code: this.code,
+    //     nodeID: this.validator.nodeID
+    //   })
     //   this.isSuccessSend = true
     // },
     async sendTx (txID) {
