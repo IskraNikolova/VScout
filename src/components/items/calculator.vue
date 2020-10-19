@@ -38,7 +38,7 @@
           v-model="stakeAmount"
           label="Staking Amount"
           input-class="text-right"
-          suffix="AVAX"
+          suffix="$AVAX"
           color="accent"
           @input="calculate"
           class="q-pb-xl"
@@ -131,15 +131,13 @@
           color="accent"
         />
         <div class="row">
-          <div class="col - 6">
-            <small>{{ stakeTime }} Days Reward </small>
+          <div class="col-6">
+            <small style="opacity: 0.5;">{{ stakeTime }} Days Reward </small>
             <div>
-              <span class="text-accent">
+              <span>
                 {{ getFormat(rewardAvax) }}
-              </span> AVAX
-              (<small class="text-grey">
-                {{ getFormat(reward) }} <span class="text-accent">nAVAX</span>
-              </small>)
+              </span>  <span class="text-accent text-medium">AVAX</span> |
+                <span class="text-accent text-medium">$</span>{{ getFormat(rewardUsd) }}
             </div>
           </div>
         </div>
@@ -152,7 +150,9 @@
 import { date } from 'quasar'
 import { mapActions, mapGetters } from 'vuex'
 
-import { GET_CURRENT_SUPPLY } from './../../store/app/types'
+import {
+  GET_CURRENT_SUPPLY
+} from './../../store/app/types'
 
 import {
   reward,
@@ -160,8 +160,14 @@ import {
   getYearlyRewardPercent
 } from './../../modules/reward.js'
 
-import { round } from './../../utils/commons.js'
-import { getAvaFromnAva } from './../../utils/avax.js'
+import {
+  round
+} from './../../utils/commons.js'
+
+import {
+  getAvaFromnAva,
+  getUsdFromnAvax
+} from './../../utils/avax.js'
 
 const timeStamp = Date.now()
 const formattedFrom = date.formatDate(timeStamp, 'YYYY/MM/DD')
@@ -181,6 +187,7 @@ export default {
       delegationFee: 2,
       reward: 0.00,
       rewardAvax: 0.00,
+      rewardUsd: 0.00,
       percentReward: 4,
       stakeAmount: 2000,
       stakeAmountDel: 25,
@@ -212,7 +219,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'currentSupply'
+      'currentSupply',
+      'avaxUsdPrice'
     ])
   },
   methods: {
@@ -239,6 +247,7 @@ export default {
 
       this.reward = rewardNAvax
       this.rewardAvax = getAvaFromnAva(rewardNAvax)
+      this.rewardUsd = getUsdFromnAvax(rewardNAvax, this.avaxUsdPrice)
       this.getPercent()
     },
     calculateDel () {
@@ -258,6 +267,7 @@ export default {
 
       this.reward = rewardNAvax
       this.rewardAvax = getAvaFromnAva(rewardNAvax)
+      this.rewardUsd = getUsdFromnAvax(rewardNAvax, this.avaxUsdPrice)
       this.getPercent()
     },
     getFormat (val) {
