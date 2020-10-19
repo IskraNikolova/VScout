@@ -1,8 +1,8 @@
 <template>
   <div>
-    <q-linear-progress size="50px" :value="progress" :buffer="progress" color="accent">
+    <q-linear-progress stripe size="50px" :value="progress" color="purple">
       <div class="absolute-full text-black progressBadge">
-        <span class="text-grey text-bold">{{ progressBadge }} %</span>
+        <span class="text-orange text-bold" style="font-size: 15px;">{{ progressBadge }} %</span>
       </div>
     </q-linear-progress>
   </div>

@@ -418,7 +418,9 @@ export default {
     },
     checkEndpoint () {
       if (!this.validator) return
-      const isLocal = this.networkEndpoint.url.startsWith('http://127.0.0.1')
+      const isLocal = this.networkEndpoint
+        .url
+        .startsWith('http://127.0.0.1')
       const isNode = this.nodeID === this.validator.nodeID
       this.isSuccessConnect = isLocal && isNode
       if (this.isSuccessConnect) {
