@@ -8,7 +8,7 @@ export default {
     cChainId: 43114,
     explorerApiBaseUrl: 'https://explorerapi.avax-dev.network/',
     contract: '0x95042281AF6566Fc6748f28263CeEecaEfB4D2B4',
-    endpointCChain: 'api.avax.network/ext/bc/C/rpc',
+    endpointCChain: 'vscout.iof/vscout-api/ext/bc/C/rpc',
     address: '0x4aBeF613822Fb2031D897E792f89C896dDaFC466',
     admin: 'X-avax18u9njlrvx76ap6rpdxsf27v7cawu278rw83yyf',
     defaultSubnetID: '11111111111111111111111111111111LpoYY',

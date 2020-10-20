@@ -99,26 +99,28 @@ export async function mapValidators (
   let delegatedStake = new BigNumber(0)
 
   const validatorsMap = await Promise.all(validators.map(async (val) => {
+    if (!defaultValidators) defaultValidators = []
+    const currentValidator = defaultValidators
+      .find(v => v.nodeID === val.nodeID)
     let info = {}
     try {
       info = await _getValidatorById(val.nodeID)
     } catch (err) {
+      if (!currentValidator) {
+        info = {}
+      } else {
+        info = {
+          name: currentValidator.name,
+          link: currentValidator.link,
+          bio: currentValidator.bio,
+          website: currentValidator.website,
+          avatarUrl: currentValidator.avatar
+        }
+      }
     }
 
     validatedStake = BigNumber
       .sum(validatedStake, val.stakeAmount)
-
-    if (!defaultValidators) defaultValidators = []
-    const currentValidator = defaultValidators
-      .find(v => v.nodeID === val.nodeID)
-
-    // todo issue Incorrect uptime sometimes returned
-    // by getCurrentValidators delete after BUGFIX
-    // if (!isInit && currentValidator) {
-    //   const prev = parseFloat(currentValidator.uptime)
-    //   const next = parseFloat(val.uptime)
-    //   if (prev - next > 0.25) val.uptime = currentValidator.uptime
-    // }
 
     if (val.weight) {
       val.stakeAmount = currentValidator.stakeAmount

@@ -123,7 +123,7 @@ export const _getValidatorById = async (id) => {
       link: hexStringToAsciiString(validator.link ? validator.link : '')
     }
   } catch (err) {
-    return false
+    throw new Error(err.message)
   }
 }
 
