@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div style="padding: 3%;">
+    <div style="padding: 1%;">
       <q-card
         id="custom-card"
       >

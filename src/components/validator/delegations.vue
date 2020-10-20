@@ -1,16 +1,16 @@
 <template>
-  <div class="col-6 q-pt-md">
-    <div class="q-mb-md text-medium">
+  <div class="q-pt-md">
+    <div class="q-mb-md text-medium text-secondary">
     <span class="text-orange" style="font-size: 18px;">{{ delegatorsCount }} </span>
     DELEGATIONS
     </div>
-    <q-scroll-area style="height: 350px;">
+    <q-scroll-area style="height: 250px;">
     <div class="row">
       <div class="col-8"><span class="text-subtitle2"><small style="opacity: 0.8;">OWNER</small></span></div>
       <div class="col-4"><span class="text-subtitle2"><small style="opacity: 0.8;">STAKE AMOUNT</small></span></div>
     </div>
-    <q-separator class="q-pb-xs" style="width: 80%;"/>
-    <div v-for="(delegation, i) in delegators" :key="i" class="q-py-xs row">
+    <q-separator class="q-pb-xs q-mb-sm" style="width: 100%;"/>
+    <div v-for="(delegation, i) in delegators" :key="i" class="row" style="min-width: 550px;">
       <div class="col-8" @click="copyToClipboard(delegationRewardOwner(delegation.rewardOwner))">
         {{ delegationRewardOwner(delegation.rewardOwner) }}
       </div>

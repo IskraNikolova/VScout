@@ -1,7 +1,7 @@
 <template>
-  <q-card flat>
+  <q-card flat bordered>
     <q-card-section>
-    <div class="q-mb-md text-medium">STAKE (AVAX)</div>
+    <div class="q-mb-md text-medium text-secondary">STAKE (AVAX)</div>
     <div>
         <span class="text-subtitle2"><small style="opacity: 0.8;">OWN</small></span>
         <span class="on-right text-medium text-h6">{{ getFormatAva(stakeAmount) }}</span>

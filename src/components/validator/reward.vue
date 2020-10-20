@@ -1,26 +1,28 @@
 <template>
-  <q-card flat class="col-5 q-mt-md">
-    <div class="q-pa-md text-medium">REWARD (AVAX)</div>
-    <div class="q-pl-md">
-    <div>
-        <span class="text-subtitle2"><small style="opacity: 0.8;">POTENTIAL REWARD</small></span>
-        <span class="on-right text-h6">{{ getFormatAva(validator.potentialReward) }}</span>
-        <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
-    </div>
-    <div>
-        <span class="text-subtitle2"><small style="opacity: 0.8;">DELEGATIONS FEES REWARD</small></span>
-        <span class="on-right">{{ potentialRewardFromDelegators() }}</span>
-        <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
-    </div>
-    <q-separator class="q-mt-xs q-mb-xs" style="width: 180px;"/>
-    <div>
-        <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
-        <span class="on-right">{{ totalReward() }}</span>
-        <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span> /
-        <span>  {{ totalRewardUsd() }}</span>
-        <span class="text-accent text-medium"><small> USD</small></span>
-    </div>
-    </div>
+  <q-card flat bordered>
+    <q-card-section>
+      <div class="q-mb-md text-medium text-secondary">REWARD (AVAX)</div>
+      <div>
+      <div>
+          <span class="text-subtitle2"><small style="opacity: 0.8;">POTENTIAL REWARD</small></span>
+          <span class="on-right text-h6">{{ getFormatAva(validator.potentialReward) }}</span>
+          <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
+      </div>
+      <div>
+          <span class="text-subtitle2"><small style="opacity: 0.8;">DELEGATIONS FEES REWARD</small></span>
+          <span class="on-right">{{ potentialRewardFromDelegators() }}</span>
+          <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
+      </div>
+      <q-separator class="q-mt-xs q-mb-xs" style="width: 180px;"/>
+      <div>
+          <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
+          <span class="on-right">{{ totalReward() }}</span>
+          <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span> /
+          <span>  {{ totalRewardUsd() }}</span>
+          <span class="text-accent text-medium"><small> USD</small></span>
+      </div>
+      </div>
+    </q-card-section>
   </q-card>
 </template>
 

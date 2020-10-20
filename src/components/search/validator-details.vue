@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--gt-xs-->
-    <q-card flat class="gt-xs q-pl-md q-pb-md q-ml-md">
+    <q-card flat class="gt-xs q-pl-xl q-pb-md q-ml-xl">
       <div class="row">
         <q-item class="col-9">
           <avatar v-bind:avatar="avatar" style="cursor:pointer;" @click="onClick(validator.link)"/>
@@ -40,50 +40,47 @@
         v-bind:nodeID="validator.nodeID"
       />
       <div><q-item>{{ validator.bio }}</q-item></div>
-      <div class="row q-pl-md">
-        <stake
-          class="col-5 q-mt-md"
-          v-bind:stakeAmount="stakeAmount"
-          v-bind:delegateStake="delegateStake"
-          v-bind:totalStakeAmount="totalStakeAmount"
-        />
-        <div class="col-1"></div>
-        <reward
-          class="col-5 q-mt-md"
-          v-bind:validator="validator"
-        />
-        <div class="col-1"></div>
-      </div>
-      <div class="row q-pl-md">
-        <delegate
-          v-bind:validator="validator"
-          class="col-5 q-mt-md"
-        />
-        <div class="col-1"></div>
-        <delegations
-          v-bind:delegators="delegators"
-          class="col-6 q-pt-md"
-        />
-      </div>
-      <div class="row q-pl-md">
+      <div class="row q-gutter-xl">
         <div class="col-5">
-          <div class="text-grey q-pt-xl">Progress (%)</div>
-          <progress-bar-validate-session
-            v-bind:startTime="validator.startTime"
-            v-bind:endTime="validator.endTime"
+          <stake
+            class="q-mt-md"
+            v-bind:stakeAmount="stakeAmount"
+            v-bind:delegateStake="delegateStake"
+            v-bind:totalStakeAmount="totalStakeAmount"
           />
-          <div class="row">
-            <div class="col-6">
-              <small class="text-grey text-bold">Start Time</small>
-              <br />
-              <small>{{ formatDate(validator.startTime) }}</small>
-            </div>
-            <div class="col-6" style="text-align: right;">
-              <small class="text-grey text-bold">End Time</small>
-              <br />
-              <small>{{ formatDate(validator.endTime) }}</small>
+          <delegate
+            v-bind:validator="validator"
+            class="q-mt-md"
+          />
+          <div>
+            <div class="text-grey q-pt-xl">Progress (%)</div>
+            <progress-bar-validate-session
+              v-bind:startTime="validator.startTime"
+              v-bind:endTime="validator.endTime"
+            />
+            <div class="row">
+              <div class="col-6">
+                <small class="text-grey text-bold">Start Time</small>
+                <br />
+                <small>{{ formatDate(validator.startTime) }}</small>
+              </div>
+              <div class="col-6" style="text-align: right;">
+                <small class="text-grey text-bold">End Time</small>
+                <br />
+                <small>{{ formatDate(validator.endTime) }}</small>
+              </div>
             </div>
           </div>
+        </div>
+        <div class="col-5">
+          <reward
+            class="q-mt-md"
+            v-bind:validator="validator"
+          />
+          <delegations
+            v-bind:delegators="delegators"
+            class="q-mt-md"
+          />
         </div>
       </div>
     </q-card>
@@ -123,7 +120,6 @@
           </q-item-label>
         </q-item-section>
       </q-item>
-      <q-separator class="q-mb-xl"/>
       <website
         class="q-pr-md"
         v-if="validator.website"
@@ -147,8 +143,6 @@
           <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;"> %</span>
         </span>
       </div>
-      <q-separator class="q-mb-xl"/>
-
       <div class="row">
         <stake
           flat class="col-12"
@@ -190,7 +184,7 @@
             <small>{{ formatDate(validator.startTime) }}</small>
             </q-card-section>
             <q-separator vertical/>
-            <q-card-section class="col-6">
+            <q-card-section class="col-6" style="text-align: right;">
             <small class="text-grey text-bold">End Time</small>
             <br />
             <small>{{ formatDate(validator.endTime) }}</small>

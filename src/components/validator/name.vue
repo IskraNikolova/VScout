@@ -2,7 +2,7 @@
   <q-item-label>
     <div class="text-medium q-pb-sm" style="font-size: 20px;" v-if="name !== nodeID">
       <a v-if="link" :href="link" style="text-decoration: none;">{{ name }}</a>
-      <span class="text-secondary">{{ name }}</span>
+      <span v-else class="text-secondary">{{ name }}</span>
     </div>
     <div>
     [{{ nodeID }}]
