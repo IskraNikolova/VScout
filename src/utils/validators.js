@@ -106,9 +106,7 @@ export async function mapValidators (
     try {
       info = await _getValidatorById(val.nodeID)
     } catch (err) {
-      if (!currentValidator) {
-        info = {}
-      } else {
+      if (currentValidator) {
         info = {
           name: currentValidator.name,
           link: currentValidator.link,

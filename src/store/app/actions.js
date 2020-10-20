@@ -107,8 +107,7 @@ async function initApp (
 
 async function initEndpoint (
   { commit, getters }) {
-  const endpoint = network.endpointUrls[0]
-  // const endpoint = getters.networkEndpoint
+  const endpoint = getters.networkEndpoint
   commit(SET_ENDPOINT, { endpoint })
 
   const response = await _getNodeId({
@@ -134,7 +133,7 @@ async function initEndpoint (
 }
 
 async function getValidators (
-  { dispatch, commit, getters },
+  { commit, getters },
   {
     subnetID = network.defaultSubnetID,
     endpoint = getters.networkEndpoint.url,

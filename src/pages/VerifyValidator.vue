@@ -232,6 +232,7 @@ export default {
       dialog2: false,
       visible: false,
       isSearchSuccess: false,
+      isFailed: false,
       isSuccessSend: false,
       isSuccessConnect: false
     }
@@ -326,6 +327,7 @@ export default {
       }
     },
     async searchAddress (txID, index) {
+      if (this.isFailed) return
       if (index > 100) {
         this.onFailed('Verification Failed!')
         return
@@ -401,6 +403,7 @@ export default {
     },
     onFailed (message) {
       this.visible = false
+      this.isFailed = true
       this.$q.notify({
         message,
         color: 'white',
