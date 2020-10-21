@@ -202,7 +202,6 @@
                   dark
                   stack-label
                   color="purple"
-                  autofocus
                   style="min-width: 390px;"
                   placeholder="Search Validator/Blockchain/Subnet/P-address"
                   clearable v-model="filter"
@@ -256,7 +255,6 @@
               dark
               stack-label
               color="purple"
-              autofocus
               style="min-width: 100%;"
               placeholder="Search Validator/Blockchain/Subnet/P-address"
               clearable v-model="filter"
@@ -402,7 +400,7 @@ import {
   GET_BLOCKCHAINS
 } from './../store/app/types'
 
-import { round } from './../utils/commons.js'
+// import { round } from './../utils/commons.js'
 import { _getTxStatus, _getBalance } from './../modules/network.js'
 
 export default {
@@ -433,9 +431,7 @@ export default {
     avaxPrice: function () {
       if (!this.avaxUsdPrice) return 0
 
-      return round(this.avaxUsdPrice, 10000)
-        .toString()
-        .padEnd(4, '0')
+      return this.avaxUsdPrice.toFixed(2)
     }
   },
   data () {

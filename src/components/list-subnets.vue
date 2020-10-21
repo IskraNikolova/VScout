@@ -60,15 +60,17 @@ export default {
     async onSelectSubnet (subnet) {
       this.$store.commit(SET_CURRENT_SUBNET, { subnet })
       this.$store.commit(SET_SUBNET_ID, { subnetID: subnet.id })
-
-      await this.getValidators({
-        subnetID: subnet.id,
-        endpoint: this.networkEndpoint.url
-      })
-      this.getPendingValidators({
-        subnetID: subnet.id,
-        endpoint: this.networkEndpoint.url
-      })
+      await Promise.all([
+        this.getValidators({
+          subnetID: subnet.id,
+          endpoint: this.networkEndpoint.url,
+          isInit: false
+        }),
+        this.getPendingValidators({
+          subnetID: subnet.id,
+          endpoint: this.networkEndpoint.url
+        })
+      ])
     }
   }
 }

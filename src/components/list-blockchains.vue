@@ -54,7 +54,8 @@ export default {
       await Promise.all([
         this.getValidators({
           subnetID: blockchain.subnetID,
-          endpoint: this.networkEndpoint.url
+          endpoint: this.networkEndpoint.url,
+          isInit: false
         }),
         this.getPendingValidators({
           subnetID: blockchain.subnetID,

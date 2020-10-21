@@ -103,8 +103,17 @@ export async function mapValidators (
     const currentValidator = defaultValidators
       .find(v => v.nodeID === val.nodeID)
     let info = {}
+    if (currentValidator) {
+      info = {
+        name: currentValidator.name,
+        link: currentValidator.link,
+        bio: currentValidator.bio,
+        website: currentValidator.website,
+        avatarUrl: currentValidator.avatar
+      }
+    }
     try {
-      info = await _getValidatorById(val.nodeID)
+      if (isInit) info = await _getValidatorById(val.nodeID)
     } catch (err) {
       if (currentValidator) {
         info = {
