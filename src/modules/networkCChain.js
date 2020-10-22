@@ -30,14 +30,14 @@ export const _initializeNetwork = async () => {
 const getProvider = ({ endpoint }) => {
   const provider = new Web3.providers.WebsocketProvider(endpoint)
   provider.on('connect', () => {
-    // console.log('WS Connected')
+    console.log('WS Connected')
   })
   provider.on('error', e => {
-    // console.error('WS Error' + e)
+    console.error('WS Error' + e)
     web3.setProvider(getProvider({ endpoint }))
   })
   provider.on('end', e => {
-    // console.error('WS End' + e)
+    console.error('WS End' + e)
   })
   return provider
 }
