@@ -21,7 +21,7 @@ const admin = config.network.address
 export const _initializeNetwork = async () => {
   try {
     // web3 = new Web3(`https://${config.network.endpointCChain}`)
-    web3 = new Web3(getProvider({ endpoint: `ws://${config.network.endpointCChain}` }))
+    web3 = new Web3(getProvider({ endpoint: `wss://${config.network.endpointCChain}` }))
     contract = await new web3.eth.Contract(contractAbi, config.network.contract)
   } catch (err) {
   }
@@ -29,15 +29,15 @@ export const _initializeNetwork = async () => {
 
 const getProvider = ({ endpoint }) => {
   const provider = new Web3.providers.WebsocketProvider(endpoint)
-  provider.on('connect', async () => {
-    console.log('WS Connected')
+  provider.on('connect', () => {
+    // console.log('WS Connected')
   })
   provider.on('error', e => {
-    console.error('WS Error' + e)
+    // console.error('WS Error' + e)
     web3.setProvider(getProvider({ endpoint }))
   })
   provider.on('end', e => {
-    console.error('WS End' + e)
+    // console.error('WS End' + e)
   })
   return provider
 }

@@ -78,14 +78,14 @@ async function initApp (
       dispatch(GET_NODE_INFO),
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
+      _initializeNetwork(),
       dispatch(GET_STAKING, {
         subnetID: getters.subnetID,
         isInit: true
       }),
       dispatch(GET_HEIGHT, {}),
       dispatch(GET_CURRENT_SUPPLY),
-      dispatch(GET_PENDING_STAKING, {}),
-      _initializeNetwork()
+      dispatch(GET_PENDING_STAKING, {})
     ])
   } catch (err) {
   }
