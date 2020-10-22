@@ -22,13 +22,10 @@ export default {
   },
   mounted () {
     this.initApp()
-    this.$store.dispatch(GET_AVAX_PRICE)
     setInterval(() => {
       this.$store.commit(SET_NETWORK_STATUS, {
         hasNetworkConnection: window.navigator.onLine
       })
-    }, 1000)
-    setInterval(() => {
       this.$store.dispatch(GET_AVAX_PRICE)
     }, 10000)
   }

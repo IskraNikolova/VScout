@@ -113,8 +113,8 @@ export async function mapValidators (
       }
     }
     try {
-      // if (isInit) info = await _getValidatorById(val.nodeID)
-      info = await _getValidatorById(val.nodeID)
+      if (isInit) info = await _getValidatorById(val.nodeID)
+      // info = await _getValidatorById(val.nodeID)
     } catch (err) {
       if (currentValidator) {
         info = {
