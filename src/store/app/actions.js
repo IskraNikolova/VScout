@@ -71,6 +71,7 @@ async function initApp (
   { dispatch, getters }) {
   try {
     await Promise.all([
+      dispatch(GET_AVAX_PRICE),
       dispatch(INIT_ENDPOINT),
       dispatch(GET_BLOCKCHAINS, {}),
       dispatch(GET_SUBNETS, {}),
@@ -98,7 +99,8 @@ async function initApp (
           subnetID: getters.subnetID,
           isInit: false
         }),
-        dispatch(GET_PENDING_STAKING, {})
+        dispatch(GET_PENDING_STAKING, {}),
+        dispatch(GET_AVAX_PRICE)
       ])
     } catch (err) {
     }
