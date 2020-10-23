@@ -109,7 +109,8 @@ export async function mapValidators (
         link: currentValidator.link,
         bio: currentValidator.bio,
         website: currentValidator.website,
-        avatarUrl: currentValidator.avatar
+        avatarUrl: currentValidator.avatar,
+        rating: currentValidator.rating ? currentValidator.rating : '0'
       }
     }
     try {
@@ -117,13 +118,15 @@ export async function mapValidators (
         info = await _getValidatorById(val.nodeID)
       }
     } catch (err) {
+      console.log(err)
       if (currentValidator) {
         info = {
           name: currentValidator.name,
           link: currentValidator.link,
           bio: currentValidator.bio,
           website: currentValidator.website,
-          avatarUrl: currentValidator.avatar
+          avatarUrl: currentValidator.avatar,
+          rating: currentValidator.rating ? currentValidator.rating : '0'
         }
       }
     }
@@ -165,6 +168,7 @@ export async function mapValidators (
 
     return {
       ...val,
+      rating: info.rating,
       name,
       avatar,
       link: info.link,
