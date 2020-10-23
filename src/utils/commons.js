@@ -30,6 +30,20 @@ export function deepMerge (...objects) {
   }
 }
 
+export function clean (obj) {
+  const newVal = obj
+  for (var propName in newVal) {
+    if (newVal[propName] === null ||
+      newVal[propName] === undefined ||
+      newVal[propName] === '' ||
+      newVal[propName] === 0) {
+      delete newVal[propName]
+    }
+  }
+  delete newVal.nodeID
+  return newVal
+}
+
 export function groupBy (xs, key) {
   return xs.reduce(function (rv, x) {
     (rv[x[key]] = rv[x[key]] || []).push(x)

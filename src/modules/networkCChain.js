@@ -145,6 +145,23 @@ export const _getValidatorById = async (id) => {
   }
 }
 
+export const _getValidatorByEvent = (validator) => {
+  if (!validator) return
+  try {
+    return {
+      nodeID: hexStringToAsciiString(validator.nodeID),
+      name: hexStringToAsciiString(validator.name ? validator.name : ''),
+      website: hexStringToAsciiString(validator.website ? validator.website : ''),
+      avatar: hexStringToAsciiString(validator.avatar ? validator.avatar : ''),
+      bio: hexStringToAsciiString(validator.bio ? validator.bio : ''),
+      link: hexStringToAsciiString(validator.link ? validator.link : ''),
+      rating: validator.rating ? validator.rating : 0
+    }
+  } catch (err) {
+    throw new Error(err.message)
+  }
+}
+
 export const _isValidCode = async (code, nodeID) => {
   const data = _encode(code, nodeID)
   try {
@@ -244,6 +261,7 @@ export const utf8StringToHex = input => web3.utils.utf8ToHex(input).padEnd(66, '
 
 export const _subscribeToContractEvents = ({ eventName, filters, handler }) => {
   if (!contract) return
+
   const events = contract._jsonInterface.filter(a => a.type === 'event')
   const ev = events.find(e => e.name === eventName)
   const eventInterface = {
@@ -262,13 +280,13 @@ export const _subscribeToContractEvents = ({ eventName, filters, handler }) => {
     )
 
     // Don't call handler if data doesn't match filters
-    let isMatch = false
-    const filtersKeys = Object.keys(filters)
-    filtersKeys.forEach(key => {
-      const value = filters[`${key}`]
-      if (event[`${key}`].toLowerCase() === value.toLowerCase()) isMatch = true
-    })
-    if (!isMatch) return
+    // let isMatch = false
+    // const filtersKeys = Object.keys(filters)
+    // filtersKeys.forEach(key => {
+    //   const value = filters[`${key}`]
+    //   if (event[`${key}`].toLowerCase() === value.toLowerCase()) isMatch = true
+    // })
+    // if (!isMatch) return
 
     handler(null, {
       ...event

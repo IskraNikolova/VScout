@@ -12,8 +12,10 @@ import {
   SET_STAKED_AVA,
   GET_NODE_HEALTH,
   GET_BLOCKCHAINS,
+  UPDATE_VALIDATOR,
   SET_ASSETS_COUNT,
   GET_CURRENT_SUPPLY,
+  SUBSCRIBE_TO_EVENT,
   GET_PENDING_STAKING,
   SET_DEFAULT_VALIDATORS,
   SET_PENDING_VALIDATORS,
@@ -60,7 +62,9 @@ const {
   .default
 
 import {
-  _initializeNetwork
+  _initializeNetwork,
+  _getValidatorByEvent,
+  _subscribeToContractEvents
 } from './../../modules/networkCChain.js'
 
 import {
@@ -86,7 +90,7 @@ async function initApp (
         isInit: true
       }),
       dispatch(GET_PENDING_STAKING, {})
-    ])
+    ]).then(() => dispatch(SUBSCRIBE_TO_EVENT))
   } catch (err) {
   }
 
@@ -419,6 +423,28 @@ async function getCurrentSupply (
   }
 }
 
+function subscribeToEvents ({ commit, dispatch, getters }) {
+  const sentMessageHandler = async (error, result) => {
+    if (error) console.error(error)
+    try {
+      const validator = _getValidatorByEvent(result)
+      commit(UPDATE_VALIDATOR, { validator })
+    } catch (err) {
+      console.error(err)
+      await dispatch(GET_STAKING, {
+        subnetID: getters.subnetID,
+        isInit: true
+      })
+    }
+  }
+
+  _subscribeToContractEvents({
+    eventName: 'SetValidatorInfoEvent',
+    filters: {},
+    handler: sentMessageHandler
+  })
+}
+
 export default {
   [INIT_APP]: initApp,
   [GET_HEIGHT]: getHeight,
@@ -432,5 +458,6 @@ export default {
   [GET_BLOCKCHAINS]: getBlockchains,
   [GET_CURRENT_SUPPLY]: getCurrentSupply,
   [GET_PENDING_STAKING]: getPValidators,
+  [SUBSCRIBE_TO_EVENT]: subscribeToEvents,
   [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsCount
 }

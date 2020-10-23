@@ -404,6 +404,8 @@ export default {
     ProgressBarValidateSession: () => import('components/progress-bar-validatе-session')
   },
   watch: {
+    '$store.state.validators': function () {
+    },
     curentValidators: function (newValidators, oldValidators) {
       if (newValidators.length !== oldValidators.length) {
         this.visibleColumns = this.getVisibleColumns(this.curentValidators)

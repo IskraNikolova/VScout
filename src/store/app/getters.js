@@ -19,7 +19,7 @@ export function height (state) {
 export function validatorById (state) {
   return (id) => state
     .validators
-    .find(val => val.nodeID === id)
+    .find(val => val.nodeID.includes(id))
 }
 
 export function pendingValidators (state) {

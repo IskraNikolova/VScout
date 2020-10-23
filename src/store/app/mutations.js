@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
-import { VMDict } from './../../utils/constants'
+import { VMDict } from './../../utils/constants.js'
+import { clean } from './../../utils/commons.js'
 
 import {
   GET_NODE_ID,
@@ -18,6 +19,7 @@ import {
   SET_ASSETS_COUNT,
   SET_NETWORK_STATUS,
   GET_CURRENT_SUPPLY,
+  UPDATE_VALIDATOR,
   SET_DEFAULT_VALIDATORS,
   SET_PENDING_DELEGATORS,
   SET_PENDING_VALIDATORS
@@ -50,6 +52,16 @@ const mutations = {
   },
   [SET_VALIDATORS]: (state, { validators }) => {
     state.validators = validators
+  },
+  [UPDATE_VALIDATOR]: (state, { validator }) => {
+    const currentValidator = state
+      .validators
+      .find(val => val.nodeID.includes(validator.nodeID))
+    if (!currentValidator) return
+    const newVal = clean(validator)
+    const index = state.validators.indexOf(currentValidator)
+    if (index < 0) return
+    state.validators[index] = { ...currentValidator, ...newVal }
   },
   [SET_STAKED_AVA]: (state, { all, validatedStake, delegatedStake }) => {
     state.stakedAVA = all
