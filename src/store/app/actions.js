@@ -90,7 +90,7 @@ async function initApp (
         isInit: true
       }),
       dispatch(GET_PENDING_STAKING, {})
-    ])// .then(() => dispatch(SUBSCRIBE_TO_EVENT))
+    ]).then(() => dispatch(SUBSCRIBE_TO_EVENT))
   } catch (err) {
   }
 
