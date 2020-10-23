@@ -67,6 +67,7 @@
                 v-model="name"
                 label="Validator Name"
                 hint="Validator's Name will be show on validator's list instead validator ID."
+                :rules="[val => val.length <= 32 || 'Name must be less than or equal to 32 characters']"
                 :error="validateData.errors.name"
               />
               <q-input
@@ -85,21 +86,22 @@
                 <q-input
                   type="textarea"
                   color="accent"
-                  class="q-mb-xs"
+                  class="q-mb-sm"
                   outlined
                   label-color="orange"
                   v-model="bio"
                   label="Bio "
-                  hint="Bio (optional)"
                 />
                 <q-input
                   color="accent"
-                  class="q-mb-xs"
+                  class="q-mb-sm"
                   outlined
                   label-color="orange"
                   v-model="website"
-                  label="Website "
-                  hint="Website (optional)"
+                  placeholder="VScout"
+                  label="Hypertext (website name)"
+                  :rules="[val => val.length <= 32 || 'Text must be less than or equal to 32 characters']"
+                  hint="Name of your website/business link or other. (optional)"
                 />
                 <q-input
                   color="accent"
@@ -108,8 +110,9 @@
                   clearable
                   label-color="orange"
                   v-model="link"
-                  label="Link"
-                  hint="Your business link or other.(optional)"
+                  placeholder="https://www.vscout.io"
+                  label="Hyperlink (link)"
+                  hint="Your website/business link or other hyperlink target.(optional)"
                   :error="validateData.errors.link"
                 />
             </div>
@@ -266,7 +269,7 @@ export default {
       const inputLink = `<a href="${this.link}"></a>`
       return {
         errors: {
-          name: (DOMPurify.sanitize(this.name) !== this.name) && this.name,
+          name: ((DOMPurify.sanitize(this.name) !== this.name) && this.name) || this.name.length > 32,
           bio: (DOMPurify.sanitize(this.bio) !== this.bio) && this.bio,
           link: DOMPurify.sanitize(inputLink) !== inputLink,
           avatar: DOMPurify.sanitize(inputAvatar) !== inputAvatar
@@ -291,7 +294,7 @@ export default {
           return
         }
         const minutes = getDurationByMinutesCount(timestamp)
-        if (minutes > 230) {
+        if (minutes > 60) {
           this.onFailed('Verification Transaction Failed! Expired Transaction.')
           return
         }
