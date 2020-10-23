@@ -18,7 +18,7 @@ export default {
       type: String,
       required: false
     },
-     nodeID: {
+    nodeID: {
       type: String,
       required: true
     }

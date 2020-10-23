@@ -219,6 +219,7 @@ export default {
     Reward: () => import('components/validator/reward.vue'),
     Owner: () => import('components/validator/owner.vue'),
     Avatar: () => import('components/validator/avatar.vue'),
+    Website: () => import('components/validator/website.vue'),
     ProgressBarValidateSession: () => import('components/progress-bar-validatе-session.vue')
   },
   computed: {
