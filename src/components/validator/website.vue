@@ -1,6 +1,6 @@
 <template>
   <div class="q-pl-sm">
-    <q-img style="width: 30vw;max-width: 30px;margin: auto;"  src="~assets/website.svg" />
+    <q-img style="width: 30vw;max-width: 30px;margin: auto;"  src="~assets/hyperlink.svg" />
     <a v-if="link" :href="link">{{ website }}</a>
     <a v-else :href="website">{{ website }}</a>
   </div>
