@@ -465,6 +465,7 @@ export default {
           align: 'center',
           label: 'WEIGHT',
           field: row => row.weight,
+          format: (val, row) => `${this.getFormatReward(val)}`,
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -671,7 +672,7 @@ export default {
           c !== 'endTime'
         )
       } else if (curentValidators.find(a => a.weight)) {
-        return columns.filter(c => c !== 'uptime' && c !== 'delegationFee')
+        return columns.filter(c => c !== 'uptime' && c !== 'delegationFee' && c !== 'networkShare' && c !== 'percent')
       }
 
       return columns.filter(c => c !== 'stake')

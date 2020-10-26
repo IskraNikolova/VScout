@@ -17,6 +17,7 @@ let web3
 let contract
 abiDecoder.addABI(contractAbi)
 const admin = config.network.address
+const ADD_RATING_EVENT = 'SetValidatorInfoEvent'
 
 export const _initializeNetwork = async () => {
   try {
@@ -121,6 +122,19 @@ const executeMethod = async (method, from) => {
         reject(err)
       })
   })
+}
+
+export const _getPastRatingEvents = async (nodeID) => {
+  if (!nodeID) return
+  const id = hexNodeID(nodeID)
+  console.log(id)
+  try {
+    const events = await contract.getPastEvents(ADD_RATING_EVENT, { filter: { nodeID: id }, fromBlock: 1, toBlock: 'latest' })
+    return events
+  } catch (err) {
+    console.log(err)
+    return []
+  }
 }
 
 export const _getValidatorById = async (id) => {

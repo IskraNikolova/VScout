@@ -205,7 +205,15 @@ import {
   openURL
 } from 'quasar'
 
-import { date, fromNow } from './../../modules/time.js'
+import {
+  date,
+  fromNow
+} from './../../modules/time.js'
+
+import {
+  _getPastRatingEvents
+} from './../../modules/networkCChain.js'
+
 import { round } from './../../utils/commons.js'
 
 export default {
@@ -271,6 +279,10 @@ export default {
       if (!validator) return { rewardOwner: { addresses: [] }, startTime: '', endTime: '' }
 
       return validator
+    },
+    async getRating () {
+      const events = await _getPastRatingEvents(this.validator.nodeID)
+      console.log(events)
     },
     getUpTime (val) {
       if (!val) return 0
