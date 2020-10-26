@@ -60,7 +60,7 @@
                 />
               </small>
             </span>
-            <span style="font-size: 13px;" class="text-medium text-accent"> <small>AVAX</small></span>
+            <span style="font-size: 13px;" class="text-medium text-accent"><small> AVAX</small></span>
         </div>
       </div>
       <div class="col-1 q-pt-md">
@@ -126,7 +126,7 @@ export default {
     },
     allStake: function () {
       if (!this.stakedAVA) return 0
-      const toAva = getAvaFromnAva(this.stakedAVA)
+      const toAva = getAvaFromnAva(Number(this.stakedAVA))
       const roundVal = round(toAva, 10)
       return roundVal
     },

@@ -177,6 +177,17 @@ export const _getNodeId = async ({ endpoint }) => {
   return response
 }
 
+export const _getTotalStake = async ({ endpoint }) => {
+  const response = await request(endpoint + c.platform, body(c.getTotalStake))
+  return response
+}
+
+export const _getStake = async ({ endpoint, params }) => {
+  console.log(params)
+  const response = await request(endpoint + c.platform, body(c.getStake, params))
+  return response
+}
+
 export const _getNetworkID = async ({ endpoint }) => {
   const response = await request(endpoint + c.info, body(c.getNetworkID))
   return response

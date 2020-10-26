@@ -41,6 +41,8 @@ import {
   _getSubnets,
   _getAssetPrice,
   _getNetworkID,
+  // _getStake,
+  // _getTotalStake,
   _getValidators,
   _getNetworkName,
   _getNodeVersion,
@@ -150,6 +152,15 @@ async function getValidators (
     endpoint
   })
 
+  // const stakeResponse = await _getTotalStake({
+  //   endpoint: 'https://api.avax.network:443/'
+  // })
+
+  // let totalStake = 0
+  // if (!stakeResponse.data.error) {
+  //   totalStake = stakeResponse.data.result.stake
+  // }
+
   if (response.data.error) {
     commit(UPDATE_UI, { doesItConnect: true })
     return null
@@ -169,6 +180,13 @@ async function getValidators (
     getters.defaultValidators,
     isInit
   )
+  // const addresses = res.validators.map(v => v.rewardOwner.addresses.join(','))
+
+  // const stakeRes = await _getStake({
+  //   endpoint: 'https://api.avax.network:443/',
+  //   params: { addresses: addresses.slice(0, 223) }
+  // })
+  // console.log(stakeRes)
 
   commit(SET_STAKED_AVA, {
     all: res.allStake,
@@ -181,7 +199,12 @@ async function getValidators (
   })
 
   if (delegators.length < 1) {
-    delegators = [] // res.validators.reduce(v => v.delegators)
+    delegators = res
+      .validators
+      .reduce((a, c) => {
+        a.push.apply(a, c.delegators)
+        return a
+      }, [])
   }
   commit(SET_DELEGATORS, {
     delegators: mapDelegators(delegators)
@@ -202,7 +225,7 @@ async function getPValidators (
   }) {
   const response = await _getPendingValidators({
     subnetID,
-    endpoint
+    endpoint: 'https://api.avax.network:443/'
   })
 
   if (response.data.error) return null

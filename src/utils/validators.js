@@ -37,7 +37,6 @@ export async function validatorProcessing (
     validatorsMap,
     validatedStake,
     delegatedStake
-    // delegators
   } = data
 
   // get all staked AVAX
@@ -77,7 +76,6 @@ export async function validatorProcessing (
     validatedStake,
     delegatedStake,
     validators: result
-    // delegators
   }
 }
 
@@ -99,7 +97,6 @@ export async function mapValidators (
   isInit) {
   let validatedStake = new BigNumber(0)
   let delegatedStake = new BigNumber(0)
-  // const delegators = []
 
   const validatorsMap = await Promise.all(validators.map(async (val) => {
     if (!defaultValidators) defaultValidators = []
@@ -155,7 +152,7 @@ export async function mapValidators (
     const delegateStake = props.delegateStake
     delegatedStake = BigNumber.sum(delegatedStake, delegateStake)
     const delegatePotentialReward = props.potentialReward
-    // delegators.push.apply(delegators, currentDelegators)
+
     const countDownCounterRes = countDownCounter(val.endTime)
     const remainingTime = countDownCounterRes.countdown
 
@@ -195,7 +192,6 @@ export async function mapValidators (
     validatorsMap,
     validatedStake,
     delegatedStake
-    // delegators
   }
 }
 

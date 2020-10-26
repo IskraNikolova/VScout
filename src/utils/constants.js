@@ -28,6 +28,8 @@ export const c = {
   getSubnets: 'platform.getSubnets',
   getTxStatus: 'platform.getTxStatus',
   getBalance: 'platform.getBalance',
+  getTotalStake: 'platform.getTotalStake',
+  getStake: 'platform.getStake',
   getBlockchains: 'platform.getBlockchains',
   getBlockchainStatus: 'platform.getBlockchainStatus',
   getCurrentValidators: 'platform.getCurrentValidators',
