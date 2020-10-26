@@ -16,7 +16,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <div class="col-3 q-mt-md">
+        <div class="col-3 q-mt-md" v-if="!validator.weight">
           <span class="text-subtitle2 q-mr-xs"><small style="opacity: 0.8;">UPTIME</small></span>
           <q-badge :color="getColorUptime(validator.uptime)" class="text-medium" style="font-size: 16px;padding: 7px;">
             <span style="margin: auto;">{{ getUpTime(validator.uptime) }} %</span>
@@ -27,7 +27,7 @@
             {{ stakedBy(validator.startTime) }}
           </span>
           <br />
-          <span class="text-subtitle2"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
+          <span class="text-subtitle2" v-if="!validator.weight"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
           <span class="q-pl-xs" v-if="validator.percent !== 'NaN'">
             {{ validator.percent }} <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">%</span>
           </span>
@@ -265,6 +265,7 @@ export default {
         .totalStakeAmount
     },
     rewardOwner: function () {
+      if (!this.validator.rewardOwner) return ''
       const result = this.validator.rewardOwner.addresses
       if (result) return result[0]
       return ''

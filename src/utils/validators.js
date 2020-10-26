@@ -136,6 +136,10 @@ export async function mapValidators (
 
     if (val.weight) {
       val.stakeAmount = currentValidator.stakeAmount
+      val.rewardOwner = currentValidator.rewardOwner
+      val.delegationFee = currentValidator.delegationFee
+      val.delegators = currentValidator.delegators
+      val.potentialReward = currentValidator.potentialReward
     }
 
     let currentDelegators = val.delegators
@@ -198,7 +202,6 @@ export function mapPendingValidators (
 
   return validators.map((val) => {
     let currentValidator = {}
-
     if (val.weight) {
       currentValidator = defaultValidators
         .find(v => v.nodeID === val.nodeID)
