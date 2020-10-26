@@ -386,10 +386,10 @@ export default {
       this.isSearchSuccess = true
       this.code = this.getRandom()
       try {
-        // await this.setVerifyCode({
-        //   code: this.code,
-        //   nodeID: this.validator.nodeID
-        // })
+        await this.setVerifyCode({
+          code: this.code,
+          nodeID: this.validator.nodeID
+        })
       } catch (err) {
         console.log(err)
         this.$q.notify({
