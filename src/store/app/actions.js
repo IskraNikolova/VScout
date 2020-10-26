@@ -180,7 +180,9 @@ async function getValidators (
     validators: res.validators
   })
 
-  if (delegators.length < 1) delegators = res.delegators
+  if (delegators.length < 1) {
+    delegators = res.validators.map(v => v.delegators)
+  }
   commit(SET_DELEGATORS, {
     delegators: mapDelegators(delegators)
   })
