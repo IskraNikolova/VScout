@@ -89,9 +89,9 @@
       </template>
       <template slot="top-left" v-if="!isGrid">
         <small><div class="col" style="margin-top: 20px; margin-bottom: 10px;">
-          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="networkShare" label="Network Share" />
-          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="percent" label="Cumulative Stake" />
-          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="uptime" label="Uptime" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="networkShare" label="Network Share" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="percent" label="Cumulative Stake" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="uptime" label="Uptime" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="startTime" label="Start Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="endTime" label="End Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="progress" label="Progress" />
@@ -580,6 +580,8 @@ export default {
     ...mapGetters([
       'nodeID',
       'validators',
+      'subnetID',
+      'isDefaultSubnetID',
       'pendingValidators'
     ]),
     isYourNode: function (id) {

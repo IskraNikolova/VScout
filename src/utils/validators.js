@@ -36,7 +36,8 @@ export async function validatorProcessing (
   const {
     validatorsMap,
     validatedStake,
-    delegatedStake
+    delegatedStake,
+    delegators
   } = data
 
   // get all staked AVAX
@@ -75,7 +76,8 @@ export async function validatorProcessing (
     allStake,
     validatedStake,
     delegatedStake,
-    validators: result
+    validators: result,
+    delegators
   }
 }
 
@@ -92,11 +94,12 @@ export function compare (a, b) {
 
 export async function mapValidators (
   validators,
-  delegators,
+  del,
   defaultValidators,
   isInit) {
   let validatedStake = new BigNumber(0)
   let delegatedStake = new BigNumber(0)
+  const delegators = []
 
   const validatorsMap = await Promise.all(validators.map(async (val) => {
     if (!defaultValidators) defaultValidators = []
@@ -131,9 +134,6 @@ export async function mapValidators (
       }
     }
 
-    validatedStake = BigNumber
-      .sum(validatedStake, val.stakeAmount)
-
     if (val.weight) {
       val.stakeAmount = currentValidator.stakeAmount
       val.rewardOwner = currentValidator.rewardOwner
@@ -142,9 +142,12 @@ export async function mapValidators (
       val.potentialReward = currentValidator.potentialReward
     }
 
+    validatedStake = BigNumber
+      .sum(validatedStake, val.stakeAmount)
+
     let currentDelegators = val.delegators
-    if (!currentDelegators && delegators) {
-      currentDelegators = delegators
+    if (!currentDelegators && del) {
+      currentDelegators = del
         .filter(d => d.nodeID === val.nodeID)
     }
 
@@ -152,7 +155,7 @@ export async function mapValidators (
     const delegateStake = props.delegateStake
     delegatedStake = BigNumber.sum(delegatedStake, delegateStake)
     const delegatePotentialReward = props.potentialReward
-
+    delegators.push.apply(delegators, currentDelegators)
     const countDownCounterRes = countDownCounter(val.endTime)
     const remainingTime = countDownCounterRes.countdown
 
@@ -191,7 +194,8 @@ export async function mapValidators (
   return {
     validatorsMap,
     validatedStake,
-    delegatedStake
+    delegatedStake,
+    delegators
   }
 }
 
