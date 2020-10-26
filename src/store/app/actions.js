@@ -181,7 +181,7 @@ async function getValidators (
   })
 
   if (delegators.length < 1) {
-    delegators = res.validators.map(v => v.delegators)
+    delegators = [] // res.validators.reduce(v => v.delegators)
   }
   commit(SET_DELEGATORS, {
     delegators: mapDelegators(delegators)
