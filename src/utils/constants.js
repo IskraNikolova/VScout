@@ -18,6 +18,12 @@ export const c = {
   health: 'ext/health',
   getLiveness: 'health.getLiveness',
 
+  // EVM API
+  evm: (id) => `ext/bc/${id}/rpc`,
+  ethBlockNumber: 'eth_blockNumber',
+  ethChainID: 'eth_chainId',
+  ethNetVersion: 'net_version',
+
   // PLATFORM API
   platform: 'ext/P',
   platformBc: 'ext/bc/P',
@@ -37,7 +43,9 @@ export const c = {
 
   jsonrpc: '2.0',
   contentTypeValue: 'application/json',
-  contentTypeHeader: 'content-type'
+  contentTypeHeader: 'content-type',
+  cacheControlValue: 'no-cache',
+  cacheControlHeader: 'cache-control'
 }
 
 //  Denominations of value

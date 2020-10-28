@@ -427,7 +427,7 @@ export default {
         sortBy: 'validator',
         descending: true,
         page: 1,
-        rowsPerPage: 20
+        rowsPerPage: 25
       },
       columns: [
         {
@@ -465,7 +465,7 @@ export default {
           align: 'center',
           label: 'WEIGHT',
           field: row => row.weight,
-          format: (val, row) => `${this.getFormatReward(val)}`,
+          format: (val, row) => `${this.getWeight(val)}`,
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -600,6 +600,10 @@ export default {
           row.name.includes(this.filter) ||
           this.getRewardOwner(row.rewardOwner).toLowerCase().includes(this.filter.toLowerCase()))
       }
+    },
+    getWeight (val) {
+      const avax = getAvaFromnAva(val)
+      return avax
     },
     customSort (rows, sortBy, descending) {
       const data = [...rows]

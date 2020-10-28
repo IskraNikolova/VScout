@@ -76,11 +76,13 @@ import {
 async function initApp (
   { dispatch, getters }) {
   try {
+    Promise.all([
+      dispatch(GET_BLOCKCHAINS, {}),
+      dispatch(GET_SUBNETS, {})
+    ])
     await Promise.all([
       dispatch(GET_AVAX_PRICE),
       dispatch(INIT_ENDPOINT),
-      dispatch(GET_BLOCKCHAINS, {}),
-      dispatch(GET_SUBNETS, {}),
       dispatch(GET_NODE_INFO),
       dispatch(GET_NODE_HEALTH),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
@@ -99,14 +101,14 @@ async function initApp (
   setInterval(async () => {
     try {
       await Promise.all([
-        dispatch(GET_NODE_HEALTH),
-        dispatch(GET_HEIGHT, {}),
         dispatch(GET_STAKING, {
           subnetID: getters.subnetID,
           isInit: false
         }),
         dispatch(GET_PENDING_STAKING, {}),
-        dispatch(GET_AVAX_PRICE)
+        dispatch(GET_AVAX_PRICE),
+        dispatch(GET_NODE_HEALTH),
+        dispatch(GET_HEIGHT, {})
       ])
     } catch (err) {
     }
@@ -276,6 +278,8 @@ async function getSubnets (
   if (typeof subnets === 'undefined' ||
     subnets === null) return
 
+  if (subnets.length <= getters.subnets.length) return
+
   const result = Promise.all(subnets.map(async subnet => {
     const response = await _validates({
       endpoint,
@@ -396,8 +400,11 @@ async function getBlockchains (
   if (response.data.error) return null
 
   let { blockchains } = response.data.result
+
   if (typeof blockchains === 'undefined' ||
     blockchains === null) return
+
+  if (blockchains.length <= getters.blockchains.length) return
 
   blockchains.push({
     id: network.defaultSubnetID,
@@ -409,7 +416,7 @@ async function getBlockchains (
   blockchains = await Promise.all(blockchains
     .map(async b => {
       const res = await _getBlockchainStatus({
-        endpoint: getters.networkEndpoint.url,
+        endpoint,
         params: {
           blockchainID: b.id
         }

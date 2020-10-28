@@ -294,7 +294,7 @@ export default {
           return
         }
         const minutes = getDurationByMinutesCount(timestamp)
-        if (minutes > 1200) {
+        if (minutes > 120) {
           this.onFailed('Verification Transaction Failed! Expired Transaction.')
           return
         }

@@ -30,7 +30,6 @@
             flat
             label="blockchains"
             class="text-regular text-grey"
-            @click="onGetBlockchains"
           >
             <q-menu>
               <div class="no-wrap q-pa-md text-grey">
@@ -45,7 +44,6 @@
               flat
               label="subnets"
               class="text-regular text-grey"
-              @click="onGetSubnets"
             >
             <q-menu>
               <div class="no-wrap q-pa-md text-grey">
@@ -118,7 +116,6 @@
             flat
             label="blockchains"
             class="text-regular text-grey"
-            @click="onGetBlockchains"
           >
           <q-menu>
             <div class="no-wrap q-pa-md text-grey">
@@ -133,7 +130,6 @@
             flat
             label="subnets"
             class="text-regular text-grey"
-            @click="onGetSubnets"
           >
           <q-menu>
             <div class="no-wrap q-pa-md text-grey">
@@ -392,12 +388,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 import {
-  SET_BALANCE,
-  GET_SUBNETS,
-  GET_BLOCKCHAINS
+  SET_BALANCE
+  // GET_SUBNETS,
+  // GET_BLOCKCHAINS
 } from './../store/app/types'
 
 // import { round } from './../utils/commons.js'
@@ -444,28 +440,28 @@ export default {
     }
   },
   methods: {
-    ...mapActions({
-      getSubnets: GET_SUBNETS,
-      getBlockchains: GET_BLOCKCHAINS
-    }),
+    // ...mapActions({
+    //   getSubnets: GET_SUBNETS,
+    //   getBlockchains: GET_BLOCKCHAINS
+    // }),
     getRemainigTime () {
       const validator = this.validatorById(this.nodeID)
       if (!validator) return
       return validator.remainingTime
     },
-    async onGetBlockchains () {
-      await this.getBlockchains({})
-    },
-    async onGetSubnets () {
-      await this.getSubnets({})
-    },
-    async onBlockchainClick () {
+    // async onGetBlockchains () {
+    //   await this.getBlockchains({})
+    // },
+    // async onGetSubnets () {
+    //   await this.getSubnets({})
+    // },
+    onBlockchainClick () {
       this.isB = true
-      await this.getBlockchains({})
+      // await this.getBlockchains({})
     },
-    async onSubnetClick () {
+    onSubnetClick () {
       this.isS = true
-      await this.getSubnets({})
+      // await this.getSubnets({})
     },
     onAddIdentification () {
       this.$refs.addIdentificationRef.openAddId()

@@ -26,8 +26,8 @@
       <q-card-section>
         <q-item>
           <q-item-section>
-            <span v-if="healthy">Healthy: <span class="text-accent">Yes</span></span>
-            <span v-else>Healthy:  <span class="text-negative">No</span></span>
+            <span v-if="healthy"><span class="text-medium text-secondary">Healthy: </span> <span class="text-accent">Yes</span></span>
+            <span v-else><span class="text-medium text-secondary">Healthy: </span>  <span class="text-negative">No</span></span>
             <div v-if="upTime">
               Up Time:
               <q-badge :color="getColorUptime(upTime)">
@@ -41,12 +41,9 @@
             </div>
           </q-item-section>
         </q-item>
-        <q-separator />
-      </q-card-section>
-      <q-card-section>
         <q-item>
           <q-item-section>
-            Network Validators Heartbeat
+            <span class="text-medium text-secondary">Network Validators Heartbeat</span>
             <div class="q-pt-md">
               <small>Heartbeat: </small>
               <span>{{ heartbeat }}</span>
@@ -70,7 +67,7 @@
           </q-item-section>
           <q-separator vertical />
           <q-item-section class="q-pl-md">
-            <div class="q-mb-md">Chains Default Bootstrapped</div>
+            <span class="text-medium text-secondary q-mb-md">Chains Default Bootstrapped</span>
             <div>
               <small>Error: </small>
               <span class="text-negative" v-if="error">{{ error }}</span>
@@ -87,6 +84,96 @@
             <div>
               <small>Contiguous Failures: </small>
               <span>{{ contiguousFailures2 }}</span>
+            </div>
+          </q-item-section>
+        </q-item>
+        <q-separator />
+        <q-item v-if="c">
+          <q-item-section>
+            <span class="text-medium text-secondary">C-Chain</span>
+            <div v-if="c.error">
+              <small>Error: </small>
+              <span class="text-negative">{{ c.error.message }}</span>
+            </div>
+            <div class="q-pt-md">
+              <small>Timestamp: </small>
+              <span>{{ getDateFormat(c.timestamp) }}</span>
+              <tooltip-style v-bind:text="'Timestamp is the timestamp of the last health check.'" />
+            </div>
+            <div>
+              <small>Duration: </small>
+              <span>{{ c.duration }}</span>
+              <tooltip-style v-bind:text="'Duration is the execution duration of the last health check.'" />
+            </div>
+            <div>
+              <small>Time Of First Failure: </small>
+              <span>{{ c.timeOfFirstFailure }}</span>
+              <tooltip-style v-bind:text="'Time of first failure is the time of the initial transitional failure.'" />
+            </div>
+            <div>
+              <small>Contiguous Failures: </small>
+              <span>{{ c.contiguousFailures }}</span>
+              <tooltip-style v-bind:text="'Contiguous failures is the number of fails that occurred in a row.'" />
+            </div>
+          </q-item-section>
+          <q-separator vertical />
+          <q-item-section class="q-pl-md">
+            <span class="text-medium text-secondary">X-Chain</span>
+            <div class="q-pt-md">
+              <small>Timestamp: </small>
+              <span>{{ getDateFormat(x.timestamp) }}</span>
+              <tooltip-style v-bind:text="'Timestamp is the timestamp of the last health check.'" />
+            </div>
+            <div v-if="x.error">
+              <small>Error: </small>
+              <span class="text-negative">{{ x.error.message }}</span>
+            </div>
+             <div>
+              <small>Duration: </small>
+              <span>{{ x.duration }}</span>
+            </div>
+            <div>
+              <small>Time Of First Failure: </small>
+              <span>{{ x.timeOfFirstFailure }}</span>
+            </div>
+            <div>
+              <small>Contiguous Failures: </small>
+              <span>{{ x.contiguousFailures }}</span>
+            </div>
+          </q-item-section>
+        </q-item>
+        <q-separator />
+        <q-item v-if="p">
+          <q-item-section>
+            <span class="text-medium text-secondary">P-Chain</span>
+              <div>
+                <small>Percent Connected: </small> {{ p.message.percentConnected }} %
+                <q-linear-progress stripe size="20px" :value="p.message.percentConnected" color="purple">
+                </q-linear-progress>
+              </div>
+            <div v-if="p.error">
+              <small>Error: </small>
+              <span class="text-negative">{{ p.error.message }}</span>
+            </div>
+            <div class="q-pt-md">
+              <small>Timestamp: </small>
+              <span>{{ getDateFormat(p.timestamp) }}</span>
+              <tooltip-style v-bind:text="'Timestamp is the timestamp of the last health check.'" />
+            </div>
+            <div>
+              <small>Duration: </small>
+              <span>{{ p.duration }}</span>
+              <tooltip-style v-bind:text="'Duration is the execution duration of the last health check.'" />
+            </div>
+            <div>
+              <small>Time Of First Failure: </small>
+              <span>{{ p.timeOfFirstFailure }}</span>
+              <tooltip-style v-bind:text="'Time of first failure is the time of the initial transitional failure.'" />
+            </div>
+            <div>
+              <small>Contiguous Failures: </small>
+              <span>{{ p.contiguousFailures }}</span>
+              <tooltip-style v-bind:text="'Contiguous failures is the number of fails that occurred in a row.'" />
             </div>
           </q-item-section>
         </q-item>
@@ -163,6 +250,36 @@ export default {
         return ''
       }
     },
+    c: function () {
+      try {
+        const res = this.nodeHealthInfo
+          .checks
+          .C
+        return res
+      } catch (err) {
+        return ''
+      }
+    },
+    p: function () {
+      try {
+        const res = this.nodeHealthInfo
+          .checks
+          .P
+        return res
+      } catch (err) {
+        return ''
+      }
+    },
+    x: function () {
+      try {
+        const res = this.nodeHealthInfo
+          .checks
+          .X
+        return res
+      } catch (err) {
+        return ''
+      }
+    },
     duration: function () {
       try {
         const h = this.nodeHealthInfo
@@ -232,6 +349,9 @@ export default {
     getUpTime (val) {
       if (!val) return
       return round(val * 100, 1000)
+    },
+    getDateFormat (val) {
+      return datePickerFormat(val)
     },
     getColorUptime (val) {
       if (val >= 0.6) return 'green'

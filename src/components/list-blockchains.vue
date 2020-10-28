@@ -50,18 +50,20 @@ export default {
     }),
     async onSelectBlockchain (blockchain) {
       this.$store.commit(SET_CURRENT_BLOCKCHAIN, { blockchain })
-      this.$store.commit(SET_SUBNET_ID, { subnetID: blockchain.subnetID })
-      await Promise.all([
-        this.getValidators({
-          subnetID: blockchain.subnetID,
-          endpoint: this.networkEndpoint.url,
-          isInit: false
-        }),
-        this.getPendingValidators({
-          subnetID: blockchain.subnetID,
-          endpoint: this.networkEndpoint.url
-        })
-      ])
+      if (this.subnetID !== blockchain.subnetID) {
+        this.$store.commit(SET_SUBNET_ID, { subnetID: blockchain.subnetID })
+        await Promise.all([
+          this.getValidators({
+            subnetID: blockchain.subnetID,
+            endpoint: this.networkEndpoint.url,
+            isInit: false
+          }),
+          this.getPendingValidators({
+            subnetID: blockchain.subnetID,
+            endpoint: this.networkEndpoint.url
+          })
+        ])
+      }
     }
   }
 }

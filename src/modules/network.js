@@ -43,30 +43,14 @@ export const _getTxApi = async (id) => {
 
 export const _getAssetPrice = async (id) => {
   try {
-    const res = await getSecondApi(id)
+    const res = await getApi(id)
     return res
   } catch (err) {
-    try {
-      const res = await getFirstApi(id)
-      return res
-    } catch (err) {
-      return null
-    }
+    return null
   }
 }
 
-async function getFirstApi (id) {
-  const req = await axios
-    .get(network.coinApiBase + id)
-
-  if (!req.data) {
-    throw new Error()
-  }
-
-  return req.data[0].price_usd
-}
-
-async function getSecondApi () {
+async function getApi () {
   const req2 = await axios
     .get('https://api.coingecko.com/api/v3/coins/avalanche-2')
 
@@ -115,6 +99,24 @@ export const request = async (endpoint, body) => {
       }
     }
   }
+}
+
+export const _getCHeight = async ({ endpoint, bcID, params = [] }) => {
+  axios.defaults.headers[c.cacheControlHeader] = c.cacheControlValue
+  const response = await request(endpoint + c.evm(bcID), body(c.ethBlockNumber, params))
+  return response
+}
+
+export const _getCNetworkVersion = async ({ endpoint, bcID, params = [] }) => {
+  axios.defaults.headers[c.cacheControlHeader] = c.cacheControlValue
+  const response = await request(endpoint + c.evm(bcID), body(c.ethNetVersion, params))
+  return response
+}
+
+export const _getCChainID = async ({ endpoint, bcID, params = [] }) => {
+  axios.defaults.headers[c.cacheControlHeader] = c.cacheControlValue
+  const response = await request(endpoint + c.evm(bcID), body(c.ethChainID, params))
+  return response
 }
 
 export const _getBlockchains = async ({ endpoint }) => {

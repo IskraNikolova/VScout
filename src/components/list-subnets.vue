@@ -59,6 +59,7 @@ export default {
     },
     async onSelectSubnet (subnet) {
       this.$store.commit(SET_CURRENT_SUBNET, { subnet })
+      if (this.subnetID === subnet.id) return
       this.$store.commit(SET_SUBNET_ID, { subnetID: subnet.id })
       await Promise.all([
         this.getValidators({

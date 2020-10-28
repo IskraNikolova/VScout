@@ -46,7 +46,7 @@
         <div id="f-size12">
           <span class="text-medium">VM ID</span>
           <div class="text-secondary" style="max-width: 360px;cursor: pointer;" @click="goToDoc(currentBlockchain.vmDocumentation)">
-            {{ currentBlockchain.vmID ?  currentBlockchain.vmID : currentBlockchain.vmName }}
+            {{ currentBlockchain.vmID }} ({{ currentBlockchain.vmName }})
           </div>
         </div>
       </div>
@@ -70,6 +70,7 @@
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-2 col-xs-10">
         <div v-if="isBlockchainView">
+          <!--<EVM-info v-bind:bcID="currentBlockchain.id" v-if="currentBlockchain.vmName === 'evm'"/>-->
           <div id="f-size12" class="q-pb-md text-medium">ASSETS</div>
             <div class="q-pb-md q-pr-md ">
               <span class="text-h6 text-secondary">
@@ -182,8 +183,9 @@ export default {
   components: {
     AnimatedNumber,
     SubnetBlockchains,
-    TooltipStyle: () => import('components/tooltip-style'),
-    AssetInfoDialog: () => import('components/dialogs/asset-info-dialog')
+    // EVMInfo: () => import('components/evm-info.vue'), not work with new instance on EVM
+    TooltipStyle: () => import('components/tooltip-style.vue'),
+    AssetInfoDialog: () => import('components/dialogs/asset-info-dialog.vue')
   },
   data () {
     return {
