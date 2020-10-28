@@ -76,11 +76,9 @@ import {
 async function initApp (
   { dispatch, getters }) {
   try {
-    Promise.all([
-      dispatch(GET_BLOCKCHAINS, {}),
-      dispatch(GET_SUBNETS, {})
-    ])
     await Promise.all([
+      dispatch(GET_BLOCKCHAINS, {}),
+      dispatch(GET_SUBNETS, {}),
       dispatch(GET_AVAX_PRICE),
       dispatch(INIT_ENDPOINT),
       dispatch(GET_NODE_INFO),
@@ -112,7 +110,7 @@ async function initApp (
       ])
     } catch (err) {
     }
-  }, 20000)
+  }, 60000)
 }
 
 async function initEndpoint (
