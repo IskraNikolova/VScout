@@ -22,7 +22,7 @@
         <div id="f-size12">
           <span class="text-medium">Version</span>
           <span class="text-secondary">
-            {{ nodeInfo.nodeVersion }}
+            {{ nodeInfo.version ? nodeInfo.version : nodeInfo.nodeVersion}}
           </span>
         </div>
       </div>

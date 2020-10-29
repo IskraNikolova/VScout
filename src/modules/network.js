@@ -129,6 +129,70 @@ export const _getHeight = async ({ endpoint }) => {
   return response
 }
 
+export const _getDefHeight = async () => {
+  try {
+    const req = await axios
+      .get('http://localhost:5000/api/height')
+    return {
+      data: {
+        result: req.data
+      }
+    }
+  } catch (err) {
+    return {
+      data: {
+        error: err.message
+      }
+    }
+  }
+}
+
+export const _getDefValidators = async () => {
+  try {
+    const req = await axios
+      .get('http://localhost:5000/api/validators')
+    return req.data
+  } catch (err) {
+    return {
+      error: err.message
+    }
+  }
+}
+
+export const _getDefHealth = async () => {
+  try {
+    const req = await axios
+      .get('http://localhost:5000/api/node/health')
+    return {
+      data: {
+        result: req.data
+      }
+    }
+  } catch (err) {
+    return {
+      data: {
+        error: err.message
+      }
+    }
+  }
+}
+
+export const _getDefInfo = async () => {
+  try {
+    const req = await axios
+      .get('http://localhost:5000/api/node/info')
+    return {
+      data: {
+        result: req.data
+      }
+    }
+  } catch (err) {
+    return {
+      error: err.message
+    }
+  }
+}
+
 export const _getBlockchainStatus = async ({ endpoint, params }) => {
   const response = await request(endpoint + c.platformBc, body(c.getBlockchainStatus, params))
   return response

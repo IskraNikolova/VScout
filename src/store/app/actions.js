@@ -34,16 +34,17 @@ import {
 
 import {
   _health,
+  _getDefInfo,
   _getPeers,
   _getNodeId,
   _getHeight,
+  _getDefHeight,
   _validates,
   _getSubnets,
   _getAssetPrice,
   _getNetworkID,
-  // _getStake,
-  // _getTotalStake,
   _getValidators,
+  _getDefValidators,
   _getNetworkName,
   _getNodeVersion,
   _getBlockchains,
@@ -77,12 +78,11 @@ async function initApp (
   { dispatch, getters }) {
   try {
     await Promise.all([
+      dispatch(INIT_ENDPOINT),
       dispatch(GET_BLOCKCHAINS, {}),
       dispatch(GET_SUBNETS, {}),
       dispatch(GET_AVAX_PRICE),
-      dispatch(INIT_ENDPOINT),
-      dispatch(GET_NODE_INFO),
-      dispatch(GET_NODE_HEALTH),
+      dispatch(GET_NODE_INFO, {}),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(GET_HEIGHT, {}),
       dispatch(GET_CURRENT_SUPPLY),
@@ -90,8 +90,7 @@ async function initApp (
       dispatch(GET_STAKING, {
         subnetID: getters.subnetID,
         isInit: true
-      }),
-      dispatch(GET_PENDING_STAKING, {})
+      })
     ]).then(() => dispatch(SUBSCRIBE_TO_EVENT))
   } catch (err) {
   }
@@ -99,18 +98,17 @@ async function initApp (
   setInterval(async () => {
     try {
       await Promise.all([
+        dispatch(GET_AVAX_PRICE),
         dispatch(GET_STAKING, {
           subnetID: getters.subnetID,
           isInit: false
         }),
-        dispatch(GET_PENDING_STAKING, {}),
-        dispatch(GET_AVAX_PRICE),
-        dispatch(GET_NODE_HEALTH),
-        dispatch(GET_HEIGHT, {})
+        dispatch(GET_HEIGHT, {}),
+        dispatch(GET_NODE_INFO, {})
       ])
     } catch (err) {
     }
-  }, 60000)
+  }, 20000)
 }
 
 async function initEndpoint (
@@ -125,49 +123,50 @@ async function initEndpoint (
   if (response.data.error) {
     const endpoint = network.endpointUrls[0]
     commit(SET_ENDPOINT, { endpoint })
-
-    const response = await _getNodeId({
-      endpoint: endpoint.url
-    })
-
-    if (response.data.error) return
-
-    const nodeID = response.data.result.nodeID
-    commit(GET_NODE_ID, { nodeID })
   }
-
-  const nodeID = response.data.result.nodeID
-  commit(GET_NODE_ID, { nodeID })
 }
 
 async function getValidators (
-  { commit, getters },
+  { commit, getters, dispatch },
   {
     subnetID = network.defaultSubnetID,
     endpoint = getters.networkEndpoint.url,
-    isInit = true
+    isInit = true,
+    isIgnore = true
   }) {
-  const response = await _getValidators({
-    subnetID,
-    endpoint
-  })
+  let response = {}
+  let pendingValidators = null
 
-  // const stakeResponse = await _getTotalStake({
-  //   endpoint: 'https://api.avax.network:443/'
-  // })
+  if (endpoint.includes('vscout') && isIgnore) {
+    const res = await _getDefValidators()
+    if (res.error) {
+      dispatch(GET_STAKING, { subnetID, endpoint, isInit, isIgnore: false })
+      commit(UPDATE_UI, { doesItConnect: true })
+      return null
+    }
 
-  // let totalStake = 0
-  // if (!stakeResponse.data.error) {
-  //   totalStake = stakeResponse.data.result.stake
-  // }
+    response = res.validators
 
-  if (response.data.error) {
-    commit(UPDATE_UI, { doesItConnect: true })
-    return null
+    pendingValidators = {
+      data: {
+        result: res.pendingValidators
+      }
+    }
+  } else {
+    response = await _getValidators({
+      subnetID,
+      endpoint
+    })
+    if (response.data.error) {
+      commit(UPDATE_UI, { doesItConnect: true })
+      return null
+    }
+    response = response.data.result
   }
+
   commit(UPDATE_UI, { doesItConnect: false })
 
-  let { validators, delegators } = response.data.result
+  let { validators, delegators } = response
 
   if (typeof validators === 'undefined' ||
     validators === null) {
@@ -180,13 +179,6 @@ async function getValidators (
     getters.defaultValidators,
     isInit
   )
-  // const addresses = res.validators.map(v => v.rewardOwner.addresses.join(','))
-
-  // const stakeRes = await _getStake({
-  //   endpoint: 'https://api.avax.network:443/',
-  //   params: { addresses: addresses.slice(0, 223) }
-  // })
-  // console.log(stakeRes)
 
   commit(SET_STAKED_AVA, {
     all: res.allStake,
@@ -215,20 +207,25 @@ async function getValidators (
       defaultValidators: res.validators
     })
   }
+  dispatch(GET_PENDING_STAKING, { pendingValidators })
 }
 
 async function getPValidators (
   { commit, getters },
   {
     subnetID = getters.subnetID,
-    endpoint = getters.networkEndpoint.url
+    endpoint = getters.networkEndpoint.url,
+    pendingValidators
   }) {
-  const response = await _getPendingValidators({
-    subnetID,
-    endpoint: 'https://api.avax.network:443/'
-  })
+  let response = pendingValidators
+  if (!pendingValidators) {
+    response = await _getPendingValidators({
+      subnetID,
+      endpoint
+    })
 
-  if (response.data.error) return null
+    if (response.data.error) return null
+  }
 
   let { validators, delegators } = response.data.result
 
@@ -248,12 +245,19 @@ async function getPValidators (
 }
 
 async function getHeight (
-  { commit, getters },
-  { endpoint = getters.networkEndpoint.url }) {
-  const response = await _getHeight({
-    endpoint
-  })
-
+  { commit, getters, dispatch },
+  { endpoint = getters.networkEndpoint.url, isIgnore = true }) {
+  let response = {}
+  if (endpoint.includes('vscout') && isIgnore) {
+    response = await _getDefHeight()
+    if (response.data.error) {
+      dispatch(GET_HEIGHT, { endpoint, isIgnore: false })
+    }
+  } else {
+    response = await _getHeight({
+      endpoint
+    })
+  }
   if (typeof response === 'undefined' ||
     response === null) return
 
@@ -318,45 +322,67 @@ async function getNodeId (
 }
 
 async function getNodeInfo (
-  { getters, commit }) {
-  const resNetworkID = await _getNetworkID({
-    endpoint: getters.networkEndpoint.url
-  })
-  if (resNetworkID.data.error) {
-    commit(UPDATE_UI, { doesItConnect: true })
-    return
+  { getters, commit, dispatch }, { isIgnore = true }) {
+  if (getters.networkEndpoint.url.includes('vscout') && isIgnore) {
+    const response = await _getDefInfo()
+    if (response.error) {
+      dispatch(GET_NODE_INFO, { isIgnore: false })
+      commit(UPDATE_UI, { doesItConnect: true })
+      return
+    }
+
+    const nodeInfo = {
+      health: response.data.result.health,
+      nodeID: response.data.result.nodeID,
+      networkID: response.data.result.networkID,
+      networkName: response.data.result.networkName,
+      nodeVersion: response.data.result.version,
+      peers: response.data.result.peers
+    }
+    commit(GET_NODE_ID, { nodeID: nodeInfo.nodeID })
+    commit(GET_NODE_HEALTH, {
+      nodeID: nodeInfo.nodeID,
+      nodeHealth: nodeInfo.health
+    })
+    commit(GET_NODE_INFO, { nodeInfo })
+  } else {
+    try {
+      const resAll = await Promise.all([
+        _getNetworkID({
+          endpoint: getters.networkEndpoint.url
+        }),
+        _getNetworkName({
+          endpoint: getters.networkEndpoint.url
+        }),
+        _getNodeVersion({
+          endpoint: getters.networkEndpoint.url
+        }),
+        _getPeers({
+          endpoint: getters.networkEndpoint.url
+        })
+      ])
+      commit(UPDATE_UI, { doesItConnect: false })
+      const nodeInfo = {}
+      resAll
+        .map(r => r.data.result)
+        .forEach(res => {
+          if (Object.keys(res)[0] === 'numPeers') {
+            nodeInfo.peers = {
+              peers: Object.values(res)[1],
+              numPeers: Object.values(res)[0]
+            }
+          } else {
+            nodeInfo[Object.keys(res)] = Object.values(res)[0]
+          }
+        })
+      commit(GET_NODE_INFO, { nodeInfo })
+      dispatch(GET_NODE_HEALTH)
+      dispatch(GET_NODE_ID)
+    } catch (err) {
+      console.log(err)
+      commit(UPDATE_UI, { doesItConnect: true })
+    }
   }
-
-  const resNetworkName = await _getNetworkName({
-    endpoint: getters.networkEndpoint.url
-  })
-  if (resNetworkName.data.error) {
-    commit(UPDATE_UI, { doesItConnect: true })
-    return
-  }
-
-  const resNodeVersion = await _getNodeVersion({
-    endpoint: getters.networkEndpoint.url
-  })
-  if (resNodeVersion.data.error) {
-    commit(UPDATE_UI, { doesItConnect: true })
-    return
-  }
-
-  const resNodePeers = await _getPeers({
-    endpoint: getters.networkEndpoint.url
-  })
-  if (resNodePeers.data.error) return
-
-  commit(UPDATE_UI, { doesItConnect: false })
-  const nodeInfo = {
-    networkID: resNetworkID.data.result.networkID,
-    networkName: resNetworkName.data.result.networkName,
-    nodeVersion: resNodeVersion.data.result.version,
-    peers: { peers: resNodePeers.data.result.peers, numPeers: resNodePeers.data.result.numPeers }
-  }
-
-  commit(GET_NODE_INFO, { nodeInfo })
 }
 
 function getAvaxPrice (

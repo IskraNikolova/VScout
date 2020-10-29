@@ -147,8 +147,8 @@
           <q-item-section>
             <span class="text-medium text-secondary">P-Chain</span>
               <div>
-                <small>Percent Connected: </small> {{ p.message.percentConnected }} %
-                <q-linear-progress stripe size="20px" :value="p.message.percentConnected" color="purple">
+                <small>Percent Connected: </small> {{ getPercent(p.message.percentConnected) }} %
+                <q-linear-progress stripe size="15px" :value="p.message.percentConnected" color="purple">
                 </q-linear-progress>
               </div>
             <div v-if="p.error">
@@ -346,6 +346,10 @@ export default {
       open: OPEN_NODE_HEALTH,
       close: CLOSE_NODE_HEALTH
     }),
+    getPercent (val) {
+      if (!val) return
+      return round(val * 100, 1000)
+    },
     getUpTime (val) {
       if (!val) return
       return round(val * 100, 1000)
