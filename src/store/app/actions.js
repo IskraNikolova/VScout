@@ -137,7 +137,7 @@ async function getValidators (
   let response = {}
   let pendingValidators = null
 
-  if (endpoint.includes('vscout') && isIgnore) {
+  if (endpoint.includes('vscout') && isIgnore && subnetID === network.defaultSubnetID) {
     const res = await _getDefValidators()
     if (res.error) {
       dispatch(GET_STAKING, { subnetID, endpoint, isInit, isIgnore: false })
