@@ -12,7 +12,7 @@ app.listen(config.port, () => console.log(`Server start on port ${config.port}`)
 
 const endpoints = [
   'https://api.avax.network:443',
-  'http://vscout.io/vscout-api'
+  'https://vscout.io/vscout-api'
 ]
 let index = 0
 let endpoint = endpoints[index]

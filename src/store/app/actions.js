@@ -108,7 +108,7 @@ async function initApp (
       ])
     } catch (err) {
     }
-  }, 20000)
+  }, 15000)
 }
 
 async function initEndpoint (
