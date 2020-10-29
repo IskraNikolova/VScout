@@ -2,6 +2,7 @@ import axios from 'axios'
 
 import { c } from './../utils/constants'
 const { network } = require('./config').default
+const server = 'https://vscout.io/dev/'
 
 let id = 1
 axios.defaults.headers[c.contentTypeHeader] = c.contentTypeValue
@@ -132,7 +133,7 @@ export const _getHeight = async ({ endpoint }) => {
 export const _getDefHeight = async () => {
   try {
     const req = await axios
-      .get('http://localhost:5000/api/height')
+      .get(server + 'api/height')
     return {
       data: {
         result: req.data
@@ -150,7 +151,7 @@ export const _getDefHeight = async () => {
 export const _getDefValidators = async () => {
   try {
     const req = await axios
-      .get('http://localhost:5000/api/validators')
+      .get(server + 'api/validators')
     return req.data
   } catch (err) {
     return {
@@ -162,7 +163,7 @@ export const _getDefValidators = async () => {
 export const _getDefHealth = async () => {
   try {
     const req = await axios
-      .get('http://localhost:5000/api/node/health')
+      .get(server + 'api/node/health')
     return {
       data: {
         result: req.data
@@ -180,7 +181,7 @@ export const _getDefHealth = async () => {
 export const _getDefInfo = async () => {
   try {
     const req = await axios
-      .get('http://localhost:5000/api/node/info')
+      .get(server + 'api/node/info')
     return {
       data: {
         result: req.data
