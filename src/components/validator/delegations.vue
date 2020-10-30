@@ -11,7 +11,7 @@
       <div class="col-8"><span class="text-subtitle2"><small style="opacity: 0.8;">OWNER</small></span></div>
       <div class="col-4"><span class="text-subtitle2"><small style="opacity: 0.8;">STAKE AMOUNT</small></span></div>
     </div>
-    <q-separator class="q-pb-xs q-mb-sm" style="width: 100%;"/>
+    <q-separator class="q-mb-sm" dark style="width: 100%;"/>
     <div v-for="(delegation, i) in delegators" :key="i" class="row" style="min-width: 550px;">
       <div class="col-8" @click="copyToClipboard(delegationRewardOwner(delegation.rewardOwner))">
         {{ delegationRewardOwner(delegation.rewardOwner) }}
