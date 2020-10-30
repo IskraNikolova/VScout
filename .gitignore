@@ -33,3 +33,7 @@ yarn-error.log*
 *.sln
 
 .env
+/server/validators.json
+/server/node-info.json
+/server/height.json
+/server/logs.json
