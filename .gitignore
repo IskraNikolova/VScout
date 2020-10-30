@@ -37,3 +37,7 @@ yarn-error.log*
 /server/node-info.json
 /server/height.json
 /server/logs.json
+/server/height.json
+/server/logs.json
+/server/node-info.json
+/server/validators.json
