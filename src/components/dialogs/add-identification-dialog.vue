@@ -306,7 +306,7 @@ export default {
           this.dialog = false
           this.isPaidSuccess = true
         } else {
-          this.onFailed('Verification Transaction Failed!')
+          this.onFailed('Verification Transaction Failed')
         }
       } catch (err) {
         this.onFailed(`Something Wrong! ${err.message}`)
