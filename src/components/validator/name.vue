@@ -1,16 +1,14 @@
 <template>
   <q-item-label>
     <div class="text-medium q-pb-sm" style="font-size: 20px;" v-if="name !== nodeID">
-      <a v-if="link" :href="link" style="text-decoration: none;">{{ name }}</a>
+      <a v-if="link" :href="link" style="text-decoration: none;" class="text-purple">{{ name }}</a>
       <span v-else class="text-secondary">{{ name }}</span>
     </div>
     <div>
-    [{{ nodeID }}]
-    <q-icon
-      @click="copyToClipboard(nodeID)"
-      color="grey"
-      name="file_copy"
-    />
+    <span style="cursor: pointer;" @click="copyToClipboard(nodeID)">
+      [{{ nodeID }}]
+      <tooltip-style v-bind:text="'Copy To Clipboard'" />
+    </span>
     </div>
   </q-item-label>
 </template>
@@ -35,6 +33,9 @@ export default {
       type: String,
       required: false
     }
+  },
+  components: {
+    TooltipStyle: () => import('components/tooltip-style')
   },
   methods: {
     copyToClipboard (id) {

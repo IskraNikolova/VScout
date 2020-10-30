@@ -2,7 +2,7 @@
   <div>
     <q-linear-progress stripe size="50px" :value="progress" color="purple">
       <div class="absolute-full text-black progressBadge">
-        <span class="text-orange text-bold" style="font-size: 15px;">{{ progressBadge }} %</span>
+        <span class="text-white text-bold" style="font-size: 15px;">{{ progressBadge }} %</span>
       </div>
     </q-linear-progress>
   </div>

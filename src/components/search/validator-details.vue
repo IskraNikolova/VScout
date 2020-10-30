@@ -11,15 +11,15 @@
             <owner v-bind:owner="rewardOwner" v-if="rewardOwner"/>
             <q-item-label v-if="validator.weight">
               <small class="text-grey">
-              Weight: <span class="text-accent">{{ validator.weight }}</span>
+                Weight: <span class="text-accent">{{ validator.weight }}</span>
               </small>
             </q-item-label>
           </q-item-section>
         </q-item>
-        <div class="col-3 q-mt-md" v-if="!validator.weight">
+        <div class="col-3" v-if="!validator.weight">
           <span class="text-subtitle2 q-mr-xs"><small style="opacity: 0.8;">UPTIME</small></span>
           <q-badge :color="getColorUptime(validator.uptime)" class="text-medium" style="font-size: 16px;padding: 7px;">
-            <span style="margin: auto;">{{ getUpTime(validator.uptime) }} %</span>
+            <span style="margin: auto;">{{ getUpTime(validator.uptime) }}%</span>
           </q-badge>
           <br />
           <span class="text-subtitle2"><small style="opacity: 0.8;">STAKED BY</small></span>
@@ -29,7 +29,7 @@
           <br />
           <span class="text-subtitle2" v-if="!validator.weight"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
           <span class="q-pl-xs" v-if="validator.percent !== 'NaN'">
-            {{ validator.percent }} <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">%</span>
+            {{ validator.percent }}<span class="text-accent text-medium" style="font-size: 12px;">%</span>
           </span>
         </div>
       </div>
@@ -39,33 +39,36 @@
         v-bind:link="validator.link"
         v-bind:nodeID="validator.nodeID"
       />
-      <div><q-item>{{ validator.bio }}</q-item></div>
+      <div style="max-width: 1130px;" class="q-pl-sm q-pt-sm">{{ validator.bio }}</div>
       <div class="row q-gutter-xl">
         <div class="col-5">
           <stake
-            class="q-mt-md"
+            class="q-mt-md my-card text-white"
+            style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%)"
             v-bind:stakeAmount="stakeAmount"
             v-bind:delegateStake="delegateStake"
             v-bind:totalStakeAmount="totalStakeAmount"
           />
           <delegate
+            class="q-mt-md my-card text-white"
+            style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%)"
             v-bind:validator="validator"
-            class="q-mt-md"
           />
-          <div>
-            <div class="text-grey q-pt-xl">Progress (%)</div>
+          <div class="q-mt-md q-pa-md my-card text-white"
+          style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%)">
+            <div class="q-mb-sm">Progress (%)</div>
             <progress-bar-validate-session
               v-bind:startTime="validator.startTime"
               v-bind:endTime="validator.endTime"
             />
             <div class="row">
               <div class="col-6">
-                <small class="text-grey text-bold">Start Time</small>
+                <small class="text-bold">Start Time</small>
                 <br />
                 <small>{{ formatDate(validator.startTime) }}</small>
               </div>
               <div class="col-6" style="text-align: right;">
-                <small class="text-grey text-bold">End Time</small>
+                <small class="text-bold">End Time</small>
                 <br />
                 <small>{{ formatDate(validator.endTime) }}</small>
               </div>
@@ -74,12 +77,14 @@
         </div>
         <div class="col-5">
           <reward
-            class="q-mt-md"
+            class="q-mt-md my-card text-white"
+            style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%)"
             v-bind:validator="validator"
           />
           <delegations
+            class="q-mt-md my-card text-white q-pa-md"
+            style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%);"
             v-bind:delegators="delegators"
-            class="q-mt-md"
           />
         </div>
       </div>

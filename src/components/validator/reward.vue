@@ -1,7 +1,9 @@
 <template>
-  <q-card flat bordered>
+  <q-card
+   flat
+  >
     <q-card-section>
-      <div class="q-mb-md text-medium text-secondary">REWARD (AVAX)</div>
+      <div class="q-mb-md text-medium text-purple">REWARD (AVAX)</div>
       <div>
       <div>
           <span class="text-subtitle2"><small style="opacity: 0.8;">POTENTIAL REWARD</small></span>
@@ -13,7 +15,7 @@
           <span class="on-right">{{ potentialRewardFromDelegators() }}</span>
           <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
       </div>
-      <q-separator class="q-mt-xs q-mb-xs" style="width: 180px;"/>
+      <q-separator class="q-mt-xs q-mb-xs" dark />
       <div>
           <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
           <span class="on-right">{{ totalReward() }}</span>

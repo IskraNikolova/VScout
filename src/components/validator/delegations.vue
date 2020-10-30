@@ -1,10 +1,12 @@
 <template>
-  <div class="q-pt-md">
-    <div class="q-mb-md text-medium text-secondary">
-    <span class="text-orange" style="font-size: 18px;">{{ delegatorsCount }} </span>
+  <div
+    flat
+  >
+    <div class="q-mb-md text-medium text-purple">
+    <span class="text-white" style="font-size: 18px;">{{ delegatorsCount }} </span>
     DELEGATIONS
     </div>
-    <q-scroll-area style="height: 250px;">
+    <q-scroll-area style="height: 230px;">
     <div class="row">
       <div class="col-8"><span class="text-subtitle2"><small style="opacity: 0.8;">OWNER</small></span></div>
       <div class="col-4"><span class="text-subtitle2"><small style="opacity: 0.8;">STAKE AMOUNT</small></span></div>

@@ -1,7 +1,9 @@
 <template>
-  <q-card flat bordered>
+  <q-card
+  flat
+  >
     <q-card-section>
-    <div class="q-mb-md text-medium text-secondary">STAKE (AVAX)</div>
+    <div class="q-mb-md text-medium text-purple">STAKE (AVAX)</div>
     <div>
         <span class="text-subtitle2"><small style="opacity: 0.8;">OWN</small></span>
         <span class="on-right text-medium text-h6">{{ getFormatAva(stakeAmount) }}</span>
@@ -12,7 +14,7 @@
         <span class="on-right">{{ getFormatAva(delegateStake) }}</span>
         <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
     </div>
-    <q-separator class="q-mt-xs q-mb-xs" style="width: 180px;"/>
+    <q-separator class="q-mt-xs q-mb-xs" dark />
     <div>
         <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
         <span class="on-right">{{ getFormatAva(totalStakeAmount) }}</span>

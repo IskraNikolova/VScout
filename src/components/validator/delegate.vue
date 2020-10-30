@@ -1,8 +1,10 @@
 <template>
-  <q-card flat bordered>
+  <q-card
+    flat
+  >
     <q-card-section>
       <div class="row">
-        <div class="q-mb-md text-medium col-9 text-secondary">DELEGATE</div>
+        <div class="q-mb-md text-medium col-9 text-purple">DELEGATE</div>
         <div class="col-auto">
           <span class="text-accent text-medium" v-if="getBorderIsDelegatable()">
             AVAILABLE
