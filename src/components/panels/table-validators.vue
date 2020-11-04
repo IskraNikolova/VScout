@@ -512,6 +512,16 @@ export default {
         //   field: row => row.connected,
         //   headerClasses: 'text-medium'
         // },
+        // {
+        //   name: 'duration',
+        //   align: 'left',
+        //   label: 'TIME DURATION',
+        //   field: row => getDuration(row.startTime, row.endTime),
+        //   format: (val, row) => `${val.humanize(true)}`,
+        //   style: 'font-size: 85%;',
+        //   sortable: true,
+        //   headerClasses: 'text-medium'
+        // },
         {
           name: 'startTime',
           align: 'left',
@@ -692,7 +702,7 @@ export default {
     },
     getBorderIsDelegatable (isMinimumAmountForStake, remainingCapacity) {
       const temp = {
-        true: 'green',
+        true: '#588da8',
         false: '#e8e8e8'
       }
       return temp[isMinimumAmountForStake && remainingCapacity > 25]

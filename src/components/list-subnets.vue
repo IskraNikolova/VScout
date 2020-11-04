@@ -25,8 +25,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import {
   GET_STAKING,
-  SET_SUBNET_ID,
-  GET_PENDING_STAKING
+  SET_SUBNET_ID
 } from './../store/app/types'
 
 import {
@@ -39,17 +38,14 @@ export default {
     ...mapGetters([
       'subnets',
       'subnetID',
-      'validators',
       'blockchains',
       'blockchainByID',
-      'networkEndpoint',
-      'pendingValidators'
+      'networkEndpoint'
     ])
   },
   methods: {
     ...mapActions({
-      getValidators: GET_STAKING,
-      getPendingValidators: GET_PENDING_STAKING
+      getValidators: GET_STAKING
     }),
     blockchainName (id) {
       if (!id) return
@@ -61,17 +57,11 @@ export default {
       this.$store.commit(SET_CURRENT_SUBNET, { subnet })
       if (this.subnetID === subnet.id) return
       this.$store.commit(SET_SUBNET_ID, { subnetID: subnet.id })
-      await Promise.all([
-        this.getValidators({
-          subnetID: subnet.id,
-          endpoint: this.networkEndpoint.url,
-          isInit: false
-        }),
-        this.getPendingValidators({
-          subnetID: subnet.id,
-          endpoint: this.networkEndpoint.url
-        })
-      ])
+      await this.getValidators({
+        subnetID: subnet.id,
+        endpoint: this.networkEndpoint.url,
+        isInit: false
+      })
     }
   }
 }

@@ -115,39 +115,48 @@
               Weight: <span class="text-accent">{{ validator.weight }}</span>
             </small>
           </q-item-label>
+          <q-separator class="q-mt-md q-mb-md"/>
           <q-item-label>
+            <div>
             <span v-if="validator.uptime > 0">
-              <span class="q-mr-xs q-mt-xl">Uptime</span>
+            <span class="text-subtitle2">
+              <small style="opacity: 0.8;">UPTIME</small>
+            </span>
+            <span class="q-pl-xs">
               <q-badge :color="getColorUptime(validator.uptime)">
                 {{ getUpTime(validator.uptime) }} %
               </q-badge>
             </span>
+            <br />
+            </span>
+            <span class="text-subtitle2">
+              <small style="opacity: 0.8;">STAKED BY</small>
+            </span>
+            <span class="q-pl-xs">
+              {{ stakedBy(validator.startTime) }}
+            </span>
+            <br />
+            <span class="text-subtitle2">
+              <small style="opacity: 0.8;">NETWORK SHARE</small>
+            </span>
+            <span class="q-pl-xs" v-if="validator.percent !== 'NaN'">
+              {{ validator.percent }}
+              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;"> %</span>
+            </span>
+          </div>
           </q-item-label>
         </q-item-section>
       </q-item>
+      <q-separator v-if="validator.bio"/>
       <website
-        class="q-pr-md"
+        class="q-pr-sm q-pl-sm"
         v-if="validator.website"
         v-bind:website ="validator.website"
         v-bind:link="validator.link"
         v-bind:nodeID="validator.nodeID"
       />
-      <div class="q-pl-md">
-        <span class="text-subtitle2">
-          <small style="opacity: 0.8;">STAKED BY</small>
-        </span>
-        <span class="q-pl-xs">
-          {{ stakedBy(validator.startTime) }}
-        </span>
-        <br />
-        <span class="text-subtitle2">
-          <small style="opacity: 0.8;">NETWORK SHARE</small>
-        </span>
-        <span class="q-pl-xs" v-if="validator.percent !== 'NaN'">
-          {{ validator.percent }}
-          <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;"> %</span>
-        </span>
-      </div>
+      <div style="max-width: 330px;" class="q-pl-sm q-pt-md q-pb-md">{{ validator.bio }}</div>
+      <q-separator/>
       <div class="row">
         <stake
           flat class="col-12"

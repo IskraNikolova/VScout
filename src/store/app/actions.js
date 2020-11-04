@@ -137,10 +137,19 @@ async function getValidators (
   let response = {}
   let pendingValidators = null
 
-  if (endpoint.includes('vscout') && isIgnore && subnetID === network.defaultSubnetID) {
+  if (
+    endpoint === network.endpointUrls[0].url &&
+    isIgnore &&
+    subnetID === network.defaultSubnetID
+  ) {
     const res = await _getDefValidators()
     if (res.error) {
-      dispatch(GET_STAKING, { subnetID, endpoint, isInit, isIgnore: false })
+      dispatch(GET_STAKING, {
+        subnetID,
+        endpoint,
+        isInit,
+        isIgnore: false
+      })
       commit(UPDATE_UI, { doesItConnect: true })
       return null
     }
@@ -248,7 +257,7 @@ async function getHeight (
   { commit, getters, dispatch },
   { endpoint = getters.networkEndpoint.url, isIgnore = true }) {
   let response = {}
-  if (endpoint.includes('vscout') && isIgnore) {
+  if (endpoint === network.endpointUrls[0].url && isIgnore) {
     response = await _getDefHeight()
     if (response.data.error) {
       dispatch(GET_HEIGHT, { endpoint, isIgnore: false })
@@ -323,7 +332,8 @@ async function getNodeId (
 
 async function getNodeInfo (
   { getters, commit, dispatch }, { isIgnore = true }) {
-  if (getters.networkEndpoint.url.includes('vscout') && isIgnore) {
+  console.log(getters.networkEndpoint.url, network.endpointUrls[0].url)
+  if (getters.networkEndpoint.url === network.endpointUrls[0].url && isIgnore) {
     const response = await _getDefInfo()
     if (response.error) {
       dispatch(GET_NODE_INFO, { isIgnore: false })

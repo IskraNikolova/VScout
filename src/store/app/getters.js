@@ -1,4 +1,6 @@
-const { network } = require('./../../modules/config').default
+const {
+  network
+} = require('./../../modules/config').default
 
 export function validators (state) {
   return state.validators

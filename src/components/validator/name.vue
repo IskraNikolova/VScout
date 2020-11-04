@@ -1,6 +1,6 @@
 <template>
   <q-item-label>
-    <div class="text-medium q-pb-sm" style="font-size: 20px;" v-if="name !== nodeID">
+    <div class="text-medium q-pb-md" style="font-size: 20px;" v-if="name !== nodeID">
       <a v-if="link" :href="link" style="text-decoration: none;" class="text-purple">{{ name }}</a>
       <span v-else class="text-secondary">{{ name }}</span>
     </div>
