@@ -332,7 +332,6 @@ async function getNodeId (
 
 async function getNodeInfo (
   { getters, commit, dispatch }, { isIgnore = true }) {
-  console.log(getters.networkEndpoint.url, network.endpointUrls[0].url)
   if (getters.networkEndpoint.url === network.endpointUrls[0].url && isIgnore) {
     const response = await _getDefInfo()
     if (response.error) {

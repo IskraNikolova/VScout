@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--gt-xs-->
-    <q-card flat class="gt-xs q-pl-xl q-pb-md q-ml-xl">
+    <q-card flat class="gt-xs q-pl-xl q-pb-md q-ml-xl q-pt-md">
       <div class="row">
         <q-item class="col-9">
           <avatar v-bind:avatar="avatar" style="cursor:pointer;" @click="onClick(validator.link)"/>
@@ -16,7 +16,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <div class="col-3" v-if="!validator.weight">
+        <div class="col-3 q-pt-sm" v-if="!validator.weight">
           <span class="text-subtitle2 q-mr-xs"><small style="opacity: 0.8;">UPTIME</small></span>
           <q-badge :color="getColorUptime(validator.uptime)" class="text-medium" style="font-size: 16px;padding: 7px;">
             <span style="margin: auto;">{{ getUpTime(validator.uptime) }}%</span>
@@ -39,7 +39,12 @@
         v-bind:link="validator.link"
         v-bind:nodeID="validator.nodeID"
       />
-      <div style="max-width: 1130px;" class="q-pl-sm q-pt-sm">{{ validator.bio }}</div>
+      <div style="max-width: 1130px;" class="q-pl-sm q-pt-sm">
+        <i v-if="!more">{{ validator.bio.substr(0, 240) }}</i>
+        <i v-else>{{ validator.bio }}</i>
+        <span v-if="validator.bio.length > 240 && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
+        <span v-if="validator.bio.length > 240 && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
+      </div>
       <div class="row q-gutter-xl">
         <div class="col-5">
           <stake
@@ -155,7 +160,12 @@
         v-bind:link="validator.link"
         v-bind:nodeID="validator.nodeID"
       />
-      <div style="max-width: 330px;" class="q-pl-sm q-pt-md q-pb-md">{{ validator.bio }}</div>
+      <div style="max-width: 330px;" class="q-pl-sm q-pt-md q-pb-md">
+        <i v-if="!more">{{ validator.bio.substr(0, 240) }}</i>
+        <i v-else>{{ validator.bio }}</i>
+        <span v-if="validator.bio.length > 240 && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
+        <span v-if="validator.bio.length > 240 && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
+      </div>
       <q-separator/>
       <div class="row">
         <stake
@@ -317,6 +327,11 @@ export default {
         openURL(link)
       } catch (err) {
       }
+    }
+  },
+  data () {
+    return {
+      more: false
     }
   }
 }
