@@ -40,10 +40,10 @@
         v-bind:nodeID="validator.nodeID"
       />
       <div style="max-width: 1130px;" class="q-pl-sm q-pt-sm">
-        <i v-if="!more">{{ validator.bio.substr(0, 240) }}</i>
+        <i v-if="!more">{{ getLessBio(validator.bio) }}</i>
         <i v-else>{{ validator.bio }}</i>
-        <span v-if="validator.bio.length > 240 && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
-        <span v-if="validator.bio.length > 240 && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
+        <span v-if="isEnav(validator.bio) && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
+        <span v-if="isEnav(validator.bio) && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
       </div>
       <div class="row q-gutter-xl">
         <div class="col-5">
@@ -161,10 +161,10 @@
         v-bind:nodeID="validator.nodeID"
       />
       <div style="max-width: 330px;" class="q-pl-sm q-pt-md q-pb-md">
-        <i v-if="!more">{{ validator.bio.substr(0, 240) }}</i>
+        <i v-if="!more">{{ getLessBio(validator.bio) }}</i>
         <i v-else>{{ validator.bio }}</i>
-        <span v-if="validator.bio.length > 240 && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
-        <span v-if="validator.bio.length > 240 && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
+        <span v-if="isEnav(validator.bio) && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
+        <span v-if="isEnav(validator.bio) && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
       </div>
       <q-separator/>
       <div class="row">
@@ -296,6 +296,14 @@ export default {
     }
   },
   methods: {
+    getLessBio (val) {
+      if (!val) return ''
+      return val.substr(0, 240)
+    },
+    isEnav (val) {
+      if (!val) return false
+      return val.length > 240
+    },
     stakedBy (date) {
       return fromNow(date)
     },
