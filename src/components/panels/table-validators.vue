@@ -144,7 +144,7 @@
               <q-img :src="col.value" :style="'margin-left: -15px;width: 35vw;max-width: 35px;min-height: 35px;max-height: 35px;border-radius: 5px;border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 5px;'">
                 <template v-slot:error>
                   <div class="bg-white text-grey absolute-center">
-                    ?
+                    <q-img src="~assets/image.jpg" style="width: 35vw;max-width: 35px;" />
                   </div>
                 </template>
               </q-img>

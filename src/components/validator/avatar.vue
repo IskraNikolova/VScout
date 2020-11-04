@@ -3,7 +3,7 @@
     <q-img :src="avatar" style="width:90vw; max-width:90px;height: 90px;border-radius: 5px;">
         <template v-slot:error>
         <div style="font-size: 27px;" class="bg-white text-grey absolute-center">
-            ?
+          <q-img src="~assets/image.jpg" style="width:90vw; max-width:90px;height: 90px;border-radius: 5px;" />
         </div>
         </template>
     </q-img>
