@@ -2,7 +2,7 @@ const BigNumber = require('bignumber.js')
 
 import { round, getAvatar } from './commons.js'
 import { getRemainingCapacity } from './stake.js'
-import { countDownCounter } from './../modules/time.js'
+import { countDownCounter, diff } from './../modules/time.js'
 import { _getValidatorById } from './../modules/networkCChain.js'
 
 /**
@@ -169,12 +169,14 @@ export async function mapValidators (
 
     const avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
     const name = info.name ? info.name : val.nodeID
+    const duration = diff(val.endTime, val.startTime)
 
     return {
       ...val,
       rating: info.rating,
       name,
       avatar,
+      duration,
       link: info.link,
       bio: info.bio,
       website: info.website,
@@ -218,11 +220,13 @@ export function mapPendingValidators (
 
     const avatar = getAvatar(val.nodeID).monster
     const name = val.nodeID
+    const duration = diff(val.endTime, val.startTime)
 
     return {
       ...val,
       name,
       avatar,
+      duration,
       remainingTime,
       totalStakeAmount,
       remainingCapacity,
@@ -264,8 +268,10 @@ export function mapDelegators (delegators) {
         .rewardOwner
         .addresses[0]
     )
+    const duration = diff(delegator.endTime, delegator.startTime)
     return {
       ...delegator,
+      duration,
       avatar,
       index: i + 1
     }

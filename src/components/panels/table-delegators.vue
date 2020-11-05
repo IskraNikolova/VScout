@@ -142,6 +142,7 @@ import {
 } from 'quasar'
 
 import { date } from './../../modules/time.js'
+const humanizeDuration = require('humanize-duration')
 import { round } from './../../utils/commons.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
 
@@ -184,14 +185,14 @@ export default {
         {
           name: 'rewardOwner',
           align: 'left',
-          label: 'Reward Owner',
+          label: 'REWARD OWNER',
           field: row => this.getRewardOwnerFormat(row.rewardOwner),
           headerClasses: 'text-medium'
         },
         {
           name: 'nodeID',
           align: 'left',
-          label: 'Delegated Node ID',
+          label: 'NODE ID',
           field: row => `[${row.nodeID}]`,
           style: 'font-size: 12px;',
           headerClasses: 'text-medium'
@@ -199,25 +200,26 @@ export default {
         {
           name: 'stake',
           align: 'center',
-          label: 'Delegated',
+          label: 'DELEGATED',
           field: row => Number(row.stakeAmount),
           format: (val, row) => `${this.getFormatReward(row.stakeAmount)}`,
           sortable: true,
           headerClasses: 'text-medium'
         },
         {
-          name: 'potentialReward',
-          align: 'center',
-          label: 'Potential Reward',
-          field: row => Number(row.potentialReward),
-          format: (val, row) => `${this.getFormatReward(row.potentialReward)}`,
+          name: 'duration',
+          align: 'left',
+          label: 'DURATION',
+          field: row => Number(row.duration),
+          format: (val, row) => `${this.getDurationL(val)}`,
+          style: 'font-size: 85%;',
           sortable: true,
           headerClasses: 'text-medium'
         },
         {
           name: 'startTime',
           align: 'left',
-          label: 'Start Time',
+          label: 'START TIME',
           field: row => row.startTime,
           format: (val, row) => `${this.formatDate(row.startTime, 'll')}`,
           style: 'font-size: 10px;',
@@ -227,7 +229,7 @@ export default {
         {
           name: 'endTime',
           align: 'left',
-          label: 'End Time',
+          label: 'END TIME',
           field: row => row.endTime,
           format: (val, row) => `${this.formatDate(row.endTime, 'll')}`,
           style: 'font-size: 10px;',
@@ -270,6 +272,12 @@ export default {
     }
   },
   methods: {
+    getDurationL (val) {
+      return humanizeDuration(val, {
+        units: ['d'],
+        round: true
+      })
+    },
     getRewardOwnerFormat (val) {
       if (!val) return
       return val.addresses[0]

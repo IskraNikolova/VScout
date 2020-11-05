@@ -47,10 +47,10 @@
         <div class="col">
           <div>
             <span class="text-grey" id="font15">
-              <small>VALIDATION </small>
+              <small>STAKING PERIOD </small>
             </span>
             <span id="link">
-              {{ validatePeriod }}
+              {{ getDurationL(validator.duration) }}
             </span>
           </div>
           <div class="row">
@@ -226,6 +226,7 @@ import {
   copyToClipboard
 } from 'quasar'
 
+const humanizeDuration = require('humanize-duration')
 import { round } from './../utils/commons.js'
 import { getAvaFromnAva, getUsdFromnAvax } from './../utils/avax.js'
 import { getDelegationReward } from './../modules/reward.js'
@@ -310,6 +311,13 @@ export default {
         textColor: 'black',
         position: 'center',
         timeout: 1000
+      })
+    },
+    getDurationL (val) {
+      if (!val) return
+      return humanizeDuration(val, {
+        units: ['y', 'mo', 'w', 'd', 'h'],
+        round: true
       })
     },
     stakedBy (date) {

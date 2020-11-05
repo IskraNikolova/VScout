@@ -92,6 +92,7 @@
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="networkShare" label="Network Share" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="percent" label="Cumulative Stake" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="uptime" label="Uptime" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="duration" label="Duration" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="startTime" label="Start Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="endTime" label="End Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="progress" label="Progress" />
@@ -383,7 +384,7 @@ function wrapCsvValue (val, formatFn) {
   // .split('\r').join('\\r')
   return `"${formatted}"`
 }
-
+const humanizeDuration = require('humanize-duration')
 import { dateFormat, fromNow } from './../../modules/time.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
 import { round } from './../../utils/commons.js'
@@ -512,16 +513,16 @@ export default {
         //   field: row => row.connected,
         //   headerClasses: 'text-medium'
         // },
-        // {
-        //   name: 'duration',
-        //   align: 'left',
-        //   label: 'TIME DURATION',
-        //   field: row => getDuration(row.startTime, row.endTime),
-        //   format: (val, row) => `${val.humanize(true)}`,
-        //   style: 'font-size: 85%;',
-        //   sortable: true,
-        //   headerClasses: 'text-medium'
-        // },
+        {
+          name: 'duration',
+          align: 'left',
+          label: 'DURATION',
+          field: row => Number(row.duration),
+          format: (val, row) => `${this.getDurationL(val)}`,
+          style: 'font-size: 15px;',
+          sortable: true,
+          headerClasses: 'text-medium'
+        },
         {
           name: 'startTime',
           align: 'left',
@@ -610,6 +611,13 @@ export default {
           row.name.includes(this.filter) ||
           this.getRewardOwner(row.rewardOwner).toLowerCase().includes(this.filter.toLowerCase()))
       }
+    },
+    getDurationL (val) {
+      if (!val) return
+      return humanizeDuration(val, {
+        units: ['d'],
+        round: true
+      })
     },
     getWeight (val) {
       const avax = getAvaFromnAva(val)

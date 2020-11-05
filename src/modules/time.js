@@ -11,7 +11,7 @@ export const getDurationHumanize = (s, e) => {
   const start = moment(new Date(Number(s) * 1000))
   const end = moment(new Date(Number(e) * 1000))
 
-  return moment.duration(end.diff(start)).humanize(true)
+  return moment.duration(end.diff(start)).humanize()
 }
 
 export const getDurationByDayCount = (dur) => {
@@ -22,6 +22,13 @@ export const getDurationByMinutesCount = (dur) => {
   const a = moment()
   const b = moment(new Date(dur))
   const result = a.diff(b, 'minutes')
+  return result
+}
+
+export const diff = (s, e) => {
+  const a = moment(new Date(Number(s) * 1000))
+  const b = moment(new Date(Number(e) * 1000))
+  const result = a.diff(b)
   return result
 }
 

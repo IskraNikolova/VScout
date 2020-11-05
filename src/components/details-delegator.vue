@@ -17,8 +17,8 @@
             />
           </small>
         </div>
-        <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} </div>
         <div v-if="delegator.potentialReward > 0" class="text-grey text-medium">Potential Reward:  {{ getAvaxFromNAvax(delegator.potentialReward) }} <span class="text-accent">AVAX</span> | <span class="text-accent">$</span> {{ getUsdFromAvax(delegator.potentialReward) }}</div>
+        <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} </div>
         <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
         <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
       </q-card-section>
@@ -32,7 +32,8 @@ import {
   copyToClipboard
 } from 'quasar'
 
-import { date, fromNow, getDurationHumanize, getWeeks } from './../modules/time.js'
+const humanizeDuration = require('humanize-duration')
+import { date, fromNow, getWeeks } from './../modules/time.js'
 import { getAvaFromnAva, getUsdFromnAvax } from './../utils/avax.js'
 import { round } from './../utils/commons'
 
@@ -58,10 +59,17 @@ export default {
       return fromNow(this.delegator.startTime)
     },
     validatePeriod: function () {
-      return getDurationHumanize(this.delegator.startTime, this.delegator.endTime)
+      return this.getDurationL(this.delegator.duration)
     }
   },
   methods: {
+    getDurationL (val) {
+      if (!val) return
+      return humanizeDuration(val, {
+        units: ['y', 'mo', 'w', 'd', 'h'],
+        round: true
+      })
+    },
     getAvaxFromNAvax (val) {
       return getAvaFromnAva(val).toLocaleString()
     },

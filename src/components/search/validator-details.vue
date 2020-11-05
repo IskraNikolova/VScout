@@ -27,6 +27,11 @@
             {{ stakedBy(validator.startTime) }}
           </span>
           <br />
+          <span class="text-subtitle2"><small style="opacity: 0.8;">STAKING PERIOD</small></span>
+          <span class="q-pl-xs">
+            {{ getDurationL(validator.duration) }}
+          </span>
+          <br />
           <span class="text-subtitle2" v-if="!validator.weight"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
           <span class="q-pl-xs" v-if="validator.percent !== 'NaN'">
             {{ validator.percent }}<span class="text-accent text-medium" style="font-size: 12px;">%</span>
@@ -239,6 +244,7 @@ import {
 } from './../../modules/networkCChain.js'
 
 import { round } from './../../utils/commons.js'
+const humanizeDuration = require('humanize-duration')
 
 export default {
   name: 'ValidatorDetails',
@@ -296,6 +302,13 @@ export default {
     }
   },
   methods: {
+    getDurationL (val) {
+      if (!val) return
+      return humanizeDuration(val, {
+        units: ['y', 'mo', 'd'],
+        round: true
+      })
+    },
     getLessBio (val) {
       if (!val) return ''
       return val.substr(0, 240)
