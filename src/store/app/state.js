@@ -4,6 +4,7 @@ import { BN } from 'avalanche'
 export default function () {
   return {
     addressBalance: {},
+    currentCurrency: 'usd',
     height: 0,
     nodeID: '',
     subnets: [],
@@ -11,7 +12,9 @@ export default function () {
     nodeHealth: {},
     validators: [],
     delegators: [],
-    avaxUsdPrice: 0,
+    currenciesPriceList: {},
+    high_24h: {},
+    low_24h: {},
     blockchains: [],
     assetsCount: 0,
     validatedStake: 0,

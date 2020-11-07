@@ -135,7 +135,7 @@
             <span> {{ totalReward() }}</span>
             <span class="text-accent text-medium"><small> AVAX</small></span> /
             <span>  {{ totalRewardUsd() }}</span>
-            <span class="text-accent text-medium"><small> USD</small></span>
+            <span class="text-accent text-medium"><small> {{ getISO(currentCurrency) }} </small></span>
           </div>
         </q-card-actions>
       </q-card>
@@ -228,7 +228,8 @@ import {
 
 const humanizeDuration = require('humanize-duration')
 import { round } from './../utils/commons.js'
-import { getAvaFromnAva, getUsdFromnAvax } from './../utils/avax.js'
+import { currencies } from './../utils/constants.js'
+import { getAvaFromnAva, getPriceFromnAvax } from './../utils/avax.js'
 import { getDelegationReward } from './../modules/reward.js'
 
 import {
@@ -250,7 +251,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'avaxUsdPrice'
+      'currentCurrency',
+      'currenciesPriceList'
     ]),
     delegatorsCount: function () {
       if (!this.validator.delegators) return 0
@@ -335,9 +337,13 @@ export default {
       return round(avax, 100)
         .toLocaleString()
     },
+    getISO (val) {
+      if (!val) return
+      return currencies[`${val}`].isoCode
+    },
     getFormatRewardUsd (val) {
       if (!val) return 0
-      const usd = getUsdFromnAvax(val, this.avaxUsdPrice)
+      const usd = getPriceFromnAvax(val, this.currenciesPriceList[`${this.currentCurrency}`])
       return round(usd, 100)
         .toLocaleString()
     },

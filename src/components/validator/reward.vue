@@ -21,7 +21,7 @@
           <span class="on-right">{{ totalReward() }}</span>
           <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span> /
           <span>  {{ totalRewardUsd() }}</span>
-          <span class="text-accent text-medium"><small> USD</small></span>
+          <span class="text-accent text-medium"><small> {{ getISO(currentCurrency) }}</small></span>
       </div>
       </div>
     </q-card-section>
@@ -33,9 +33,10 @@ import {
   mapGetters
 } from 'vuex'
 
-import { getAvaFromnAva, getUsdFromnAvax } from './../../utils/avax.js'
+import { getAvaFromnAva, getPriceFromnAvax } from './../../utils/avax.js'
 import { getDelegationReward } from './../../modules/reward.js'
 import { round } from './../../utils/commons.js'
+import { currencies } from './../../utils/constants.js'
 
 export default {
   name: 'Reward',
@@ -47,7 +48,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'avaxUsdPrice'
+      'currentCurrency',
+      'currenciesPriceList'
     ])
   },
   data () {
@@ -56,6 +58,10 @@ export default {
     }
   },
   methods: {
+    getISO (val) {
+      if (!val) return
+      return currencies[`${val}`].isoCode
+    },
     getLocalString (val) {
       if (!val) return val
       return val.toLocaleString()
@@ -87,7 +93,7 @@ export default {
     },
     getFormatRewardUsd (val) {
       if (!val) return 0
-      const usd = getUsdFromnAvax(val, this.avaxUsdPrice)
+      const usd = getPriceFromnAvax(val, this.currenciesPriceList[`${this.currentCurrency}`])
       return round(usd, 100)
         .toLocaleString()
     }

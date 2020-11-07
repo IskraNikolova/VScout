@@ -17,7 +17,7 @@
             />
           </small>
         </div>
-        <div v-if="delegator.potentialReward > 0" class="text-grey text-medium">Potential Reward:  {{ getAvaxFromNAvax(delegator.potentialReward) }} <span class="text-accent">AVAX</span> | <span class="text-accent">$</span> {{ getUsdFromAvax(delegator.potentialReward) }}</div>
+        <div v-if="delegator.potentialReward > 0" class="text-grey text-medium">Potential Reward:  {{ getAvaxFromNAvax(delegator.potentialReward) }} <span class="text-accent">AVAX</span> | <span class="text-accent">{{ getSymbol(currentCurrency) }}</span> {{ getPriceFromAvax(delegator.potentialReward) }}</div>
         <div><span class="text-grey text-medium">Stake Period:</span>   {{ validatePeriod }} </div>
         <div><span class="text-grey text-medium">Start Time:</span> {{ startDate }} <small>({{ fromNowGet }})</small></div>
         <div><span class="text-grey text-medium">End Time:</span>  {{ endDate }}</div>
@@ -34,7 +34,8 @@ import {
 
 const humanizeDuration = require('humanize-duration')
 import { date, fromNow, getWeeks } from './../modules/time.js'
-import { getAvaFromnAva, getUsdFromnAvax } from './../utils/avax.js'
+import { currencies } from './../utils/constants.js'
+import { getAvaFromnAva, getPriceFromnAvax } from './../utils/avax.js'
 import { round } from './../utils/commons'
 
 export default {
@@ -47,7 +48,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'avaxUsdPrice'
+      'currentCurrency',
+      'currenciesPriceList'
     ]),
     startDate: function () {
       return date(this.delegator.startTime)
@@ -63,6 +65,10 @@ export default {
     }
   },
   methods: {
+    getSymbol (val) {
+      if (!val) return
+      return currencies[`${val}`].symbol
+    },
     getDurationL (val) {
       if (!val) return
       return humanizeDuration(val, {
@@ -73,8 +79,8 @@ export default {
     getAvaxFromNAvax (val) {
       return getAvaFromnAva(val).toLocaleString()
     },
-    getUsdFromAvax (val) {
-      const usd = getUsdFromnAvax(val, this.avaxUsdPrice)
+    getPriceFromAvax (val) {
+      const usd = getPriceFromnAvax(val, this.currenciesPriceList[`${this.currentCurrency}`])
       if (!usd) return
       return round(usd, 1000).toLocaleString()
     },

@@ -4,7 +4,7 @@
       <div class="q-pl-md">
         <div class="q-mb-md q-pt-xl">
           BALANCE ({{ asset }})
-          <q-btn label="USD" class="q-ml-md" size="xs" color="accent" v-if="!isUsd" outline @click="takeUSD" />
+          <q-btn :label="getISO(currentCurrency)" class="q-ml-md" size="xs" color="accent" v-if="!isUsd" outline @click="takeUSD" />
           <q-btn label="AVAX" class="q-ml-md" size="xs" color="accent" v-else outline @click="takeAVAX" />
         </div>
         <div>
@@ -98,8 +98,9 @@ import {
 import { BinTools } from 'avalanche'
 const bintools = BinTools.getInstance()
 
-import { getAvaFromnAva, getUsdFromnAvax } from './../../utils/avax.js'
+import { getAvaFromnAva, getPriceFromnAvax } from './../../utils/avax.js'
 import { pChain } from './../../modules/avalanche.js'
+import { currencies } from './../../utils/constants.js'
 import { _getBalance } from './../../modules/network.js'
 
 export default {
@@ -115,7 +116,8 @@ export default {
     ...mapGetters([
       'networkEndpoint',
       'addressBalance',
-      'avaxUsdPrice'
+      'currentCurrency',
+      'currenciesPriceList'
     ]),
     address: function () {
       return this.$route.params.id
@@ -126,7 +128,7 @@ export default {
         return getAvaFromnAva(this.addressBalance.balance)
           .toLocaleString()
       }
-      return getUsdFromnAvax(this.addressBalance.balance, this.avaxUsdPrice)
+      return getPriceFromnAvax(this.addressBalance.balance, this.currenciesPriceList[`${this.currentCurrency}`])
         .toLocaleString()
     },
     lockedNotStakeable: function () {
@@ -135,7 +137,7 @@ export default {
         return getAvaFromnAva(this.addressBalance.lockedNotStakeable)
           .toLocaleString()
       }
-      return getUsdFromnAvax(this.addressBalance.lockedNotStakeable, this.avaxUsdPrice)
+      return getPriceFromnAvax(this.addressBalance.lockedNotStakeable, this.currenciesPriceList[`${this.currentCurrency}`])
         .toLocaleString()
     },
     lockedStakeable: function () {
@@ -144,7 +146,7 @@ export default {
         return getAvaFromnAva(this.addressBalance.lockedStakeable)
           .toLocaleString()
       }
-      return getUsdFromnAvax(this.addressBalance.lockedStakeable, this.avaxUsdPrice)
+      return getPriceFromnAvax(this.addressBalance.lockedStakeable, this.currenciesPriceList[`${this.currentCurrency}`])
         .toLocaleString()
     },
     unlocked: function () {
@@ -153,7 +155,7 @@ export default {
         return getAvaFromnAva(this.addressBalance.unlocked)
           .toLocaleString()
       }
-      return getUsdFromnAvax(this.addressBalance.unlocked, this.avaxUsdPrice)
+      return getPriceFromnAvax(this.addressBalance.unlocked, this.currenciesPriceList[`${this.currentCurrency}`])
         .toLocaleString()
     }
   },
@@ -223,13 +225,17 @@ export default {
     ])
   },
   methods: {
+    getISO (val) {
+      if (!val) return
+      return currencies[`${val}`].isoCode
+    },
     getSubstrTX (val) {
       if (!val) return
       return `${val.substr(0, 15)}...${val.substr(42)}`
     },
     takeUSD () {
       this.isUsd = true
-      this.asset = 'USD'
+      this.asset = this.getISO(this.currentCurrency)
     },
     takeAVAX () {
       this.isUsd = false

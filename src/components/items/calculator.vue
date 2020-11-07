@@ -137,7 +137,7 @@
               <span>
                 {{ getFormat(rewardAvax) }}
               </span>  <span class="text-accent text-medium">AVAX</span> |
-                <span class="text-accent text-medium">$</span>{{ getFormat(rewardUsd) }}
+                <span class="text-accent text-medium">{{ getSymbol(currentCurrency) }}</span>{{ getFormat(rewardUsd) }}
             </div>
           </div>
         </div>
@@ -149,6 +149,7 @@
 <script>
 import { date } from 'quasar'
 import { mapActions, mapGetters } from 'vuex'
+import { currencies } from './../../utils/constants.js'
 
 import {
   GET_CURRENT_SUPPLY
@@ -166,7 +167,7 @@ import {
 
 import {
   getAvaFromnAva,
-  getUsdFromnAvax
+  getPriceFromnAvax
 } from './../../utils/avax.js'
 
 const timeStamp = Date.now()
@@ -220,13 +221,18 @@ export default {
   computed: {
     ...mapGetters([
       'currentSupply',
-      'avaxUsdPrice'
+      'currenciesPriceList',
+      'currentCurrency'
     ])
   },
   methods: {
     ...mapActions({
       getCurrentSupply: GET_CURRENT_SUPPLY
     }),
+    getSymbol (val) {
+      if (!val) return
+      return currencies[`${val}`].symbol
+    },
     getPercent () {
       const { percent } = getYearlyRewardPercent(
         this.reward,
@@ -247,7 +253,7 @@ export default {
 
       this.reward = rewardNAvax
       this.rewardAvax = getAvaFromnAva(rewardNAvax)
-      this.rewardUsd = getUsdFromnAvax(rewardNAvax, this.avaxUsdPrice)
+      this.rewardUsd = getPriceFromnAvax(rewardNAvax, this.currenciesPriceList[`${this.currentCurrency}`])
       this.getPercent()
     },
     calculateDel () {
@@ -267,7 +273,7 @@ export default {
 
       this.reward = rewardNAvax
       this.rewardAvax = getAvaFromnAva(rewardNAvax)
-      this.rewardUsd = getUsdFromnAvax(rewardNAvax, this.avaxUsdPrice)
+      this.rewardUsd = getPriceFromnAvax(rewardNAvax, this.currenciesPriceList[`${this.currentCurrency}`])
       this.getPercent()
     },
     getFormat (val) {

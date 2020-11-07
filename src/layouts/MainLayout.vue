@@ -9,9 +9,8 @@
             VScout.io <q-icon name="home" color="grey" />
           </q-toolbar-title>
           <q-toolbar-title>
-            $
             <small class="text-grey" style="font-size: 15px;">
-              {{ avaxPrice }} | AVAX/USD
+              {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }} | AVAX/{{ getISO(currentCurrency) }}
             </small>
           </q-toolbar-title>
           <img src="~assets/block.svg" id="logo-block"/>
@@ -75,6 +74,67 @@
                 <switch-endpoint />
               </q-menu>
               <tooltip-style v-bind:text="'Connect To Node'" />
+          </q-btn>
+          <q-btn
+            flat
+            no-caps
+            icon="img:statics/settings2.svg"
+            class="text-regular text-grey"
+            id="target-el"
+          >
+              <q-menu
+              anchor="top right"
+              self="top left">
+              <div style="min-width: 250px;">
+                <div class="no-wrap q-pa-md text-orange">
+                  Settings
+                </div>
+                <q-separator />
+                <q-item>
+                  <q-item-section>
+                    CURRENCY
+                  </q-item-section>
+                  <q-item-section side right>
+                    <q-icon name="expand_more" @click="show=!show"/>
+                  </q-item-section>
+                </q-item>
+                <div v-if="show">
+                  <q-separator />
+                    <q-item style="background-color: grey;">
+                      <q-item-section class="text-white text-medium">
+                        1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }}
+                      </q-item-section>
+                    </q-item>
+                  <q-separator />
+                  <q-separator />
+                  <q-item>
+                    <q-input v-model="val" @input="filterFn" label="Search currency" />
+                  </q-item>
+                  <span v-if="allCurrencies.length > 0">
+                    <q-list style="min-width: 250px;" v-for="(c, i) in allCurrencies" v-bind:key="i">
+                      <q-item>
+                        <q-item-section>
+                          <q-item-label>{{ getISO(c) }}</q-item-label>
+                          <q-item-label caption lines="2">{{ getCurrencyName(c) }}</q-item-label>
+                        </q-item-section>
+
+                        <q-item-section side top>
+                          <q-item-label class="text-purple text-medium">{{ getSymbol(c) }} {{ currenciesPriceList[`${c}`] }}</q-item-label>
+                          <q-icon size="xs" name="check_box" v-if="c === currentCurrency" />
+                          <q-icon size="xs" name="check_box_outline_blank" v-else @click="setCurrentCurrency(c)"/>
+                        </q-item-section>
+                      </q-item>
+                      <q-item>
+                        <q-item-section><small class="text-grey">24h High</small> <span style="font-size: 12px;" class="text-medium text-green">{{ high24h[`${c}`] }}</span></q-item-section>
+                        <q-item-section><small class="text-grey">24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
+                      </q-item>
+                      <q-separator spaced inset />
+                    </q-list>
+                  </span>
+                  <span v-else><q-item>No Results</q-item></span>
+                </div>
+              </div>
+              </q-menu>
           </q-btn>
         </q-toolbar>
         <q-toolbar class="background-orange">
@@ -168,10 +228,7 @@
             <img src="~assets/vscoutlogo5.svg" style="width: 200px;">
           </q-toolbar-title>
           <q-toolbar-title class="text-white">
-            $
-            <span>
-              {{ avaxPrice }} | AVAX/USD
-            </span>
+            {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }} | AVAX/{{ getISO(currentCurrency) }}
           </q-toolbar-title>
           <q-toolbar-title class="text-white">
             <img src="~assets/block.svg" id="logo-block"/>
@@ -239,10 +296,7 @@
               <img src="~assets/vscoutlogo5.svg" style="width: 150px;">
             </div>
             <div class="text-white col-6 q-pr-md" style="text-align: right;margin-top: 7%;font-size: 15px;">
-              $
-              <small>
-                {{ avaxPrice }} | AVAX/USD
-              </small>
+              {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }} | AVAX/{{ getISO(currentCurrency) }}
             </div>
           </div>
           <q-bar class="q-pb-sm">
@@ -391,13 +445,12 @@
 import { mapGetters } from 'vuex'
 
 import {
-  SET_BALANCE
-  // GET_SUBNETS,
-  // GET_BLOCKCHAINS
+  SET_BALANCE,
+  SET_CURRENT_CURRENCY
 } from './../store/app/types'
 
-// import { round } from './../utils/commons.js'
 import { _getTxStatus, _getBalance } from './../modules/network.js'
+import { currencies } from './../utils/constants.js'
 
 export default {
   name: 'MainLayout',
@@ -410,58 +463,76 @@ export default {
     ListBlockchains: () => import('components/list-blockchains'),
     AddIdentificationDialog: () => import('components/dialogs/add-identification-dialog')
   },
+  created () {
+    this.allCurrencies = Object.keys(this.currenciesPriceList)
+    this.currency = {
+      label: `${currencies.usd.isoCode} - ${currencies.usd.symbol} ${this.currenciesPriceList.usd}`,
+      value: 'usd'
+    }
+    this.stringOptions = Object.keys(this.currenciesPriceList)
+  },
   computed: {
     ...mapGetters([
       'nodeID',
+      'high24h',
+      'low24h',
       'subnets',
       'height',
       'blockchains',
-      'avaxUsdPrice',
+      'currentCurrency',
+      'currenciesPriceList',
       'networkEndpoint',
       'hasNetworkConnection',
       'validatorById',
       'blockchainByID',
       'blockchainByName',
       'subnetByID'
-    ]),
-    avaxPrice: function () {
-      if (!this.avaxUsdPrice) return 0
-
-      return this.avaxUsdPrice.toFixed(2)
-    }
+    ])
   },
   data () {
     return {
+      val: '',
+      show: false,
       filter: '',
       isB: false,
       isS: false,
       isE: false,
-      drawer: false
+      drawer: false,
+      currency: {},
+      allCurrencies: []
     }
   },
   methods: {
-    // ...mapActions({
-    //   getSubnets: GET_SUBNETS,
-    //   getBlockchains: GET_BLOCKCHAINS
-    // }),
+    getSymbol (currency) {
+      return currencies[`${currency}`].symbol
+    },
+    getISO (currency) {
+      return currencies[`${currency}`].isoCode
+    },
+    getCurrencyName (currency) {
+      return currencies[`${currency}`].currency
+    },
+    setCurrentCurrency (currentCurrency) {
+      this.$store.commit(SET_CURRENT_CURRENCY, { currentCurrency })
+    },
+    filterFn (update) {
+      if (this.val === '') {
+        this.allCurrencies = this.stringOptions
+        return
+      }
+      const needle = this.val.toLowerCase()
+      this.allCurrencies = this.stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
+    },
     getRemainigTime () {
       const validator = this.validatorById(this.nodeID)
       if (!validator) return
       return validator.remainingTime
     },
-    // async onGetBlockchains () {
-    //   await this.getBlockchains({})
-    // },
-    // async onGetSubnets () {
-    //   await this.getSubnets({})
-    // },
     onBlockchainClick () {
       this.isB = true
-      // await this.getBlockchains({})
     },
     onSubnetClick () {
       this.isS = true
-      // await this.getSubnets({})
     },
     onAddIdentification () {
       this.$refs.addIdentificationRef.openAddId()

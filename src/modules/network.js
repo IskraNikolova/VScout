@@ -42,24 +42,18 @@ export const _getTxApi = async (id) => {
   }
 }
 
-export const _getAssetPrice = async (id) => {
+export const _getAssetPrice = async () => {
   try {
-    const res = await getApi(id)
-    return res
+    const req = await axios
+      .get('https://api.coingecko.com/api/v3/coins/avalanche-2')
+
+    if (!req.data) {
+      throw new Error()
+    }
+    return req.data.market_data
   } catch (err) {
     return null
   }
-}
-
-async function getApi () {
-  const req2 = await axios
-    .get('https://api.coingecko.com/api/v3/coins/avalanche-2')
-
-  if (!req2.data) {
-    throw new Error()
-  }
-
-  return req2.data.market_data.current_price.usd
 }
 
 export const _getAssetById = async (id) => {

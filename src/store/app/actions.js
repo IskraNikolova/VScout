@@ -397,9 +397,9 @@ async function getNodeInfo (
 function getAvaxPrice (
   { commit }) {
   _getAssetPrice('AVAX')
-    .then((avaxUsdPrice) => {
-      if (!avaxUsdPrice) return
-      commit(GET_AVAX_PRICE, { avaxUsdPrice })
+    .then((avaxPrice) => {
+      if (!avaxPrice) return
+      commit(GET_AVAX_PRICE, { avaxPrice })
     })
     .catch((err) => console.log(err))
 }

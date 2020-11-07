@@ -4,7 +4,7 @@ export function getAvaFromnAva (v) {
   return parseFloat(v) / 10 ** 9
 }
 
-export function getUsdFromnAvax (v, d) {
+export function getPriceFromnAvax (v, d) {
   const avax = getAvaFromnAva(v)
   const avaxBG = new BigNumber(avax)
   const multuply = new BigNumber(d)

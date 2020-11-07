@@ -98,8 +98,20 @@ export function currentSupply (state) {
   return state.currentSupply
 }
 
-export function avaxUsdPrice (state) {
-  return state.avaxUsdPrice
+export function currenciesPriceList (state) {
+  return state.currenciesPriceList
+}
+
+export function high24h (state) {
+  return state.high_24h
+}
+
+export function low24h (state) {
+  return state.low_24h
+}
+
+export function currentCurrency (state) {
+  return state.currentCurrency
 }
 
 export function nodeInfo (state) {
