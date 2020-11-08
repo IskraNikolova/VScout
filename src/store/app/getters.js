@@ -110,6 +110,14 @@ export function low24h (state) {
   return state.low_24h
 }
 
+export function change24h (state) {
+  return state.price_change_24h
+}
+
+export function changePercentage24h (state) {
+  return state.price_change_24h_percentage
+}
+
 export function currentCurrency (state) {
   return state.currentCurrency
 }

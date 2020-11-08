@@ -43,6 +43,8 @@ const mutations = {
     state.currenciesPriceList = currentPrice
     state.high_24h = high24h
     state.low_24h = low24h
+    state.price_change_24h = avaxPrice.price_change_24h_in_currency
+    state.price_change_24h_percentage = avaxPrice.price_change_percentage_24h_in_currency
   },
   [GET_NODE_ID]: (state, { nodeID }) => {
     state.nodeID = nodeID

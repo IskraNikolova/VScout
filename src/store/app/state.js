@@ -15,6 +15,8 @@ export default function () {
     currenciesPriceList: {},
     high_24h: {},
     low_24h: {},
+    price_change_24h: {},
+    price_change_24h_percentage: {},
     blockchains: [],
     assetsCount: 0,
     validatedStake: 0,

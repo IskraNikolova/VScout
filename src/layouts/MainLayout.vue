@@ -8,16 +8,6 @@
             id="toolbar-title">
             VScout.io <q-icon name="home" color="grey" />
           </q-toolbar-title>
-          <q-toolbar-title>
-            <small class="text-grey" style="font-size: 15px;">
-              {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }} | AVAX/{{ getISO(currentCurrency) }}
-            </small>
-          </q-toolbar-title>
-          <img src="~assets/block.svg" id="logo-block"/>
-          <small class="text-grey" style="font-size: 15px;">
-            {{ height }}
-            <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
-          </small>
           <q-btn
             color="secondary"
             flat label="Add Identification"
@@ -119,16 +109,16 @@
                         </q-item-section>
 
                         <q-item-section side top>
-                          <q-item-label class="text-purple text-medium">{{ getSymbol(c) }} {{ currenciesPriceList[`${c}`] }}</q-item-label>
+                          <q-item-label><small class="text-purple text-medium">{{ getSymbol(c) }}</small> {{ currenciesPriceList[`${c}`] }}</q-item-label>
                           <q-icon size="xs" name="check_box" v-if="c === currentCurrency" />
                           <q-icon size="xs" name="check_box_outline_blank" v-else @click="setCurrentCurrency(c)"/>
                         </q-item-section>
                       </q-item>
                       <q-item>
                         <q-item-section><small class="text-grey">24h High</small> <span style="font-size: 12px;" class="text-medium text-green">{{ high24h[`${c}`] }}</span></q-item-section>
-                        <q-item-section><small class="text-grey">24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
+                        <q-item-section side top><small class="text-grey">24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
                       </q-item>
-                      <q-separator spaced inset />
+                      <q-separator />
                     </q-list>
                   </span>
                   <span v-else><q-item>No Results</q-item></span>
@@ -227,16 +217,6 @@
           <q-toolbar-title style="margin-right: 10%;">
             <img src="~assets/vscoutlogo5.svg" style="width: 200px;">
           </q-toolbar-title>
-          <q-toolbar-title class="text-white">
-            {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }} | AVAX/{{ getISO(currentCurrency) }}
-          </q-toolbar-title>
-          <q-toolbar-title class="text-white">
-            <img src="~assets/block.svg" id="logo-block"/>
-            <span style="padding-top: -20px;">
-              {{ height }}
-              <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
-            </span>
-          </q-toolbar-title>
         </q-toolbar>
         <q-toolbar>
           <div class="row">
@@ -272,13 +252,6 @@
       <div class="lt-sm background-white">
         <q-toolbar>
           <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm class="text-grey"/>
-          <q-toolbar-title>
-            <img src="~assets/block.svg" id="logo-block"/>
-            <small class="text-grey">
-              {{ height }}
-              <tooltip-style v-bind:text="'Last accepted block on P-Chain (Height)'" />
-            </small>
-          </q-toolbar-title>
           <a id="faq2" class="text-grey" href="#faqs">FAQ</a>
         </q-toolbar>
         <div class="q-pb-md">
@@ -294,9 +267,6 @@
           <div class="row">
             <div class="col-6 q-pl-md">
               <img src="~assets/vscoutlogo5.svg" style="width: 150px;">
-            </div>
-            <div class="text-white col-6 q-pr-md" style="text-align: right;margin-top: 7%;font-size: 15px;">
-              {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }} | AVAX/{{ getISO(currentCurrency) }}
             </div>
           </div>
           <q-bar class="q-pb-sm">
@@ -477,7 +447,6 @@ export default {
       'high24h',
       'low24h',
       'subnets',
-      'height',
       'blockchains',
       'currentCurrency',
       'currenciesPriceList',

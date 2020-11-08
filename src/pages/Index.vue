@@ -1,10 +1,11 @@
 <template>
   <q-page>
     <div style="padding: 1%;">
-      <error class="q-pr-md" />
-      <node class="q-pr-md" />
-      <network class="q-pr-md"/>
-      <stake class="q-pr-md"/>
+      <error class="q-pr-sm" />
+      <node />
+      <market-data class="q-mb-sm q-mt-sm" />
+      <network />
+      <stake />
       <table-validators
         v-if="ui.typeAccount.isValidators"
         @getValidators="getValidatorsV"
@@ -44,13 +45,14 @@ const { network } = require('./../modules/config')
 export default {
   name: 'PageIndex',
   components: {
-    Node: () => import('components/panels/node'),
-    Network: () => import('components/panels/network'),
-    Stake: () => import('components/panels/stake'),
-    Error: () => import('components/panels/error'),
-    TableValidators: () => import('components/panels/table-validators'),
-    Faqs: () => import('components/panels/faqs'),
-    TableDelegators: () => import('components/panels/table-delegators')
+    Node: () => import('components/panels/node.vue'),
+    Network: () => import('components/panels/network.vue'),
+    MarketData: () => import('components/panels/market-data.vue'),
+    Stake: () => import('components/panels/stake.vue'),
+    Error: () => import('components/panels/error.vue'),
+    TableValidators: () => import('components/panels/table-validators.vue'),
+    Faqs: () => import('components/panels/faqs.vue'),
+    TableDelegators: () => import('components/panels/table-delegators.vue')
   },
   computed: {
     ...mapGetters([

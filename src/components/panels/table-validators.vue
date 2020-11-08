@@ -1,5 +1,5 @@
 <template>
-  <div class="q-mt-md">
+  <div class="q-mt-xs">
     <q-table
       :data="curentValidators"
       :columns="columns"
@@ -166,7 +166,7 @@
                  <small> AVAX</small>
                </span>
             </div>
-            <div v-else-if="col.name === 'stake'">
+            <div v-else-if="col.name === 'stakeAmount'">
               <div>
                 <small class="text-grey">Total:</small> {{ getFormatReward(props.row.totalStakeAmount) }}
               </div>
@@ -453,7 +453,7 @@ export default {
           headerClasses: 'text-medium'
         },
         {
-          name: 'stake',
+          name: 'stakeAmount',
           align: 'left',
           label: 'STAKE (AVAX)',
           field: row => Number(row.stakeAmount),

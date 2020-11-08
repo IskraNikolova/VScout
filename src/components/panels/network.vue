@@ -1,10 +1,10 @@
 <template>
   <q-card
-    class="q-mt-md q-pt-md q-pl-xl q-pb-md"
+    class="q-mt-sm q-pt-md q-pr-sm q-pl-xl q-pb-md"
     id="custom-card"
   >
     <div class="row">
-      <div v-if="isBlockchainView" class="col-md-4 col-xs-10">
+      <div v-if="isBlockchainView" class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">
           BLOCKCHAIN
         </div>
@@ -29,7 +29,7 @@
         </div>
       </div>
       <subnet-blockchains v-else class="col-md-3 col-xs-10" />
-      <div class="col-1 q-pt-md">
+      <div class="col-md-1 q-pt-md" style="opacity: 0.3;">
         <img src="~assets/blockchain-grey.svg" id="logo">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
@@ -61,14 +61,14 @@
           </div>
         </div>
       </div>
-      <div v-if="isBlockchainView" class="col-1 q-pt-md">
+      <div v-if="isBlockchainView" class="col-1 q-pt-md" style="opacity: 0.3;">
         <img src="~assets/network.svg" id="logo2">
       </div>
-      <div v-else class="col-2 q-pt-md q-mb-md">
+      <div v-else class="col-1 q-pt-md q-mb-md" style="opacity: 0.3;">
         <img src="~assets/network.svg" id="logo2">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
-      <div class="col-md-2 col-xs-10">
+      <div class="col-md-3 col-xs-10">
         <div v-if="isBlockchainView">
           <!--<EVM-info v-bind:bcID="currentBlockchain.id" v-if="currentBlockchain.vmName === 'evm'"/>-->
           <div id="f-size12" class="q-pb-md text-medium">ASSETS</div>
@@ -143,7 +143,7 @@
           </div>
         </div>
       </div>
-      <div class="col-1 q-pt-md">
+      <div class="col-1 q-pt-md" style="opacity: 0.3;">
         <img src="~assets/coins.svg" style=" width:40vw;max-width:40px;" v-if="isBlockchainView">
         <img src="~assets/key-digital.svg" style=" width:40vw;max-width:40px;" v-else>
       </div>

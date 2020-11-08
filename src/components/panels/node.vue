@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="q-pt-md q-pl-xl q-pr-xl q-pb-md" id="custom-card" >
+    class="q-pt-md q-pl-xl q-pr-sm q-pb-md" id="custom-card" >
     <!--<div style="text-align: right;font-size: 10px;margin-bottom: 5px;">
       <q-icon name="info" style="font-size: 17px;" color="grey">
         <tooltip-style v-bind:brandColoring="['VScout']" v-bind:bold="[`${nodeID}`, `${networkEndpoint.url}`]" v-bind:text="'On this panel you can get information about node to which the VScout is connected and to which it submits a request for data visualization (health, peers, node version, network name, validators/uptime etc.). You are currently using ' + networkEndpoint.url + ' with ' + nodeID + '. To switch to another node, use the menu at the top right.'" />
@@ -42,8 +42,8 @@
           <node-health-dialog ref="nodeHealthDialog" v-bind:validator="validatorById(nodeID) ? validatorById(nodeID) : {}"/>
         </div>
       </div>
-      <div class="col-1 q-pt-md">
-        <img src="~/assets/ribbon.svg" v-if="validatorById(nodeID)" id="logo2" />
+      <div class="col-1 q-pt-md"  style="opacity: 0.3;">
+        <img src="~assets/ribbon.svg" v-if="validatorById(nodeID)" id="logo2" />
         <img src="~assets/node1.svg" v-else id="logo2">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md" />
@@ -61,8 +61,8 @@
         </div>
         <q-btn outline label="Peers" size="xs" @click="$router.push('/peers/' + nodeID)" />
       </div>
-      <div class="col-1 q-pt-md">
-        <img src="~/assets/peers.svg" id="logo2"/>
+      <div class="col-1 q-pt-md" style="opacity: 0.3;">
+        <img src="~assets/peers.svg" id="logo2"/>
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-2 col-xs-10">
@@ -77,7 +77,7 @@
           <span class="q-pt-xl">{{ networkEndpoint.urlView }}</span>
         </div>
       </div>
-      <div class="col-1 q-pt-md q-pl-md">
+      <div class="col-1 q-pt-md q-pl-md" style="opacity: 0.3;">
         <img src="~assets/computer-network.svg" id="logo2">
       </div>
     </div>

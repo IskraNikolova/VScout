@@ -1,7 +1,6 @@
 <template>
   <q-card
-    class="q-mt-md q-pt-md q-pl-xl q-pr-xl q-pb-xs" id="custom-card" style="min-height: 130px;">
-
+    class="q-mt-sm q-pt-md q-pl-xl q-pr-sm q-pb-xs" id="custom-card" style="min-height: 130px;">
     <div class="row">
       <div class="col-md-2 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">VALIDATORS</div>
@@ -23,7 +22,7 @@
           <span id="f-size12"> pending</span>
         </div>
       </div>
-      <div class="col-1 q-pt-md">
+      <div class="col-1 q-pt-md" style="opacity: 0.3;">
         <img src="~assets/validators.svg" class="custom-icon">
       </div>
       <q-separator  class="q-mt-md q-mb-md lt-md"/>
@@ -44,7 +43,7 @@
             />
           </span> <span id="f-size12"> pending</span> </div>
       </div>
-      <div class="col-1 q-pt-md">
+      <div class="col-1 q-pt-md" style="opacity: 0.3;">
         <img src="~assets/manage.svg" class="custom-icon">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
@@ -63,7 +62,7 @@
             <span style="font-size: 13px;" class="text-medium text-accent"><small> AVAX</small></span>
         </div>
       </div>
-      <div class="col-1 q-pt-md">
+      <div class="col-1 q-pt-md" style="opacity: 0.3;">
         <img src="~assets/stake-amount.svg" class="custom-icon">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>

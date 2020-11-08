@@ -50,6 +50,7 @@ export const _getAssetPrice = async () => {
     if (!req.data) {
       throw new Error()
     }
+
     return req.data.market_data
   } catch (err) {
     return null
