@@ -285,7 +285,7 @@ export default {
           this.isSuccessSend = true
         }
       } catch (err) {
-        this.onFailed('Verification Failed!' + err.message)
+        this.onFailed('Verification Failed! ' + err.message)
       }
     },
     async check (txID) {
@@ -308,7 +308,7 @@ export default {
         await this.getTxAVM({ txID })
         const { outputs, timestamp } = this.txAVM
         const minutes = getDurationByMinutesCount(timestamp)
-        if (minutes > 360) {
+        if (minutes > 3600) {
           this.onFailed('Verification Failed! Expired Transaction.')
           return
         }
@@ -350,7 +350,7 @@ export default {
               const addresses = outputs[i].addresses
               if (addresses) {
                 for (let j = 0; j < addresses.length; j++) {
-                  if (addresses[j] === this.rewardOwner.substr(2)) {
+                  if (addresses[j] === this.getRewardOwner()) {
                     await this.onSuccess()
                     return
                   }
@@ -366,7 +366,7 @@ export default {
             const addresses = output.addresses
             for (let i = 0; i < addresses.length; i++) {
               const address = addresses[i]
-              if (address === this.rewardOwner.substr(2)) {
+              if (address === this.getRewardOwner()) {
                 await this.onSuccess()
                 return
               }
@@ -378,7 +378,7 @@ export default {
       } catch (err) {
         console.log(err)
         // todo check for status 400 uknown transaction message
-        this.onFailed('Verification Failed!' + err.message)
+        this.onFailed('Verification Failed! ' + err.message)
       }
     },
     async onSuccess () {
@@ -421,6 +421,10 @@ export default {
     getXAddress (val) {
       if (!val) return
       return `X-${val.substr(2)}`
+    },
+    getRewardOwner () {
+      if (!this.rewardOwner) return
+      return this.rewardOwner.substr(2)
     },
     checkEndpoint () {
       if (!this.validator) return

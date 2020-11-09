@@ -4,10 +4,10 @@
     <q-card flat class="gt-xs q-pl-xl q-pb-md q-ml-xl q-pt-md">
       <div class="row">
         <q-item class="col-9">
-          <avatar v-bind:avatar="avatar" style="cursor:pointer;" @click="onClick(validator.link)"/>
+          <avatar v-bind:avatar="getAvatar()" style="cursor:pointer;" @click="onClick(getLink())"/>
           <q-item-section>
             <rank v-bind:rank="validator.rank" />
-            <name v-bind:name="validator.name" v-bind:nodeID="validator.nodeID" v-bind:link="validator.link" />
+            <name v-bind:name="getName()" v-bind:nodeID="validator.nodeID" v-bind:link="getLink()" />
             <owner v-bind:owner="rewardOwner" v-if="rewardOwner"/>
             <q-item-label v-if="validator.weight">
               <small class="text-grey">
@@ -39,16 +39,16 @@
         </div>
       </div>
       <website
-        v-if="validator.website"
-        v-bind:website ="validator.website"
-        v-bind:link="validator.link"
+        v-if="getWebsite()"
+        v-bind:website ="getWebsite()"
+        v-bind:link="getLink()"
         v-bind:nodeID="validator.nodeID"
       />
       <div style="max-width: 1130px;" class="q-pl-sm q-pt-sm">
-        <i v-if="!more">{{ getLessBio(validator.bio) }}</i>
-        <i v-else>{{ validator.bio }}</i>
-        <span v-if="isEnav(validator.bio) && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
-        <span v-if="isEnav(validator.bio) && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
+        <i v-if="!more">{{ getLessBio(getBio()) }}</i>
+        <i v-else>{{ getBio() }}</i>
+        <span v-if="isEnav(getBio()) && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
+        <span v-if="isEnav(getBio()) && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
       </div>
       <div class="row q-gutter-xl">
         <div class="col-5">
@@ -260,12 +260,38 @@ export default {
     Website: () => import('components/validator/website.vue'),
     ProgressBarValidateSession: () => import('components/progress-bar-validatе-session.vue')
   },
+  props: {
+    id: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: false
+    },
+    avatarUrl: {
+      type: String,
+      required: false
+    },
+    bio: {
+      type: String,
+      required: false
+    },
+    link: {
+      type: String,
+      required: false
+    },
+    website: {
+      type: String,
+      required: false
+    }
+  },
   computed: {
     ...mapGetters([
       'validatorById'
     ]),
     validator: function () {
-      const validator = this.getValidator(this.$route.params.id)
+      const validator = this.getValidator(this.getId())
       if (!validator) return {}
 
       return validator
@@ -302,6 +328,40 @@ export default {
     }
   },
   methods: {
+    getId () {
+      if (!this.id) return ''
+      return this.id
+    },
+    getBio () {
+      if (!this.bio) {
+        return this.validator.bio
+      }
+      return this.bio
+    },
+    getAvatar () {
+      if (!this.avatarUrl) {
+        return this.avatar
+      }
+      return this.avatarUrl
+    },
+    getName () {
+      if (!this.name) {
+        return this.validator.name
+      }
+      return this.name
+    },
+    getLink () {
+      if (!this.link) {
+        return this.validator.link
+      }
+      return this.link
+    },
+    getWebsite () {
+      if (!this.website) {
+        return this.validator.website
+      }
+      return this.website
+    },
     getDurationL (val) {
       if (!val) return
       return humanizeDuration(val, {

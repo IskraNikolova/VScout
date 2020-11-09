@@ -4,7 +4,7 @@
       <q-card
         id="custom-card"
       >
-        <validator-details />
+        <validator-details v-bind:id="getID()"/>
       </q-card>
       <div class="flex flex-center">
         <img src="~assets/vscoutlogo5.svg" id="logo">
@@ -24,8 +24,9 @@ export default {
     ValidatorDetails: () => import('components/search/validator-details.vue')
   },
   methods: {
-    back () {
-      this.$router.push('/')
+    getID () {
+      if (!this.$route.params.id) return ''
+      return this.$route.params.id
     }
   }
 }

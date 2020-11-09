@@ -3,6 +3,7 @@ import {
 } from './../utils/constants.js'
 
 export const _verifyReceiveFundsTx = ({ outputs, admin }) => {
+  if (!admin) return
   let result = false
   let amount = 0
   for (let i = 0; i < outputs.length; i++) {
@@ -19,6 +20,7 @@ export const _verifyReceiveFundsTx = ({ outputs, admin }) => {
 }
 
 export const _outputSearch = (tx, rewardOwner) => {
+  if (!rewardOwner) return
   if (tx.id === GENEZIS_ID) {
     const outputs = tx.outputs
     if (!outputs) return

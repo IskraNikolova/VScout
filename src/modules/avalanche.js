@@ -1,5 +1,5 @@
 import { Avalanche } from 'avalanche'
-console.log(Avalanche)
+
 const { network } = require('./config')
   .default
 

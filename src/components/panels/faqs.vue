@@ -80,7 +80,7 @@ export default {
         },
         {
           title: 'I need help, where can I receive technical support?',
-          content: 'Avalanche Discord is the place to be for all technical questions, join at <a style="text-decoration: none;" class="text-purple" href="http://chat.avax.network">chat.avax.network</a>.'
+          content: 'Avalanche Discord is the place to be for all technical questions, join at <a style="text-decoration: none;" class="text-purple" href="http://chat.avax.network">chat.avax.network</a> or join at VScout Discord <a style="text-decoration: none;" class="text-purple" href="https://discord.gg/PPB67JYyAp">vscout chat</a>. '
         }
       ]
     }

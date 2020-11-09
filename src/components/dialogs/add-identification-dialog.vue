@@ -132,12 +132,28 @@
           </div>
           <q-btn flat size="sm" color="negative" label="No code?" @click="onVerifyNodeID"/>
           <q-space />
-          <q-btn label="Add To Contract" flat type="submit" color="secondary"/>
+          <q-btn label="Preview Your Page" no-caps rounded @click="prev" color="secondary" style="height: 35px;margin-top: 23px;margin-right: 5px;"/>
+          <q-btn label="Add To Contract" no-caps rounded outline type="submit" color="secondary" style="height: 35px;margin-top: 23px;"/>
           <q-btn size="xs" label="Reset" type="reset" color="grey" flat class="q-mr-sm" />
         </div>
         </q-form>
       </q-card-section>
     </q-card>
+    <q-dialog v-model="preview" full-width>
+        <q-card>
+        <q-btn flat v-close-popup>
+          <q-icon name="close" />
+        </q-btn>
+        <validator-details
+          v-bind:id="nodeIDModel"
+          v-bind:name="name"
+          v-bind:bio="bio"
+          v-bind:avatarUrl="avatar"
+          v-bind:link="link"
+          v-bind:website="website"
+        />
+        </q-card>
+      </q-dialog>
     <q-dialog v-model="dialog">
       <q-card flat class="q-pb-md">
         <q-card-section class="row items-center bg-secondary">
@@ -247,9 +263,14 @@ export default {
       error: null,
       loading: null,
       dialog: false,
+      preview: false,
       isValidCode: false,
+      getPreview: false,
       isPaidSuccess: false
     }
+  },
+  components: {
+    ValidatorDetails: () => import('components/search/validator-details.vue')
   },
   created () {
     this.admin = network.admin
@@ -285,9 +306,23 @@ export default {
       closeAddId: CLOSE_ADD_IDENTIFICATION,
       setValidatorInfo: SET_VALIDATOR_INFO
     }),
+    prev () {
+      if (!this.nodeIDModel) {
+        this.$q.notify({
+          timeout: 5000,
+          color: 'white',
+          position: 'center',
+          textColor: 'orange',
+          message: 'The field with Node ID is empty!'
+        })
+        return
+      }
+      this.nodeIDModel = this.nodeIDModel.trim()
+      this.preview = true
+    },
     async check () {
       try {
-        await this.getTxAVM({ txID: this.txID })
+        await this.getTxAVM({ txID: this.txID.trim() })
         const { outputs, timestamp } = this.txAVM
         if (!outputs) {
           this.onFailed('Something Wrong! Try again.')
@@ -318,7 +353,7 @@ export default {
         return
       }
 
-      this.isValidCode = await _isValidCode(this.vCode, this.nodeIDModel)
+      this.isValidCode = await _isValidCode(this.vCode, this.nodeIDModel.trim())
       if (!this.vCode || !this.isValidCode) {
         this.error = 'Invalid code!'
         return
@@ -388,7 +423,7 @@ export default {
       this.nodeIDModel = ''
     },
     onVerifyNodeID () {
-      const validator = this.validatorById(this.nodeIDModel)
+      const validator = this.validatorById(this.nodeIDModel.trim())
       if (!this.nodeIDModel || !validator) {
         this.error = 'Node ID is invalid!'
         return

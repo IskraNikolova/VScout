@@ -77,7 +77,7 @@
           <span class="q-pt-xl">{{ networkEndpoint.urlView }}</span>
         </div>
       </div>
-      <div class="col-1 q-pt-md q-pl-md" style="opacity: 0.3;">
+      <div class="col-1 q-pt-md" style="opacity: 0.3;">
         <img src="~assets/computer-network.svg" id="logo2">
       </div>
     </div>

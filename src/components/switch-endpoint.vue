@@ -154,7 +154,7 @@ export default {
     async onSuccess (endpoint) {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })
       await Promise.all([
-        this.getNodeInfo(),
+        this.getNodeInfo({}),
         this.getHeight({ endpoint: endpoint.url }),
         this.getValidators({ endpoint: endpoint.url, subnetID: this.subnetID }),
         this.getPendingValidators({ endpoint: endpoint.url, subnetID: this.subnetID }),
