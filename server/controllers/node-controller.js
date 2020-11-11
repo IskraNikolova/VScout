@@ -1,4 +1,5 @@
 const axios = require('axios').default
+const satelize = require('satelize')
 const fs = require('fs')
 
 let id = 1
@@ -21,7 +22,33 @@ module.exports = {
         if (resP.data.error) {
           throw new Error(resP.data.error)
         }
-        const peers = resP.data.result
+        const peersResponse = resP.data.result
+        const p = peersResponse.peers
+        const newPeers = await Promise.all(p.map(async (val) => {
+          let info = {}
+          try {
+            const ip = val.ip.split(':')[0]
+            info = await Promise.all([satelize.satelize({ ip }, function (err, payload) {
+              if (err) return {}
+              return payload
+            })])
+          } catch (err) {
+            info = {}
+          }
+          if (!info[0]) info = [{ country_code: '', continent: { en: '' }, country: { en: '' } }]
+ 
+          return {
+            ...val,
+            countryCode: info[0].country_code,
+            continent: info[0].continent.en,
+            country: info[0].country.en
+          }
+        }))
+
+        const peers = {
+          numPeers: peersResponse.numPeers,
+          peers: newPeers
+        }
         const resH = await axios
           .post(endpoint + '/ext/health', body('health.getLiveness'))
         if (resH.data.error) {
@@ -63,6 +90,7 @@ module.exports = {
         const info = JSON.stringify(data)
         fs.writeFileSync('node-info.json', info)
     } catch (err) {
+      console.log(err)
       const data = JSON.stringify(err)
       fs.writeFileSync('logs.json', data)
     }
