@@ -1,10 +1,10 @@
 <template>
   <q-card
-    class="q-pt-md q-pl-xl q-pr-xs q-ml-xs q-pb-md" id="custom-card" >
+    class="q-pl-xl q-pr-xs q-ml-xs q-pb-md" id="custom-card" style="min-height: 150px;padding-top: 30px;" >
     <div class="row">
       <div class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium ">PRICE</div>
-        <div class="text-h6 text-secondary">
+        <div class="text-h5 text-secondary">
           <small>{{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }} | AVAX/{{ getISO(currentCurrency) }}</small>
         </div>
       </div>

@@ -1,8 +1,8 @@
 <template>
   <q-card
-    class="q-mt-sm q-pt-md q-pl-xl q-pr-xs q-ml-xs q-pb-md"
+    class="q-mt-sm q-pl-xl q-pr-xs q-ml-xs q-pb-md"
     id="custom-card"
-    style="min-height: 130px;"
+    style="min-height: 150px;padding-top: 30px;"
   >
     <div class="row">
       <div class="col-md-3 col-xs-10">
