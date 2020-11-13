@@ -1,5 +1,8 @@
-const axios = require('axios').default
+const axios = require('axios')
+  .default
 const fs = require('fs')
+
+const utils = require('../utils.js')
 
 let id = 1
 axios.defaults.headers['Content-Type'] = 'application/json'
@@ -24,7 +27,8 @@ module.exports = {
         const data = JSON.stringify(error)
         fs.writeFileSync('logs.json', data)
       }
-      const validators = resVal.data.result
+      const apiValidators = resVal.data.result
+
       const resPVal = await axios
         .post(endpoint + '/ext/P', body('platform.getPendingValidators'))
       if (resPVal.data.error) {
@@ -33,13 +37,32 @@ module.exports = {
         fs.writeFileSync('logs.json', data)
       }
       const pendingValidators = resPVal.data.result
-      const response = {
+      const {
+        allStake,
         validators,
-        pendingValidators
+        delegators,
+        validatedStake,
+        delegatedStake,
+        incomingVal,
+        outcomingVal
+      } = await utils.mapValidators(apiValidators.validators)
+
+      const response = {
+        allStake,
+        validators: {
+          validators,
+          delegators
+        },
+        pendingValidators,
+        validatedStake,
+        delegatedStake,
+        incomingVal,
+        outcomingVal
       }
       const data = JSON.stringify(response)
       fs.writeFileSync('validators.json', data)
     } catch (err) {
+      console.log(err)
       const data = JSON.stringify(err)
       fs.writeFileSync('logs.json', data)
     }

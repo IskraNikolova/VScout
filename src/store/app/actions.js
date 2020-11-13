@@ -1,12 +1,15 @@
 import {
   INIT_APP,
   GET_HEIGHT,
+  GET_IN_OUT,
   GET_NODE_ID,
   GET_SUBNETS,
   GET_NODE_INFO,
+  GET_NODE_PEERS,
   GET_STAKING,
   GET_AVAX_PRICE,
   INIT_ENDPOINT,
+  GET_INFO_PEERS,
   SET_VALIDATORS,
   SET_DELEGATORS,
   SET_STAKED_AVA,
@@ -22,6 +25,7 @@ import {
   SET_PENDING_DELEGATORS,
   GET_ASSETS_BY_BLOCKCHAINS
 } from './types'
+const COUNTRY_CODE = 'countryCode'
 
 import {
   SET_ENDPOINT,
@@ -38,6 +42,8 @@ import {
   _getPeers,
   _getNodeId,
   _getHeight,
+  _getDefPeers,
+  _getPeerInfo,
   _getDefHeight,
   _validates,
   _getSubnets,
@@ -55,6 +61,7 @@ import {
 
 import {
   mapDelegators,
+  mapDefaultValidators,
   mapPendingValidators,
   validatorProcessing
 } from './../../utils/validators.js'
@@ -74,6 +81,10 @@ import {
   pChain
 } from './../../modules/avalanche.js'
 
+import {
+  groupBy
+} from './../../utils/commons.js'
+
 async function initApp (
   { dispatch, getters }) {
   try {
@@ -82,7 +93,9 @@ async function initApp (
       dispatch(GET_BLOCKCHAINS, {}),
       dispatch(GET_SUBNETS, {}),
       dispatch(GET_AVAX_PRICE),
+      dispatch(GET_NODE_ID, {}),
       dispatch(GET_NODE_INFO, {}),
+      dispatch(GET_NODE_PEERS, {}),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(GET_HEIGHT, {}),
       dispatch(GET_CURRENT_SUPPLY),
@@ -108,7 +121,7 @@ async function initApp (
       ])
     } catch (err) {
     }
-  }, 15000)
+  }, 18000)
 }
 
 async function initEndpoint (
@@ -134,89 +147,139 @@ async function getValidators (
     isInit = true,
     isIgnore = true
   }) {
-  let response = {}
-  let pendingValidators = null
+  try {
+    let pendingValidators = null
+    if (
+      endpoint === network.endpointUrls[0].url &&
+      isIgnore &&
+      subnetID === network.defaultSubnetID
+    ) {
+      const response = await _getDefValidators()
+      if (response.error) {
+        dispatch(GET_STAKING, {
+          subnetID,
+          endpoint,
+          isInit,
+          isIgnore: false
+        })
+        commit(UPDATE_UI, { doesItConnect: true })
+        return null
+      }
 
-  if (
-    endpoint === network.endpointUrls[0].url &&
-    isIgnore &&
-    subnetID === network.defaultSubnetID
-  ) {
-    const res = await _getDefValidators()
-    if (res.error) {
-      dispatch(GET_STAKING, {
-        subnetID,
-        endpoint,
-        isInit,
-        isIgnore: false
+      pendingValidators = {
+        data: {
+          result: response.pendingValidators
+        }
+      }
+
+      const {
+        allStake,
+        validators,
+        validatedStake,
+        delegatedStake,
+        incomingVal,
+        outcomingVal
+      } = response
+
+      commit(SET_STAKED_AVA, {
+        all: allStake,
+        validatedStake,
+        delegatedStake
       })
-      commit(UPDATE_UI, { doesItConnect: true })
-      return null
-    }
 
-    response = res.validators
+      const {
+        incomingDel,
+        outcomingDel,
+        delegators
+      } = mapDelegators(validators.delegators)
 
-    pendingValidators = {
-      data: {
-        result: res.pendingValidators
+      commit(SET_DELEGATORS, { delegators })
+
+      commit(GET_IN_OUT, {
+        incomingVal,
+        incomingDel,
+        outcomingVal,
+        outcomingDel
+      })
+
+      const res = await mapDefaultValidators(
+        validators.validators,
+        getters.defaultValidators,
+        isInit
+      )
+
+      commit(SET_VALIDATORS, { validators: res.validators })
+
+      commit(SET_DEFAULT_VALIDATORS, {
+        defaultValidators: res.validators
+      })
+    } else {
+      const response = await _getValidators({
+        subnetID,
+        endpoint
+      })
+      if (response.data.error) {
+        commit(UPDATE_UI, { doesItConnect: true })
+        return null
+      }
+
+      commit(UPDATE_UI, { doesItConnect: false })
+
+      let { validators, delegators } = response.data.result
+
+      if (typeof validators === 'undefined' ||
+        validators === null) {
+        validators = []
+      }
+
+      const res = await validatorProcessing(
+        validators,
+        delegators,
+        getters.defaultValidators,
+        isInit
+      )
+
+      commit(SET_STAKED_AVA, {
+        all: res.allStake,
+        validatedStake: res.validatedStake,
+        delegatedStake: res.delegatedStake
+      })
+
+      commit(SET_VALIDATORS, {
+        validators: res.validators
+      })
+
+      if (!delegators || delegators.length < 1) {
+        delegators = res
+          .validators
+          .reduce((a, c) => {
+            a.push.apply(a, c.delegators)
+            return a
+          }, [])
+      }
+      const resDelegators = mapDelegators(delegators)
+
+      commit(SET_DELEGATORS, {
+        delegators: resDelegators.delegators
+      })
+
+      commit(GET_IN_OUT, {
+        incomingVal: res.incomingVal,
+        incomingDel: resDelegators.incomingDel,
+        outcomingVal: res.outcomingVal,
+        outcomingDel: resDelegators.outcomingDel
+      })
+
+      if (getters.isDefaultSubnetID(subnetID)) {
+        commit(SET_DEFAULT_VALIDATORS, {
+          defaultValidators: res.validators
+        })
       }
     }
-  } else {
-    response = await _getValidators({
-      subnetID,
-      endpoint
-    })
-    if (response.data.error) {
-      commit(UPDATE_UI, { doesItConnect: true })
-      return null
-    }
-    response = response.data.result
+    dispatch(GET_PENDING_STAKING, { pendingValidators })
+  } catch (err) {
+    console.log(err)
   }
-
-  commit(UPDATE_UI, { doesItConnect: false })
-
-  let { validators, delegators } = response
-
-  if (typeof validators === 'undefined' ||
-    validators === null) {
-    validators = []
-  }
-
-  const res = await validatorProcessing(
-    validators,
-    delegators,
-    getters.defaultValidators,
-    isInit
-  )
-
-  commit(SET_STAKED_AVA, {
-    all: res.allStake,
-    validatedStake: res.validatedStake,
-    delegatedStake: res.delegatedStake
-  })
-
-  commit(SET_VALIDATORS, {
-    validators: res.validators
-  })
-
-  if (delegators.length < 1) {
-    delegators = res
-      .validators
-      .reduce((a, c) => {
-        a.push.apply(a, c.delegators)
-        return a
-      }, [])
-  }
-  commit(SET_DELEGATORS, {
-    delegators: mapDelegators(delegators)
-  })
-
-  if (getters.isDefaultSubnetID(subnetID)) {
-    commit(SET_DEFAULT_VALIDATORS, {
-      defaultValidators: res.validators
-    })
-  }
-  dispatch(GET_PENDING_STAKING, { pendingValidators })
 }
 
 async function getPValidators (
@@ -342,15 +405,13 @@ async function getNodeInfo (
 
     const nodeInfo = {
       health: response.data.result.health,
-      nodeID: response.data.result.nodeID,
       networkID: response.data.result.networkID,
       networkName: response.data.result.networkName,
-      nodeVersion: response.data.result.version,
-      peers: response.data.result.peers
+      nodeVersion: response.data.result.version
     }
-    commit(GET_NODE_ID, { nodeID: nodeInfo.nodeID })
+
     commit(GET_NODE_HEALTH, {
-      nodeID: nodeInfo.nodeID,
+      nodeID: getters.nodeID,
       nodeHealth: nodeInfo.health
     })
     commit(GET_NODE_INFO, { nodeInfo })
@@ -365,9 +426,6 @@ async function getNodeInfo (
         }),
         _getNodeVersion({
           endpoint: getters.networkEndpoint.url
-        }),
-        _getPeers({
-          endpoint: getters.networkEndpoint.url
         })
       ])
       commit(UPDATE_UI, { doesItConnect: false })
@@ -375,23 +433,80 @@ async function getNodeInfo (
       resAll
         .map(r => r.data.result)
         .forEach(res => {
-          if (Object.keys(res)[0] === 'numPeers') {
-            nodeInfo.peers = {
-              peers: Object.values(res)[1],
-              numPeers: Object.values(res)[0]
-            }
-          } else {
-            nodeInfo[Object.keys(res)] = Object.values(res)[0]
-          }
+          nodeInfo[Object.keys(res)] = Object.values(res)[0]
         })
       commit(GET_NODE_INFO, { nodeInfo })
       dispatch(GET_NODE_HEALTH)
-      dispatch(GET_NODE_ID)
     } catch (err) {
       console.log(err)
       commit(UPDATE_UI, { doesItConnect: true })
     }
   }
+}
+
+async function getNodePeers (
+  { getters, commit, dispatch }, { isIgnore = true }) {
+  if (getters.networkEndpoint.url === network.endpointUrls[0].url && isIgnore) {
+    const response = await _getDefPeers()
+
+    if (response.error) {
+      dispatch(GET_NODE_PEERS, { isIgnore: false })
+      return
+    }
+
+    const peers = response.data.result
+    const peersMap = groupBy(peers.peers, COUNTRY_CODE)
+    Object.keys(peersMap).map(function (key, index) {
+      peersMap[key] = peersMap[key].length
+    })
+
+    commit(GET_INFO_PEERS, { peersMap })
+    commit(GET_NODE_PEERS, { peers })
+  } else {
+    try {
+      const response = await _getPeers({
+        endpoint: getters.networkEndpoint.url
+      })
+
+      if (response.data.error) {
+        commit(UPDATE_UI, { doesItConnect: true })
+        return
+      }
+
+      let peers = await getInfoPeers(response.data.result.peers)
+
+      if (!peers) peers = []
+      const result = {
+        numPeers: peers.length,
+        peers
+      }
+      commit(GET_NODE_PEERS, { peers: result })
+
+      const peersMap = groupBy(peers, COUNTRY_CODE)
+      Object.keys(peersMap).map(function (key, index) {
+        peersMap[key] = peersMap[key].length
+      })
+
+      commit(GET_INFO_PEERS, { peersMap })
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}
+
+async function getInfoPeers (peers) {
+  return await Promise.all(peers.map(async p => {
+    try {
+      const ip = p.ip.split(':')[0]
+      const res = await _getPeerInfo({ ip })
+      return {
+        ...p,
+        ...res.data
+      }
+    } catch (err) {
+      return p
+    }
+  }))
 }
 
 function getAvaxPrice (
@@ -517,6 +632,7 @@ export default {
   [GET_NODE_ID]: getNodeId,
   [GET_SUBNETS]: getSubnets,
   [GET_NODE_INFO]: getNodeInfo,
+  [GET_NODE_PEERS]: getNodePeers,
   [INIT_ENDPOINT]: initEndpoint,
   [GET_STAKING]: getValidators,
   [GET_AVAX_PRICE]: getAvaxPrice,

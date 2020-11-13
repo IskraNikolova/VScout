@@ -66,65 +66,50 @@
               <tooltip-style v-bind:text="'Connect To Node'" />
           </q-btn>
           <q-btn
-            flat
             no-caps
-            icon="img:statics/settings2.svg"
-            class="text-regular text-grey"
+            :label="getISO(currentCurrency)"
+            class="text-medium text-orange"
+            color="purple"
             id="target-el"
           >
-              <q-menu
+            <q-menu
               anchor="top right"
-              self="top left">
-              <div style="min-width: 250px;">
-                <div class="no-wrap q-pa-md text-orange">
-                  Settings
-                </div>
-                <q-separator />
-                <q-item>
-                  <q-item-section>
-                    CURRENCY
-                  </q-item-section>
-                  <q-item-section side right>
-                    <q-icon name="expand_more" @click="show=!show"/>
+              self="top left"
+            >
+            <div style="min-width: 250px;">
+                <q-item style="background-color: #32353b;">
+                  <q-item-section class="text-white text-medium">
+                    1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }}
                   </q-item-section>
                 </q-item>
-                <div v-if="show">
-                  <q-separator />
-                    <q-item style="background-color: grey;">
-                      <q-item-section class="text-white text-medium">
-                        1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }}
+                <q-separator />
+                <q-item>
+                  <q-input v-model="val" @input="filterFn" label="Search currency" />
+                </q-item>
+                <span v-if="allCurrencies.length > 0">
+                  <q-list style="min-width: 250px;" v-for="(c, i) in allCurrencies" v-bind:key="i">
+                    <q-item>
+                      <q-item-section>
+                        <q-item-label>{{ getISO(c) }}</q-item-label>
+                        <q-item-label caption lines="2">{{ getCurrencyName(c) }}</q-item-label>
+                      </q-item-section>
+
+                      <q-item-section side top>
+                        <q-item-label><small class="text-purple text-medium">{{ getSymbol(c) }}</small> {{ currenciesPriceList[`${c}`] }}</q-item-label>
+                        <q-icon size="xs" name="check_box" v-if="c === currentCurrency" />
+                        <q-icon size="xs" name="check_box_outline_blank" v-else @click="setCurrentCurrency(c)"/>
                       </q-item-section>
                     </q-item>
-                  <q-separator />
-                  <q-separator />
-                  <q-item>
-                    <q-input v-model="val" @input="filterFn" label="Search currency" />
-                  </q-item>
-                  <span v-if="allCurrencies.length > 0">
-                    <q-list style="min-width: 250px;" v-for="(c, i) in allCurrencies" v-bind:key="i">
-                      <q-item>
-                        <q-item-section>
-                          <q-item-label>{{ getISO(c) }}</q-item-label>
-                          <q-item-label caption lines="2">{{ getCurrencyName(c) }}</q-item-label>
-                        </q-item-section>
-
-                        <q-item-section side top>
-                          <q-item-label><small class="text-purple text-medium">{{ getSymbol(c) }}</small> {{ currenciesPriceList[`${c}`] }}</q-item-label>
-                          <q-icon size="xs" name="check_box" v-if="c === currentCurrency" />
-                          <q-icon size="xs" name="check_box_outline_blank" v-else @click="setCurrentCurrency(c)"/>
-                        </q-item-section>
-                      </q-item>
-                      <q-item>
-                        <q-item-section><small class="text-grey">24h High</small> <span style="font-size: 12px;" class="text-medium text-green">{{ high24h[`${c}`] }}</span></q-item-section>
-                        <q-item-section side top><small class="text-grey">24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
-                      </q-item>
-                      <q-separator />
-                    </q-list>
-                  </span>
-                  <span v-else><q-item>No Results</q-item></span>
-                </div>
+                    <q-item>
+                      <q-item-section><small class="text-grey">24h High</small> <span style="font-size: 12px;" class="text-medium text-green">{{ high24h[`${c}`] }}</span></q-item-section>
+                      <q-item-section side top><small class="text-grey">24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
+                    </q-item>
+                    <q-separator />
+                  </q-list>
+                </span>
+                <span v-else><q-item>No Results</q-item></span>
               </div>
-              </q-menu>
+            </q-menu>
           </q-btn>
         </q-toolbar>
         <q-toolbar class="background-orange">
@@ -213,65 +198,50 @@
             <tooltip-style v-bind:text="'Connect To Node'" />
           </q-btn>
           <q-btn
-            flat
             no-caps
-            icon="img:statics/settings2.svg"
-            class="text-regular text-grey"
+            :label="getISO(currentCurrency)"
+            class="text-medium text-grey"
+            color="purple"
             id="target-el"
           >
-              <q-menu
+            <q-menu
               anchor="top right"
-              self="top left">
-              <div style="min-width: 250px;">
-                <div class="no-wrap q-pa-md text-orange">
-                  Settings
-                </div>
-                <q-separator />
-                <q-item>
-                  <q-item-section>
-                    CURRENCY
-                  </q-item-section>
-                  <q-item-section side right>
-                    <q-icon name="expand_more" @click="show=!show"/>
+              self="top left"
+            >
+            <div style="min-width: 250px;">
+                <q-item style="background-color: #32353b;">
+                  <q-item-section class="text-white text-medium">
+                    1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }}
                   </q-item-section>
                 </q-item>
-                <div v-if="show">
-                  <q-separator />
-                    <q-item style="background-color: grey;">
-                      <q-item-section class="text-white text-medium">
-                        1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }}
+                <q-separator />
+                <q-item>
+                  <q-input v-model="val" @input="filterFn" label="Search currency" />
+                </q-item>
+                <span v-if="allCurrencies.length > 0">
+                  <q-list style="min-width: 250px;" v-for="(c, i) in allCurrencies" v-bind:key="i">
+                    <q-item>
+                      <q-item-section>
+                        <q-item-label>{{ getISO(c) }}</q-item-label>
+                        <q-item-label caption lines="2">{{ getCurrencyName(c) }}</q-item-label>
+                      </q-item-section>
+
+                      <q-item-section side top>
+                        <q-item-label><small class="text-purple text-medium">{{ getSymbol(c) }}</small> {{ currenciesPriceList[`${c}`] }}</q-item-label>
+                        <q-icon size="xs" name="check_box" v-if="c === currentCurrency" />
+                        <q-icon size="xs" name="check_box_outline_blank" v-else @click="setCurrentCurrency(c)"/>
                       </q-item-section>
                     </q-item>
-                  <q-separator />
-                  <q-separator />
-                  <q-item>
-                    <q-input v-model="val" @input="filterFn" label="Search currency" />
-                  </q-item>
-                  <span v-if="allCurrencies.length > 0">
-                    <q-list style="min-width: 250px;" v-for="(c, i) in allCurrencies" v-bind:key="i">
-                      <q-item>
-                        <q-item-section>
-                          <q-item-label>{{ getISO(c) }}</q-item-label>
-                          <q-item-label caption lines="2">{{ getCurrencyName(c) }}</q-item-label>
-                        </q-item-section>
-
-                        <q-item-section side top>
-                          <q-item-label><small class="text-purple text-medium">{{ getSymbol(c) }}</small> {{ currenciesPriceList[`${c}`] }}</q-item-label>
-                          <q-icon size="xs" name="check_box" v-if="c === currentCurrency" />
-                          <q-icon size="xs" name="check_box_outline_blank" v-else @click="setCurrentCurrency(c)"/>
-                        </q-item-section>
-                      </q-item>
-                      <q-item>
-                        <q-item-section><small class="text-grey">24h High</small> <span style="font-size: 12px;" class="text-medium text-green">{{ high24h[`${c}`] }}</span></q-item-section>
-                        <q-item-section side top><small class="text-grey">24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
-                      </q-item>
-                      <q-separator />
-                    </q-list>
-                  </span>
-                  <span v-else><q-item>No Results</q-item></span>
-                </div>
+                    <q-item>
+                      <q-item-section><small class="text-grey">24h High</small> <span style="font-size: 12px;" class="text-medium text-green">{{ high24h[`${c}`] }}</span></q-item-section>
+                      <q-item-section side top><small class="text-grey">24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
+                    </q-item>
+                    <q-separator />
+                  </q-list>
+                </span>
+                <span v-else><q-item>No Results</q-item></span>
               </div>
-              </q-menu>
+            </q-menu>
           </q-btn>
         </q-toolbar>
         <q-toolbar>
@@ -288,8 +258,8 @@
               </span>
             </div>
             <div class="col-2" v-if="validatorById(nodeID)"></div>
-            <div class="col-8 q-pb-md" v-else></div>
-            <div class="col-4 q-pb-md">
+            <div class="col-9 q-pb-md" v-else></div>
+            <div class="col-3 q-pb-md">
               <q-bar style="min-width: 420px;">
                 <q-input
                   outlined
@@ -446,11 +416,11 @@
           </q-item>
           <q-item clickable v-ripple>
             <q-item-section avatar>
-              <q-icon name="img:statics/flash.svg" />
+              <q-icon name="img:statics/currency.svg" size="md"/>
             </q-item-section>
 
             <q-item-section>
-              <span @click="isC=true">Currency</span>
+              <span @click="isC=true">Currency ({{ getISO(currentCurrency) }})</span>
               <q-dialog v-model="isC" transition-show="rotate" transition-hide="rotate">
                 <q-card>
                   <q-card-section class="text-purple text-medium">
@@ -520,7 +490,7 @@
         <router-view />
       </keep-alive>
        <!-- place QPageScroller at end of page-->
-        <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
+        <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18,18]">
           <q-btn fab icon="keyboard_arrow_up" color="secondary" />
         </q-page-scroller>
     </q-page-container>
@@ -542,13 +512,13 @@ import { currencies } from './../utils/constants.js'
 export default {
   name: 'MainLayout',
   components: {
-    Calculator: () => import('components/items/calculator'),
-    TooltipStyle: () => import('components/tooltip-style'),
-    Countdown: () => import('components/items/countdown'),
-    ListSubnets: () => import('components/list-subnets'),
-    SwitchEndpoint: () => import('components/switch-endpoint'),
-    ListBlockchains: () => import('components/list-blockchains'),
-    AddIdentificationDialog: () => import('components/dialogs/add-identification-dialog')
+    Calculator: () => import('components/items/calculator.vue'),
+    TooltipStyle: () => import('components/tooltip-style.vue'),
+    Countdown: () => import('components/items/countdown.vue'),
+    ListSubnets: () => import('components/list-subnets.vue'),
+    SwitchEndpoint: () => import('components/switch-endpoint.vue'),
+    ListBlockchains: () => import('components/list-blockchains.vue'),
+    AddIdentificationDialog: () => import('components/dialogs/add-identification-dialog.vue')
   },
   created () {
     this.allCurrencies = Object.keys(this.currenciesPriceList)

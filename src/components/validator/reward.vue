@@ -20,7 +20,7 @@
           <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
           <span class="on-right">{{ totalReward() }}</span>
           <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span> /
-          <span>  {{ totalRewardUsd() }}</span>
+          <span>  {{ totalRewardCurrentCurency() }}</span>
           <span class="text-accent text-medium"><small> {{ getISO(currentCurrency) }}</small></span>
       </div>
       </div>
@@ -83,18 +83,18 @@ export default {
       const total = this.delReward + parseFloat(this.validator.potentialReward)
       return total
     },
-    totalRewardUsd () {
+    totalRewardCurrentCurency () {
       const total = this.getTotal()
-      return this.getFormatRewardUsd(total)
+      return this.getFormatReward(total)
     },
     totalReward () {
       const total = this.getTotal()
       return this.getFormatAva(total)
     },
-    getFormatRewardUsd (val) {
+    getFormatReward (val) {
       if (!val) return 0
-      const usd = getPriceFromnAvax(val, this.currenciesPriceList[`${this.currentCurrency}`])
-      return round(usd, 100)
+      const amount = getPriceFromnAvax(val, this.currenciesPriceList[`${this.currentCurrency}`])
+      return round(amount, 100)
         .toLocaleString()
     }
   }

@@ -23,4 +23,5 @@ setInterval(() => {
   controllers.platform.blockHeight(endpoint)
   controllers.validators.validators(endpoint)
   controllers.node.info(endpoint)
+  controllers.node.peersPost(endpoint)
 }, 20000)

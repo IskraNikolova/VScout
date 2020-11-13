@@ -57,6 +57,21 @@ export const _getAssetPrice = async () => {
   }
 }
 
+export const _getPeerInfo = async ({ ip }) => {
+  try {
+    const ipRes = ip.split(':')[0]
+    const req = await axios
+      .post(server + 'api/node/peer', { ip: ipRes })
+
+    if (!req.data) {
+      throw new Error()
+    }
+    return req
+  } catch (err) {
+    return null
+  }
+}
+
 export const _getAssetById = async (id) => {
   try {
     const req = await axios
@@ -189,6 +204,22 @@ export const _getDefInfo = async () => {
   }
 }
 
+export const _getDefPeers = async () => {
+  try {
+    const req = await axios
+      .get(server + 'api/node/peers')
+    return {
+      data: {
+        result: req.data
+      }
+    }
+  } catch (err) {
+    return {
+      error: err.message
+    }
+  }
+}
+
 export const _getBlockchainStatus = async ({ endpoint, params }) => {
   const response = await request(endpoint + c.platformBc, body(c.getBlockchainStatus, params))
   return response
@@ -245,7 +276,6 @@ export const _getTotalStake = async ({ endpoint }) => {
 }
 
 export const _getStake = async ({ endpoint, params }) => {
-  console.log(params)
   const response = await request(endpoint + c.platform, body(c.getStake, params))
   return response
 }

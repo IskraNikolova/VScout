@@ -1,7 +1,8 @@
 <template>
   <q-card
-    class="q-mt-sm q-pt-md q-pr-sm q-pl-xl q-pb-md"
+    class="q-mt-sm q-pt-md q-pr-xs q-ml-xs q-pl-xl q-pb-md"
     id="custom-card"
+    style="min-height: 160px;"
   >
     <div class="row">
       <div v-if="isBlockchainView" class="col-md-3 col-xs-10">

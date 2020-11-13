@@ -4,13 +4,16 @@ import { VMDict } from './../../utils/constants.js'
 import { clean } from './../../utils/commons.js'
 
 import {
+  GET_IN_OUT,
   GET_NODE_ID,
   GET_SUBNETS,
   GET_HEIGHT,
   SET_BALANCE,
   SET_SUBNET_ID,
   GET_NODE_INFO,
+  GET_NODE_PEERS,
   SET_VALIDATORS,
+  GET_INFO_PEERS,
   SET_STAKED_AVA,
   SET_DELEGATORS,
   GET_BLOCKCHAINS,
@@ -29,6 +32,9 @@ import {
 const mutations = {
   [SET_NETWORK_STATUS]: (state, { hasNetworkConnection }) => {
     state.hasNetworkConnection = hasNetworkConnection
+  },
+  [GET_IN_OUT]: (state, { incomingVal, incomingDel, outcomingVal, outcomingDel }) => {
+    state.inData = { incomingVal, incomingDel, outcomingVal, outcomingDel }
   },
   [GET_CURRENT_SUPPLY]: (state, { currentSupply }) => {
     state.currentSupply = currentSupply
@@ -61,8 +67,14 @@ const mutations = {
   [GET_NODE_INFO]: (state, { nodeInfo }) => {
     state.nodeInfo = nodeInfo
   },
+  [GET_NODE_PEERS]: (state, { peers }) => {
+    state.peers = peers
+  },
   [SET_VALIDATORS]: (state, { validators }) => {
     state.validators = validators
+  },
+  [GET_INFO_PEERS]: (state, { peersMap }) => {
+    state.peersMap = peersMap
   },
   [UPDATE_VALIDATOR]: (state, { validator }) => {
     const currentValidator = state

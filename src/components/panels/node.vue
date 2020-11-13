@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="q-pt-md q-pl-xl q-pr-sm q-pb-md" id="custom-card" >
+    class="q-pt-md q-pl-xl q-pr-xs q-ml-xs q-pb-md" id="custom-card" >
     <!--<div style="text-align: right;font-size: 10px;margin-bottom: 5px;">
       <q-icon name="info" style="font-size: 17px;" color="grey">
         <tooltip-style v-bind:brandColoring="['VScout']" v-bind:bold="[`${nodeID}`, `${networkEndpoint.url}`]" v-bind:text="'On this panel you can get information about node to which the VScout is connected and to which it submits a request for data visualization (health, peers, node version, network name, validators/uptime etc.). You are currently using ' + networkEndpoint.url + ' with ' + nodeID + '. To switch to another node, use the menu at the top right.'" />
@@ -8,25 +8,6 @@
       <span class="text-orange"> VScout</span> Connection Info
     </div>-->
     <div class="row">
-      <div class="col-md-2 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium ">NETWORK</div>
-        <div style="text-transform: uppercase;" class="text-h6 text-secondary">
-          {{ nodeInfo.networkName }}
-        </div>
-        <div class="q-pt-md" id="f-size12">
-          <span class="text-medium">Network ID</span>
-          <span class="text-secondary">
-            {{ nodeInfo.networkID }}
-          </span>
-        </div>
-        <div id="f-size12">
-          <span class="text-medium">Version</span>
-          <span class="text-secondary">
-            {{ nodeInfo.version ? nodeInfo.version : nodeInfo.nodeVersion}}
-          </span>
-        </div>
-      </div>
-      <q-separator class="q-mt-md q-mb-md lt-md" />
       <div class="col-md-3 col-xs-10">
         <div v-if="validatorById(nodeID)" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
           <div id="f-size12" class="q-pb-md text-medium">NODE - VALIDATOR</div>
@@ -47,7 +28,7 @@
         <img src="~assets/node1.svg" v-else id="logo2">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md" />
-      <div class="col-md-2 col-xs-10">
+      <div class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">PEER CONNECTIONS</div>
         <div class="q-pb-md">
          <small>Connected with</small>
@@ -65,7 +46,7 @@
         <img src="~assets/peers.svg" id="logo2"/>
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
-      <div class="col-md-2 col-xs-10">
+      <div class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">
           ENDPOINT
           <q-spinner-ball v-if="ui.doesItConnect" />
@@ -110,6 +91,7 @@ export default {
       'ui',
       'height',
       'nodeID',
+      'peers',
       'nodeInfo',
       'nodeHealth',
       'validatorById',
@@ -119,7 +101,8 @@ export default {
       return this.nodeHealth(this.nodeID)
     },
     peersLength: function () {
-      if (this.nodeInfo.peers && this.nodeInfo.peers.peers) return this.nodeInfo.peers.peers.length
+      if (this.peers && this.peers.numPeers) return this.peers.numPeers
+      else if (this.peers) return this.peers.length
       return 0
     },
     healthy: function () {

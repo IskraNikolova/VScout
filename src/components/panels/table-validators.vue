@@ -1,5 +1,5 @@
 <template>
-  <div class="q-mt-xs">
+  <div class="q-mt-sm">
     <q-table
       :data="curentValidators"
       :columns="columns"

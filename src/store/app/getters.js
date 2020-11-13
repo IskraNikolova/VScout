@@ -126,6 +126,18 @@ export function nodeInfo (state) {
   return state.nodeInfo
 }
 
+export function peers (state) {
+  return state.peers
+}
+
+export function peersMap (state) {
+  return state.peersMap
+}
+
+export function inData (state) {
+  return state.inData
+}
+
 export function nodeHealth (state) {
   return (id) => state.nodeHealth[id]
 }

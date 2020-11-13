@@ -3,6 +3,8 @@ import { BN } from 'avalanche'
 
 export default function () {
   return {
+    peersMap: {},
+    inData: {},
     addressBalance: {},
     currentCurrency: 'usd',
     height: 0,
@@ -30,11 +32,11 @@ export default function () {
     hasNetworkConnection: true,
     subnetID: network.defaultSubnetID,
     networkEndpoint: network.endpointUrls[0],
+    peers: {},
     nodeInfo: {
       networkID: '',
       networkName: '',
-      nodeVersion: 'avalanche/',
-      peers: []
+      nodeVersion: 'avalanche/'
     }
   }
 }

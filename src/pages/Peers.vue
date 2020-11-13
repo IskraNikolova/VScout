@@ -1,33 +1,49 @@
 <template>
   <q-page>
     <div style="padding: 1%;">
+      <div>
+        <span class="text-h6 q-pl-sm q-mb-xl text-white">{{ peersView.length }} Peers Connected with</span> <span class="text-medium text-purple"> {{ getNodeFormat(nodeID) }}</span>
+      </div>
+      <div class="row q-pl-xs q-pt-md">
+      <div class="col-2 text-purple">
+        <div v-for="p in keys1" v-bind:key="p">
+          <span v-if="p !== 'undefined'"><span>{{ p }}</span>
+          <span class="text-medium text-white"> {{ statics[`${p}`] }}</span></span>
+        </div>
+      </div>
+      <div class="8 q-mt-xl" style="width: 65%;height: 350px;"><MapChart
+        style="z-index: 30;"
+        :countryData="peersMap"
+        highColor="#aa7dc9"
+        defaultCountryFillColor="#ffffff"
+        legendBoxShadowCss="0px 0px 15px #fff"
+        :showLegend="true"
+        :currencyAdd="false"
+        :showEmptyValue="true"
+      /></div>
+      <div class="col-2 text-purple">
+        <div v-for="p in keys2" v-bind:key="p">
+          <span>{{ p }}</span>
+          <span class="text-medium text-white"> {{ statics[`${p}`] }}</span>
+        </div>
+      </div>
+      </div>
       <q-card
-        class="q-pb-md"
+        class="q-pb-md q-mt-sm"
         id="custom-card"
-        style="padding-top: 3%;min-height: 400px;"
+        style="min-height: 400px;"
       >
-        <q-btn
-          @click="back"
-          icon="arrow_back"
-          no-caps
-          color="accent"
-          flat
-        />
-        <div class="q-pt-md">
-          <span class="text-h6 q-pl-md">Peers Connected with</span> <span class="text-medium text-orange"> {{ getNodeFormat(nodeID) }}</span></div>
-          <div class="text-h7 q-pl-md q-pt-md q-pb-md"><q-icon name="info" color="grey" /> "Uptime" shows the stat from the perspective of the connected endpoint.</div>
+        <!--<div class="text-h7 q-pl-md q-pt-md"><q-icon name="info" color="grey" /> "Uptime" shows the stat from the perspective of the connected endpoint.</div>-->
         <q-table
           flat
-          :data="peers"
+          :data="peersView"
           :columns="columns"
           :filter="filter"
           row-key="id"
+          title="Peers"
           :pagination="pagination"
         >
-            <template slot="top-left">
-             <div class="row"><div style="width: 10px; height: 10px;background-color: #aa7dc9;margin-top: 5px;margin-right: 5px;"></div> Validator</div>
-            </template>
-            <template v-slot:top-right="props">
+          <template v-slot:top-right="props">
             <q-input
                 borderless
                 color="accent"
@@ -58,7 +74,10 @@
                 :key="col.name"
                 :props="props"
                 >
-                  <span v-if="props.row.isValidator" class="text-purple">{{ col.value }}</span>
+                  <span v-if="col.name === 'validator'">
+                    <span v-if="col.value" class="text-purple">Yes</span>
+                    <span v-else>No</span>
+                  </span>
                   <span v-else>{{ col.value }}</span>
                 </q-td>
             </q-tr>
@@ -78,26 +97,33 @@
 <script>
 import { mapGetters } from 'vuex'
 
+import MapChart from 'vue-chart-map'
+
+import {
+  groupBy
+} from './../utils/commons.js'
+
 import { datePickerFormat } from './../modules/time.js'
 
 export default {
   name: 'PagePeers',
   components: {
+    MapChart
   },
   watch: {
     validators: function () {
-      this.peers = this.getPeers()
+      this.peersView = this.getPeers()
     }
   },
   created () {
-    this.peers = this.getPeers()
+    this.peersView = this.getPeers()
   },
   data () {
     return {
       pagination: {
         rowsPerPage: 15
       },
-      peers: [],
+      peersView: [],
       filter: '',
       columns: [
         {
@@ -115,31 +141,38 @@ export default {
           headerClasses: 'text-medium'
         },
         {
+          name: 'validator',
+          align: 'left',
+          label: 'IS VALIDATOR',
+          field: row => row.isValidator,
+          headerClasses: 'text-medium'
+        },
+        {
           name: 'uptime',
-          align: 'center',
+          align: 'left',
           label: 'UPTIME',
           field: row => row.uptime,
           headerClasses: 'text-medium'
         },
         {
           name: 'version',
-          align: 'center',
+          align: 'left',
           label: 'VERSION',
           field: row => row.version,
           headerClasses: 'text-medium'
         },
         {
-          name: 'lastSent',
-          align: 'center',
-          label: 'LAST SENT',
-          field: row => this.dateFormat(row.lastSent),
+          name: 'location',
+          align: 'left',
+          label: 'LOCATION',
+          field: row => row.country,
           headerClasses: 'text-medium'
         },
         {
-          name: 'lastReceived',
-          align: 'center',
-          label: 'LAST RECEIVED',
-          field: row => this.dateFormat(row.lastReceived),
+          name: 'lastSent',
+          align: 'left',
+          label: 'LAST SENT',
+          field: row => this.dateFormat(row.lastSent),
           headerClasses: 'text-medium'
         }
       ]
@@ -147,16 +180,34 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'nodeInfo',
       'nodeID',
+      'peers',
+      'peersMap',
       'validators'
-    ])
+    ]),
+    statics: function () {
+      const statics = groupBy(this.peers.peers, 'country')
+      Object.keys(statics).map(function (key, index) {
+        statics[key] = statics[key].length
+      })
+      return statics
+    },
+    keys1: function () {
+      const keys = Object.keys(this.statics)
+      const index = keys.length / 2
+      return keys.splice(0, index)
+    },
+    keys2: function () {
+      const keys = Object.keys(this.statics)
+      const index = keys.length / 2
+      return keys.splice(index)
+    }
   },
   methods: {
     getPeers () {
       const peersRes = []
-      this.nodeInfo
-        .peers.peers.forEach((peer, i) => {
+      this.peers
+        .peers.forEach((peer, i) => {
           const isValidator = this.validators
             .find(v => v.nodeID === peer.nodeID)
           const p = { ...peer }
@@ -178,9 +229,6 @@ export default {
     },
     dateFormat (date) {
       return datePickerFormat(date)
-    },
-    back () {
-      this.$router.push('/')
     }
   }
 }

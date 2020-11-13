@@ -18,6 +18,14 @@ export const getDurationByDayCount = (dur) => {
   return moment.duration(dur, 'days')
 }
 
+export const substract24Hours = () => {
+  return moment().subtract(24, 'h').format('X')
+}
+
+export const add24Hours = () => {
+  return moment().add(24, 'h').format('X')
+}
+
 export const getDurationByMinutesCount = (dur) => {
   const a = moment()
   const b = moment(new Date(dur))

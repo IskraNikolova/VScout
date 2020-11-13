@@ -64,11 +64,12 @@
 import { mapGetters, mapActions } from 'vuex'
 
 import {
+  GET_HEIGHT,
+  GET_STAKING,
   GET_SUBNETS,
   GET_NODE_ID,
   GET_NODE_INFO,
-  GET_HEIGHT,
-  GET_STAKING,
+  GET_NODE_PEERS,
   GET_BLOCKCHAINS,
   GET_PENDING_STAKING
 } from '../store/app/types'
@@ -114,6 +115,7 @@ export default {
       getHeight: GET_HEIGHT,
       getSubnets: GET_SUBNETS,
       getNodeInfo: GET_NODE_INFO,
+      getNodePeers: GET_NODE_PEERS,
       getValidators: GET_STAKING,
       getBlockchains: GET_BLOCKCHAINS,
       getPendingValidators: GET_PENDING_STAKING
@@ -155,6 +157,7 @@ export default {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })
       await Promise.all([
         this.getNodeInfo({}),
+        this.getNodePeers({}),
         this.getHeight({ endpoint: endpoint.url }),
         this.getValidators({ endpoint: endpoint.url, subnetID: this.subnetID }),
         this.getPendingValidators({ endpoint: endpoint.url, subnetID: this.subnetID }),
