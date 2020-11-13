@@ -7,8 +7,9 @@
       <div class="row q-pl-xs q-pt-md">
       <div class="col-2 text-purple">
         <div v-for="p in keys1" v-bind:key="p">
-          <span v-if="p !== 'undefined'"><span>{{ p }}</span>
-          <span class="text-medium text-white"> {{ statics[`${p}`] }}</span></span>
+          <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(statics[`${p}`]) + '.png'" id="logo-s"/>
+          <span v-if="p !== 'undefined'"><span>  {{ p }}</span>
+          <span class="text-medium text-white"> {{ statics[`${p}`].count }}</span></span>
         </div>
       </div>
       <div class="8 q-mt-xl" style="width: 65%;height: 350px;"><MapChart
@@ -23,8 +24,9 @@
       /></div>
       <div class="col-2 text-purple">
         <div v-for="p in keys2" v-bind:key="p">
-          <span>{{ p }}</span>
-          <span class="text-medium text-white"> {{ statics[`${p}`] }}</span>
+          <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(statics[`${p}`]) + '.png'" id="logo-s"/>
+          <span v-if="p !== 'undefined'">  {{ p }}</span>
+          <span v-if="p !== 'undefined'" class="text-medium text-white"> {{ statics[`${p}`].count }}</span>
         </div>
       </div>
       </div>
@@ -188,7 +190,7 @@ export default {
     statics: function () {
       const statics = groupBy(this.peers.peers, 'country')
       Object.keys(statics).map(function (key, index) {
-        statics[key] = statics[key].length
+        statics[key] = { count: statics[key].length, code: statics[key] }
       })
       return statics
     },
@@ -204,6 +206,11 @@ export default {
     }
   },
   methods: {
+    getCode (val) {
+      if (!val) return
+      if (!val.code[0].countryCode) return ''
+      return val.code[0].countryCode.toLowerCase()
+    },
     getPeers () {
       const peersRes = []
       this.peers
