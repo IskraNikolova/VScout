@@ -352,7 +352,7 @@ async function getSubnets (
   if (typeof subnets === 'undefined' ||
     subnets === null) return
 
-  if (subnets.length <= getters.subnets.length) return
+  if (subnets.length === getters.subnets.length) return
 
   const result = Promise.all(subnets.map(async subnet => {
     const response = await _validates({
@@ -552,7 +552,7 @@ async function getBlockchains (
   if (typeof blockchains === 'undefined' ||
     blockchains === null) return
 
-  if (blockchains.length <= getters.blockchains.length) return
+  if ((blockchains.length + 1) === getters.blockchains.length) return
 
   blockchains.push({
     id: network.defaultSubnetID,
