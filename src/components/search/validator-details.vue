@@ -9,14 +9,9 @@
             <rank v-bind:rank="validator.rank" />
             <name v-bind:name="getName()" v-bind:nodeID="validator.nodeID" v-bind:link="getLink()" />
             <owner v-bind:owner="rewardOwner" v-if="rewardOwner"/>
-            <q-item-label v-if="validator.weight">
-              <small class="text-grey">
-                Weight: <span class="text-accent">{{ validator.weight }}</span>
-              </small>
-            </q-item-label>
           </q-item-section>
         </q-item>
-        <div class="col-3 q-pt-sm" v-if="!validator.weight">
+        <div class="col-3 q-pt-sm">
           <span class="text-subtitle2 q-mr-xs"><small style="opacity: 0.8;">UPTIME</small></span>
           <q-badge :color="getColorUptime(validator.uptime)" class="text-medium" style="font-size: 16px;padding: 7px;">
             <span style="margin: auto;">{{ getUpTime(validator.uptime) }}%</span>
@@ -32,7 +27,7 @@
             {{ getDurationL(validator.duration) }}
           </span>
           <br />
-          <span class="text-subtitle2" v-if="!validator.weight"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
+          <span class="text-subtitle2"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
           <span class="q-pl-xs" v-if="validator.percent !== 'NaN'">
             {{ validator.percent }}<span class="text-accent text-medium" style="font-size: 12px;">%</span>
           </span>
@@ -120,11 +115,6 @@
             v-bind:link="validator.link"
           />
           <owner v-bind:owner="rewardOwner" v-if="rewardOwner"/>
-          <q-item-label v-if="validator.weight">
-            <small class="text-grey">
-              Weight: <span class="text-accent">{{ validator.weight }}</span>
-            </small>
-          </q-item-label>
           <q-separator class="q-mt-md q-mb-md"/>
           <q-item-label>
             <div>

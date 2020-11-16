@@ -7,7 +7,7 @@
       <div class="row q-pl-xs q-pt-md">
       <div class="col-2 text-purple">
         <div v-for="p in keys1" v-bind:key="p">
-          <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(statics[`${p}`]) + '.png'" id="logo-s"/>
+          <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(statics[`${p}`].code[0]) + '.png'" id="logo-s"/>
           <span v-if="p !== 'undefined'"><span>  {{ p }}</span>
           <span class="text-medium text-white"> {{ statics[`${p}`].count }}</span></span>
         </div>
@@ -24,7 +24,7 @@
       /></div>
       <div class="col-2 text-purple">
         <div v-for="p in keys2" v-bind:key="p">
-          <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(statics[`${p}`]) + '.png'" id="logo-s"/>
+          <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(statics[`${p}`].code[0]) + '.png'" id="logo-s"/>
           <span v-if="p !== 'undefined'">  {{ p }}</span>
           <span v-if="p !== 'undefined'" class="text-medium text-white"> {{ statics[`${p}`].count }}</span>
         </div>
@@ -79,6 +79,9 @@
                   <span v-if="col.name === 'validator'">
                     <span v-if="col.value" class="text-purple">Yes</span>
                     <span v-else>No</span>
+                  </span>
+                  <span v-else-if="col.name === 'location'">
+                    <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(props.row) + '.png'" id="logo-s"/> {{ col.value}}
                   </span>
                   <span v-else>{{ col.value }}</span>
                 </q-td>
@@ -139,7 +142,7 @@ export default {
           name: 'id',
           align: 'left',
           label: 'NODE ID',
-          field: row => `[${row.nodeID}]`,
+          field: row => `${row.nodeID}`,
           headerClasses: 'text-medium'
         },
         {
@@ -208,8 +211,8 @@ export default {
   methods: {
     getCode (val) {
       if (!val) return
-      if (!val.code[0].countryCode) return ''
-      return val.code[0].countryCode.toLowerCase()
+      if (!val.countryCode) return ''
+      return val.countryCode.toLowerCase()
     },
     getPeers () {
       const peersRes = []

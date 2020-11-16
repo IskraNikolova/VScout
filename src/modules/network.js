@@ -45,13 +45,8 @@ export const _getTxApi = async (id) => {
 export const _getAssetPrice = async () => {
   try {
     const req = await axios
-      .get('https://api.coingecko.com/api/v3/coins/avalanche-2')
-
-    if (!req.data) {
-      throw new Error()
-    }
-
-    return req.data.market_data
+      .get(server + 'api/market_data')
+    return req.data
   } catch (err) {
     return null
   }

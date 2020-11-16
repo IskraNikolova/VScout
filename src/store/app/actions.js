@@ -111,7 +111,6 @@ async function initApp (
   setInterval(async () => {
     try {
       await Promise.all([
-        dispatch(GET_AVAX_PRICE),
         dispatch(GET_STAKING, {
           subnetID: getters.subnetID,
           isInit: false
