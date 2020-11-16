@@ -18,6 +18,10 @@ let index = 0
 let endpoint = endpoints[index]
 
 setInterval(() => {
+  controllers.avax.avaxPrice()
+}, 8000)
+
+setInterval(() => {
   index = 1 // (index + 1) % 2
   endpoint = endpoints[index]
   controllers.platform.blockHeight(endpoint)
