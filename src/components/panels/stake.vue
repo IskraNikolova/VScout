@@ -148,7 +148,7 @@ export default {
     },
     allStake: function () {
       if (!this.stakedAVA) return 0
-      const toAva = getAvaFromnAva(Number(this.stakedAVA))
+      const toAva = getAvaFromnAva(this.stakedAVA)
       const roundVal = round(toAva, 10)
       return roundVal
     },
