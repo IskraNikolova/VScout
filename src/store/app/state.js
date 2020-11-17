@@ -22,6 +22,7 @@ export default function () {
     blockchains: [],
     assetsCount: 0,
     validatedStake: 0,
+    delegatedStake: 0,
     endpointsMemory: [],
     pendingValidators: [],
     defaultValidators: [],

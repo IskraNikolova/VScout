@@ -90,9 +90,9 @@ async function initApp (
   try {
     await Promise.all([
       dispatch(INIT_ENDPOINT),
+      dispatch(GET_AVAX_PRICE),
       dispatch(GET_BLOCKCHAINS, {}),
       dispatch(GET_SUBNETS, {}),
-      dispatch(GET_AVAX_PRICE),
       dispatch(GET_NODE_ID, {}),
       dispatch(GET_NODE_INFO, {}),
       dispatch(GET_NODE_PEERS, {}),
@@ -101,8 +101,7 @@ async function initApp (
       dispatch(GET_CURRENT_SUPPLY),
       _initializeNetwork(),
       dispatch(GET_STAKING, {
-        subnetID: getters.subnetID,
-        isInit: true
+        subnetID: getters.subnetID
       })
     ]).then(() => dispatch(SUBSCRIBE_TO_EVENT))
   } catch (err) {
@@ -125,14 +124,16 @@ async function initApp (
 
 async function initEndpoint (
   { commit, getters }) {
-  const endpoint = getters.networkEndpoint
-  commit(SET_ENDPOINT, { endpoint })
+  try {
+    const endpoint = getters.networkEndpoint
+    if (!endpoint.url) throw new Error()
 
-  const response = await _getNodeId({
-    endpoint: endpoint.url
-  })
+    const response = await _getNodeId({
+      endpoint: endpoint.url
+    })
 
-  if (response.data.error) {
+    if (response.data.error) throw new Error()
+  } catch (err) {
     const endpoint = network.endpointUrls[0]
     commit(SET_ENDPOINT, { endpoint })
   }
@@ -192,8 +193,6 @@ async function getValidators (
         delegators
       } = mapDelegators(validators.delegators)
 
-      commit(SET_DELEGATORS, { delegators })
-
       commit(GET_IN_OUT, {
         incomingVal,
         incomingDel,
@@ -208,6 +207,7 @@ async function getValidators (
       )
 
       commit(SET_VALIDATORS, { validators: res.validators })
+      commit(SET_DELEGATORS, { delegators })
 
       commit(SET_DEFAULT_VALIDATORS, {
         defaultValidators: res.validators

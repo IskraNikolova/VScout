@@ -10,7 +10,6 @@ import {
 
 const mutations = {
   [SET_ENDPOINT]: (state, { endpoint }) => {
-    if (!endpoint) endpoint = network.endpointUrls[0].url
     state.networkEndpoint = endpoint
   },
   [SET_CURRENT_SUBNET]: (state, { subnet }) => {
