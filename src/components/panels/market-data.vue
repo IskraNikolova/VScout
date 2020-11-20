@@ -4,8 +4,33 @@
     <div class="row">
       <div class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium ">PRICE</div>
-        <div class="text-h5 text-secondary">
+        <div class="text-h5 text-secondary q-pb-sm">
           <small>{{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }} | AVAX/{{ getISO(currentCurrency) }}</small>
+        </div>
+        <div class="text-secondary" v-if="currentCurrency !== 'btc'">
+          <small><span style="opacity: 0.7;">{{ getSymbol('btc') }} {{ currenciesPriceList[`${'btc'}`] }} | AVAX/{{ getISO('btc') }}</span>
+              <span v-if="changePercentage24h[`${'btc'}`] > 0" class="text-green text-medium">
+                +{{ changePercentage24h[`${'btc'}`] }} %
+                <q-icon name="north" />
+              </span>
+              <span v-else class="text-green">
+                {{ changePercentage24h[`${'btc'}`] }} %
+                <q-icon name="south" />
+              </span>
+            </small>
+        </div>
+        <div class="text-secondary" v-else>
+          <small>
+            <span style="opacity: 0.7;">{{ getSymbol('usd') }} {{ currenciesPriceList[`${'usd'}`] }} | AVAX/{{ getISO('usd') }}</span>
+            <span v-if="changePercentage24h[`${'usd'}`] > 0" class="text-green text-medium">
+              +{{ changePercentage24h[`${'usd'}`] }} %
+              <q-icon name="north" />
+            </span>
+            <span v-else class="text-green">
+              {{ changePercentage24h[`${'usd'}`] }} %
+              <q-icon name="south" />
+            </span>
+          </small>
         </div>
       </div>
       <div class="col-md-1" style="padding-top: 23px;opacity: 0.3;">
