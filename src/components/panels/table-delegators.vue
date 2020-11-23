@@ -1,5 +1,5 @@
 <template>
-  <div class="q-mt-md">
+  <div class="q-mt-md panel">
     <q-table
       :data="curentDelegators"
       :columns="columns"
@@ -7,7 +7,7 @@
       row-key="nodeID"
       :pagination="pagination"
       :visible-columns="visibleColumns"
-      :class="tableClass"
+      :class="tableClass + ' panel'"
       id="custom-table"
     >
       <template slot="top-left">
@@ -24,7 +24,6 @@
         <q-btn
           size="xs"
           v-else
-          class="text-grey"
           flat
           icon="push_pin"
           @click="isNotSticky=!isNotSticky"
@@ -46,7 +45,7 @@
           v-model="type2"
           flat
           size="xs"
-          toggle-color="orange"
+          toggle-color="panel"
           @click.native="onSwitchAccounts"
           :options="[
             {label: 'Validators', value: 'validators'},
@@ -58,8 +57,8 @@
         <q-th :props="props">
           <q-icon
             style="margin-left: 13px;"
-            size="3.0em"
-            name="img:statics/delegate.png"
+            size="2.0em"
+            name="group"
           />
         </q-th>
       </template>
@@ -68,6 +67,7 @@
           borderless
           color="accent"
           stack-label
+          label-color="accent"
           label="Filter delegations..."
           clearable v-model="filter"
         >
@@ -159,8 +159,8 @@ export default {
   },
   watch: {
     isNotSticky: function (val) {
-      if (val) this.tableClass = 'light-background shadow-3'
-      else this.tableClass = 'light-background shadow-3 sticky-header-table'
+      if (!val) this.tableClass = 'sticky-header-table'
+      // else this.tableClass = 'light-background shadow-3 sticky-header-table'
     }
   },
   data () {
@@ -246,7 +246,7 @@ export default {
       ],
       textStickyPositive: 'Sticky header',
       textStickyNegative: 'Remove a sticky header',
-      tableClass: 'light-background shadow-3'
+      tableClass: ''
     }
   },
   computed: {

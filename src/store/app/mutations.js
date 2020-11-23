@@ -4,6 +4,7 @@ import { VMDict } from './../../utils/constants.js'
 import { clean } from './../../utils/commons.js'
 
 import {
+  SET_THEME,
   GET_IN_OUT,
   GET_NODE_ID,
   GET_SUBNETS,
@@ -51,6 +52,9 @@ const mutations = {
     state.low_24h = low24h
     state.price_change_24h = avaxPrice.price_change_24h_in_currency
     state.price_change_24h_percentage = avaxPrice.price_change_percentage_24h_in_currency
+  },
+  [SET_THEME]: (state, { themeName }) => {
+    state.theme = themeName
   },
   [GET_NODE_ID]: (state, { nodeID }) => {
     state.nodeID = nodeID

@@ -1,11 +1,7 @@
 <template>
   <q-page>
     <div style="padding: 1%;">
-      <q-card
-        id="custom-card"
-      >
-        <validator-details v-bind:id="getID()"/>
-      </q-card>
+      <validator-details v-bind:id="getID()" />
       <div class="flex flex-center">
         <img src="~assets/vscoutlogo5.svg" id="logo">
       </div>

@@ -1,93 +1,120 @@
 <template>
   <q-layout view="lHh Lpr lFf" >
-    <q-header reveal>
+    <q-header reveal class="panel">
       <div class="gt-sm">
-        <q-toolbar class="background-white">
+        <q-toolbar class="panel">
           <q-toolbar-title
             @click="$router.push('/')"
             id="toolbar-title">
-            VScout.io <q-icon name="home" color="grey" />
+            VScout.io <q-icon name="home" />
           </q-toolbar-title>
           <q-btn
-            color="secondary"
+            color="purple"
             flat label="Add Identification"
             icon="perm_identity"
             @click.native="onAddIdentification"
           />
           <calculator />
-          <q-btn
-            flat
-            label="blockchains"
-            class="text-regular text-grey"
+          <div
+            class="q-pa-md text-medium"
+            @click="blockchainsMenuOver=true"
+            @mouseover="blockchainsMenuOver=true"
+            @mouseout="blockchainsMenuOver=false"
           >
-            <q-menu>
-              <div class="no-wrap q-pa-md text-grey">
+            <div class="fit flex flex-center text-center non-selectable">
+              <span>BLOCKCHAINS</span>
+            </div>
+            <q-menu
+              v-model="blockchainsMenu"
+              transition-show="scale"
+              transition-hide="scale"
+            >
+              <div class="no-wrap q-pa-md">
                 Switch To Blockchain
                 <q-spinner-dots v-if="blockchains.length < 1" />
               </div>
               <q-separator />
               <list-blockchains />
-              </q-menu>
-            </q-btn>
-            <q-btn
-              flat
-              label="subnets"
-              class="text-regular text-grey"
+            </q-menu>
+          </div>
+          <div
+            class="q-pa-md text-medium"
+            @click="subnetMenuOver=true"
+            @mouseover="subnetMenuOver=true"
+            @mouseout="subnetMenuOver=false"
+          >
+            <div class="fit flex flex-center text-center non-selectable">
+              <span>SUBNETS</span>
+            </div>
+            <q-menu
+              v-model="subnetsMenu"
+              transition-show="scale"
+              transition-hide="scale"
             >
-            <q-menu>
-              <div class="no-wrap q-pa-md text-grey">
+              <div class="no-wrap q-pa-md">
                 Switch To Subnet
                 <q-spinner-dots v-if="subnets.length < 1" />
               </div>
               <q-separator />
               <list-subnets />
             </q-menu>
-            </q-btn>
-            <a
-              id="faq"
-              class="text-grey" href="#faqs">
-              FAQ
-            </a>
-            <q-btn
-              flat
-              no-caps
-              icon="img:statics/flash.svg"
-              :label="networkEndpoint.name"
-              class="text-regular text-grey"
-              id="target-el"
-            >
-              <q-menu>
-                <div class="no-wrap q-pa-md text-orange">
-                  Networks
-                </div>
-                <q-separator />
-                <switch-endpoint />
-              </q-menu>
-              <tooltip-style v-bind:text="'Connect To Node'" />
-          </q-btn>
-          <q-btn
-            no-caps
-            :label="getISO(currentCurrency)"
-            class="text-medium text-orange"
-            color="purple"
-            id="target-el"
+          </div>
+          <a
+            id="faq"
+            href="#faqs">
+            FAQ
+          </a>
+          <div
+            class="q-pa-md text-medium"
+            @click="networkMenuOver=true"
+            @mouseover="networkMenuOver=true"
+            @mouseout="networkMenuOver=false"
           >
+            <div class="fit flex flex-center text-center non-selectable">
+              <q-icon name="flash_on" size="sm" />
+              <span>{{ networkEndpoint.name }}</span>
+            </div>
             <q-menu
-              anchor="top right"
-              self="top left"
+              v-model="networkMenu"
+              @mouseover="inputNetworkOver=true"
+              @mouseout="inputNetworkOver=false"
+              transition-show="scale"
+              transition-hide="scale"
             >
-            <div style="min-width: 250px;">
-                <q-item style="background-color: #32353b;">
-                  <q-item-section class="text-white text-medium">
+              <div class="no-wrap q-pa-md text-orange">
+                Networks
+              </div>
+              <q-separator />
+              <switch-endpoint />
+            </q-menu>
+          </div>
+          <div
+            class="q-pa-md text-medium text-purple"
+            @mouseover="menuOver=true"
+            @mouseout="menuOver=false"
+          >
+            <div class="fit flex flex-center text-center non-selectable">
+              <span>{{ getISO(currentCurrency) }}</span>
+            </div>
+            <q-menu
+              v-model="menu"
+              transition-show="scale"
+              transition-hide="scale"
+            >
+              <div style="min-width: 250px;">
+                <q-item>
+                  <q-item-section class="text-secondary text-medium">
                     1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }}
                   </q-item-section>
                 </q-item>
                 <q-separator />
                 <q-item>
-                  <q-input v-model="val" @input="filterFn" label="Search currency" />
+                  <q-input v-model="val" @input="filterFn" label="Search currency" @mouseover="inputOver=true" @mouseout="inputOver=false"/>
                 </q-item>
                 <span v-if="allCurrencies.length > 0">
-                  <q-list style="min-width: 250px;" v-for="(c, i) in allCurrencies" v-bind:key="i">
+                  <q-list style="min-width: 250px;" v-for="(c, i) in allCurrencies" v-bind:key="i"
+                    @mouseover.native="listOver=true" @mouseout.native="listOver=false"
+                  >
                     <q-item>
                       <q-item-section>
                         <q-item-label>{{ getISO(c) }}</q-item-label>
@@ -101,8 +128,8 @@
                       </q-item-section>
                     </q-item>
                     <q-item>
-                      <q-item-section><small class="text-grey">24h High</small> <span style="font-size: 12px;" class="text-medium text-green">{{ high24h[`${c}`] }}</span></q-item-section>
-                      <q-item-section side top><small class="text-grey">24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
+                      <q-item-section><small>24h High</small> <span style="font-size: 12px;" class="text-medium text-green">{{ high24h[`${c}`] }}</span></q-item-section>
+                      <q-item-section side top><small>24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
                     </q-item>
                     <q-separator />
                   </q-list>
@@ -110,7 +137,7 @@
                 <span v-else><q-item>No Results</q-item></span>
               </div>
             </q-menu>
-          </q-btn>
+          </div>
         </q-toolbar>
         <q-toolbar class="background-orange">
           <q-toolbar-title>
@@ -150,10 +177,10 @@
           <q-btn
             flat
             label="blockchains"
-            class="text-regular text-grey"
+            class="text-regular"
           >
           <q-menu>
-            <div class="no-wrap q-pa-md text-grey">
+            <div class="no-wrap q-pa-md">
               Switch To Blockchain
               <q-spinner-dots v-if="blockchains.length < 1" />
             </div>
@@ -164,10 +191,10 @@
           <q-btn
             flat
             label="subnets"
-            class="text-regular text-grey"
+            class="text-regular"
           >
           <q-menu>
-            <div class="no-wrap q-pa-md text-grey">
+            <div class="no-wrap q-pa-md">
               Switch To Subnet
               <q-spinner-dots v-if="subnets.length < 1" />
             </div>
@@ -183,7 +210,7 @@
           <q-btn
             flat
             no-caps
-            icon="img:statics/flash.svg"
+            icon="flash_on"
             :label="networkEndpoint.name"
             class="text-regular text-grey"
             id="target-el"
@@ -469,6 +496,8 @@
     <q-footer reveal>
       <q-toolbar class="background-orange">
         <q-toolbar-title class="text-secondary" @click="$router.push('/')" style="cursor: pointer;"><small>VScout.io</small></q-toolbar-title>
+        <q-btn flat icon="nights_stay" v-if="appTheme === 'default'" @click="switchTheme('dark')" />
+        <q-btn flat icon="wb_sunny" v-else @click="switchTheme('default')" />
         <q-btn @click="toUrl" flat><img src="~assets/discord.svg" id="logo-block"></q-btn>
       </q-toolbar>
     </q-footer>
@@ -498,13 +527,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import {
   SET_BALANCE,
+  SET_THEME,
   SET_CURRENT_CURRENCY
 } from './../store/app/types'
-import { openURL } from 'quasar'
+import { openURL, debounce } from 'quasar'
 
 import { _getTxStatus, _getBalance } from './../modules/network.js'
 import { currencies } from './../utils/constants.js'
@@ -532,6 +562,7 @@ export default {
     ...mapGetters([
       'nodeID',
       'high24h',
+      'appTheme',
       'low24h',
       'subnets',
       'blockchains',
@@ -556,10 +587,68 @@ export default {
       isC: false,
       drawer: false,
       currency: {},
-      allCurrencies: []
+      allCurrencies: [],
+      menu: false,
+      menuOver: false,
+      subnetsMenu: false,
+      blockchainsMenu: false,
+      listOver: false,
+      inputOver: false,
+      networkMenuOver: false,
+      networkMenu: false,
+      subnetMenuOver: false,
+      blockchainsMenuOver: false
+    }
+  },
+  watch: {
+    menuOver (val) {
+      this.debounceFunc(this.checkMenu())
+    },
+    listOver (val) {
+      this.debounceFunc(this.checkMenu())
+    },
+    inputOver (val) {
+      this.debounceFunc(this.checkMenu())
+    },
+    networkMenuOver (val) {
+      this.debounceFunc(this.checkNetworkMenu())
+    },
+    subnetMenuOver (val) {
+      this.debounceFunc(this.checkSubnetMenu())
+    },
+    blockchainsMenuOver (val) {
+      this.debounceFunc(this.checkBlockchainsMenu())
     }
   },
   methods: {
+    ...mapActions({
+      setTheme: SET_THEME
+    }),
+    switchTheme (theme) {
+      this.setTheme(theme)
+    },
+    debounceFunc: (fn) => debounce(function () { fn() }, 300),
+    checkMenu () {
+      if (this.menuOver || this.listOver || this.inputOver) {
+        this.menu = true
+      }
+      this.val = ''
+    },
+    checkNetworkMenu () {
+      if (this.networkMenuOver || this.inputNetworkOver) {
+        this.networkMenu = true
+      }
+    },
+    checkSubnetMenu () {
+      if (this.subnetMenuOver) {
+        this.subnetsMenu = true
+      }
+    },
+    checkBlockchainsMenu () {
+      if (this.blockchainsMenuOver) {
+        this.blockchainsMenu = true
+      }
+    },
     toUrl () {
       openURL('https://discord.gg/PPB67JYyAp')
     },
@@ -689,6 +778,7 @@ export default {
 <style scoped>
   #faq {
     text-decoration: none;
+    color: #805d96;
     margin-top: -3px;
     padding-left: 20px;
     padding-right: 20px;

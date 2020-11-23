@@ -31,7 +31,7 @@
       </div>
       </div>
       <q-card
-        class="q-pb-md q-mt-sm"
+        class="q-pb-md q-mt-sm panel"
         id="custom-card"
         style="min-height: 400px;"
       >
@@ -43,6 +43,7 @@
           :filter="filter"
           row-key="id"
           title="Peers"
+          class="panel"
           :pagination="pagination"
         >
           <template v-slot:top-right="props">
@@ -58,12 +59,11 @@
                 </template>
             </q-input>
             <q-btn
-                size="xs"
-                flat round dense
-                :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
-                @click="props.toggleFullscreen"
-                class="absolute-top-right"
-                color="grey"
+              size="xs"
+              flat round dense
+              :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
+              @click="props.toggleFullscreen"
+              class="absolute-top-right"
             />
             </template>
             <template v-slot:body="props">

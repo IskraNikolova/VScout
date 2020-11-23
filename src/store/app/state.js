@@ -3,6 +3,7 @@ import { BN } from 'avalanche'
 
 export default function () {
   return {
+    theme: 'default',
     peersMap: {},
     inData: {},
     addressBalance: {},

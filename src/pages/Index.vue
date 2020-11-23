@@ -79,13 +79,17 @@ import {
   mapGetters,
   mapActions
 } from 'vuex'
+
 import MapChart from 'vue-chart-map'
+
 import {
   GET_STAKING,
   GET_PENDING_STAKING
 } from '../store/app/types'
+
 const { network } = require('./../modules/config')
   .default
+
 export default {
   name: 'PageIndex',
   components: {
@@ -135,6 +139,7 @@ export default {
           endpoint: this.networkEndpoint.url
         })
       }
+
       if (typeof type !== 'undefined') await temp[type]()
     },
     async getDefaultValidators () {

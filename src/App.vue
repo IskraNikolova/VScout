@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import {
   INIT_APP,
@@ -19,6 +19,19 @@ export default {
     ...mapActions({
       initApp: INIT_APP
     })
+  },
+  watch: {
+    appTheme (val) {
+      document.querySelector('html').dataset.theme = this.appTheme
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'appTheme'
+    ])
+  },
+  created () {
+    document.querySelector('html').dataset.theme = this.appTheme
   },
   mounted () {
     this.initApp()

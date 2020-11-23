@@ -1,11 +1,11 @@
 <template>
-  <q-card flat>
+  <q-card flat class="panel">
     <q-card-section>
       <div class="row items-center no-wrap">
         <div class="col">
           <div v-if="validator.nodeID !== validator.name">
-            <span id="font15" class="text-grey"><small>NAME </small></span>
-            <span id="nodeID" class="text-grey text-medium" @click="$router.push(`/validator/${validator.nodeID}`)">
+            <span id="font15"><small>NAME </small></span>
+            <span id="nodeID" class="text-medium" @click="$router.push(`/validator/${validator.nodeID}`)">
               {{ validator.name }}
             </span>
             <a :href="validator.link" v-if="validator.link" class="text-accent">
@@ -16,7 +16,7 @@
               visit
             </span>
           </div>
-          <span id="font15" class="text-grey">
+          <span id="font15">
             <small>NODE ID </small> </span>
             <span
               @click="$router.push(`/validator/${validator.nodeID}`)"
@@ -32,7 +32,7 @@
               />
             </small>
             <div v-if="validator.rewardOwner">
-              <span class="text-grey" id="font15">
+              <span id="font15">
                 <small>OWNER  </small>
               </span>
               <span id="link">{{ rewardOwner }}</span>
@@ -46,7 +46,7 @@
         </div>
         <div class="col">
           <div>
-            <span class="text-grey" id="font15">
+            <span id="font15">
               <small>STAKING PERIOD </small>
             </span>
             <span id="link">
@@ -55,7 +55,7 @@
           </div>
           <div class="row">
             <div class="col">
-              <span class="text-grey" id="font15">
+              <span id="font15">
                 <small>START TIME </small>
               </span>
               <span id="link">
@@ -66,7 +66,7 @@
               </small>
             </div>
             <div class="col">
-              <span class="text-grey" id="font15">
+              <span id="font15">
                 <small>END TIME </small>
               </span>
               <span id="link">
@@ -79,7 +79,7 @@
     </q-card-section>
     <div class="row items-start q-gutter-md q-pl-md">
       <!-- STAKE PANEL-->
-      <q-card class="my-card bg-grey-1 col-3">
+      <q-card class="my-card panel col-3">
         <q-card-section>
           <div class="text-h6">Stake</div>
         </q-card-section>
@@ -109,7 +109,7 @@
       </q-card>
 
       <!-- REWARD PANEL-->
-      <q-card class="my-card bg-grey-1 col-3">
+      <q-card class="my-card panel col-3">
         <q-card-section>
           <div class="text-h6">Reward</div>
         </q-card-section>
@@ -141,7 +141,7 @@
       </q-card>
 
       <!-- DELEGATE PANEL-->
-      <q-card class="my-card bg-grey-1 col-3">
+      <q-card class="my-card panel col-3">
         <q-card-section>
            <div class="row items-center no-wrap">
               <div class="text-h6 col">Delegate</div>
@@ -190,10 +190,10 @@
       </q-card>
 
       <!-- DELEGATIONS PANEL-->
-      <q-card class="my-card bg-grey-1 col-3">
+      <q-card class="my-card panel col-3">
         <q-card-section>
           <div class="text-h6">
-            <span class="text-orange">{{ delegatorsCount }}</span>
+            <span class="text-panel">{{ delegatorsCount }}</span>
             Delegations
           </div>
         </q-card-section>

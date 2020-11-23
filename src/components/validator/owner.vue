@@ -1,6 +1,6 @@
 <template>
   <q-item-label>
-    <small class="text-grey" @click="copyToClipboard(owner)" style="cursor: pointer;">
+    <small @click="copyToClipboard(owner)" style="cursor: pointer;opacity: 0.5;">
       <span class="text-medium">Owner</span> ({{ owner }})
     </small>
   </q-item-label>

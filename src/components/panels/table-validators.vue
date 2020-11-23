@@ -9,7 +9,7 @@
       :sort-method="customSort"
       :pagination="pagination"
       :grid="isGrid"
-      :class="tableClass"
+      :class="tableClass + ' panel'"
       id="custom-table"
       :visible-columns="visibleColumns"
       :loading="visible"
@@ -34,7 +34,6 @@
         <q-btn
           size="xs"
           v-else
-          class="text-grey"
           flat
           icon="push_pin"
           @click="isNotSticky=!isNotSticky"
@@ -60,7 +59,7 @@
           v-model="type2"
           flat
           size="xs"
-          toggle-color="secondary"
+          toggle-color="info"
           @click.native="onSwitchAccounts"
           :options="[
             {label: 'Validators', value: 'validators'},
@@ -69,7 +68,7 @@
         />
         <q-btn
           class="q-ml-sm"
-          no-caps color="secondary"
+          no-caps color="info"
           outline size="sm"
           label="Add Identification"
           icon="perm_identity"
@@ -80,7 +79,7 @@
           size="sm"
           flat
           class="q-ml-sm"
-          color="secondary"
+          color="info"
           icon-right="archive"
           label="Export to csv"
           no-caps
@@ -105,6 +104,7 @@
           borderless
           color="accent"
           stack-label
+          label-color="accent"
           label="Filter validators..."
           clearable v-model="filter"
         >
@@ -118,7 +118,6 @@
           :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
           @click="props.toggleFullscreen"
           class="absolute-top-right"
-          color="grey"
         />
       </template>
       <template v-slot:header-cell-rank="props">
@@ -142,9 +141,9 @@
             id="custom-td"
           >
             <div v-if="col.name === 'avatar'">
-              <q-img :src="col.value" :style="'margin-left: -15px;width: 35vw;max-width: 35px;min-height: 35px;max-height: 35px;border-radius: 5px;border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 5px;'">
+              <q-img :src="col.value" class="avatar">
                 <template v-slot:error>
-                  <div class="bg-white text-grey absolute-center">
+                  <div class="bg-white absolute-center">
                     <q-img src="~assets/image.jpg" style="width: 35vw;max-width: 35px;" />
                   </div>
                 </template>
@@ -168,12 +167,12 @@
             </div>
             <div v-else-if="col.name === 'stakeAmount'">
               <div>
-                <small class="text-grey">Total:</small> {{ getFormatReward(props.row.totalStakeAmount) }}
+                <small>Total:</small> {{ getFormatReward(props.row.totalStakeAmount) }}
               </div>
               <div>
-                <small class="text-grey">Own: </small>
-                <span class="text-secondary text-medium">{{ col.value }}</span>
-                <small class="text-grey"> D: {{ getFormatReward(props.row.delegateStake) }}</small>
+                <small>Own: </small>
+                <span class="text-panel text-medium">{{ col.value }}</span>
+                <small> D: {{ getFormatReward(props.row.delegateStake) }}</small>
               </div>
             </div>
             <div v-else-if="col.name === 'percent'">
@@ -183,7 +182,7 @@
               >
                 <div
                   class="layer1"
-                  :style="'border-radius:0px 5px 0px 0px;height: 50px;width:' + props.row.cumulativeStake + '%;background: rgb(50,53,59);background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(50,53,59,1) ' + (props.row.cumulativeStake - props.row.percent) / 5 + '%, rgba(255,96,0,1) 95%);'">
+                  :style="'border-radius:0px 5px 0px 0px;height: 50px;width:' + props.row.cumulativeStake + '%;background: rgb(50,53,59);background: linear-gradient(90deg, rgba(46, 1, 63, 1) 0%, rgba(50,53,59,1) ' + (props.row.cumulativeStake - props.row.percent) / 5 + '%, rgb(170,125,201) 95%);'">
                 </div>
                 <div class="layer2">
                   <q-linear-progress
@@ -191,8 +190,7 @@
                     rounded
                     :value="getData(props.row, props.row)"
                     :buffer="getData(props.row, props.row)"
-                    id="pr"
-                    color="grey">
+                    id="pr">
                     <div
                       class="absolute-full text-bold text-black"
                       id="lp"
@@ -232,7 +230,7 @@
       </template>
       <template v-slot:item="props">
         <div style="max-width: 420px;width: 100%;margin:auto;margin-bottom: 5px;">
-          <q-card flat bordered>
+          <q-card flat bordered class="panel">
             <span class="absolute absolute-top-right q-mt-xs q-mr-md">
               <small class="q-mr-xs">Uptime</small>
               <q-badge :color="getColorUptime(props.row.uptime)" >
@@ -241,10 +239,10 @@
             </span>
             <q-item>
               <q-item-section avatar style="cursor:pointer;" @click="onClick(props.row.link)">
-                <q-img :src="props.row.avatar" :style="'width: 65vw;max-width: 65px;min-height: 65px;border-radius: 5px;border: solid 1px ' + getBorderIsDelegatable(props.row.isMinimumAmountForStake, props.row.remainingCapacity ) + ';border-radius: 5px;'">
+                <q-img :src="props.row.avatar" :style="'width: 65vw;max-width: 65px;min-height: 65px;border-radius: 5px;border-radius: 5px;'">
                   <template v-slot:error>
-                    <div class="bg-white text-grey absolute-center">
-                      ?
+                    <div class="bg-white absolute-center">
+                      <q-img src="~assets/image.jpg" style="width: 35vw;max-width: 35px;" />
                     </div>
                 </template>
                 </q-img>
@@ -260,29 +258,27 @@
                   <span v-if="props.row.name !== props.row.nodeID" style="cursor:pointer;font-size: 11.5px;" @click="onClick(props.row.link)">
                     <span class="text-medium">{{ props.row.name }}</span>
                     <br />
-                    <small class="text-grey">{{ props.row.nodeID }}</small>
+                    <small>{{ props.row.nodeID }}</small>
                   </span>
                   <span v-else>{{ getFormatSubstr(props.row.nodeID) }}</span>
                   <small>
                     <q-icon
                       @click="copyToClipboard(props.row.nodeID)"
-                      color="grey"
                       name="file_copy"
                     />
                   </small>
                 </q-item-label>
                 <q-item-label>
-                  <small class="text-grey">
+                  <small>
                     Owner ({{ getFormatSubstr(getRewardOwner(props.row.rewardOwner)) }})
                     <q-icon
                       @click="copyToClipboard(getRewardOwner(props.row.rewardOwner))"
-                      color="grey"
                       name="file_copy"
                     />
                   </small>
                 </q-item-label>
                 <q-item-label v-if="props.row.weight">
-                  <small class="text-grey">
+                  <small>
                     Weight: <span class="text-accent">{{ props.row.weight }}</span>
                   </small>
                 </q-item-label>
@@ -294,28 +290,28 @@
             <q-card-section horizontal>
               <q-card-section class="col-6 q-mb-xl">
                 <div class="text-medium q-mb-md">Stake (AVAX)</div>
-                <small class="text-grey">Own</small>
+                <small>Own</small>
                 {{ getFormatReward(props.row.stakeAmount)}}
                 <div>
-                  <small class="text-grey">Delegated</small>
+                  <small>Delegated</small>
                   {{ getFormatReward(props.row.delegateStake) }}
                 </div>
                 <q-separator />
                 <div>
-                  <small class="text-grey">Total</small>
+                  <small>Total</small>
                   {{ getFormatReward(props.row.totalStakeAmount)}}
                   <small class="text-accent">AVAX</small>
                 </div>
                 <div class="text-medium q-mt-md">Network Share (%)</div>
-                <span class="text-orange q-pl-xs" v-if="props.row.percent !== 'NaN'">
+                <span class="q-pl-xs" v-if="props.row.percent !== 'NaN'">
                   {{ props.row.percent }} %
                 </span>
                 <div class="text-medium q-mt-md">Delegation Fee</div>
-                <div class="text-grey">
+                <div>
                   {{ props.row.delegationFee }} %
                 </div>
                   <div class="text-medium q-mt-md">Staked By</div>
-                  <div class="text-grey">
+                  <div>
                     <small>{{ stakedBy(props.row.startTime) }}</small>
                   </div>
               </q-card-section>
@@ -328,12 +324,12 @@
                   v-bind:percentAll="props.row.cumulativeStake ? props.row.cumulativeStake : NaN"
                 />
                 <div class="text-medium q-mt-md">Potential Reward</div>
-                <div class="text-grey">
+                <div>
                   <small>{{ getFormatReward(props.row.potentialReward) }} <span class="text-accent">AVAX</span></small>
                 </div>
               </q-card-section>
             </q-card-section>
-            <q-card-section style="margin-top: -50px;"><div class="text-grey text-medium">Progress (%)</div>
+            <q-card-section style="margin-top: -50px;"><div class="text-medium">Progress (%)</div>
             <progress-bar-validate-session
               v-bind:startTime="props.row.startTime"
               v-bind:endTime="props.row.endTime"
@@ -341,13 +337,13 @@
             <q-separator />
             <q-card-section horizontal>
               <q-card-section class="col-6">
-                <small class="text-grey text-bold">Start Time</small>
+                <small class="text-bold">Start Time</small>
                 <br />
                 <small>{{ formatDate(props.row.startTime, 'MMMM Do YYYY, h:mm') }}</small>
               </q-card-section>
               <q-separator vertical/>
               <q-card-section class="col-6">
-                <small class="text-grey text-bold">End Time</small>
+                <small class="text-bold">End Time</small>
                 <br />
                 <small>{{ formatDate(props.row.endTime, 'MMMM Do YYYY, h:mm') }}</small>
               </q-card-section>
@@ -720,7 +716,7 @@ export default {
       return round(val * 100, 1000)
     },
     getColorUptime (val) {
-      if (val >= 0.6) return 'green'
+      if (val >= 0.6) return 'positive'
       return 'negative'
     },
     getFormatReward (val) {

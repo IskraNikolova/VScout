@@ -2,18 +2,10 @@
   <q-page>
     <div style="padding: 1%;">
       <q-card
-        class="q-mt-md q-pt-md q-pb-md"
+        class="q-mt-md q-pt-md q-pb-md panel"
         id="custom-card"
         style="padding-top: 3%;min-height: 400px;"
       >
-        <q-btn
-          @click="back"
-          icon="arrow_back"
-          label="Back"
-          no-caps
-          color="accent"
-          flat
-        />
         <blockchain-details class="q-pr-md"/>
       </q-card>
       <div class="flex flex-center">
@@ -32,11 +24,6 @@ export default {
   name: 'PageBlockchain',
   components: {
     BlockchainDetails: () => import('components/search/blockchain-details.vue')
-  },
-  methods: {
-    back () {
-      this.$router.push('/')
-    }
   }
 }
 </script>

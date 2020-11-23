@@ -1,5 +1,6 @@
 import {
   INIT_APP,
+  SET_THEME,
   GET_HEIGHT,
   GET_IN_OUT,
   GET_NODE_ID,
@@ -625,10 +626,15 @@ function subscribeToEvents ({ commit, dispatch, getters }) {
   })
 }
 
+function setTheme ({ commit }, themeName) {
+  commit(SET_THEME, { themeName })
+}
+
 export default {
   [INIT_APP]: initApp,
   [GET_HEIGHT]: getHeight,
   [GET_NODE_ID]: getNodeId,
+  [SET_THEME]: setTheme,
   [GET_SUBNETS]: getSubnets,
   [GET_NODE_INFO]: getNodeInfo,
   [GET_NODE_PEERS]: getNodePeers,

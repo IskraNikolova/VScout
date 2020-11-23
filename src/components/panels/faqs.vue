@@ -8,12 +8,12 @@
     </div>
     <q-slide-transition>
       <div v-show="visible">
-        <q-card class="q-mt-md q-pt-xl q-pl-xl q-pb-md q-mb-xl">
+        <q-card class="q-mt-md q-pt-xl q-pl-xl q-pb-md q-mb-xl panel">
             <div v-for="(question, i) in questions"
               v-bind:key="i">
               <q-slide-transition>
                 <div v-show="visible">
-                  <div class="text-h3 text-orange">. <span class="text-h6 text-grey">{{question.title}}</span></div>
+                  <div class="text-h3 text-panel">. <span class="text-h6">{{question.title}}</span></div>
                   <q-separator spaced style="width: 50%;" class="q-pt-xs"/>
                   <div v-html="question.content" style="font-size: 14px;padding-right: 20%;margin-bottom: 50px;"></div>
               </div>

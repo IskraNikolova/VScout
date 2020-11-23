@@ -1,19 +1,19 @@
 <template>
-    <div class="q-pa-md">
-      <div class="text-bold q-pl-md">BLOCKCHAIN ID</div>
-      <div class="text-regular text-orange q-pl-md q-pt-md">{{ blockchainID }}</div>
+    <div class="q-pa-md panel">
+      <div class="text-bold q-pl-md" style="opacity: 0.3;">BLOCKCHAIN ID</div>
+      <div class="text-regular q-pl-md q-pt-md">{{ blockchainID }}</div>
       <div class="row q-pt-xl q-pl-md">
         <div class="col-6">
-        <span class="text-light text-h7">NAME:</span> <div class="text-medium">{{ blockchainName }}</div>
+        <span class="text-light text-h7" style="opacity: 0.3;">NAME:</span> <div class="text-medium">{{ blockchainName }}</div>
         <br />
-        <span class="text-light text-h7">VM (Virtual Machine):</span>
-        <div class="q-pl-xs"><small class="text-grey">ID: </small> <span class="text-medium">{{ blockchainVmID }}</span></div>
-        <div class="q-pl-xs"><small class="text-grey">NAME: </small> <span class="text-medium">{{ blockchainVmName }}</span></div>
+        <span class="text-light text-h7" style="opacity: 0.3;">VM (Virtual Machine):</span>
+        <div class="q-pl-xs"><small style="opacity: 0.3;">ID: </small> <span class="text-medium">{{ blockchainVmID }}</span></div>
+        <div class="q-pl-xs"><small style="opacity: 0.3;">NAME: </small> <span class="text-medium">{{ blockchainVmName }}</span></div>
         </div>
         <div class="col-6">
-        <span class="text-light text-h7">SUBNET ID:</span> <div class="text-medium">{{ blockchainSubnetID }}</div>
+        <span class="text-light text-h7" style="opacity: 0.3;">SUBNET ID:</span> <div class="text-medium">{{ blockchainSubnetID }}</div>
         <br />
-        <span class="text-light text-h7">STATUS:</span>
+        <span class="text-light text-h7" style="opacity: 0.3;">STATUS:</span>
         <div :class="'text-medium text-' + getColor(blockchainStatus)">
             {{ blockchainStatus }}
             <tooltip-style v-bind:text="getStatusInfo(blockchainStatus)" />

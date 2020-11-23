@@ -5,22 +5,22 @@
     transition-show="slide-up"
     transition-hide="slide-down"
   >
-    <q-card class="q-pl-xs q-pt-md q-pb-md iden-card">
+    <q-card class="q-pl-xs q-pt-md q-pb-md iden-card panel">
       <q-card-section class="row">
         <q-item class="col-10">
           <q-item-section avatar>
-            <q-icon name="perm_identity" size="xl" class="q-pt-xs" color="secondary"/>
+            <q-icon name="perm_identity" size="xl" class="q-pt-xs" color="panel"/>
           </q-item-section>
           <q-item-section>
             <q-item-label class="text-h6">Add/Update Validator Identification</q-item-label>
-            <q-item-label caption>
+            <q-item-label caption class="text-panel">
               Validators identification data is stored on a smart contract.
             </q-item-label>
           </q-item-section>
         </q-item>
         <div class="col-2"><q-btn icon="close" flat round dense  @click="onClose" /></div>
       </q-card-section>
-      <div class="text-warning q-pl-md outlined" v-if="error">
+      <div class="text-negative q-pl-md outlined" v-if="error">
         <q-icon name="report_problem" /> {{ error }}
       </div>
       <div class="text-positive q-pl-md outlined" v-if="notify">
@@ -35,10 +35,10 @@
           <div class="row">
             <div class="col-md-5 col-12 q-mr-xl q-pb-md">
               <q-input
+                dark
                 color="accent"
                 class="q-mb-md"
                 outlined
-                label-color="orange"
                 v-model="nodeIDModel"
                 label="Your node ID *"
                 hint="The validator node ID."
@@ -59,11 +59,11 @@
                 </template>
               </q-input>
               <q-input
+                dark
                 color="accent"
                 class="q-mb-md"
                 outlined
                 clearable
-                label-color="orange"
                 v-model="name"
                 label="Validator Name"
                 hint="Validator's Name will be show on validator's list instead validator ID."
@@ -71,11 +71,11 @@
                 :error="validateData.errors.name"
               />
               <q-input
+                dark
                 color="accent"
                 class="q-mb-xs"
                 outlined
                 clearable
-                label-color="orange"
                 v-model="avatar"
                 label="Avatar Url"
                 hint="For avatar you must use url.(optional)"
@@ -84,19 +84,19 @@
             </div>
             <div class="col-md-5 col-12 q-pr-xl">
                 <q-input
+                  dark
                   type="textarea"
                   color="accent"
                   class="q-mb-sm"
                   outlined
-                  label-color="orange"
                   v-model="bio"
                   label="Bio "
                 />
                 <q-input
+                  dark
                   color="accent"
                   class="q-mb-sm"
                   outlined
-                  label-color="orange"
                   v-model="website"
                   placeholder="VScout"
                   label="Hypertext (website name)"
@@ -104,11 +104,11 @@
                   hint="Name of your website/business link or other. (optional)"
                 />
                 <q-input
+                  dark
                   color="accent"
                   class="q-mb-xs"
                   outlined
                   clearable
-                  label-color="orange"
                   v-model="link"
                   placeholder="https://www.vscout.io"
                   label="Hyperlink (link)"
@@ -120,21 +120,21 @@
         <div class="row q-pr-xl">
           <div class="row">
             <q-input
+              dark
               size="xs"
               outlined
               color="accent"
-              label-color="orange"
               v-model="vCode"
               clearable
               label="Verification Code"
               hint="Your verifaction code."
             />
           </div>
-          <q-btn flat size="sm" color="negative" label="No code?" @click="onVerifyNodeID"/>
+          <q-btn flat size="sm" color="negative" label="No code?" @click="onVerifyNodeID" style="height: 35px;" class="q-ml-sm"/>
           <q-space />
-          <q-btn label="Preview Your Page" no-caps rounded @click="prev" color="secondary" style="height: 35px;margin-top: 23px;margin-right: 5px;"/>
-          <q-btn label="Add To Contract" no-caps rounded outline type="submit" color="secondary" style="height: 35px;margin-top: 23px;"/>
-          <q-btn size="xs" label="Reset" type="reset" color="grey" flat class="q-mr-sm" />
+          <q-btn label="Preview Your Page" no-caps rounded @click="prev" color="panel" style="height: 35px;margin-top: 23px;margin-right: 5px;"/>
+          <q-btn label="Add To Contract" no-caps rounded outline type="submit" color="panel" style="height: 35px;margin-top: 23px;"/>
+          <q-btn size="xs" label="Reset" type="reset" flat class="q-mr-sm" />
         </div>
         </q-form>
       </q-card-section>
@@ -172,7 +172,7 @@
                 <span
                   style="font-size: 15px;cursor: pointer;"
                   @click="copyToClipboard(admin)"
-                  class="text-secondary text-medium"
+                  class="text-panel text-medium"
                 >
                   {{ admin }}
                 </span>
@@ -186,7 +186,6 @@
             class="col-8"
             size="xs"
             outlined
-            color="grey"
             v-model="txID"
             clearable
             label="Tx ID..."
@@ -279,6 +278,7 @@ export default {
     ...mapGetters([
       'ui',
       'code',
+      'appTheme',
       'txAVM',
       'txHash',
       'nodeID',

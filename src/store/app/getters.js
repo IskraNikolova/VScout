@@ -70,6 +70,10 @@ export function stakedAVA (state) {
   return state.stakedAVA
 }
 
+export function appTheme (state) {
+  return state.theme
+}
+
 export function validatedStake (state) {
   return state.validatedStake
 }

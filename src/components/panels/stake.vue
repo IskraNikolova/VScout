@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="q-mt-sm q-pl-xl q-pr-xs q-ml-xs q-pb-md"
+    class="q-mt-sm q-pl-xl q-pr-xs q-ml-xs q-pb-md panel"
     id="custom-card"
     style="min-height: 150px;padding-top: 30px;"
   >
@@ -8,7 +8,7 @@
       <div class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">VALIDATORS / DELEGATIONS</div>
         <div>
-          <span class="text-h5 text-secondary">
+          <span class="text-h5 text-panel">
             <animated-number
               :value="validators.length"
               :formatValue="format"
@@ -21,8 +21,8 @@
             /> <span style="font-size: 13px;" class="text-medium text-accent"> <small> ACTIVE</small></span>
           </span>
         </div>
-        <div>
-          <span style="opacity: 0.5;" class="text-medium">
+        <small style="opacity: 0.7;">
+          <span>
             <animated-number
               :value="pendingValidators.length"
               :formatValue="format"
@@ -34,16 +34,16 @@
             :formatValue="format"
             :duration="3000"
           /> </span> <span style="font-size: 13px;" class="text-medium text-accent"> <small> PENDING</small></span>
-        </div>
+        </small>
       </div>
-      <div class="col-1 q-pt-md" style="opacity: 0.5;">
-        <img src="~assets/validators.svg" class="custom-icon">
+      <div class="col-1 q-pt-md icon">
+        <img src="~assets/validators.png" class="custom-icon">
       </div>
       <q-separator  class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">TOTAL STAKE</div>
         <div class="text-h6">
-            <span class="text-secondary">
+            <span class="text-panel">
               <small>
                 <animated-number
                   :value="allStake"
@@ -54,7 +54,7 @@
             </span>
             <span style="font-size: 13px;" class="text-medium text-accent"><small> AVAX</small></span>
         </div>
-        <div style="opacity: 0.5;" class="text-medium">
+        <small style="opacity: 0.7;">
            <animated-number
               :value="getReward(stakedAVA)"
               :formatValue="getFormatReward"
@@ -63,16 +63,16 @@
            <span style="font-size: 13px;" class="text-medium text-accent">
              <small> {{ getISO(currentCurrency) }}</small>
            </span>
-        </div>
+        </small>
       </div>
-      <div class="col-1 q-pt-md" style="opacity: 0.5;">
-        <img src="~assets/stake-amount.svg" class="custom-icon">
+      <div class="col-1 q-pt-md icon">
+        <img src="~assets/stake.png" class="custom-icon">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
        <div id="f-size12" class="q-pb-md text-medium">VALIDATION / DELEGATED STAKE</div>
        <div class="text-h6" style="min-width: 320px;">
-        <span class="text-secondary">
+        <span class="text-panel">
           <small>
             <animated-number
               :value="valStake"
@@ -82,7 +82,7 @@
           </small>
         </span>
         /
-        <span class="text-secondary">
+        <span class="text-panel">
           <small>
             <animated-number
               :value="delStake"
@@ -93,7 +93,7 @@
         </span>
         <span style="font-size: 13px;" class="text-medium text-accent"> <small> AVAX</small></span>
       </div>
-      <div style="opacity: 0.5;" class="text-medium">
+      <small style="opacity: 0.7;">
         <animated-number
           :value="getReward(validatedStake)"
           :formatValue="getFormatReward"
@@ -107,7 +107,7 @@
         <span style="font-size: 13px;" class="text-medium text-accent">
           <small> {{ getISO(currentCurrency) }}</small>
         </span>
-        </div>
+        </small>
       </div>
     </div>
   </q-card>

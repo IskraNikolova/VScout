@@ -8,18 +8,17 @@
         <div class="q-pb-xs q-pt-xs" >
         <span
           v-if="currentSubnet.blockchainsId"
-          class="text-h6 q-pb-md q-pt-xs text-orange"
+          class="text-h6 q-pb-md q-pt-xs text-panel"
         >
           {{ currentSubnet.blockchainsId.length }}
         </span>
-        <span v-else class="text-h6 text-orange">None <br /></span>
-        <small class="text-grey q-pt-xs">Validated by this subnet</small>
+        <span v-else class="text-h6 text-panel">None <br /></span>
+        <small class="q-pt-xs">Validated by this subnet</small>
         </div>
       </div>
     </div>
     <div id="f-size12">
       <q-btn-dropdown
-        color="grey"
         outline
         v-if="currentSubnet.blockchainsId"
         size="xs"
@@ -43,7 +42,7 @@
               </q-item-label>
               <q-item-label caption>
                 <small>VM ID: </small>
-                <span class="text-orange">
+                <span>
                   {{ blockchainByID(id).vmID.substr(0, 4)}}...{{blockchainByID(id).vmID.substr(30)}}
                 </span>
               </q-item-label>

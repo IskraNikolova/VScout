@@ -2,7 +2,7 @@
   <q-btn
     size="xs"
     flat
-    icon="img:statics/settings.svg"
+    icon="tune"
   >
     <q-menu>
       <q-list dense style="min-width: 100px">
@@ -42,7 +42,7 @@
               <q-icon name="img:statics/node.svg" />
               Switch To Endpoint
             </div>
-            <q-separator color="orange" />
+            <q-separator color="info" />
             <switch-endpoint />
           </q-menu>
         </q-item>

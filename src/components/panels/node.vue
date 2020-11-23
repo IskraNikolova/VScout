@@ -1,29 +1,23 @@
 <template>
   <q-card
-    class="q-pt-md q-pl-xl q-pr-xs q-ml-xs q-pb-md" id="custom-card" >
-    <!--<div style="text-align: right;font-size: 10px;margin-bottom: 5px;">
-      <q-icon name="info" style="font-size: 17px;" color="grey">
-        <tooltip-style v-bind:brandColoring="['VScout']" v-bind:bold="[`${nodeID}`, `${networkEndpoint.url}`]" v-bind:text="'On this panel you can get information about node to which the VScout is connected and to which it submits a request for data visualization (health, peers, node version, network name, validators/uptime etc.). You are currently using ' + networkEndpoint.url + ' with ' + nodeID + '. To switch to another node, use the menu at the top right.'" />
-      </q-icon>
-      <span class="text-orange"> VScout</span> Connection Info
-    </div>-->
+    class="q-pt-md q-pl-xl q-pr-xs q-ml-xs q-pb-md panel" id="custom-card" >
     <div class="row">
       <div class="col-md-3 col-xs-10">
         <div v-if="validatorById(nodeID)" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
           <div id="f-size12" class="q-pb-md text-medium">NODE - VALIDATOR</div>
-          <div class="text-h7 text-secondary q-pb-md q-pt-xs">{{ formatNodeID }}</div>
+          <div class="text-h7 text-panel q-pb-md q-pt-xs">{{ formatNodeID }}</div>
           <tooltip-style v-bind:text="'Copy to Clipboard'" />
         </div>
         <div v-else>
           <div id="f-size12" class="q-pb-md text-medium">NODE</div>
-          <div class="text-h7 text-secondary q-pb-md q-pt-xs">{{ formatNodeID }}</div>
+          <div class="text-h7 text-panel q-pb-md q-pt-xs">{{ formatNodeID }}</div>
         </div>
         <div class="q-pt-md">
           <q-btn :color="color" no-caps outline size="xs" label="Check Health" @click="onOpenHealth"/>
           <node-health-dialog ref="nodeHealthDialog" v-bind:validator="validatorById(nodeID) ? validatorById(nodeID) : {}"/>
         </div>
       </div>
-      <div class="col-1 q-pt-md"  style="opacity: 0.3;">
+      <div class="col-1 q-pt-md icon">
         <img src="~assets/ribbon.svg" v-if="validatorById(nodeID)" id="logo2" />
         <img src="~assets/node1.svg" v-else id="logo2">
       </div>
@@ -32,7 +26,7 @@
         <div id="f-size12" class="q-pb-md text-medium">PEER CONNECTIONS</div>
         <div class="q-pb-md">
          <small>Connected with</small>
-         <div class="text-secondary">
+         <div class="text-panel">
             <animated-number
               :value="peersLength"
               :formatValue="format"
@@ -40,9 +34,9 @@
             />
          </div>
         </div>
-        <q-btn outline label="Peers" size="xs" @click="$router.push('/peers/' + nodeID)" />
+        <q-btn outline label="Peers" no-caps size="xs" @click="$router.push('/peers/' + nodeID)" />
       </div>
-      <div class="col-1 q-pt-md" style="opacity: 0.3;">
+      <div class="col-1 q-pt-md icon">
         <img src="~assets/peers.svg" id="logo2"/>
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
@@ -52,13 +46,13 @@
           <q-spinner-ball v-if="ui.doesItConnect" />
         </div>
         <div class="q-pb-md">
-          <div class="text-h7 text-secondary">{{ networkEndpoint.name }}</div>
+          <div class="text-h7 text-panel">{{ networkEndpoint.name }}</div>
         </div>
         <div id="f-size12" class="q-mt-md">
           <span class="q-pt-xl">{{ networkEndpoint.urlView }}</span>
         </div>
       </div>
-      <div class="col-1 q-pt-md" style="opacity: 0.3;">
+      <div class="col-1 q-pt-md icon">
         <img src="~assets/computer-network.svg" id="logo2">
       </div>
     </div>
@@ -113,7 +107,7 @@ export default {
       }
     },
     color: function () {
-      if (this.healthy) return 'green'
+      if (this.healthy) return 'positive'
       return 'negative'
     },
     formatNodeID: function () {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--gt-xs-->
-    <q-card flat class="gt-xs q-pl-xl q-pb-md q-ml-xl q-pt-md">
+    <q-card flat class="gt-xs q-pl-xl q-pb-md q-ml-xl q-pt-md panel custom-card">
       <div class="row">
         <q-item class="col-9">
           <avatar v-bind:avatar="getAvatar()" style="cursor:pointer;" @click="onClick(getLink())"/>
@@ -96,7 +96,7 @@
     </q-card>
 
     <!--lt-sm-->
-    <q-card flat class="lt-sm">
+    <q-card flat class="lt-sm panel custom-card">
       <q-item>
         <avatar
           v-bind:avatar="avatar"

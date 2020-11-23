@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pa-md">
-    <div class="text-medium text-orange text-h6 q-pl-md q-pt-md">{{ address }}</div>
+  <div class="q-pa-md panel">
+    <div class="text-medium text-h6 q-pl-md q-pt-md">{{ address }}</div>
       <div class="q-pl-md">
         <div class="q-mb-md q-pt-xl">
           BALANCE ({{ asset }})
@@ -36,6 +36,7 @@
         :columns="columns"
         :filter="filter"
         row-key="txID"
+        class="panel"
         :pagination="pagination"
       >
         <template slot="top-left">
@@ -44,6 +45,7 @@
           <q-input
             borderless
             color="accent"
+            label-color="accent"
             stack-label
             label="Filter utxos..."
             clearable v-model="filter"
@@ -58,7 +60,6 @@
             :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
             @click="props.toggleFullscreen"
             class="absolute-top-right"
-            color="grey"
           />
         </template>
         <template v-slot:body="props">
