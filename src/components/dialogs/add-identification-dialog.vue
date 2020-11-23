@@ -35,6 +35,31 @@
           <div class="row">
             <div class="col-md-5 col-12 q-mr-xl q-pb-md">
               <q-input
+                v-if="appTheme === 'default'"
+                color="accent"
+                class="q-mb-md"
+                outlined
+                v-model="nodeIDModel"
+                label="Your node ID *"
+                hint="The validator node ID."
+              >
+                <template v-slot:append>
+                  <q-btn
+                    round dense
+                    @click="onGetNodeID"
+                    :loading="loading"
+                    flat no-caps
+                    color="accent"
+                    icon="add"
+                  >
+                    <template v-slot:loading>
+                      <q-spinner-ball />
+                    </template>
+                  </q-btn>
+                </template>
+              </q-input>
+              <q-input
+                v-else
                 dark
                 color="accent"
                 class="q-mb-md"
@@ -59,6 +84,19 @@
                 </template>
               </q-input>
               <q-input
+                v-if="appTheme === 'default'"
+                color="accent"
+                class="q-mb-md"
+                outlined
+                clearable
+                v-model="name"
+                label="Validator Name"
+                hint="Validator's Name will be show on validator's list instead validator ID."
+                :rules="[val => val.length <= 32 || 'Name must be less than or equal to 32 characters']"
+                :error="validateData.errors.name"
+              />
+              <q-input
+                v-else
                 dark
                 color="accent"
                 class="q-mb-md"
@@ -71,6 +109,18 @@
                 :error="validateData.errors.name"
               />
               <q-input
+                v-if="appTheme === 'default'"
+                color="accent"
+                class="q-mb-xs"
+                outlined
+                clearable
+                v-model="avatar"
+                label="Avatar Url"
+                hint="For avatar you must use url.(optional)"
+                :error="validateData.errors.avatar"
+              />
+              <q-input
+                v-else
                 dark
                 color="accent"
                 class="q-mb-xs"
@@ -84,6 +134,16 @@
             </div>
             <div class="col-md-5 col-12 q-pr-xl">
                 <q-input
+                  v-if="appTheme === 'default'"
+                  type="textarea"
+                  color="accent"
+                  class="q-mb-sm"
+                  outlined
+                  v-model="bio"
+                  label="Bio "
+                />
+                <q-input
+                  v-else
                   dark
                   type="textarea"
                   color="accent"
@@ -93,6 +153,18 @@
                   label="Bio "
                 />
                 <q-input
+                  v-if="appTheme === 'default'"
+                  color="accent"
+                  class="q-mb-sm"
+                  outlined
+                  v-model="website"
+                  placeholder="VScout"
+                  label="Hypertext (website name)"
+                  :rules="[val => val.length <= 32 || 'Text must be less than or equal to 32 characters']"
+                  hint="Name of your website/business link or other. (optional)"
+                />
+                <q-input
+                  v-else
                   dark
                   color="accent"
                   class="q-mb-sm"
@@ -104,6 +176,19 @@
                   hint="Name of your website/business link or other. (optional)"
                 />
                 <q-input
+                  v-if="appTheme === 'default'"
+                  color="accent"
+                  class="q-mb-xs"
+                  outlined
+                  clearable
+                  v-model="link"
+                  placeholder="https://www.vscout.io"
+                  label="Hyperlink (link)"
+                  hint="Your website/business link or other hyperlink target.(optional)"
+                  :error="validateData.errors.link"
+                />
+                <q-input
+                  v-else
                   dark
                   color="accent"
                   class="q-mb-xs"
@@ -120,6 +205,17 @@
         <div class="row q-pr-xl">
           <div class="row">
             <q-input
+              v-if="appTheme === 'default'"
+              size="xs"
+              outlined
+              color="accent"
+              v-model="vCode"
+              clearable
+              label="Verification Code"
+              hint="Your verifaction code."
+            />
+            <q-input
+              v-else
               dark
               size="xs"
               outlined
@@ -132,7 +228,7 @@
           </div>
           <q-btn flat size="sm" color="negative" label="No code?" @click="onVerifyNodeID" style="height: 35px;" class="q-ml-sm"/>
           <q-space />
-          <q-btn label="Preview Your Page" no-caps rounded @click="prev" color="panel" style="height: 35px;margin-top: 23px;margin-right: 5px;"/>
+          <q-btn label="Preview Your Page" no-caps rounded @click="prev" color="secondary" style="height: 35px;margin-top: 23px;margin-right: 5px;"/>
           <q-btn label="Add To Contract" no-caps rounded outline type="submit" color="panel" style="height: 35px;margin-top: 23px;"/>
           <q-btn size="xs" label="Reset" type="reset" flat class="q-mr-sm" />
         </div>
