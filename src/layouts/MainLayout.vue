@@ -114,7 +114,7 @@
                       </q-item-section>
                     </q-item>
                     <q-item>
-                      <q-item-section><small>24h High</small> <span style="font-size: 12px;" class="text-medium text-green">{{ high24h[`${c}`] }}</span></q-item-section>
+                      <q-item-section><small>24h High</small> <span style="font-size: 12px;" class="text-medium text-positive">{{ high24h[`${c}`] }}</span></q-item-section>
                       <q-item-section side top><small>24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
                     </q-item>
                     <q-separator />
@@ -246,7 +246,7 @@
                       </q-item-section>
                     </q-item>
                     <q-item>
-                      <q-item-section><small class="text-grey">24h High</small> <span style="font-size: 12px;" class="text-medium text-green">{{ high24h[`${c}`] }}</span></q-item-section>
+                      <q-item-section><small class="text-grey">24h High</small> <span style="font-size: 12px;" class="text-medium text-positive">{{ high24h[`${c}`] }}</span></q-item-section>
                       <q-item-section side top><small class="text-grey">24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
                     </q-item>
                     <q-separator />
@@ -460,7 +460,7 @@
                         </q-item-section>
                       </q-item>
                       <q-item>
-                        <q-item-section><small class="text-grey">24h High</small> <span style="font-size: 12px;" class="text-medium text-green">{{ high24h[`${c}`] }}</span></q-item-section>
+                        <q-item-section><small class="text-grey">24h High</small> <span style="font-size: 12px;" class="text-medium text-positive">{{ high24h[`${c}`] }}</span></q-item-section>
                         <q-item-section side top><small class="text-grey">24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
                       </q-item>
                       <q-separator />
