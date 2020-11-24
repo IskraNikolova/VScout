@@ -101,6 +101,7 @@
       </template>
       <template v-slot:top-right="props" v-if="!isGrid">
         <q-input
+          :dark="appTheme==='dark'"
           borderless
           color="accent"
           stack-label
@@ -588,6 +589,7 @@ export default {
       'nodeID',
       'validators',
       'subnetID',
+      'appTheme',
       'isDefaultSubnetID',
       'pendingValidators'
     ]),

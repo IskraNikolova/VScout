@@ -1,15 +1,15 @@
 <template>
-  <div>
+  <div class="panel">
     <q-list v-for="(subnet, i) in subnets" v-bind:key="i">
-      <q-item clickable v-close-popup @click="onSelectSubnet(subnet)">
+      <q-item clickable v-close-popup @click="onSelectSubnet(subnet)" :dark="appTheme==='dark'">
       <q-item-section>
         <q-item-label>
-        <img src="~assets/network.svg" id="logo-xs">
+        <img src="~assets/network.svg" id="logo-xs" style="opacity: 0.7;">
         {{ subnet.id.substr(0, 4)}}...{{ subnet.id.substr(30)}}
         </q-item-label>
         <q-item-label caption>
         <small v-if="subnet.blockchainsId">Validated Blockchains: </small>
-        <div class="text-orange" v-for="(id, i) in subnet.blockchainsId" v-bind:key="i">
+        <div v-for="(id, i) in subnet.blockchainsId" v-bind:key="i">
           {{ blockchainName(id) }}
         </div>
         </q-item-label>
@@ -38,6 +38,7 @@ export default {
     ...mapGetters([
       'subnets',
       'subnetID',
+      'appTheme',
       'blockchains',
       'blockchainByID',
       'networkEndpoint'

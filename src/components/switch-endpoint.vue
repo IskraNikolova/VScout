@@ -1,7 +1,8 @@
 <template>
- <div>
+ <div class="panel">
     <q-list v-for="(endpoint, i) in endpoints" v-bind:key="i">
       <q-item
+        :dark="appTheme==='dark'"
         clickable
         v-close-popup
         @click="onSelectEndpoint(endpoint, false)"
@@ -13,7 +14,7 @@
               name="done"
               style="margin-top: -7px;"
               size="md"
-              class="text-green q-pl-md"
+              class="text-positive q-pl-md"
               v-if="networkEndpoint.url === endpoint.url"
             />
           </q-item-label>
@@ -26,6 +27,7 @@
     <q-input
       borderless
       clearable
+      :dark="appTheme==='dark'"
       class="q-pl-md q-pr-md"
       label="http(s)://yourAddress/"
       v-model="customEndpoint"
@@ -105,6 +107,7 @@ export default {
   computed: {
     ...mapGetters([
       'subnetID',
+      'appTheme',
       'validators',
       'endpointsMemory',
       'networkEndpoint'

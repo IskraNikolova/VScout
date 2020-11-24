@@ -29,11 +29,6 @@
               transition-show="scale"
               transition-hide="scale"
             >
-              <div class="no-wrap q-pa-md">
-                Switch To Blockchain
-                <q-spinner-dots v-if="blockchains.length < 1" />
-              </div>
-              <q-separator />
               <list-blockchains />
             </q-menu>
           </div>
@@ -51,11 +46,6 @@
               transition-show="scale"
               transition-hide="scale"
             >
-              <div class="no-wrap q-pa-md">
-                Switch To Subnet
-                <q-spinner-dots v-if="subnets.length < 1" />
-              </div>
-              <q-separator />
               <list-subnets />
             </q-menu>
           </div>
@@ -81,10 +71,6 @@
               transition-show="scale"
               transition-hide="scale"
             >
-              <div class="no-wrap q-pa-md text-orange">
-                Networks
-              </div>
-              <q-separator />
               <switch-endpoint />
             </q-menu>
           </div>
@@ -101,7 +87,7 @@
               transition-show="scale"
               transition-hide="scale"
             >
-              <div style="min-width: 250px;">
+              <div style="min-width: 250px;" class="panel">
                 <q-item>
                   <q-item-section class="text-secondary text-medium">
                     1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }}
@@ -109,13 +95,13 @@
                 </q-item>
                 <q-separator />
                 <q-item>
-                  <q-input v-model="val" @input="filterFn" label="Search currency" @mouseover="inputOver=true" @mouseout="inputOver=false"/>
+                  <q-input :dark="appTheme==='dark'" v-model="val" @input="filterFn" label="Search currency" @mouseover="inputOver=true" @mouseout="inputOver=false"/>
                 </q-item>
                 <span v-if="allCurrencies.length > 0">
                   <q-list style="min-width: 250px;" v-for="(c, i) in allCurrencies" v-bind:key="i"
                     @mouseover.native="listOver=true" @mouseout.native="listOver=false"
                   >
-                    <q-item>
+                    <q-item :dark="appTheme==='dark'">
                       <q-item-section>
                         <q-item-label>{{ getISO(c) }}</q-item-label>
                         <q-item-label caption lines="2">{{ getCurrencyName(c) }}</q-item-label>

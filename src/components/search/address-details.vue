@@ -43,6 +43,7 @@
         </template>
         <template v-slot:top-right="props">
           <q-input
+            :dark="appTheme==='dark'"
             borderless
             color="accent"
             label-color="accent"
@@ -116,6 +117,7 @@ export default {
   computed: {
     ...mapGetters([
       'networkEndpoint',
+      'appTheme',
       'addressBalance',
       'currentCurrency',
       'currenciesPriceList'

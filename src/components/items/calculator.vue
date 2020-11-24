@@ -8,7 +8,7 @@
     @click="openCalculator"
   >
     <q-popup-proxy>
-        <q-banner class="q-pa-md" dense style="width: 370px;">
+        <q-banner class="q-pa-md panel" dense style="width: 370px;">
         <div class="row">
           <div class="col-6 text-medium">Reward Calculator</div>
           <div class="col-6" style="text-align: right;">
@@ -19,6 +19,7 @@
         <div class="row">
           <small class="col-9 q-pt-xs" style="text-align: left;">
             <q-option-group
+              :dark="appTheme==='dark'"
               v-model="type"
               :options="options"
               color="accent"
@@ -31,8 +32,8 @@
           </small>
         </div>
         <q-input
+          :dark="appTheme==='dark'"
           v-if="type==='validator'"
-          label-color="grey"
           outlined
           type="number"
           v-model="stakeAmount"
@@ -48,8 +49,8 @@
           ]"
         />
         <q-input
+          :dark="appTheme==='dark'"
           v-else
-          label-color="grey"
           outlined
           type="number"
           v-model="stakeAmountDel"
@@ -65,8 +66,8 @@
           ]"
         />
         <q-input
+          :dark="appTheme==='dark'"
           v-if="type==='delegator'"
-          label-color="grey"
           outlined
           type="number"
           v-model="delegationFee"
@@ -83,17 +84,17 @@
         />
         <div class="row q-mt-xs">
           <div class="col-10">
-            <q-badge outline color="grey" style="height: 27px;" class="q-pb-xs q-pt-xs q-mb-xs">
+            <q-badge outline style="height: 27px;" class="q-pb-xs q-pt-xs q-mb-xs panel">
               Staking Time (14 to 365 days)
             </q-badge>
           </div>
           <div class="col-2">
-            <q-btn icon="event" size="sm" outline color="grey">
+            <q-btn icon="event" size="sm" outline>
               <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">
                 <q-date v-model="model" color="secondary" range>
                   <div class="row items-center justify-end q-gutter-sm">
-                  <q-btn label="Cancel" color="grey" flat v-close-popup />
-                  <q-btn label="OK" color="grey" flat @click="save" v-close-popup />
+                  <q-btn label="Cancel" flat v-close-popup />
+                  <q-btn label="OK" flat @click="save" v-close-popup />
                   </div>
                 </q-date>
               </q-popup-proxy>
@@ -101,6 +102,7 @@
           </div>
         </div>
         <q-slider
+          :dark="appTheme==='dark'"
           v-if="type==='validator'"
           class="q-ml-xs q-mr-xs q-mt-xl"
           v-model="stakeTime"
@@ -111,12 +113,11 @@
           :label-value="stakeTime + ' days'"
           label-always
           @input="calculate"
-          label-text-color="accent"
-          label-color="white"
           color="accent"
         />
         <q-slider
           v-else
+          :dark="appTheme==='dark'"
           class="q-ml-xs q-mr-xs q-mt-xl"
           v-model="stakeTime"
           :min="14"
@@ -221,6 +222,7 @@ export default {
   computed: {
     ...mapGetters([
       'currentSupply',
+      'appTheme',
       'currenciesPriceList',
       'currentCurrency'
     ])

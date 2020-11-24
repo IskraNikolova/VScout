@@ -64,6 +64,7 @@
       </template>
       <template v-slot:top-right="props">
         <q-input
+          :dark="appTheme==='dark'"
           borderless
           color="accent"
           stack-label
@@ -252,6 +253,7 @@ export default {
   computed: {
     ...mapGetters([
       'nodeID',
+      'appTheme',
       'delegators',
       'pendingDelegators'
     ]),
