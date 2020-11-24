@@ -26,15 +26,15 @@
       <q-card-section>
         <q-item>
           <q-item-section>
-            <span v-if="healthy"><span class="text-medium" style="opacity: 0.5;">Healthy: </span> <span class="text-positive">Yes</span></span>
+            <span v-if="healthy"><span style="opacity: 0.5;">Healthy: </span> <span class="text-positive">Yes</span></span>
             <span v-else><span class="text-medium" style="opacity: 0.5;">Healthy: </span>  <span class="text-negative">No</span></span>
             <div v-if="upTime">
-              Up Time:
+              <span style="opacity: 0.5;">Up Time: </span>
               <q-badge :color="getColorUptime(upTime)">
                 {{ upTime }} %
               </q-badge>
               <div>
-                Connected:
+                <span style="opacity: 0.5;">Connected:</span>
                 <span v-if="connected" class="text-positive"> Yes</span>
                 <span v-else class="text-negative"> No</span>
               </div>
@@ -358,7 +358,7 @@ export default {
       return datePickerFormat(val)
     },
     getColorUptime (val) {
-      if (val >= 0.6) return 'green'
+      if (val >= 0.6) return 'positive'
       return 'negative'
     }
   }

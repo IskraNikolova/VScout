@@ -35,7 +35,7 @@
           <div class="row">
             <div class="col-md-5 col-12 q-mr-xl q-pb-md">
               <q-input
-                v-if="appTheme === 'default'"
+                :dark="appTheme==='dark'"
                 color="accent"
                 class="q-mb-md"
                 outlined
@@ -59,32 +59,7 @@
                 </template>
               </q-input>
               <q-input
-                v-else
-                dark
-                color="accent"
-                class="q-mb-md"
-                outlined
-                v-model="nodeIDModel"
-                label="Your node ID *"
-                hint="The validator node ID."
-              >
-                <template v-slot:append>
-                  <q-btn
-                    round dense
-                    @click="onGetNodeID"
-                    :loading="loading"
-                    flat no-caps
-                    color="accent"
-                    icon="add"
-                  >
-                    <template v-slot:loading>
-                      <q-spinner-ball />
-                    </template>
-                  </q-btn>
-                </template>
-              </q-input>
-              <q-input
-                v-if="appTheme === 'default'"
+                :dark="appTheme==='dark'"
                 color="accent"
                 class="q-mb-md"
                 outlined
@@ -96,32 +71,7 @@
                 :error="validateData.errors.name"
               />
               <q-input
-                v-else
-                dark
-                color="accent"
-                class="q-mb-md"
-                outlined
-                clearable
-                v-model="name"
-                label="Validator Name"
-                hint="Validator's Name will be show on validator's list instead validator ID."
-                :rules="[val => val.length <= 32 || 'Name must be less than or equal to 32 characters']"
-                :error="validateData.errors.name"
-              />
-              <q-input
-                v-if="appTheme === 'default'"
-                color="accent"
-                class="q-mb-xs"
-                outlined
-                clearable
-                v-model="avatar"
-                label="Avatar Url"
-                hint="For avatar you must use url.(optional)"
-                :error="validateData.errors.avatar"
-              />
-              <q-input
-                v-else
-                dark
+                :dark="appTheme==='dark'"
                 color="accent"
                 class="q-mb-xs"
                 outlined
@@ -134,7 +84,7 @@
             </div>
             <div class="col-md-5 col-12 q-pr-xl">
                 <q-input
-                  v-if="appTheme === 'default'"
+                  :dark="appTheme==='dark'"
                   type="textarea"
                   color="accent"
                   class="q-mb-sm"
@@ -143,17 +93,7 @@
                   label="Bio "
                 />
                 <q-input
-                  v-else
-                  dark
-                  type="textarea"
-                  color="accent"
-                  class="q-mb-sm"
-                  outlined
-                  v-model="bio"
-                  label="Bio "
-                />
-                <q-input
-                  v-if="appTheme === 'default'"
+                  :dark="appTheme==='dark'"
                   color="accent"
                   class="q-mb-sm"
                   outlined
@@ -164,32 +104,7 @@
                   hint="Name of your website/business link or other. (optional)"
                 />
                 <q-input
-                  v-else
-                  dark
-                  color="accent"
-                  class="q-mb-sm"
-                  outlined
-                  v-model="website"
-                  placeholder="VScout"
-                  label="Hypertext (website name)"
-                  :rules="[val => val.length <= 32 || 'Text must be less than or equal to 32 characters']"
-                  hint="Name of your website/business link or other. (optional)"
-                />
-                <q-input
-                  v-if="appTheme === 'default'"
-                  color="accent"
-                  class="q-mb-xs"
-                  outlined
-                  clearable
-                  v-model="link"
-                  placeholder="https://www.vscout.io"
-                  label="Hyperlink (link)"
-                  hint="Your website/business link or other hyperlink target.(optional)"
-                  :error="validateData.errors.link"
-                />
-                <q-input
-                  v-else
-                  dark
+                  :dark="appTheme==='dark'"
                   color="accent"
                   class="q-mb-xs"
                   outlined
@@ -205,18 +120,7 @@
         <div class="row q-pr-xl">
           <div class="row">
             <q-input
-              v-if="appTheme === 'default'"
-              size="xs"
-              outlined
-              color="accent"
-              v-model="vCode"
-              clearable
-              label="Verification Code"
-              hint="Your verifaction code."
-            />
-            <q-input
-              v-else
-              dark
+              :dark="appTheme==='dark'"
               size="xs"
               outlined
               color="accent"
@@ -236,7 +140,7 @@
       </q-card-section>
     </q-card>
     <q-dialog v-model="preview" full-width>
-        <q-card>
+      <q-card class="panel">
         <q-btn flat v-close-popup>
           <q-icon name="close" />
         </q-btn>
@@ -251,8 +155,8 @@
         </q-card>
       </q-dialog>
     <q-dialog v-model="dialog">
-      <q-card flat class="q-pb-md">
-        <q-card-section class="row items-center bg-secondary">
+      <q-card flat class="q-pb-md panel">
+        <q-card-section class="row items-center">
           <q-img
             style="width: 30vw;max-width: 30px;margin: auto;"
             src="https://wallet.avax.network/img/diamond-primary.6818c3c7.svg"
@@ -502,12 +406,11 @@ export default {
       this.nodeIDModel = this.nodeID
       const validator = this.validatorById(this.nodeIDModel)
       if (!validator) {
-        this.loading = null
         this.error = errorNodeID
       } else if (validator && this.networkEndpoint.url.startsWith('http://127.0.0.1')) {
-        this.loading = null
         this.$store.commit(UPDATE_UI, { addIdentification: { isAuth: true } })
       }
+      this.loading = null
     },
     onReset () {
       this.name = ''

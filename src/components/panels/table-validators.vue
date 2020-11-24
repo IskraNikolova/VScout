@@ -230,7 +230,7 @@
       </template>
       <template v-slot:item="props">
         <div style="max-width: 420px;width: 100%;margin:auto;margin-bottom: 5px;">
-          <q-card flat bordered class="panel">
+          <q-card flat bordered class="dark-panel">
             <span class="absolute absolute-top-right q-mt-xs q-mr-md">
               <small class="q-mr-xs">Uptime</small>
               <q-badge :color="getColorUptime(props.row.uptime)" >

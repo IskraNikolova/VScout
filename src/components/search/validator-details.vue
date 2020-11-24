@@ -385,7 +385,7 @@ export default {
       return round(val * 100, 1000)
     },
     getColorUptime (val) {
-      if (val >= 0.6) return 'green'
+      if (val >= 0.6) return 'positive'
       return 'negative'
     },
     formatDate (time) {

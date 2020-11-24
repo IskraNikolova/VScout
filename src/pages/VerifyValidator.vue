@@ -3,6 +3,7 @@
     <div style="padding: 1% 3% 0% 3%">
       <q-card
         id="custom-card"
+        class="dark-panel"
       >
         <q-btn
           class="lt-sm"
@@ -14,14 +15,14 @@
         />
         <div style="text-align: center;padding-top: 60px;">
           <p class="text-h6">Verify</p>
-          <div class="text-subtitle q-pl-md">Validator <span class="text-medium text-orange">
+          <div class="text-subtitle q-pl-md">Validator <span class="text-medium" style="opacity: 0.5;">
             {{ $route.params.nodeID }}
           </span></div>
-          <div class="text-subtitle q-pl-md">Owner  <span class="text-medium text-orange text-h6">{{ rewardOwner }}</span></div>
+          <div class="text-subtitle q-pl-md">Owner  <span class="text-medium text-h6" style="opacity: 0.5;">{{ rewardOwner }}</span></div>
         </div>
         <div class="row q-mt-xl q-pb-xl">
           <div class="col-2"></div>
-          <q-card id="verify-card" class="col-4 q-mr-md" style="min-height: 370px;" @click="dialog1=true">
+          <q-card id="verify-card" class="col-4 q-mr-md panel" style="min-height: 370px;" @click="dialog1=true">
             <q-card-section>
               <q-img style="width: 100vw;max-width: 100px;margin: auto;" src="~assets/node1.svg" />
               <div class="q-mt-md" style="cursor: pointer;">
@@ -38,7 +39,7 @@
               </div>
             </q-card-section>
           </q-card>
-          <q-card id="verify-card2" class="col-4" style="min-height: 370px;" @click="dialog2=true">
+          <q-card id="verify-card2" class="col-4 panel" style="min-height: 370px;" @click="dialog2=true">
             <q-card-section>
               <q-img
                 style="width: 100vw;max-width: 100px;margin: auto;"
@@ -58,7 +59,7 @@
         </div>
       </q-card>
       <q-dialog v-model="dialog1">
-        <q-card flat class="q-pb-md">
+        <q-card flat class="q-pb-md panel">
           <q-card-section class="row items-center bg-secondary">
             <q-img style="width: 30vw;max-width: 30px;margin: auto;" src="~assets/node-white.svg" />
             <div class="text-h6 text-white q-pl-xs">Local Node Verification</div>
@@ -94,10 +95,10 @@
           </q-card-actions>
           <q-card-actions class="q-mt-md" v-else>
             <q-input
+              :dark="appTheme==='dark'"
               class="col-8"
               size="xs"
               outlined
-              color="grey"
               v-model="txID2"
               clearable
               label="Tx ID..."
@@ -109,7 +110,7 @@
         </q-card>
       </q-dialog>
       <q-dialog v-model="dialog2">
-        <q-card flat class="q-pb-md">
+        <q-card flat class="q-pb-md panel">
           <q-card-section class="row items-center bg-secondary">
             <q-img
               style="width: 30vw;max-width: 30px;margin: auto;"
@@ -165,10 +166,10 @@
 
           <q-card-actions class="q-mt-md" v-if="!isSearchSuccess">
             <q-input
+              :dark="appTheme==='dark'"
               class="col-8"
               size="xs"
               outlined
-              color="grey"
               v-model="txID1"
               clearable
               label="Tx ID..."
@@ -178,7 +179,7 @@
             </q-card-actions>
           </q-card-actions>
           <q-inner-loading :showing="visible">
-            <q-spinner-ball size="50px" color="orange" />
+            <q-spinner-ball size="50px" />
           </q-inner-loading>
         </q-card>
       </q-dialog>
@@ -242,6 +243,7 @@ export default {
   },
   computed: {
     ...mapGetters([
+      'appTheme',
       'txAVM',
       'validatorById',
       'networkEndpoint',

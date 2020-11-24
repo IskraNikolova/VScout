@@ -1,5 +1,5 @@
 <template>
-  <q-card flat class="panel">
+  <q-card flat class="dark-panel q-pb-md">
     <q-card-section>
       <div class="row items-center no-wrap">
         <div class="col">
