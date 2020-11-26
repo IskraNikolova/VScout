@@ -1,6 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf" >
     <q-header reveal class="panel">
+      <!--gt view-->
       <div class="gt-sm">
         <q-toolbar class="panel">
           <q-toolbar-title
@@ -17,36 +18,48 @@
           <calculator />
           <div
             class="q-pa-md text-medium"
-            @click="blockchainsMenuOver=true"
             @mouseover="blockchainsMenuOver=true"
-            @mouseout="blockchainsMenuOver=false"
+            @mouseleave="blockchainsMenuOver=false"
           >
-            <div class="fit flex flex-center text-center non-selectable">
+            <div class="fit flex flex-center text-center non-selectable" >
               <span>BLOCKCHAINS</span>
             </div>
             <q-menu
               v-model="blockchainsMenu"
               transition-show="scale"
               transition-hide="scale"
+              :dark="appTheme==='dark'"
             >
-              <list-blockchains />
+              <div
+                @mouseover="blockchainsListOver=true"
+                @mouseleave="blockchainsListOver=false"
+              >
+                <list-blockchains />
+              </div>
             </q-menu>
           </div>
           <div
             class="q-pa-md text-medium"
-            @click="subnetMenuOver=true"
             @mouseover="subnetMenuOver=true"
-            @mouseout="subnetMenuOver=false"
+            @mouseleave="subnetMenuOver=false"
           >
-            <div class="fit flex flex-center text-center non-selectable">
+            <div
+             class="fit flex flex-center text-center non-selectable"
+            >
               <span>SUBNETS</span>
             </div>
             <q-menu
               v-model="subnetsMenu"
               transition-show="scale"
               transition-hide="scale"
+              :dark="appTheme==='dark'"
             >
-              <list-subnets />
+              <div
+                @mouseover="subnetsListOver=true"
+                @mouseleave="subnetsListOver=false"
+              >
+                <list-subnets />
+              </div>
             </q-menu>
           </div>
           <a
@@ -56,9 +69,8 @@
           </a>
           <div
             class="q-pa-md text-medium"
-            @click="networkMenuOver=true"
             @mouseover="networkMenuOver=true"
-            @mouseout="networkMenuOver=false"
+            @mouseleave="networkMenuOver=false"
           >
             <div class="fit flex flex-center text-center non-selectable">
               <q-icon name="flash_on" size="sm" />
@@ -66,18 +78,22 @@
             </div>
             <q-menu
               v-model="networkMenu"
-              @mouseover="inputNetworkOver=true"
-              @mouseout="inputNetworkOver=false"
               transition-show="scale"
               transition-hide="scale"
+              :dark="appTheme==='dark'"
             >
-              <switch-endpoint />
+              <div
+                @mouseover="inputNetworkOver=true"
+                @mouseleave="inputNetworkOver=false"
+              >
+                <switch-endpoint />
+              </div>
             </q-menu>
           </div>
           <div
             class="q-pa-md text-medium text-purple"
             @mouseover="menuOver=true"
-            @mouseout="menuOver=false"
+            @mouseleave="menuOver=false"
           >
             <div class="fit flex flex-center text-center non-selectable">
               <span>{{ getISO(currentCurrency) }}</span>
@@ -86,8 +102,9 @@
               v-model="menu"
               transition-show="scale"
               transition-hide="scale"
+              :dark="appTheme==='dark'"
             >
-              <div style="min-width: 250px;" class="panel">
+              <div style="min-width: 250px;" class="panel" @mouseover="listOver=true" @mouseleave="listOver=false">
                 <q-item>
                   <q-item-section class="text-secondary text-medium">
                     1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }}
@@ -95,12 +112,10 @@
                 </q-item>
                 <q-separator />
                 <q-item>
-                  <q-input :dark="appTheme==='dark'" v-model="val" @input="filterFn" label="Search currency" @mouseover="inputOver=true" @mouseout="inputOver=false"/>
+                  <q-input :dark="appTheme==='dark'" v-model="val" @input="filterFn" label="Search currency" />
                 </q-item>
                 <span v-if="allCurrencies.length > 0">
-                  <q-list style="min-width: 250px;" v-for="(c, i) in allCurrencies" v-bind:key="i"
-                    @mouseover.native="listOver=true" @mouseout.native="listOver=false"
-                  >
+                  <q-list style="min-width: 250px;" v-for="(c, i) in allCurrencies" v-bind:key="i">
                     <q-item :dark="appTheme==='dark'">
                       <q-item-section>
                         <q-item-label>{{ getISO(c) }}</q-item-label>
@@ -152,6 +167,7 @@
           </q-bar>
         </q-toolbar>
       </div>
+      <!--sm view-->
       <div class="sm background-orange">
         <q-toolbar class="background-white">
           <q-btn
@@ -293,6 +309,7 @@
           </div>
         </q-toolbar>
       </div>
+      <!--lt-sm view-->
       <div class="lt-sm background-white">
         <q-toolbar>
           <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm class="text-grey"/>
@@ -575,34 +592,54 @@ export default {
       currency: {},
       allCurrencies: [],
       menu: false,
-      menuOver: false,
+      networkMenu: false,
       subnetsMenu: false,
       blockchainsMenu: false,
+      menuOver: false,
       listOver: false,
-      inputOver: false,
       networkMenuOver: false,
-      networkMenu: false,
+      inputNetworkOver: false,
       subnetMenuOver: false,
-      blockchainsMenuOver: false
+      subnetsListOver: false,
+      blockchainsMenuOver: false,
+      blockchainsListOver: false
     }
   },
   watch: {
     menuOver (val) {
-      this.debounceFunc(this.checkMenu())
+      setTimeout(() => {
+        if (this.listOver) return
+        this.debounceFunc(this.checkMenu())
+      }, 50)
     },
     listOver (val) {
       this.debounceFunc(this.checkMenu())
     },
-    inputOver (val) {
-      this.debounceFunc(this.checkMenu())
-    },
     networkMenuOver (val) {
+      setTimeout(() => {
+        if (this.inputNetworkOver) return
+        this.debounceFunc(this.checkNetworkMenu())
+      }, 50)
+    },
+    inputNetworkOver (val) {
       this.debounceFunc(this.checkNetworkMenu())
     },
     subnetMenuOver (val) {
+      setTimeout(() => {
+        if (this.subnetsListOver) return
+        this.debounceFunc(this.checkSubnetMenu())
+      }, 50)
+    },
+    subnetsListOver (val) {
       this.debounceFunc(this.checkSubnetMenu())
     },
     blockchainsMenuOver (val) {
+      setTimeout(() => {
+        if (this.blockchainsListOver) return
+        this.debounceFunc(this.checkBlockchainsMenu())
+      }, 50)
+    },
+    blockchainsListOver (val) {
       this.debounceFunc(this.checkBlockchainsMenu())
     }
   },
@@ -615,24 +652,31 @@ export default {
     },
     debounceFunc: (fn) => debounce(function () { fn() }, 300),
     checkMenu () {
-      if (this.menuOver || this.listOver || this.inputOver) {
+      if (this.menuOver || this.listOver) {
         this.menu = true
+      } else {
+        this.menu = false
       }
-      this.val = ''
     },
     checkNetworkMenu () {
       if (this.networkMenuOver || this.inputNetworkOver) {
         this.networkMenu = true
+      } else {
+        this.networkMenu = false
       }
     },
     checkSubnetMenu () {
-      if (this.subnetMenuOver) {
+      if (this.subnetMenuOver || this.subnetsListOver) {
         this.subnetsMenu = true
+      } else {
+        this.subnetsMenu = false
       }
     },
     checkBlockchainsMenu () {
-      if (this.blockchainsMenuOver) {
+      if (this.blockchainsMenuOver || this.blockchainsListOver) {
         this.blockchainsMenu = true
+      } else {
+        this.blockchainsMenu = false
       }
     },
     toUrl () {
