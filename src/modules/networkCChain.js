@@ -103,11 +103,11 @@ const executeMethod = async (method, from) => {
   return new Promise((resolve, reject) => {
     web3.eth.sendSignedTransaction(serializedTransaction)
       .on('transactionHash', (hash) => {
-        console.log('Transaction hash' + hash)
+        resolve(hash)
+        console.log('Transaction hash ' + hash)
       })
       .on('confirmation', (confirmationNumber, receipt) => {
-        if (confirmationNumber === 1) {
-          resolve(transactionHash)
+        if (confirmationNumber > 0) {
           console.log('Transaction is confirmed! ' + transactionHash)
         }
       })

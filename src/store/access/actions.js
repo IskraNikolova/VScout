@@ -76,11 +76,11 @@ async function setVerifyCode ({ commit },
   { code, nodeID }) {
   try {
     await _setVerifyCode({ code, nodeID })
+    commit(SET_CODE, { code })
   } catch (err) {
     console.log(err.message)
     throw new Error(err.message)
   }
-  commit(SET_CODE, { code })
 }
 
 async function setValidatorInfo (

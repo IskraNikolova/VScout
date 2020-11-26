@@ -17,7 +17,7 @@
           />
           <calculator />
           <div
-            class="q-pa-md text-medium"
+            class="q-pa-md"
             @mouseover="blockchainsMenuOver=true"
             @mouseleave="blockchainsMenuOver=false"
           >
@@ -39,7 +39,7 @@
             </q-menu>
           </div>
           <div
-            class="q-pa-md text-medium"
+            class="q-pa-md"
             @mouseover="subnetMenuOver=true"
             @mouseleave="subnetMenuOver=false"
           >
@@ -68,7 +68,7 @@
             FAQ
           </a>
           <div
-            class="q-pa-md text-medium"
+            class="q-pa-md"
             @mouseover="networkMenuOver=true"
             @mouseleave="networkMenuOver=false"
           >
