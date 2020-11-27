@@ -68,7 +68,7 @@
         />
         <q-btn
           class="q-ml-sm"
-          no-caps color="info"
+          no-caps color="panel"
           outline size="sm"
           label="Add Identification"
           icon="perm_identity"
@@ -79,7 +79,7 @@
           size="sm"
           flat
           class="q-ml-sm"
-          color="info"
+          color="panel"
           icon-right="archive"
           label="Export to csv"
           no-caps

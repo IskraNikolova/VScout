@@ -2,7 +2,7 @@
   <div>
     <!--gt-xs-->
     <q-card flat class="gt-xs q-pl-xl q-pb-md q-ml-xl q-pt-md panel custom-card">
-      <div class="row">
+      <div class="row" style="max-width: 1100px;">
         <q-item class="col-9">
           <avatar v-bind:avatar="getAvatar()" style="cursor:pointer;" @click="onClick(getLink())"/>
           <q-item-section>
@@ -29,7 +29,7 @@
           <br />
           <span class="text-subtitle2"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
           <span class="q-pl-xs" v-if="validator.percent !== 'NaN'">
-            {{ validator.percent }}<span class="text-accent text-medium" style="font-size: 12px;">%</span>
+            {{ validator.percent }}<span class="text-accent text-medium"> %</span>
           </span>
         </div>
       </div>
