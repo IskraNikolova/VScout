@@ -606,7 +606,7 @@ export default {
       if (this.curentValidators && this.curentValidators.length > 0) {
         return this.curentValidators
           .filter(row => row.nodeID.toLowerCase().includes(this.filter.toLowerCase()) ||
-          row.name.includes(this.filter) ||
+          row.name.toLowerCase().includes(this.filter.toLowerCase()) ||
           this.getRewardOwner(row.rewardOwner).toLowerCase().includes(this.filter.toLowerCase()))
       }
     },
