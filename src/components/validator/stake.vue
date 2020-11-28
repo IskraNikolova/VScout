@@ -1,6 +1,7 @@
 <template>
   <q-card
   flat
+  class="panel"
   >
     <q-card-section>
     <div class="q-mb-md text-medium text-purple">STAKE (AVAX)</div>

@@ -96,7 +96,7 @@
     </q-card>
 
     <!--lt-sm-->
-    <q-card flat class="lt-sm panel custom-card">
+    <q-card flat class="lt-sm panel">
       <q-item>
         <avatar
           v-bind:avatar="avatar"
