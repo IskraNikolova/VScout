@@ -105,8 +105,8 @@
               :dark="appTheme==='dark'"
             >
               <div style="min-width: 250px;" class="panel" @mouseover="listOver=true" @mouseleave="listOver=false">
-                <q-item>
-                  <q-item-section class="text-secondary text-medium">
+                <q-item style="background-color: #32353b;">
+                  <q-item-section class="text-white text-medium">
                     1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }}
                   </q-item-section>
                 </q-item>
@@ -206,7 +206,7 @@
           </q-btn>
           <a
             id="faq"
-            class="text-grey" href="#faqs">
+            href="#faqs">
             FAQ
           </a>
           <q-btn
@@ -214,7 +214,7 @@
             no-caps
             icon="flash_on"
             :label="networkEndpoint.name"
-            class="text-regular text-grey"
+            class="text-regular"
             id="target-el"
           >
             <q-menu>
@@ -229,7 +229,7 @@
           <q-btn
             no-caps
             :label="getISO(currentCurrency)"
-            class="text-medium text-grey"
+            class="text-medium"
             color="purple"
             id="target-el"
           >
@@ -312,8 +312,8 @@
       <!--lt-sm view-->
       <div class="lt-sm background-white">
         <q-toolbar>
-          <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm class="text-grey"/>
-          <a id="faq2" class="text-grey" href="#faqs">FAQ</a>
+          <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm />
+          <a id="faq2" href="#faqs">FAQ</a>
         </q-toolbar>
         <div class="q-pb-md">
           <span v-if="validatorById(nodeID)">

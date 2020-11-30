@@ -36,12 +36,32 @@
         <div id="f-size12" class=" q-pl-sm q-pb-md q-pt-md text-medium text-white">STAKERS STATS</div>
         <div style="font-size: 11px;" class=" q-pl-md q-pb-xs q-pt-sm text-purple text-medium">NEW STAKING LAST 24H</div>
         <q-separator inset color="secondary" />
-        <div class=" q-pl-md q-pb-xs q-pt-sm text-white"><span style="font-size: 10px;">VALIDATORS</span> <span class="text-purple"> {{ inData.incomingVal }}</span></div>
-        <div class=" q-pl-md q-pb-sm q-pt-sm text-white"><span style="font-size: 10px;">DELEGATIONS</span> <span class="text-purple"> {{ inData.incomingDel }}</span></div>
+        <div class=" q-pl-md q-pt-sm text-white"><span style="font-size: 10px;">VALIDATORS</span> <span class="text-purple"> {{ incomingValidators }}</span></div>
+        <div class=" q-pl-md q-pt-sm text-white"><span style="font-size: 10px;">DELEGATIONS</span> <span class="text-purple"> {{ incomingDelegations }}</span></div>
+        <div class=" q-pl-md q-pb-xs q-pt-sm text-white"><span style="font-size: 10px;">STAKE </span>
+          <span class="text-purple">
+            <animated-number
+              :value="incomingStake"
+              :formatValue="format"
+              :duration="3000"
+            />
+            <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;"> AVAX</span>
+          </span>
+        </div>
         <div style="font-size: 11px;" class=" q-pl-md q-pb-xs q-pt-md text-purple text-medium">ENDING NEXT 24H</div>
         <q-separator inset color="secondary" />
-        <div class=" q-pl-md q-pb-xs q-pt-sm text-white"><span style="font-size: 10px;">VALIDATORS</span> <span class="text-purple"> {{ inData.outcomingVal }}</span></div>
-        <div class=" q-pl-md q-pb-xs q-pt-sm text-white"><span style="font-size: 10px;">DELEGATIONS</span> <span class="text-purple"> {{ inData.outcomingDel }}</span></div>
+        <div class=" q-pl-md q-pt-sm text-white"><span style="font-size: 10px;">VALIDATORS</span> <span class="text-purple"> {{ outcomingValidators }}</span></div>
+        <div class=" q-pl-md q-pt-sm text-white"><span style="font-size: 10px;">DELEGATIONS</span> <span class="text-purple"> {{ outcomingDelegations }}</span></div>
+        <div class=" q-pl-md q-pt-sm text-white"><span style="font-size: 10px;">STAKE </span>
+          <span class="text-purple">
+            <animated-number
+              :value="outcomingStake"
+              :formatValue="format"
+              :duration="3000"
+            />
+            <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;"> AVAX</span>
+          </span>
+        </div>
       </div>
       <div class="col-md-10 col-xs-12">
         <node />
@@ -81,19 +101,23 @@ import {
 } from 'vuex'
 
 import MapChart from 'vue-chart-map'
+import AnimatedNumber from 'animated-number-vue'
 
 import {
   GET_STAKING,
   GET_PENDING_STAKING
 } from '../store/app/types'
 
-const { network } = require('./../modules/config')
+const { network } = require('./../modules/config.js')
   .default
 
+import { getAvaFromnAva } from './../utils/avax.js'
+import { round } from './../utils/commons.js'
 export default {
   name: 'PageIndex',
   components: {
     MapChart,
+    AnimatedNumber,
     Node: () => import('components/panels/node.vue'),
     Network: () => import('components/panels/network.vue'),
     MarketData: () => import('components/panels/market-data.vue'),
@@ -115,7 +139,31 @@ export default {
       'peersMap',
       'networkEndpoint',
       'pendingValidators'
-    ])
+    ]),
+    incomingValidators: function () {
+      if (!this.inData) return 0
+      return this.inData.incomingValidators
+    },
+    outcomingValidators: function () {
+      if (!this.inData) return 0
+      return this.inData.outcomingValidators
+    },
+    incomingDelegations: function () {
+      if (!this.inData) return 0
+      return this.inData.incomingDelegations
+    },
+    outcomingDelegations: function () {
+      if (!this.inData) return 0
+      return this.inData.outcomingDelegations
+    },
+    incomingStake: function () {
+      if (!this.inData) return 0
+      return getAvaFromnAva(this.inData.incomingStake)
+    },
+    outcomingStake: function () {
+      if (!this.inData) return 0
+      return getAvaFromnAva(this.inData.outcomingStake)
+    }
   },
   data () {
     return {
@@ -128,6 +176,10 @@ export default {
       getValidators: GET_STAKING,
       getPendingValidators: GET_PENDING_STAKING
     }),
+    format (value) {
+      if (!value) return
+      return `${round(value, 100).toLocaleString()}`
+    },
     async getValidatorsV (type) {
       const temp = {
         active: async () => await this.getValidators({

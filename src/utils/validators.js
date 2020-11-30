@@ -166,8 +166,8 @@ export async function mapValidators (
   isInit) {
   let validatedStake = new BigNumber(0)
   let delegatedStake = new BigNumber(0)
-  let incomingVal = 0
-  let outcomingVal = 0
+  const incomingVal = { validators: 0, stake: new BigNumber(0) }
+  const outcomingVal = { validators: 0, stake: new BigNumber(0) }
 
   const hours24Ago = substract24Hours()
   const next24Hours = add24Hours()
@@ -175,9 +175,13 @@ export async function mapValidators (
     if (!defaultValidators) defaultValidators = []
 
     if (Number(val.startTime) >= Number(hours24Ago)) {
-      incomingVal++
+      incomingVal.validators++
+      incomingVal.stake = BigNumber
+        .sum(val.stakeAmount, incomingVal.stake)
     } else if (Number(val.endTime) <= Number(next24Hours)) {
-      outcomingVal++
+      outcomingVal.validators++
+      outcomingVal.stake = BigNumber
+        .sum(val.stakeAmount, incomingVal.stake)
     }
 
     const currentValidator = defaultValidators
@@ -343,16 +347,20 @@ export function getDelegatorDetails (delegators) {
 
 export function mapDelegators (delegators) {
   if (!delegators) return []
-  let incomingDel = 0
-  let outcomingDel = 0
+  const incomingDel = { delegations: 0, stake: new BigNumber(0) }
+  const outcomingDel = { delegations: 0, stake: new BigNumber(0) }
 
   const hours24Ago = substract24Hours()
   const next24Hours = add24Hours()
   const result = delegators.map((delegator, i) => {
     if (Number(delegator.startTime) >= Number(hours24Ago)) {
-      incomingDel++
+      incomingDel.delegations++
+      incomingDel.stake = BigNumber
+        .sum(delegator.stakeAmount, incomingDel.stake)
     } else if (Number(delegator.endTime) <= Number(next24Hours)) {
-      outcomingDel++
+      outcomingDel.delegations++
+      outcomingDel.stake = BigNumber
+        .sum(delegator.stakeAmount, outcomingDel.stake)
     }
     const { avatar } = getAvatar(
       delegator

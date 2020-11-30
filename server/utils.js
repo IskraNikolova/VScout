@@ -8,16 +8,20 @@ module.exports = {
     let validatedStake = new BigNumber(0)
     let delegatedStake = new BigNumber(0)
     const delegators = []
-    let incomingVal = 0
-    let outcomingVal = 0
+    let incomingVal = { validators: 0, stake: new BigNumber(0) }
+    let outcomingVal = { validators: 0, stake: new BigNumber(0) }
   
     const hours24Ago = substract24Hours()
     const next24Hours = add24Hours()
     const validatorsMap = await Promise.all(validators.map(async (val) => {
       if (Number(val.startTime) >= Number(hours24Ago)) {
-        incomingVal++
+        incomingVal.validators++
+        incomingVal.stake = BigNumber
+          .sum(val.stakeAmount, incomingVal.stake)
       } else if (Number(val.endTime) <= Number(next24Hours)) {
-        outcomingVal++
+        outcomingVal.validators++
+        outcomingVal.stake = BigNumber
+          .sum(val.stakeAmount, incomingVal.stake)
       }
 
       validatedStake = BigNumber

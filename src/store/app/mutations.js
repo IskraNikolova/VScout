@@ -1,4 +1,5 @@
 import Vue from 'vue'
+const BigNumber = require('bignumber.js')
 
 import { VMDict } from './../../utils/constants.js'
 import { clean } from './../../utils/commons.js'
@@ -35,7 +36,41 @@ const mutations = {
     state.hasNetworkConnection = hasNetworkConnection
   },
   [GET_IN_OUT]: (state, { incomingVal, incomingDel, outcomingVal, outcomingDel }) => {
-    state.inData = { incomingVal, incomingDel, outcomingVal, outcomingDel }
+    let result = {
+      incomingValidators: 0,
+      incomingDelegations: 0,
+      outcomingValidators: 0,
+      outcomingDelegations: 0,
+      incomingStake: 0,
+      outcomingStake: 0
+    }
+    try {
+      let incomingStake = new BigNumber(incomingVal.stake)
+      incomingStake = BigNumber
+        .sum(incomingStake, incomingDel.stake)
+
+      let outcomingStake = new BigNumber(outcomingVal.stake)
+      outcomingStake = BigNumber
+        .sum(outcomingStake, outcomingDel.stake)
+
+      const incomingValidators = incomingVal.validators
+      const outcomingValidators = outcomingVal.validators
+      const incomingDelegations = incomingDel.delegations
+      const outcomingDelegations = outcomingDel.delegations
+
+      result = {
+        incomingValidators,
+        outcomingValidators,
+        incomingDelegations,
+        outcomingDelegations,
+        incomingStake,
+        outcomingStake
+      }
+    } catch (err) {
+      console.error(err)
+    }
+
+    state.inData = result
   },
   [GET_CURRENT_SUPPLY]: (state, { currentSupply }) => {
     state.currentSupply = currentSupply
