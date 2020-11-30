@@ -9,7 +9,7 @@
       :sort-method="customSort"
       :pagination="pagination"
       :grid="isGrid"
-      :class="tableClass + ' panel'"
+      :class="tableClass"
       id="custom-table"
       :visible-columns="visibleColumns"
       :loading="visible"
@@ -410,8 +410,17 @@ export default {
       }
     },
     isNotSticky: function (val) {
-      if (val) this.tableClass = 'light-background shadow-3'
-      else this.tableClass = 'light-background shadow-3 sticky-header-table'
+      if (val) this.tableClass = 'panel shadow-3'
+      else {
+        if (this.appTheme === 'default') this.tableClass = 'panel shadow-3 sticky-header-table-light'
+        else this.tableClass = 'panel shadow-3 sticky-header-table-dark'
+      }
+    },
+    appTheme: function (val) {
+      if (val === 'default' && this.isNotSticky) this.tableClass = 'panel shadow-3'
+      else if (val === 'default' && !this.isNotSticky) this.tableClass = 'panel shadow-3 sticky-header-table-light'
+      else if (val === 'dark' && this.isNotSticky) this.tableClass = 'panel shadow-3'
+      else this.tableClass = 'panel shadow-3 sticky-header-table-dark'
     }
   },
   data () {
@@ -570,7 +579,7 @@ export default {
       visibleColumns: [],
       textStickyPositive: 'Sticky header',
       textStickyNegative: 'Remove a sticky header',
-      tableClass: 'light-background shadow-3'
+      tableClass: 'panel shadow-3'
     }
   },
   created () {
@@ -809,7 +818,7 @@ export default {
 }
 </style>
 <style lang="sass">
-.sticky-header-table
+.sticky-header-table-light
   /* height or max-height is important */
   max-height: 610px
   .q-table__top,
@@ -817,6 +826,23 @@ export default {
   thead tr:first-child th
     /* bg color is important for th; just specify one */
     background-color: #ffffff
+  thead tr th
+    position: sticky
+    z-index: 1
+  thead tr:first-child th
+    top: 0
+  /* this is when the loading indicator appears */
+  &.q-table--loading thead tr:last-child th
+    /* height of all previous header rows */
+    top: 48px
+.sticky-header-table-dark
+  /* height or max-height is important */
+  max-height: 610px
+  .q-table__top,
+  .q-table__bottom,
+  thead tr:first-child th
+    /* bg color is important for th; just specify one */
+    background-color: #3f424a
   thead tr th
     position: sticky
     z-index: 1
