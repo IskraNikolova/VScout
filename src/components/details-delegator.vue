@@ -9,7 +9,7 @@
           />
         </small>
         <div v-if="delegator.rewardOwner">
-          <span class="text-medium" style="opacity: 0.3;">Reward Owner: </span>{{ delegator.rewardOwner.addresses[0] }}
+          <span class="text-medium" style="opacity: 0.3;">Reward Owner: </span><span style="cursor: pointer;" @click="$router.push(`/address/${delegator.rewardOwner.addresses[0]}`)">{{ delegator.rewardOwner.addresses[0] }}</span>
           <small>
             <q-icon
               @click="copyToClipboard(delegator.rewardOwner.addresses[0])"

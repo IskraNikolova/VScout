@@ -35,7 +35,7 @@
               <span id="font15">
                 <small>OWNER  </small>
               </span>
-              <span id="link">{{ rewardOwner }}</span>
+              <span id="link" style="cursor: pointer;" @click="$router.push(`/address/${rewardOwner}`)">{{ rewardOwner }}</span>
               <small>
                 <q-icon
                   @click="copyToClipboard(rewardOwner)"

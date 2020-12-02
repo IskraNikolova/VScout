@@ -38,6 +38,7 @@
         row-key="txID"
         class="panel"
         :pagination="pagination"
+        :dark="appTheme==='dark'"
       >
         <template slot="top-left">
         </template>

@@ -45,6 +45,7 @@
           title="Peers"
           class="panel"
           :pagination="pagination"
+          :dark="appTheme==='dark'"
         >
           <template v-slot:top-right="props">
             <q-input
@@ -53,6 +54,7 @@
                 stack-label
                 label="Filter peers..."
                 clearable v-model="filter"
+                :dark="appTheme==='dark'"
             >
                 <template v-slot:append>
                 <q-icon name="search" color="accent" />
@@ -188,7 +190,8 @@ export default {
       'nodeID',
       'peers',
       'peersMap',
-      'validators'
+      'validators',
+      'appTheme'
     ]),
     statics: function () {
       const statics = groupBy(this.peers.peers, 'country')

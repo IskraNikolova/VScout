@@ -13,6 +13,7 @@
       id="custom-table"
       :visible-columns="visibleColumns"
       :loading="visible"
+      :dark="appTheme==='dark'"
     >
       <template slot="top-left"
         v-if="isActive && curentValidators.length < 1"
@@ -21,7 +22,7 @@
       </template>
 
       <template slot="top-left" v-else>
-        <q-btn
+        <span v-if="!isGrid"><q-btn
           size="xs"
           v-if="!isNotSticky"
           class="text-accent"
@@ -40,8 +41,8 @@
         >
           <tooltip-style v-bind:text="textStickyPositive" />
         </q-btn>
-
-        <q-btn size="xs" flat icon="apps" @click="isGrid=true"/>
+        </span>
+        <q-btn size="xs" flat icon="apps" @click="reorder"/>
         <q-btn size="xs" flat icon="reorder" @click="isGrid=false"/>
         <settings />
         <q-btn-toggle
@@ -99,7 +100,7 @@
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="remainingTime" label="Countdown" />
         </div></small>
       </template>
-      <template v-slot:top-right="props" v-if="!isGrid">
+      <template v-slot:top-right="props">
         <q-input
           :dark="appTheme==='dark'"
           borderless
@@ -239,11 +240,11 @@
               </q-badge>
             </span>
             <q-item>
-              <q-item-section avatar style="cursor:pointer;" @click="onClick(props.row.link)">
+              <q-item-section avatar style="cursor:pointer;" @click="onClick(props.row.link, props.row.nodeID)">
                 <q-img :src="props.row.avatar" :style="'width: 65vw;max-width: 65px;min-height: 65px;border-radius: 5px;border-radius: 5px;'">
                   <template v-slot:error>
                     <div class="bg-white absolute-center">
-                      <q-img src="~assets/image.jpg" style="width: 35vw;max-width: 35px;" />
+                      <q-img src="~assets/image.jpg" style="width: 38vw;max-width: 38px;" />
                     </div>
                 </template>
                 </q-img>
@@ -254,14 +255,15 @@
                   <span class="text-accent">
                     {{ props.row.rank }}
                   </span>
+                  <q-icon name="img:statics/star.svg" size="1.5em" />
                 </q-item-label>
                 <q-item-label class="q-mt-md">
-                  <span v-if="props.row.name !== props.row.nodeID" style="cursor:pointer;font-size: 11.5px;" @click="onClick(props.row.link)">
-                    <span class="text-medium">{{ props.row.name }}</span>
+                  <span v-if="props.row.name !== props.row.nodeID" style="cursor:pointer;font-size: 13px;" @click="onClick(props.row.link, props.row.nodeID)">
+                    <span class="text-medium text-panel">{{ props.row.name }}</span>
                     <br />
-                    <small>{{ props.row.nodeID }}</small>
+                    <span style="cursor:pointer;font-size: 12px;" @click="$router.push('/validator/' + props.row.nodeID)">{{ props.row.nodeID }} </span>
                   </span>
-                  <span v-else>{{ getFormatSubstr(props.row.nodeID) }}</span>
+                  <span v-else style="font-size: 11.8px;cursor:pointer;" class="text-medium text-panel" @click="$router.push('/validator/' + props.row.nodeID)">{{ props.row.nodeID }} </span>
                   <small>
                     <q-icon
                       @click="copyToClipboard(props.row.nodeID)"
@@ -271,7 +273,7 @@
                 </q-item-label>
                 <q-item-label>
                   <small>
-                    Owner ({{ getFormatSubstr(getRewardOwner(props.row.rewardOwner)) }})
+                    <span style="cursor:pointer;" @click="$router.push('/address/' + getRewardOwner(props.row.rewardOwner))">Owner ({{ getFormatSubstr(getRewardOwner(props.row.rewardOwner)) }}) </span>
                     <q-icon
                       @click="copyToClipboard(getRewardOwner(props.row.rewardOwner))"
                       name="file_copy"
@@ -286,65 +288,78 @@
               </q-item-section>
             </q-item>
 
-            <q-separator />
-
+            <q-separator  :dark="appTheme==='dark'" />
+            <q-card-section>
+              <div class="text-medium text-panel q-mb-md">Countdown</div>
+              <countdown
+                class="row"
+                v-bind:countdown="props.row.remainingTime"
+                v-bind:color="getIsDelegatable(props.row.isMinimumAmountForStake)"
+                style="min-width: 150px;"
+              />
+            </q-card-section>
             <q-card-section horizontal>
-              <q-card-section class="col-6 q-mb-xl">
-                <div class="text-medium q-mb-md">Stake (AVAX)</div>
-                <small>Own</small>
+              <q-card-section>
+                <div class="text-medium text-panel q-mb-md">Stake (AVAX)</div>
+                <small class="text-panel">Own</small>
                 {{ getFormatReward(props.row.stakeAmount)}}
+                <small class="text-accent"> AVAX</small>
                 <div>
-                  <small>Delegated</small>
+                  <small class="text-panel">Delegated</small>
                   {{ getFormatReward(props.row.delegateStake) }}
+                  <small class="text-accent"> AVAX</small>
                 </div>
-                <q-separator />
+                <q-separator class="q-mt-xs q-mb-xs" :dark="appTheme==='dark'"/>
                 <div>
-                  <small>Total</small>
+                  <small class="text-panel">Total</small>
                   {{ getFormatReward(props.row.totalStakeAmount)}}
-                  <small class="text-accent">AVAX</small>
-                </div>
-                <div class="text-medium q-mt-md">Network Share (%)</div>
-                <span class="q-pl-xs" v-if="props.row.percent !== 'NaN'">
-                  {{ props.row.percent }} %
-                </span>
-                <div class="text-medium q-mt-md">Delegation Fee</div>
-                <div>
-                  {{ props.row.delegationFee }} %
-                </div>
-                  <div class="text-medium q-mt-md">Staked By</div>
-                  <div>
-                    <small>{{ stakedBy(props.row.startTime) }}</small>
-                  </div>
-              </q-card-section>
-              <q-separator vertical />
-              <q-card-section class="col-6">
-                <cumulative-stake-chart
-                  style="margin-bottom: 26px;"
-                  v-bind:name="props.row.nodeID"
-                  v-bind:percent="props.row.percent"
-                  v-bind:percentAll="props.row.cumulativeStake ? props.row.cumulativeStake : NaN"
-                />
-                <div class="text-medium q-mt-md">Potential Reward</div>
-                <div>
-                  <small>{{ getFormatReward(props.row.potentialReward) }} <span class="text-accent">AVAX</span></small>
+                  <small class="text-accent"> AVAX</small>
                 </div>
               </q-card-section>
             </q-card-section>
-            <q-card-section style="margin-top: -50px;"><div class="text-medium">Progress (%)</div>
+            <q-card-section>
+                <span>
+                  <span class="text-panel text-medium q-mt-md">Fee</span>
+                  {{ getRound(Number(props.row.delegationFee)) }} %
+                </span>
+                <br />
+              <span>
+                  <span class="text-panel text-medium q-mt-md">Capacity</span>
+                  {{ getFormatReward(props.row.remainingCapacity) }}
+                  <small class="text-accent"> AVAX</small>
+                </span>
+                <br />
+                <br />
+              <span class="text-panel text-medium q-mt-md">Network Share </span>
+              <span class="q-pl-xs" v-if="props.row.percent !== 'NaN'">
+                {{ props.row.percent }} %
+              </span>
+              <br />
+              <span class="text-panel text-medium q-mt-md">Cumulative Stake</span>
+              <span class="q-pl-xs">
+                {{ props.row.cumulativeStake }} %
+              </span>
+              <br />
+              <br />
+              <span class="text-panel text-medium q-mt-xl">Staked By</span>
+              {{ stakedBy(props.row.startTime) }}
+              <br />
+              <span class="text-panel text-medium">Staking Period</span>
+              {{ getDurationL(props.row.duration) }}
             <progress-bar-validate-session
+              class="q-mt-md"
               v-bind:startTime="props.row.startTime"
               v-bind:endTime="props.row.endTime"
             /></q-card-section>
-            <q-separator />
             <q-card-section horizontal>
               <q-card-section class="col-6">
-                <small class="text-bold">Start Time</small>
+                <small class="text-panel">Start Time</small>
                 <br />
                 <small>{{ formatDate(props.row.startTime, 'MMMM Do YYYY, h:mm') }}</small>
               </q-card-section>
               <q-separator vertical/>
               <q-card-section class="col-6">
-                <small class="text-bold">End Time</small>
+                <small class="text-panel">End Time</small>
                 <br />
                 <small>{{ formatDate(props.row.endTime, 'MMMM Do YYYY, h:mm') }}</small>
               </q-card-section>
@@ -396,7 +411,6 @@ export default {
     Settings: () => import('components/panels/settings'),
     TooltipStyle: () => import('components/tooltip-style'),
     DetailsValidator: () => import('components/details-validator'),
-    CumulativeStakeChart: () => import('components/cumulative-stake-chart'),
     Countdown: () => import('components/items/countdown'),
     AddIdentificationDialog: () => import('components/dialogs/add-identification-dialog'),
     ProgressBarValidateSession: () => import('components/progress-bar-validatе-session')
@@ -410,16 +424,16 @@ export default {
       }
     },
     isNotSticky: function (val) {
-      if (val) this.tableClass = 'panel shadow-3'
+      if (val) this.tableClass = 'panel shadow-3 non-sticky-header'
       else {
         if (this.appTheme === 'default') this.tableClass = 'panel shadow-3 sticky-header-table-light'
         else this.tableClass = 'panel shadow-3 sticky-header-table-dark'
       }
     },
     appTheme: function (val) {
-      if (val === 'default' && this.isNotSticky) this.tableClass = 'panel shadow-3'
+      if (val === 'default' && this.isNotSticky) this.tableClass = 'panel shadow-3 non-sticky-header'
       else if (val === 'default' && !this.isNotSticky) this.tableClass = 'panel shadow-3 sticky-header-table-light'
-      else if (val === 'dark' && this.isNotSticky) this.tableClass = 'panel shadow-3'
+      else if (val === 'dark' && this.isNotSticky) this.tableClass = 'panel shadow-3 non-sticky-header'
       else this.tableClass = 'panel shadow-3 sticky-header-table-dark'
     }
   },
@@ -579,7 +593,7 @@ export default {
       visibleColumns: [],
       textStickyPositive: 'Sticky header',
       textStickyNegative: 'Remove a sticky header',
-      tableClass: 'panel shadow-3'
+      tableClass: 'panel shadow-3 non-sticky-header'
     }
   },
   created () {
@@ -618,6 +632,10 @@ export default {
           row.name.toLowerCase().includes(this.filter.toLowerCase()) ||
           this.getRewardOwner(row.rewardOwner).toLowerCase().includes(this.filter.toLowerCase()))
       }
+    },
+    reorder () {
+      this.isNotSticky = true
+      this.isGrid = true
     },
     getDurationL (val) {
       if (!val) return
@@ -726,6 +744,10 @@ export default {
       if (!val) return 0
       return round(val * 100, 1000)
     },
+    getRound (val) {
+      if (!val) return 0
+      return round(Number(val), 1000)
+    },
     getColorUptime (val) {
       if (val >= 0.6) return 'positive'
       return 'negative'
@@ -739,15 +761,16 @@ export default {
     },
     getFormatSubstr (val) {
       if (!val) return
-      return `${val.substr(0, 12)}...${val.substr(32)}`
+      return `${val.substr(0, 20)}...${val.substr(28)}`
     },
     getFormatValidator (val) {
       if (!val) return
       if (val.length > 20) return `${val.substr(0, 20)}...${val.substr(28)}`
       return val
     },
-    onClick (link) {
+    onClick (link, id) {
       if (link) openURL(link)
+      else this.$router.push('/validator/' + id)
     },
     onAddIdentification () {
       this.$refs.addIdentificationRef.openAddId()
@@ -794,6 +817,7 @@ export default {
 <style scoped>
  #custom-table {
    border-right: 2px solid #588da8;
+   max-height: 6000px;
  }
  .container_row{
   display: grid;
@@ -820,7 +844,7 @@ export default {
 <style lang="sass">
 .sticky-header-table-light
   /* height or max-height is important */
-  max-height: 610px
+  max-height: 610px!important
   .q-table__top,
   .q-table__bottom,
   thead tr:first-child th
@@ -837,7 +861,7 @@ export default {
     top: 48px
 .sticky-header-table-dark
   /* height or max-height is important */
-  max-height: 610px
+  max-height: 610px!important
   .q-table__top,
   .q-table__bottom,
   thead tr:first-child th
@@ -852,4 +876,7 @@ export default {
   &.q-table--loading thead tr:last-child th
     /* height of all previous header rows */
     top: 48px
+.non-sticky-header
+  /* height or max-height is important */
+  max-height: 6000px!important
 </style>
