@@ -145,7 +145,7 @@
             <img src="~assets/vscoutlogo5.svg" style="width: 200px;">
           </q-toolbar-title>
           <span v-if="validatorById(nodeID)" style="min-width: 300px;margin-right: 15%;">
-            <countdown class="row" v-bind:color="'#ffffff'" v-bind:countdown="getRemainigTime()" />
+            <countdown class="row" v-bind:color="'#ffffff'" v-bind:textColor="'white'" v-bind:countdown="getRemainigTime()" />
             <tooltip-style v-bind:text="'Remaining validation time for ' + nodeID  + ''" />
           </span>
           <q-bar>

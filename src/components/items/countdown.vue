@@ -1,20 +1,20 @@
 <template>
   <div>
     <div class="col count-down q-pa-xs" :style="'border-color:' + color">
-      <div class="text-medium" id="value">{{ months }}</div>
-      <div id="label">MONTHS</div>
+      <div :class="'text-medium text-' + textColor" id="value">{{ months }}</div>
+      <div :class="'text-' + textColor" id="label">MONTHS</div>
     </div>
     <div class="col count-down q-pa-xs" :style="'border-color:' + color">
-      <div class="text-medium" id="value">{{ days }}</div>
-       <div id="label">DAYS</div>
+      <div :class="'text-medium text-' + textColor" id="value">{{ days }}</div>
+       <div :class="'text-' + textColor" id="label">DAYS</div>
     </div>
     <div class="col count-down q-pa-xs" :style="'border-color:' + color">
-      <div class="text-medium" id="value">{{ hours }}</div>
-       <div id="label">HOURS</div>
+      <div :class="'text-medium text-' + textColor" id="value">{{ hours }}</div>
+       <div :class="'text-' + textColor" id="label">HOURS</div>
     </div>
     <div class="col count-down q-pa-xs" :style="'border-color:' + color">
-      <div class="text-medium" id="value"> {{ minutes }}</div>
-       <div id="label">MINUTES</div>
+      <div :class="'text-medium text-' + textColor" id="value"> {{ minutes }}</div>
+       <div :class="'text-' + textColor" id="label">MINUTES</div>
     </div>
   </div>
 </template>
@@ -29,6 +29,10 @@ export default {
     color: {
       type: String,
       required: true
+    },
+    textColor: {
+      type: String,
+      required: false
     }
   },
   computed: {
