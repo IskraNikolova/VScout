@@ -38,7 +38,7 @@
             <div class="col-6">STAKERS STATS</div>
             <div
               class="text-medium col-6"
-              style="border: solid 0.5px;border-radius: 3px;max-width: 50px;font-size: 9px;color: #9c929c;"
+              style="border: solid 0.5px;border-radius: 3px;max-width: 50px;font-size: 9px;color: #9c929c;padding-top: 1px;padding-bottom: 1px;"
               @mouseover="statOver=true"
               @mouseleave="statOver=false"
             >
@@ -54,24 +54,24 @@
                 transition-hide="scale"
               >
               <q-list
-                 @mouseover="listOver=true"
+                @mouseover="listOver=true"
                 @mouseleave="listOver=false"
               >
-                <q-item class="panel" clickable v-close-popup @click="statsMode='24H'">
+                <q-item class="panel" v-if="statsMode!=='24H'" clickable v-close-popup @click="statsMode='24H'">
                   <q-item-section>
-                    24H
+                    <small class="text-panel">24H</small>
                   </q-item-section>
                 </q-item>
 
-                <q-item class="panel" clickable v-close-popup @click="statsMode='WEEK'">
+                <q-item class="panel" v-if="statsMode!=='WEEK'" clickable v-close-popup @click="statsMode='WEEK'">
                   <q-item-section>
-                    WEEK
+                    <small class="text-panel">WEEK</small>
                   </q-item-section>
                 </q-item>
 
-                <q-item class="panel" clickable v-close-popup @click="statsMode='MONTH'">
+                <q-item class="panel" v-if="statsMode!=='MONTH'" clickable v-close-popup @click="statsMode='MONTH'">
                   <q-item-section>
-                    MONTH
+                    <small class="text-panel">MONTH</small>
                   </q-item-section>
                 </q-item>
               </q-list>
