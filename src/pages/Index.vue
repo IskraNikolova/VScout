@@ -33,29 +33,51 @@
           /></div>
         </div>
         <q-separator class="q-mt-sm q-pt-xs q-pb-xs" />
-        <div id="f-size12" class=" q-pl-sm q-pb-md q-pt-md text-medium text-white">
-          STAKERS STATS
-          <q-btn-dropdown size="sm" class="q-ml-xs" outline :label="statsMode">
-            <q-list>
-              <q-item clickable v-close-popup @click="statsMode='24H'">
-                <q-item-section>
-                  <q-item-label>24H</q-item-label>
-                </q-item-section>
-              </q-item>
+        <div id="f-size12" class="q-pl-sm q-pb-md q-pt-md text-medium text-white">
+          <div class="row">
+            <div class="col-6">STAKERS STATS</div>
+            <div
+              class="text-medium col-6"
+              style="border: solid 0.5px;border-radius: 3px;max-width: 50px;font-size: 9px;color: #9c929c;"
+              @mouseover="statOver=true"
+              @mouseleave="statOver=false"
+            >
+              <div class="fit flex flex-center text-center non-selectable">
+                <span>{{ statsMode }}</span>
+                <q-icon v-if="statMenu" name="keyboard_arrow_up" />
+                <q-icon v-else name="keyboard_arrow_down" />
+              </div>
+              <q-menu
+                :dark="appTheme==='dark'"
+                v-model="statMenu"
+                transition-show="scale"
+                transition-hide="scale"
+              >
+              <q-list
+                 @mouseover="listOver=true"
+                @mouseleave="listOver=false"
+              >
+                <q-item class="panel" clickable v-close-popup @click="statsMode='24H'">
+                  <q-item-section>
+                    24H
+                  </q-item-section>
+                </q-item>
 
-              <q-item clickable v-close-popup @click="statsMode='WEEK'">
-                <q-item-section>
-                  <q-item-label>WEEK</q-item-label>
-                </q-item-section>
-              </q-item>
+                <q-item class="panel" clickable v-close-popup @click="statsMode='WEEK'">
+                  <q-item-section>
+                    WEEK
+                  </q-item-section>
+                </q-item>
 
-              <q-item clickable v-close-popup @click="statsMode='MONTH'">
-                <q-item-section>
-                  <q-item-label>MONTH</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-btn-dropdown>
+                <q-item class="panel" clickable v-close-popup @click="statsMode='MONTH'">
+                  <q-item-section>
+                    MONTH
+                  </q-item-section>
+                </q-item>
+              </q-list>
+              </q-menu>
+            </div>
+          </div>
         </div>
         <div style="font-size: 11px;" class=" q-pl-md q-pb-xs q-pt-sm text-purple text-medium">NEW STAKING LAST {{ statsMode }}</div>
         <q-separator inset color="secondary" />
@@ -122,7 +144,7 @@ import {
   mapGetters,
   mapActions
 } from 'vuex'
-
+import { debounce } from 'quasar'
 import MapChart from 'vue-chart-map'
 import AnimatedNumber from 'animated-number-vue'
 
@@ -174,6 +196,15 @@ export default {
         this.incomingStake = this.incomingStakeMonth
         this.outcomingStake = this.outcomingStakeMonth
       }
+    },
+    statOver (val) {
+      setTimeout(() => {
+        if (this.listOver) return
+        this.debounceFunc(this.checkStatMenu())
+      }, 50)
+    },
+    listOver () {
+      this.debounceFunc(this.checkStatMenu())
     }
   },
   computed: {
@@ -181,6 +212,7 @@ export default {
       'ui',
       'nodeID',
       'inData',
+      'appTheme',
       'subnetID',
       'validators',
       'nodeInfo',
@@ -265,6 +297,9 @@ export default {
   data () {
     return {
       price: null,
+      statOver: false,
+      statMenu: false,
+      listOver: false,
       statsMode: '24H',
       startIndex: null,
       incomingValidators: 0,
@@ -276,6 +311,7 @@ export default {
     }
   },
   created () {
+    this.statsMode = '24H'
     this.incomingValidators = this.incomingValidatorsHours
     this.outcomingValidators = this.outcomingValidatorsHours
     this.incomingDelegations = this.incomingDelegationsHours
@@ -288,6 +324,14 @@ export default {
       getValidators: GET_STAKING,
       getPendingValidators: GET_PENDING_STAKING
     }),
+    debounceFunc: (fn) => debounce(function () { fn() }, 300),
+    checkStatMenu () {
+      if (this.statOver || this.listOver) {
+        this.statMenu = true
+      } else {
+        this.statMenu = false
+      }
+    },
     format (value) {
       if (!value) return
       return `${round(value, 100).toLocaleString()}`
