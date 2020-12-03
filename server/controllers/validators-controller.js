@@ -42,10 +42,8 @@ module.exports = {
         validators,
         delegators,
         validatedStake,
-        delegatedStake,
-        incomingVal,
-        outcomingVal
-      } = await utils.mapValidators(apiValidators.validators)
+        delegatedStake
+      } = utils.mapValidators(apiValidators.validators)
 
       const response = {
         allStake,
@@ -55,12 +53,14 @@ module.exports = {
         },
         pendingValidators,
         validatedStake,
-        delegatedStake,
-        incomingVal,
-        outcomingVal
+        delegatedStake
       }
       const data = JSON.stringify(response)
       fs.writeFileSync('validators.json', data)
+      
+      const statResponse = utils.getStakingStats(apiValidators.validators)
+      const stat = JSON.stringify(statResponse)
+      fs.writeFileSync('stakeStat.json', stat)
     } catch (err) {
       console.log(err)
       const data = JSON.stringify(err)
@@ -77,6 +77,22 @@ module.exports = {
       try {
         const validators = JSON.parse(data)
         res.status(200).send(validators)
+        res.end()
+      } catch (err) {
+        res.status(400).send(err)
+        res.end()
+      }
+    })
+  },
+  stats: (req, res) => {
+    fs.readFile('stakeStat.json', (err, data) => {
+      if (err) {
+        res.status(400).send(err)
+        res.end()
+      }
+      try {
+        const stats = JSON.parse(data)
+        res.status(200).send(stats)
         res.end()
       } catch (err) {
         res.status(400).send(err)

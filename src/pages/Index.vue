@@ -33,8 +33,31 @@
           /></div>
         </div>
         <q-separator class="q-mt-sm q-pt-xs q-pb-xs" />
-        <div id="f-size12" class=" q-pl-sm q-pb-md q-pt-md text-medium text-white">STAKERS STATS</div>
-        <div style="font-size: 11px;" class=" q-pl-md q-pb-xs q-pt-sm text-purple text-medium">NEW STAKING LAST 24H</div>
+        <div id="f-size12" class=" q-pl-sm q-pb-md q-pt-md text-medium text-white">
+          STAKERS STATS
+          <q-btn-dropdown size="sm" class="q-ml-xs" outline :label="statsMode">
+            <q-list>
+              <q-item clickable v-close-popup @click="statsMode='24H'">
+                <q-item-section>
+                  <q-item-label>24H</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="statsMode='WEEK'">
+                <q-item-section>
+                  <q-item-label>WEEK</q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="statsMode='MONTH'">
+                <q-item-section>
+                  <q-item-label>MONTH</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+        </div>
+        <div style="font-size: 11px;" class=" q-pl-md q-pb-xs q-pt-sm text-purple text-medium">NEW STAKING LAST {{ statsMode }}</div>
         <q-separator inset color="secondary" />
         <div class=" q-pl-md q-pt-sm text-white"><span style="font-size: 10px;">VALIDATORS</span> <span class="text-purple"> {{ incomingValidators }}</span></div>
         <div class=" q-pl-md q-pt-sm text-white"><span style="font-size: 10px;">DELEGATIONS</span> <span class="text-purple"> {{ incomingDelegations }}</span></div>
@@ -48,7 +71,7 @@
             <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;"> AVAX</span>
           </span>
         </div>
-        <div style="font-size: 11px;" class=" q-pl-md q-pb-xs q-pt-md text-purple text-medium">ENDING NEXT 24H</div>
+        <div style="font-size: 11px;" class=" q-pl-md q-pb-xs q-pt-md text-purple text-medium">ENDING NEXT {{ statsMode }}</div>
         <q-separator inset color="secondary" />
         <div class=" q-pl-md q-pt-sm text-white"><span style="font-size: 10px;">VALIDATORS</span> <span class="text-purple"> {{ outcomingValidators }}</span></div>
         <div class=" q-pl-md q-pt-sm text-white"><span style="font-size: 10px;">DELEGATIONS</span> <span class="text-purple"> {{ outcomingDelegations }}</span></div>
@@ -127,6 +150,32 @@ export default {
     Faqs: () => import('components/panels/faqs.vue'),
     TableDelegators: () => import('components/panels/table-delegators.vue')
   },
+  watch: {
+    statsMode: function (val) {
+      if (val === '24H') {
+        this.incomingValidators = this.incomingValidatorsHours
+        this.outcomingValidators = this.outcomingValidatorsHours
+        this.incomingDelegations = this.incomingDelegationsHours
+        this.outcomingDelegations = this.outcomingDelegationsHours
+        this.incomingStake = this.incomingStakeHours
+        this.outcomingStake = this.outcomingStakeHours
+      } else if (val === 'WEEK') {
+        this.incomingValidators = this.incomingValidatorsDays
+        this.outcomingValidators = this.outcomingValidatorsDays
+        this.incomingDelegations = this.incomingDelegationsDays
+        this.outcomingDelegations = this.outcomingDelegationsDays
+        this.incomingStake = this.incomingStakeDays
+        this.outcomingStake = this.outcomingStakeDays
+      } else if (val === 'MONTH') {
+        this.incomingValidators = this.incomingValidatorsMonth
+        this.outcomingValidators = this.outcomingValidatorsMonth
+        this.incomingDelegations = this.incomingDelegationsMonth
+        this.outcomingDelegations = this.outcomingDelegationsMonth
+        this.incomingStake = this.incomingStakeMonth
+        this.outcomingStake = this.outcomingStakeMonth
+      }
+    }
+  },
   computed: {
     ...mapGetters([
       'ui',
@@ -140,36 +189,99 @@ export default {
       'networkEndpoint',
       'pendingValidators'
     ]),
-    incomingValidators: function () {
+    incomingValidatorsHours: function () {
       if (!this.inData) return 0
-      return this.inData.incomingValidators
+      return this.inData.incomingValidatorsHours
     },
-    outcomingValidators: function () {
+    outcomingValidatorsHours: function () {
       if (!this.inData) return 0
-      return this.inData.outcomingValidators
+      return this.inData.outcomingValidatorsHours
     },
-    incomingDelegations: function () {
+    incomingDelegationsHours: function () {
       if (!this.inData) return 0
-      return this.inData.incomingDelegations
+      return this.inData.incomingDelegationsHours
     },
-    outcomingDelegations: function () {
+    outcomingDelegationsHours: function () {
       if (!this.inData) return 0
-      return this.inData.outcomingDelegations
+      return this.inData.outcomingDelegationsHours
     },
-    incomingStake: function () {
+    incomingStakeHours: function () {
       if (!this.inData) return 0
-      return getAvaFromnAva(this.inData.incomingStake)
+      return getAvaFromnAva(this.inData.incomingStakeHours)
     },
-    outcomingStake: function () {
+    outcomingStakeHours: function () {
       if (!this.inData) return 0
-      return getAvaFromnAva(this.inData.outcomingStake)
+      return getAvaFromnAva(this.inData.outcomingStakeHours)
+    },
+    incomingValidatorsDays: function () {
+      if (!this.inData) return 0
+      return this.inData.incomingValidatorsDays
+    },
+    outcomingValidatorsDays: function () {
+      if (!this.inData) return 0
+      return this.inData.outcomingValidatorsDays
+    },
+    incomingDelegationsDays: function () {
+      if (!this.inData) return 0
+      return this.inData.incomingDelegationsDays
+    },
+    outcomingDelegationsDays: function () {
+      if (!this.inData) return 0
+      return this.inData.outcomingDelegationsDays
+    },
+    incomingStakeDays: function () {
+      if (!this.inData) return 0
+      return getAvaFromnAva(this.inData.incomingStakeDays)
+    },
+    outcomingStakeDays: function () {
+      if (!this.inData) return 0
+      return getAvaFromnAva(this.inData.outcomingStakeDays)
+    },
+    incomingValidatorsMonth: function () {
+      if (!this.inData) return 0
+      return this.inData.incomingValidatorsMonth
+    },
+    outcomingValidatorsMonth: function () {
+      if (!this.inData) return 0
+      return this.inData.outcomingValidatorsMonth
+    },
+    incomingDelegationsMonth: function () {
+      if (!this.inData) return 0
+      return this.inData.incomingDelegationsMonth
+    },
+    outcomingDelegationsMonth: function () {
+      if (!this.inData) return 0
+      return this.inData.outcomingDelegationsMonth
+    },
+    incomingStakeMonth: function () {
+      if (!this.inData) return 0
+      return getAvaFromnAva(this.inData.incomingStakeMonth)
+    },
+    outcomingStakeMonth: function () {
+      if (!this.inData) return 0
+      return getAvaFromnAva(this.inData.outcomingStakeMonth)
     }
   },
   data () {
     return {
       price: null,
-      startIndex: null
+      statsMode: '24H',
+      startIndex: null,
+      incomingValidators: 0,
+      outcomingValidators: 0,
+      incomingDelegations: 0,
+      outcomingDelegations: 0,
+      incomingStake: 0,
+      outcomingStake: 0
     }
+  },
+  created () {
+    this.incomingValidators = this.incomingValidatorsHours
+    this.outcomingValidators = this.outcomingValidatorsHours
+    this.incomingDelegations = this.incomingDelegationsHours
+    this.outcomingDelegations = this.outcomingDelegationsHours
+    this.incomingStake = this.incomingStakeHours
+    this.outcomingStake = this.outcomingStakeHours
   },
   methods: {
     ...mapActions({

@@ -42,6 +42,7 @@ import {
   _getDefInfo,
   _getPeers,
   _getNodeId,
+  _getStats,
   _getHeight,
   _getDefPeers,
   _getPeerInfo,
@@ -103,7 +104,8 @@ async function initApp (
       _initializeNetwork(),
       dispatch(GET_STAKING, {
         subnetID: getters.subnetID
-      })
+      }),
+      dispatch(GET_IN_OUT)
     ]).then(() => dispatch(SUBSCRIBE_TO_EVENT))
   } catch (err) {
   }
@@ -115,6 +117,7 @@ async function initApp (
           subnetID: getters.subnetID,
           isInit: false
         }),
+        dispatch(GET_IN_OUT),
         dispatch(GET_HEIGHT, {}),
         dispatch(GET_NODE_INFO, {})
       ])
@@ -177,9 +180,7 @@ async function getValidators (
         allStake,
         validators,
         validatedStake,
-        delegatedStake,
-        incomingVal,
-        outcomingVal
+        delegatedStake
       } = response
 
       commit(SET_STAKED_AVA, {
@@ -189,17 +190,8 @@ async function getValidators (
       })
 
       const {
-        incomingDel,
-        outcomingDel,
         delegators
       } = mapDelegators(validators.delegators)
-
-      commit(GET_IN_OUT, {
-        incomingVal,
-        incomingDel,
-        outcomingVal,
-        outcomingDel
-      })
 
       const res = await mapDefaultValidators(
         validators.validators,
@@ -263,13 +255,6 @@ async function getValidators (
         delegators: resDelegators.delegators
       })
 
-      commit(GET_IN_OUT, {
-        incomingVal: res.incomingVal,
-        incomingDel: resDelegators.incomingDel,
-        outcomingVal: res.outcomingVal,
-        outcomingDel: resDelegators.outcomingDel
-      })
-
       if (getters.isDefaultSubnetID(subnetID)) {
         commit(SET_DEFAULT_VALIDATORS, {
           defaultValidators: res.validators
@@ -280,6 +265,19 @@ async function getValidators (
   } catch (err) {
     console.log(err)
   }
+}
+
+async function getStakeStats (
+  { commit, getters, dispatch }) {
+  const response = await _getStats()
+
+  if (typeof response === 'undefined' ||
+    response === null) return
+
+  if (response.error) return
+
+  const { incomingVal, incomingDel, outcomingVal, outcomingDel } = response
+  commit(GET_IN_OUT, { incomingVal, incomingDel, outcomingVal, outcomingDel })
 }
 
 async function getPValidators (
@@ -635,6 +633,7 @@ export default {
   [GET_HEIGHT]: getHeight,
   [GET_NODE_ID]: getNodeId,
   [SET_THEME]: setTheme,
+  [GET_IN_OUT]: getStakeStats,
   [GET_SUBNETS]: getSubnets,
   [GET_NODE_INFO]: getNodeInfo,
   [GET_NODE_PEERS]: getNodePeers,

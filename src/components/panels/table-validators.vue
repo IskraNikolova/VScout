@@ -424,16 +424,16 @@ export default {
       }
     },
     isNotSticky: function (val) {
-      if (val) this.tableClass = 'panel shadow-3 non-sticky-header'
+      if (val) this.tableClass = 'panel shadow-3'
       else {
         if (this.appTheme === 'default') this.tableClass = 'panel shadow-3 sticky-header-table-light'
         else this.tableClass = 'panel shadow-3 sticky-header-table-dark'
       }
     },
     appTheme: function (val) {
-      if (val === 'default' && this.isNotSticky) this.tableClass = 'panel shadow-3 non-sticky-header'
+      if (val === 'default' && this.isNotSticky) this.tableClass = 'panel shadow-3'
       else if (val === 'default' && !this.isNotSticky) this.tableClass = 'panel shadow-3 sticky-header-table-light'
-      else if (val === 'dark' && this.isNotSticky) this.tableClass = 'panel shadow-3 non-sticky-header'
+      else if (val === 'dark' && this.isNotSticky) this.tableClass = 'panel shadow-3'
       else this.tableClass = 'panel shadow-3 sticky-header-table-dark'
     }
   },
@@ -593,7 +593,7 @@ export default {
       visibleColumns: [],
       textStickyPositive: 'Sticky header',
       textStickyNegative: 'Remove a sticky header',
-      tableClass: 'panel shadow-3 non-sticky-header'
+      tableClass: 'panel shadow-3'
     }
   },
   created () {
@@ -817,7 +817,6 @@ export default {
 <style scoped>
  #custom-table {
    border-right: 2px solid #588da8;
-   max-height: 6000px;
  }
  .container_row{
   display: grid;
@@ -876,7 +875,4 @@ export default {
   &.q-table--loading thead tr:last-child th
     /* height of all previous header rows */
     top: 48px
-.non-sticky-header
-  /* height or max-height is important */
-  max-height: 6000px!important
 </style>

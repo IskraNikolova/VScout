@@ -165,6 +165,18 @@ export const _getDefValidators = async () => {
   }
 }
 
+export const _getStats = async () => {
+  try {
+    const req = await axios
+      .get(server + 'api/validators/stats')
+    return req.data
+  } catch (err) {
+    return {
+      error: err.message
+    }
+  }
+}
+
 export const _getDefHealth = async () => {
   try {
     const req = await axios

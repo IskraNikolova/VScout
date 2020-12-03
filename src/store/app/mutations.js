@@ -37,34 +37,90 @@ const mutations = {
   },
   [GET_IN_OUT]: (state, { incomingVal, incomingDel, outcomingVal, outcomingDel }) => {
     let result = {
-      incomingValidators: 0,
-      incomingDelegations: 0,
-      outcomingValidators: 0,
-      outcomingDelegations: 0,
-      incomingStake: 0,
-      outcomingStake: 0
+      // 24 hours
+      incomingValidatorsHours: 0,
+      incomingDelegationsHours: 0,
+      outcomingValidatorsHours: 0,
+      outcomingDelegationsHours: 0,
+      incomingStakeHours: 0,
+      outcomingStakeHours: 0,
+      // 7 days
+      incomingValidatorsDays: 0,
+      incomingDelegationsDays: 0,
+      outcomingValidatorsDays: 0,
+      outcomingDelegationsDays: 0,
+      incomingStakeDays: 0,
+      outcomingStakeDays: 0,
+      // month
+      incomingValidatorsMonth: 0,
+      incomingDelegationsMonth: 0,
+      outcomingValidatorsMonth: 0,
+      outcomingDelegationsMonth: 0,
+      incomingStakeMonth: 0,
+      outcomingStakeMonth: 0
     }
     try {
-      let incomingStake = new BigNumber(incomingVal.stake)
-      incomingStake = BigNumber
-        .sum(incomingStake, incomingDel.stake)
+      // hours
+      let incomingStakeHours = new BigNumber(incomingVal.hours.stake)
+      incomingStakeHours = BigNumber
+        .sum(incomingStakeHours, incomingDel.hours.stake)
 
-      let outcomingStake = new BigNumber(outcomingVal.stake)
-      outcomingStake = BigNumber
-        .sum(outcomingStake, outcomingDel.stake)
+      let outcomingStakeHours = new BigNumber(outcomingVal.hours.stake)
+      outcomingStakeHours = BigNumber
+        .sum(outcomingStakeHours, outcomingDel.hours.stake)
 
-      const incomingValidators = incomingVal.validators
-      const outcomingValidators = outcomingVal.validators
-      const incomingDelegations = incomingDel.delegations
-      const outcomingDelegations = outcomingDel.delegations
+      const incomingValidatorsHours = incomingVal.hours.validators
+      const outcomingValidatorsHours = outcomingVal.hours.validators
+      const incomingDelegationsHours = incomingDel.hours.delegations
+      const outcomingDelegationsHours = outcomingDel.hours.delegations
+
+      // days
+      let incomingStakeDays = new BigNumber(incomingVal.days.stake)
+      incomingStakeDays = BigNumber
+        .sum(incomingStakeDays, incomingDel.days.stake)
+
+      let outcomingStakeDays = new BigNumber(outcomingVal.days.stake)
+      outcomingStakeDays = BigNumber
+        .sum(outcomingStakeDays, outcomingDel.days.stake)
+
+      const incomingValidatorsDays = incomingVal.days.validators
+      const outcomingValidatorsDays = outcomingVal.days.validators
+      const incomingDelegationsDays = incomingDel.days.delegations
+      const outcomingDelegationsDays = outcomingDel.days.delegations
+
+      // month
+      let incomingStakeMonth = new BigNumber(incomingVal.month.stake)
+      incomingStakeMonth = BigNumber
+        .sum(incomingStakeMonth, incomingDel.month.stake)
+
+      let outcomingStakeMonth = new BigNumber(outcomingVal.month.stake)
+      outcomingStakeMonth = BigNumber
+        .sum(outcomingStakeMonth, outcomingDel.month.stake)
+
+      const incomingValidatorsMonth = incomingVal.month.validators
+      const outcomingValidatorsMonth = outcomingVal.month.validators
+      const incomingDelegationsMonth = incomingDel.month.delegations
+      const outcomingDelegationsMonth = outcomingDel.month.delegations
 
       result = {
-        incomingValidators,
-        outcomingValidators,
-        incomingDelegations,
-        outcomingDelegations,
-        incomingStake,
-        outcomingStake
+        incomingValidatorsHours,
+        outcomingValidatorsHours,
+        incomingDelegationsHours,
+        outcomingDelegationsHours,
+        incomingStakeHours,
+        outcomingStakeHours,
+        incomingValidatorsDays,
+        outcomingValidatorsDays,
+        incomingDelegationsDays,
+        outcomingDelegationsDays,
+        incomingStakeDays,
+        outcomingStakeDays,
+        incomingValidatorsMonth,
+        outcomingValidatorsMonth,
+        incomingDelegationsMonth,
+        outcomingDelegationsMonth,
+        incomingStakeMonth,
+        outcomingStakeMonth
       }
     } catch (err) {
       console.error(err)

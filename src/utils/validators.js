@@ -2,7 +2,7 @@ const BigNumber = require('bignumber.js')
 
 import { round, getAvatar } from './commons.js'
 import { getRemainingCapacity } from './stake.js'
-import { countDownCounter, diff, substract24Hours, add24Hours } from './../modules/time.js'
+import { countDownCounter, diff } from './../modules/time.js'
 import { _getValidatorById } from './../modules/networkCChain.js'
 
 /**
@@ -36,9 +36,7 @@ export async function validatorProcessing (
   const {
     validatorsMap,
     validatedStake,
-    delegatedStake,
-    incomingVal,
-    outcomingVal
+    delegatedStake
   } = data
 
   // get all staked AVAX
@@ -77,9 +75,7 @@ export async function validatorProcessing (
     allStake,
     validatedStake,
     delegatedStake,
-    validators: result,
-    incomingVal,
-    outcomingVal
+    validators: result
   }
 }
 
@@ -166,26 +162,12 @@ export async function mapValidators (
   isInit) {
   let validatedStake = new BigNumber(0)
   let delegatedStake = new BigNumber(0)
-  const incomingVal = { validators: 0, stake: new BigNumber(0) }
-  const outcomingVal = { validators: 0, stake: new BigNumber(0) }
 
-  const hours24Ago = substract24Hours()
-  const next24Hours = add24Hours()
   const validatorsMap = await Promise.all(validators.map(async (val) => {
     if (!defaultValidators) defaultValidators = []
-
-    if (Number(val.startTime) >= Number(hours24Ago)) {
-      incomingVal.validators++
-      incomingVal.stake = BigNumber
-        .sum(val.stakeAmount, incomingVal.stake)
-    } else if (Number(val.endTime) <= Number(next24Hours)) {
-      outcomingVal.validators++
-      outcomingVal.stake = BigNumber
-        .sum(val.stakeAmount, incomingVal.stake)
-    }
-
     const currentValidator = defaultValidators
       .find(v => v.nodeID === val.nodeID)
+
     let info = {}
     if (currentValidator) {
       info = {
@@ -277,9 +259,7 @@ export async function mapValidators (
   return {
     validatorsMap,
     validatedStake,
-    delegatedStake,
-    incomingVal,
-    outcomingVal
+    delegatedStake
   }
 }
 
@@ -347,21 +327,8 @@ export function getDelegatorDetails (delegators) {
 
 export function mapDelegators (delegators) {
   if (!delegators) return []
-  const incomingDel = { delegations: 0, stake: new BigNumber(0) }
-  const outcomingDel = { delegations: 0, stake: new BigNumber(0) }
 
-  const hours24Ago = substract24Hours()
-  const next24Hours = add24Hours()
   const result = delegators.map((delegator, i) => {
-    if (Number(delegator.startTime) >= Number(hours24Ago)) {
-      incomingDel.delegations++
-      incomingDel.stake = BigNumber
-        .sum(delegator.stakeAmount, incomingDel.stake)
-    } else if (Number(delegator.endTime) <= Number(next24Hours)) {
-      outcomingDel.delegations++
-      outcomingDel.stake = BigNumber
-        .sum(delegator.stakeAmount, outcomingDel.stake)
-    }
     const { avatar } = getAvatar(
       delegator
         .rewardOwner
@@ -377,9 +344,7 @@ export function mapDelegators (delegators) {
   })
 
   return {
-    delegators: result,
-    incomingDel,
-    outcomingDel
+    delegators: result
   }
 }
 
