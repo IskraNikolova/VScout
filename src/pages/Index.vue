@@ -62,13 +62,13 @@
                     <small class="text-panel">24H</small>
                   </q-item-section>
                 </q-item>
-
+                <q-separator color="panel"/>
                 <q-item class="panel" v-if="statsMode!=='WEEK'" clickable v-close-popup @click="statsMode='WEEK'">
                   <q-item-section>
                     <small class="text-panel">WEEK</small>
                   </q-item-section>
                 </q-item>
-
+                <q-separator color="panel" />
                 <q-item class="panel" v-if="statsMode!=='MONTH'" clickable v-close-popup @click="statsMode='MONTH'">
                   <q-item-section>
                     <small class="text-panel">MONTH</small>
@@ -90,7 +90,7 @@
               :formatValue="format"
               :duration="3000"
             />
-            <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;"> AVAX</span>
+            <span style="color: #9c929c;font-size: 12px;"><small> AVAX</small></span>
           </span>
         </div>
         <div style="font-size: 11px;" class=" q-pl-md q-pb-xs q-pt-md text-purple text-medium">ENDING NEXT {{ statsMode }}</div>
@@ -104,7 +104,7 @@
               :formatValue="format"
               :duration="3000"
             />
-            <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;"> AVAX</span>
+            <span style="color: #9c929c;font-size: 12px;"><small> AVAX</small></span>
           </span>
         </div>
       </div>
