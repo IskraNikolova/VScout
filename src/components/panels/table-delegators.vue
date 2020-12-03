@@ -9,6 +9,7 @@
       :visible-columns="visibleColumns"
       :class="tableClass + ' panel'"
       id="custom-table"
+      color="accent"
       :dark="appTheme==='dark'"
     >
       <template slot="top-left">

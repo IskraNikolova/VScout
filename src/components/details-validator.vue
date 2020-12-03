@@ -1,5 +1,5 @@
 <template>
-  <q-card flat class="dark-panel q-pb-md">
+  <q-card flat class="panel q-pb-md">
     <q-card-section>
       <div class="row items-center no-wrap">
         <div class="col">
@@ -20,7 +20,7 @@
             <small>NODE ID </small> </span>
             <span
               @click="$router.push(`/validator/${validator.nodeID}`)"
-              class="text-secondary text-medium"
+              class="text-panel"
               id="nodeID"
             >
               [{{ validator.nodeID }}]
@@ -35,7 +35,7 @@
               <span id="font15">
                 <small>OWNER  </small>
               </span>
-              <span id="link" style="cursor: pointer;" @click="$router.push(`/address/${rewardOwner}`)">{{ rewardOwner }}</span>
+              <span class="text-panel" style="cursor: pointer;" @click="$router.push(`/address/${rewardOwner}`)">{{ rewardOwner }} </span>
               <small>
                 <q-icon
                   @click="copyToClipboard(rewardOwner)"
@@ -49,7 +49,7 @@
             <span id="font15">
               <small>STAKING PERIOD </small>
             </span>
-            <span id="link">
+            <span class="text-panel">
               {{ getDurationL(validator.duration) }}
             </span>
           </div>
@@ -58,7 +58,7 @@
               <span id="font15">
                 <small>START TIME </small>
               </span>
-              <span id="link">
+              <span class="text-panel">
                 {{ startDate }}
               </span>
               <small>
@@ -69,7 +69,7 @@
               <span id="font15">
                 <small>END TIME </small>
               </span>
-              <span id="link">
+              <span class="text-panel">
                 {{ endDate }}
               </span>
             </div>
@@ -79,29 +79,29 @@
     </q-card-section>
     <div class="row items-start q-gutter-md q-pl-md">
       <!-- STAKE PANEL-->
-      <q-card class="my-card panel col-3">
+      <q-card class="my-card dark-panel col-3">
         <q-card-section>
           <div class="text-h6">Stake</div>
         </q-card-section>
 
         <q-card-section>
           <div class="text-subtitle2">
-            <small id="label">OWN </small>
+            <small class="text-panel">OWN </small>
             <span> {{ getFormatReward(validator.stakeAmount) }}</span>
             <span class="text-accent text-medium"><small> AVAX</small></span>
           </div>
           <div class="text-subtitle2">
-            <small id="label">DELEGATED </small>
+            <small class="text-panel">DELEGATED </small>
             <span> {{ getFormatReward(validator.delegateStake) }}</span>
             <span class="text-accent text-medium"><small> AVAX</small></span>
           </div>
         </q-card-section>
 
-        <q-separator />
+        <q-separator :dark="appTheme==='dark'" />
 
         <q-card-actions>
           <div class="text-subtitle2">
-            <small id="label">TOTAL </small>
+            <small class="text-panel">TOTAL </small>
             <span> {{ getFormatReward(validator.totalStakeAmount) }}</span>
             <span class="text-accent text-medium"><small> AVAX</small></span>
           </div>
@@ -109,29 +109,29 @@
       </q-card>
 
       <!-- REWARD PANEL-->
-      <q-card class="my-card panel col-3">
+      <q-card class="my-card dark-panel col-3">
         <q-card-section>
           <div class="text-h6">Reward</div>
         </q-card-section>
 
         <q-card-section>
           <div class="text-subtitle2">
-            <small id="label">POTENTIAL REWARD </small>
+            <small class="text-panel">POTENTIAL REWARD </small>
             <span> {{ getFormatReward(validator.potentialReward) }}</span>
             <span class="text-accent text-medium"><small> AVAX</small></span>
           </div>
           <div class="text-subtitle2">
-            <small id="label">DELEGATION FEES REWARD</small>
+            <small class="text-panel">DELEGATION FEES REWARD</small>
             <span> {{ potentialRewardFromDelegators() }}</span>
             <span class="text-accent text-medium"><small> AVAX</small></span>
           </div>
         </q-card-section>
 
-        <q-separator />
+        <q-separator :dark="appTheme==='dark'" />
 
         <q-card-actions>
           <div class="text-subtitle2">
-            <small id="label">TOTAL </small>
+            <small class="text-panel">TOTAL </small>
             <span> {{ totalReward() }}</span>
             <span class="text-accent text-medium"><small> AVAX</small></span> /
             <span>  {{ totalRewardUsd() }}</span>
@@ -141,7 +141,7 @@
       </q-card>
 
       <!-- DELEGATE PANEL-->
-      <q-card class="my-card panel col-3">
+      <q-card class="my-card dark-panel col-3">
         <q-card-section>
            <div class="row items-center no-wrap">
               <div class="text-h6 col">Delegate</div>
@@ -164,17 +164,17 @@
 
         <q-card-section>
           <div class="text-subtitle2">
-            <small id="label">DELEGATION FEE  </small>
+            <small class="text-panel">DELEGATION FEE  </small>
             <span> {{ formatValue(validator.delegationFee) }}</span>
             <span class="text-accent"> %</span>
           </div>
           <div class="text-subtitle2">
-            <small id="label">DELEGATIONS CAPACITY</small>
+            <small class="text-panel">DELEGATIONS CAPACITY</small>
             <span> {{ getFormatReward(validator.remainingCapacity) }}</span>
             <span class="text-accent text-medium"><small> AVAX</small></span>
           </div>
           <div class="text-subtitle2 q-mt-md">
-            <small id="label">REMAINING TIME </small>
+            <small class="text-panel">REMAINING TIME </small>
             <span v-if="months > 0">
               {{ months }}
               <span class="text-accent"> Months </span>
@@ -190,7 +190,7 @@
       </q-card>
 
       <!-- DELEGATIONS PANEL-->
-      <q-card class="my-card panel col-3">
+      <q-card class="my-card dark-panel col-3">
         <q-card-section>
           <div class="text-h6">
             <span class="text-panel">{{ delegatorsCount }}</span>
@@ -200,17 +200,17 @@
 
         <q-card-section>
           <div class="text-subtitle2 q-mb-md">
-            <small id="label">RANK  </small>
+            <small class="text-panel">RANK  </small>
             <q-icon name="img:statics/star.svg" size="1.5em" />
             <span>{{ validator.rank }}</span>
           </div>
           <div class="text-subtitle2">
-            <small id="label">NETWORK SHARE </small>
+            <small class="text-panel">NETWORK SHARE </small>
             <span>{{ formatValue(validator.percent) }}</span>
             <span class="text-accent"> %</span>
           </div>
           <div class="text-subtitle2">
-            <small id="label">CUMULATIVE STAKE </small>
+            <small class="text-panel">CUMULATIVE STAKE </small>
             <span>{{ validator.cumulativeStake }}</span>
             <span class="text-accent"> %</span>
           </div>
@@ -252,7 +252,8 @@ export default {
   computed: {
     ...mapGetters([
       'currentCurrency',
-      'currenciesPriceList'
+      'currenciesPriceList',
+      'appTheme'
     ]),
     delegatorsCount: function () {
       if (!this.validator.delegators) return 0

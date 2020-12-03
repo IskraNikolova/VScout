@@ -37,6 +37,7 @@
         :filter="filter"
         row-key="txID"
         class="panel"
+        color="accent"
         :pagination="pagination"
         :dark="appTheme==='dark'"
       >

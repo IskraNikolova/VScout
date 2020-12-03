@@ -11,6 +11,7 @@
       :grid="isGrid"
       :class="tableClass"
       id="custom-table"
+      color="accent"
       :visible-columns="visibleColumns"
       :loading="visible"
       :dark="appTheme==='dark'"
