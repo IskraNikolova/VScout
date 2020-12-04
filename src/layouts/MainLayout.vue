@@ -22,7 +22,8 @@
             @mouseleave="blockchainsMenuOver=false"
           >
             <div class="fit flex flex-center text-center non-selectable" >
-              <span>BLOCKCHAINS</span>
+              <span v-if="blockchainsMenu" class="text-panel">BLOCKCHAINS</span>
+              <span v-else>BLOCKCHAINS</span>
             </div>
             <q-menu
               v-model="blockchainsMenu"
@@ -46,7 +47,8 @@
             <div
              class="fit flex flex-center text-center non-selectable"
             >
-              <span>SUBNETS</span>
+              <span v-if="subnetsMenu" class="text-panel">SUBNETS</span>
+              <span v-else>SUBNETS</span>
             </div>
             <q-menu
               v-model="subnetsMenu"
@@ -72,7 +74,11 @@
             @mouseover="networkMenuOver=true"
             @mouseleave="networkMenuOver=false"
           >
-            <div class="fit flex flex-center text-center non-selectable">
+            <div class="fit flex flex-center text-center non-selectable text-panel" v-if="networkMenu">
+              <q-icon name="flash_on" size="sm" />
+              <span>{{ networkEndpoint.name }}</span>
+            </div>
+            <div class="fit flex flex-center text-center non-selectable" v-else>
               <q-icon name="flash_on" size="sm" />
               <span>{{ networkEndpoint.name }}</span>
             </div>
@@ -91,12 +97,14 @@
             </q-menu>
           </div>
           <div
-            class="q-pa-md text-medium text-purple"
+            class="q-pa-md text-medium"
             @mouseover="menuOver=true"
             @mouseleave="menuOver=false"
           >
-            <div class="fit flex flex-center text-center non-selectable">
+            <div class="fit flex flex-center text-panel text-center non-selectable">
               <span>{{ getISO(currentCurrency) }}</span>
+              <q-icon v-if="menu" name="keyboard_arrow_up" />
+              <q-icon v-else name="keyboard_arrow_down" />
             </div>
             <q-menu
               v-model="menu"

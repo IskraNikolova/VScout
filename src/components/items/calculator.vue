@@ -13,7 +13,7 @@
           <div class="col-6 text-medium">Reward Calculator</div>
           <div class="col-6" style="text-align: right;">
             <small>Current Supply
-            <q-badge outline color="secondary" :label="getCurrentSupplyLable() + ' M'" /> </small>
+            <q-badge outline color="panel" :label="getCurrentSupplyLable() + ' M'" /> </small>
           </div>
         </div>
         <div class="row">
