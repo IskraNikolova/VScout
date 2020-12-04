@@ -3,13 +3,6 @@ const BigNumber = require('bignumber.js')
 
 const CAPACITY = 5
 
-const hours24Ago = substract24Hours()
-const next24Hours = add24Hours()
-const days7Ago = substract7Days()
-const next7Days = add7Days()
-const monthAgo = substractMonth()
-const nextMonth = addMonth()
-
 module.exports = {
   mapValidators: (validators) => {
     let validatedStake = new BigNumber(0)
@@ -68,7 +61,14 @@ module.exports = {
       delegators
     }
   },
-  getStakingStats: (validators) => {
+  getStakingStats: (validators) => { 
+    const hours24Ago = substract24Hours()
+    const next24Hours = add24Hours()
+    const days7Ago = substract7Days()
+    const next7Days = add7Days()
+    const monthAgo = substractMonth()
+    const nextMonth = addMonth()
+
     const incomingVal = {
       hours: { validators: 0, stake: new BigNumber(0) },
       days: { validators: 0, stake: new BigNumber(0) },
