@@ -291,7 +291,7 @@
 
             <q-separator  :dark="appTheme==='dark'" />
             <q-card-section>
-              <div class="text-medium text-panel q-mb-md">Countdown</div>
+              <div class="text-panel q-mb-md">Countdown</div>
               <countdown
                 class="row"
                 v-bind:countdown="props.row.remainingTime"
@@ -301,7 +301,7 @@
             </q-card-section>
             <q-card-section horizontal>
               <q-card-section>
-                <div class="text-medium text-panel q-mb-md">Stake (AVAX)</div>
+                <div class="text-panel q-mb-md">Stake (AVAX)</div>
                 <small class="text-panel">Own</small>
                 {{ getFormatReward(props.row.stakeAmount)}}
                 <small class="text-accent"> AVAX</small>
@@ -320,32 +320,32 @@
             </q-card-section>
             <q-card-section>
                 <span>
-                  <span class="text-panel text-medium q-mt-md">Fee</span>
+                  <span class="text-panel q-mt-md">Fee</span>
                   {{ getRound(Number(props.row.delegationFee)) }} %
                 </span>
                 <br />
               <span>
-                  <span class="text-panel text-medium q-mt-md">Capacity</span>
+                  <span class="text-panel q-mt-md">Capacity</span>
                   {{ getFormatReward(props.row.remainingCapacity) }}
                   <small class="text-accent"> AVAX</small>
                 </span>
                 <br />
                 <br />
-              <span class="text-panel text-medium q-mt-md">Network Share </span>
+              <span class="text-panel q-mt-md">Network Share </span>
               <span class="q-pl-xs" v-if="props.row.percent !== 'NaN'">
                 {{ props.row.percent }} %
               </span>
               <br />
-              <span class="text-panel text-medium q-mt-md">Cumulative Stake</span>
+              <span class="text-panel q-mt-md">Cumulative Stake</span>
               <span class="q-pl-xs">
                 {{ props.row.cumulativeStake }} %
               </span>
               <br />
               <br />
-              <span class="text-panel text-medium q-mt-xl">Staked By</span>
+              <span class="text-panel q-mt-xl">Staked By</span>
               {{ stakedBy(props.row.startTime) }}
               <br />
-              <span class="text-panel text-medium">Staking Period</span>
+              <span class="text-panel ">Staking Period</span>
               {{ getDurationL(props.row.duration) }}
             <progress-bar-validate-session
               class="q-mt-md"
