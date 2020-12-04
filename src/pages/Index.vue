@@ -174,28 +174,10 @@ export default {
   },
   watch: {
     statsMode: function (val) {
-      if (val === '24H') {
-        this.incomingValidators = this.incomingValidatorsHours
-        this.outcomingValidators = this.outcomingValidatorsHours
-        this.incomingDelegations = this.incomingDelegationsHours
-        this.outcomingDelegations = this.outcomingDelegationsHours
-        this.incomingStake = this.incomingStakeHours
-        this.outcomingStake = this.outcomingStakeHours
-      } else if (val === 'WEEK') {
-        this.incomingValidators = this.incomingValidatorsDays
-        this.outcomingValidators = this.outcomingValidatorsDays
-        this.incomingDelegations = this.incomingDelegationsDays
-        this.outcomingDelegations = this.outcomingDelegationsDays
-        this.incomingStake = this.incomingStakeDays
-        this.outcomingStake = this.outcomingStakeDays
-      } else if (val === 'MONTH') {
-        this.incomingValidators = this.incomingValidatorsMonth
-        this.outcomingValidators = this.outcomingValidatorsMonth
-        this.incomingDelegations = this.incomingDelegationsMonth
-        this.outcomingDelegations = this.outcomingDelegationsMonth
-        this.incomingStake = this.incomingStakeMonth
-        this.outcomingStake = this.outcomingStakeMonth
-      }
+      this.refreshData(val)
+    },
+    inData: function () {
+      this.refreshData(this.statsMode)
     },
     statOver (val) {
       setTimeout(() => {
@@ -311,13 +293,7 @@ export default {
     }
   },
   created () {
-    this.statsMode = '24H'
-    this.incomingValidators = this.incomingValidatorsHours
-    this.outcomingValidators = this.outcomingValidatorsHours
-    this.incomingDelegations = this.incomingDelegationsHours
-    this.outcomingDelegations = this.outcomingDelegationsHours
-    this.incomingStake = this.incomingStakeHours
-    this.outcomingStake = this.outcomingStakeHours
+    this.refreshData(this.statsMode)
   },
   methods: {
     ...mapActions({
@@ -330,6 +306,30 @@ export default {
         this.statMenu = true
       } else {
         this.statMenu = false
+      }
+    },
+    refreshData (val) {
+      if (val === '24H') {
+        this.incomingValidators = this.incomingValidatorsHours
+        this.outcomingValidators = this.outcomingValidatorsHours
+        this.incomingDelegations = this.incomingDelegationsHours
+        this.outcomingDelegations = this.outcomingDelegationsHours
+        this.incomingStake = this.incomingStakeHours
+        this.outcomingStake = this.outcomingStakeHours
+      } else if (val === 'WEEK') {
+        this.incomingValidators = this.incomingValidatorsDays
+        this.outcomingValidators = this.outcomingValidatorsDays
+        this.incomingDelegations = this.incomingDelegationsDays
+        this.outcomingDelegations = this.outcomingDelegationsDays
+        this.incomingStake = this.incomingStakeDays
+        this.outcomingStake = this.outcomingStakeDays
+      } else if (val === 'MONTH') {
+        this.incomingValidators = this.incomingValidatorsMonth
+        this.outcomingValidators = this.outcomingValidatorsMonth
+        this.incomingDelegations = this.incomingDelegationsMonth
+        this.outcomingDelegations = this.outcomingDelegationsMonth
+        this.incomingStake = this.incomingStakeMonth
+        this.outcomingStake = this.outcomingStakeMonth
       }
     },
     format (value) {
