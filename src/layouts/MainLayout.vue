@@ -119,11 +119,11 @@
                     <q-item :dark="appTheme==='dark'">
                       <q-item-section>
                         <q-item-label>{{ getISO(c) }}</q-item-label>
-                        <q-item-label caption lines="2">{{ getCurrencyName(c) }}</q-item-label>
+                        <q-item-label caption lines="2" class="text-panel">{{ getCurrencyName(c) }}</q-item-label>
                       </q-item-section>
 
                       <q-item-section side top>
-                        <q-item-label><small class="text-purple text-medium">{{ getSymbol(c) }}</small> {{ currenciesPriceList[`${c}`] }}</q-item-label>
+                        <q-item-label><small class="text-panel text-medium">{{ getSymbol(c) }}</small> {{ currenciesPriceList[`${c}`] }}</q-item-label>
                         <q-icon size="xs" name="check_box" v-if="c === currentCurrency" />
                         <q-icon size="xs" name="check_box_outline_blank" v-else @click="setCurrentCurrency(c)"/>
                       </q-item-section>

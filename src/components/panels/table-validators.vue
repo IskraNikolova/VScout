@@ -792,7 +792,6 @@ export default {
         pending: () => { this.isActive = false }
       }
       temp[this.type]()
-      this.$emit('getValidators', this.type)
     },
     onGetDefaultValidators () {
       this.$store.commit(SET_SUBNET_ID, { subnetID: network.defaultSubnetID })

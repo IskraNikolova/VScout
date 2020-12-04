@@ -44,6 +44,7 @@
           row-key="id"
           title="Peers"
           class="panel"
+          color="accent"
           :pagination="pagination"
           :dark="appTheme==='dark'"
         >
@@ -83,7 +84,7 @@
                     <span v-else>No</span>
                   </span>
                   <span v-else-if="col.name === 'location'">
-                    <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(props.row) + '.png'" id="logo-s"/> {{ col.value}}
+                    <img v-if="props.row !== 'undefined'" :src="'./statics/flag/' + getCode(props.row) + '.png'" id="logo-s"/> {{ col.value}}
                   </span>
                   <span v-else>{{ col.value }}</span>
                 </q-td>

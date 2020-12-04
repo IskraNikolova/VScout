@@ -118,13 +118,9 @@
     <div class="q-pl-sm q-pr-sm">
       <table-validators
         v-if="ui.typeAccount.isValidators"
-        @getValidators="getValidatorsV"
         @getDefaultValidators="getDefaultValidators"
       />
-      <table-delegators
-        v-else
-        @getDelegators="getValidatorsV"
-      />
+      <table-delegators v-else />
 
       <div class="flex flex-center q-mt-xl">
         <faqs id="faqs"/>
@@ -149,8 +145,7 @@ import MapChart from 'vue-chart-map'
 import AnimatedNumber from 'animated-number-vue'
 
 import {
-  GET_STAKING,
-  GET_PENDING_STAKING
+  GET_STAKING
 } from '../store/app/types'
 
 const { network } = require('./../modules/config.js')
@@ -201,7 +196,8 @@ export default {
       'delegators',
       'peersMap',
       'networkEndpoint',
-      'pendingValidators'
+      'pendingValidators',
+      'pendingDelegators'
     ]),
     incomingValidatorsHours: function () {
       if (!this.inData) return 0
@@ -297,8 +293,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      getValidators: GET_STAKING,
-      getPendingValidators: GET_PENDING_STAKING
+      getValidators: GET_STAKING
     }),
     debounceFunc: (fn) => debounce(function () { fn() }, 300),
     checkStatMenu () {
@@ -336,19 +331,21 @@ export default {
       if (!value) return
       return `${round(value, 100).toLocaleString()}`
     },
-    async getValidatorsV (type) {
+    getValidatorsV (type) {
       const temp = {
-        active: async () => await this.getValidators({
-          subnetID: this.subnetID,
-          endpoint: this.networkEndpoint.url
-        }),
-        pending: async () => await this.getPendingValidators({
-          subnetID: this.subnetID,
-          endpoint: this.networkEndpoint.url
-        })
+        active: () => { return this.validators },
+        pending: () => { return this.pendingValidators }
       }
 
-      if (typeof type !== 'undefined') await temp[type]()
+      if (typeof type !== 'undefined') temp[type]()
+    },
+    getDelegators (type) {
+      const temp = {
+        active: () => { return this.delegators },
+        pending: () => { return this.pendingDelegators }
+      }
+      console.log(type)
+      if (typeof type !== 'undefined') temp[type]()
     },
     async getDefaultValidators () {
       await this.getValidators({

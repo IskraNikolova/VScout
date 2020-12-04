@@ -314,7 +314,6 @@ export default {
         pending: () => { this.isActive = false }
       }
       temp[this.type]()
-      this.$emit('getDelegators', this.type)
     },
     onSwitchAccounts () {
       const temp = {

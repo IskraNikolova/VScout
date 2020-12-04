@@ -3,7 +3,7 @@
     <q-list v-for="(subnet, i) in subnets" v-bind:key="i">
       <q-item clickable v-close-popup @click="onSelectSubnet(subnet)" :dark="appTheme==='dark'">
       <q-item-section>
-        <q-item-label>
+        <q-item-label class="text-panel">
         <img src="~assets/network.svg" id="logo-xs" style="opacity: 0.7;">
         {{ subnet.id.substr(0, 4)}}...{{ subnet.id.substr(30)}}
         </q-item-label>

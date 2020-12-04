@@ -8,7 +8,7 @@
         @click="onSelectEndpoint(endpoint, false)"
       >
         <q-item-section>
-          <q-item-label>
+          <q-item-label class="text-panel">
             {{ endpoint.name }}
             <q-icon
               name="done"

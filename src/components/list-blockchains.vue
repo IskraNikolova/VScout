@@ -3,7 +3,7 @@
   <q-list v-for="(blockchain, i) in blockchains" v-bind:key="i">
     <q-item clickable v-close-popup @click="onSelectBlockchain(blockchain)" :dark="appTheme==='dark'">
     <q-item-section>
-      <q-item-label>
+      <q-item-label class="text-panel">
         <q-img src="~assets/blockchain-grey.svg" id="logo-xs" style="opacity: 0.7;"/>
           {{ blockchain.name }}
         </q-item-label>

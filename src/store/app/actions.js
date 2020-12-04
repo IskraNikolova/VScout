@@ -293,7 +293,6 @@ async function getPValidators (
       subnetID,
       endpoint
     })
-
     if (response.data.error) return null
   }
 
