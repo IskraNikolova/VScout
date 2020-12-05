@@ -274,12 +274,13 @@ export default {
     verifySign (msg, sign) {
       try {
         const address = verify(msg, sign)
-        if (address === this.rewardOwner) {
+        if (address === this.getXAddress(this.rewardOwner)) {
           this.isSearchSuccess = true
         } else {
           this.onFailed('Verification Failed!')
         }
-      } catch {
+      } catch (err) {
+        console.log(err)
         this.onFailed('Verification Failed! Try again later!')
       }
     },

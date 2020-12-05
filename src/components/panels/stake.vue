@@ -56,7 +56,7 @@
         </div>
         <small style="opacity: 0.7;">
            <animated-number
-              :value="getReward(stakedAVA)"
+              :value="getReward(stakedAVAX)"
               :formatValue="getFormatReward"
               :duration="3000"
             />
@@ -130,7 +130,7 @@ export default {
   computed: {
     ...mapGetters([
       'ui',
-      'stakedAVA',
+      'stakedAVAX',
       'validators',
       'delegatedStake',
       'validatedStake',
@@ -142,14 +142,14 @@ export default {
     ]),
     delStake: function () {
       if (!this.delegatedStake) return 0
-      const toAva = getAvaFromnAva(this.delegatedStake)
-      const roundVal = round(toAva, 10)
+      const toAvax = getAvaFromnAva(this.delegatedStake)
+      const roundVal = round(toAvax, 10)
       return roundVal
     },
     allStake: function () {
-      if (!this.stakedAVA) return 0
-      const toAva = getAvaFromnAva(this.stakedAVA)
-      const roundVal = round(toAva, 10)
+      if (!this.stakedAVAX) return 0
+      const toAvax = getAvaFromnAva(this.stakedAVAX)
+      const roundVal = round(toAvax, 10)
       return roundVal
     },
     valStake: function () {

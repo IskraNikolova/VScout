@@ -13,7 +13,7 @@ import {
   GET_INFO_PEERS,
   SET_VALIDATORS,
   SET_DELEGATORS,
-  SET_STAKED_AVA,
+  SET_STAKED_AVAX,
   GET_NODE_HEALTH,
   GET_BLOCKCHAINS,
   UPDATE_VALIDATOR,
@@ -183,7 +183,7 @@ async function getValidators (
         delegatedStake
       } = response
 
-      commit(SET_STAKED_AVA, {
+      commit(SET_STAKED_AVAX, {
         all: allStake,
         validatedStake,
         delegatedStake
@@ -210,6 +210,7 @@ async function getValidators (
         subnetID,
         endpoint
       })
+
       if (response.data.error) {
         commit(UPDATE_UI, { doesItConnect: true })
         return null
@@ -231,7 +232,7 @@ async function getValidators (
         isInit
       )
 
-      commit(SET_STAKED_AVA, {
+      commit(SET_STAKED_AVAX, {
         all: res.allStake,
         validatedStake: res.validatedStake,
         delegatedStake: res.delegatedStake

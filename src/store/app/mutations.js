@@ -16,7 +16,7 @@ import {
   GET_NODE_PEERS,
   SET_VALIDATORS,
   GET_INFO_PEERS,
-  SET_STAKED_AVA,
+  SET_STAKED_AVAX,
   SET_DELEGATORS,
   GET_BLOCKCHAINS,
   GET_AVAX_PRICE,
@@ -181,8 +181,8 @@ const mutations = {
     if (index < 0) return
     state.validators[index] = { ...currentValidator, ...newVal }
   },
-  [SET_STAKED_AVA]: (state, { all, validatedStake, delegatedStake }) => {
-    state.stakedAVA = all
+  [SET_STAKED_AVAX]: (state, { all, validatedStake, delegatedStake }) => {
+    state.stakedAVAX = all
     state.validatedStake = validatedStake
     state.delegatedStake = delegatedStake
   },

@@ -21,7 +21,7 @@ export default function () {
     price_change_24h_percentage: {},
     blockchains: [],
     assetsCount: 0,
-    stakedAVA: 0,
+    stakedAVAX: 0,
     validatedStake: 0,
     delegatedStake: 0,
     endpointsMemory: [],

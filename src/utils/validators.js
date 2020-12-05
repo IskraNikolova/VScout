@@ -167,7 +167,6 @@ export async function mapValidators (
     if (!defaultValidators) defaultValidators = []
     const currentValidator = defaultValidators
       .find(v => v.nodeID === val.nodeID)
-
     let info = {}
     if (currentValidator) {
       info = {

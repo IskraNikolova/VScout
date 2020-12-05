@@ -66,8 +66,8 @@ export function subnetID (state) {
   return state.subnetID
 }
 
-export function stakedAVA (state) {
-  return state.stakedAVA
+export function stakedAVAX (state) {
+  return state.stakedAVAX
 }
 
 export function appTheme (state) {
