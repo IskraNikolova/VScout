@@ -111,8 +111,9 @@
       <div class="col-md-10 col-xs-12">
         <node />
         <network />
-        <market-data class="q-mb-sm q-mt-sm" />
+        <market-data class="q-mb-xs q-mt-xs" />
         <stake />
+        <stake-info />
       </div>
     </div>
     <div class="q-pl-sm q-pr-sm">
@@ -162,6 +163,7 @@ export default {
     Network: () => import('components/panels/network.vue'),
     MarketData: () => import('components/panels/market-data.vue'),
     Stake: () => import('components/panels/stake.vue'),
+    StakeInfo: () => import('components/panels/stake-info.vue'),
     Error: () => import('components/panels/error.vue'),
     TableValidators: () => import('components/panels/table-validators.vue'),
     Faqs: () => import('components/panels/faqs.vue'),

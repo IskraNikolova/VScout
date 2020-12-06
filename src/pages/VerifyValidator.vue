@@ -155,7 +155,7 @@
               label="Signature..."
             />
             <q-card-actions align="right" class="col-4">
-              <q-btn flat no-caps label="Verify" @click="verifySign(validator.nodeID, signature)"/>
+              <q-btn flat no-caps label="Verify" @click="test()"/>
             </q-card-actions>
           </q-card-actions>
           <div v-else-if="isSearchSuccess && !isSuccessSend">
@@ -284,15 +284,15 @@ export default {
         this.onFailed('Verification Failed! Try again later!')
       }
     },
-    // async test () {
-    //   this.code = this.getRandom()
-    //   console.log(this.code)
-    //   await this.setVerifyCode({
-    //     code: this.code,
-    //     nodeID: this.validator.nodeID
-    //   })
-    //   this.isSuccessSend = true
-    // },
+    async test () {
+      this.code = '318b69dd8a' // this.getRandom()
+      console.log(this.code)
+      await this.setVerifyCode({
+        code: this.code,
+        nodeID: this.validator.nodeID
+      })
+      this.isSuccessSend = true
+    },
     async sendTx (txID) {
       try {
         const isSuccess = await this.check(txID)

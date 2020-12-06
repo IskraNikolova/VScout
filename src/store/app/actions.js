@@ -183,6 +183,10 @@ async function getValidators (
         delegatedStake
       } = response
 
+      if (allStake !== getters.stakedAVAX) {
+        dispatch(GET_CURRENT_SUPPLY)
+      }
+
       commit(SET_STAKED_AVAX, {
         all: allStake,
         validatedStake,
@@ -231,7 +235,9 @@ async function getValidators (
         getters.defaultValidators,
         isInit
       )
-
+      if (res.allStake !== getters.stakedAVAX) {
+        dispatch(GET_CURRENT_SUPPLY)
+      }
       commit(SET_STAKED_AVAX, {
         all: res.allStake,
         validatedStake: res.validatedStake,

@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="q-pl-xl q-pr-xs q-ml-xs q-pb-md panel" id="custom-card" style="min-height: 150px;padding-top: 30px;" >
+    class="q-pl-xl q-pr-xs q-ml-xs q-pb-md q-pt-md panel" id="custom-card">
     <div class="row">
       <div class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium ">PRICE</div>

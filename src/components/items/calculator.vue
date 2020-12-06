@@ -149,12 +149,8 @@
 
 <script>
 import { date } from 'quasar'
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 import { currencies } from './../../utils/constants.js'
-
-import {
-  GET_CURRENT_SUPPLY
-} from './../../store/app/types'
 
 import {
   reward,
@@ -228,9 +224,6 @@ export default {
     ])
   },
   methods: {
-    ...mapActions({
-      getCurrentSupply: GET_CURRENT_SUPPLY
-    }),
     getSymbol (val) {
       if (!val) return
       return currencies[`${val}`].symbol
@@ -243,10 +236,13 @@ export default {
       this.percent = this.getFormat(percent)
     },
     async openCalculator () {
-      await this.getCurrentSupply()
       this.calculate()
     },
     calculate () {
+      console.log(
+        this.stakeTime,
+        this.stakeAmount,
+        this.currentSupply)
       const rewardNAvax = reward(
         this.stakeTime,
         this.stakeAmount,
