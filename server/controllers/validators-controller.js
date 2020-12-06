@@ -84,6 +84,17 @@ module.exports = {
       }
     })
   },
+  nodeVersions: async (req, res) => {
+    try {
+      const result = await axios
+        .get('https://explorerapi.avax.network/validators')
+      res.status(200).send(result.data)
+      res.end()
+    } catch (err) {
+      res.status(400).send(err)
+      res.end()
+    }
+  },
   stats: (req, res) => {
     fs.readFile('stakeStat.json', (err, data) => {
       if (err) {
