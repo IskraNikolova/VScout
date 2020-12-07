@@ -1,8 +1,8 @@
 <template>
   <q-item-label>
     <div class="text-medium q-pb-md" style="font-size: 20px;" v-if="name !== nodeID">
-      <a v-if="link" :href="link" style="text-decoration: none;" class="text-purple">{{ name }}</a>
-      <span v-else class="text-secondary">{{ name }}</span>
+      <a v-if="link" :href="link" style="text-decoration: none;" class="text-purple" v-html="name"></a>
+      <span v-else class="text-secondary" v-html="name"></span>
     </div>
     <div>
     <span style="cursor: pointer;" @click="copyToClipboard(nodeID)">

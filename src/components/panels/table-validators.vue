@@ -155,8 +155,7 @@
             <div v-else-if="col.name === 'validator'" class="row">
               <div
                 style="cursor:pointer;margin-left: -25px;"
-                @click="props.expand = !props.expand">
-                {{ getFormatValidator(col.value) }}
+                @click="props.expand = !props.expand" v-html="getFormatValidator(col.value)">
               </div>
             </div>
             <div v-else-if="col.name === 'rank'">
@@ -222,7 +221,7 @@
               v-else-if="col.name === 'remainingTime'"
               style="min-width: 180px;"
             />
-            <div v-else>{{ col.value }}</div>
+            <div v-else v-html="col.value"></div>
           </q-td>
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
@@ -260,7 +259,7 @@
                 </q-item-label>
                 <q-item-label class="q-mt-md">
                   <span v-if="props.row.name !== props.row.nodeID" style="cursor:pointer;font-size: 13px;" @click="onClick(props.row.link, props.row.nodeID)">
-                    <span class="text-medium text-panel">{{ props.row.name }}</span>
+                    <span class="text-medium text-panel" v-html="props.row.name"></span>
                     <br />
                     <span style="cursor:pointer;font-size: 12px;" @click="$router.push('/validator/' + props.row.nodeID)">{{ props.row.nodeID }} </span>
                   </span>

@@ -359,10 +359,10 @@ export default {
         return
       }
 
-      // if (!this.code && !this.isPaidSuccess) {
-      //   this.dialog = true
-      //   return
-      // }
+      if (!this.code && !this.isPaidSuccess) {
+        this.dialog = true
+        return
+      }
 
       try {
         await this.setValidatorInfo({

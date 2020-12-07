@@ -5,8 +5,7 @@
         <div class="col">
           <div v-if="validator.nodeID !== validator.name">
             <span id="font15"><small>NAME </small></span>
-            <span id="nodeID" class="text-medium" @click="$router.push(`/validator/${validator.nodeID}`)">
-              {{ validator.name }}
+            <span id="nodeID" class="text-medium" @click="$router.push(`/validator/${validator.nodeID}`)" v-html="validator.name">
             </span>
             <a :href="validator.link" v-if="validator.link" class="text-accent">
               visit
