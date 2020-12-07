@@ -1,11 +1,11 @@
 <template>
     <q-card
-        class="q-mt-xs q-pl-xl q-pr-xs q-ml-xs q-pb-md q-pt-md panel"
+        class="q-mt-xs q-ml-xs q-pb-md q-pt-md panel"
         id="custom-card"
     >
-        <stake />
-          <q-separator class="q-mt-md q-mb-md" :dark="appTheme==='dark'" />
-        <stats />
+        <stake class="q-pl-xl q-pr-sm"/>
+          <q-separator class="q-mt-md q-mb-md" />
+        <stats class="q-pl-xl q-pr-sm" />
     </q-card>
 </template>
 

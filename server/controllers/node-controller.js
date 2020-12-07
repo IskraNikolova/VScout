@@ -64,7 +64,7 @@ module.exports = {
         const peersResponse = resP.data.result
         const p = peersResponse.peers
         let newPeers = []
-        let peersInJson = fs.readFileSync('ips.json').toString()
+        let peersInJson = fs.readFileSync('ips1.json').toString()
         if (!peersInJson) peersInJson = {}
         const json = JSON.parse(peersInJson)
         for (let i = 0; i < p.length; i++) {
@@ -113,8 +113,8 @@ module.exports = {
             console.log(err)
           }
         }
-        // write to json
-        fs.writeFileSync('ips.json', JSON.stringify(json))
+
+        fs.writeFileSync('ips1.json', JSON.stringify(json))
 
         const peers = {
           numPeers: peersResponse.numPeers,
@@ -123,7 +123,7 @@ module.exports = {
         newPeers = []
 
         const info = JSON.stringify(peers)
-        fs.writeFileSync('peers.json', info)
+        fs.writeFileSync('peers1.json', info)
     } catch (err) {
       console.log(err)
       const data = JSON.stringify(err)
@@ -137,7 +137,7 @@ module.exports = {
       res.end()
     }
     try {
-      let peersInJson = fs.readFileSync('peers.json').toString()
+      let peersInJson = fs.readFileSync('peers1.json').toString()
       if (!peersInJson) peersInJson = {}
       const json = JSON.parse(peersInJson)
       const result = json[`${ip}`]
@@ -184,7 +184,7 @@ module.exports = {
     })
   },
   peers: (req, res) => {
-    fs.readFile('peers.json', (err, data) => {
+    fs.readFile('peers1.json', (err, data) => {
       if (err) {
         res.status(400).send(err)
         res.end()

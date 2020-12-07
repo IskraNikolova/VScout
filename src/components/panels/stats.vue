@@ -4,12 +4,12 @@
     <div id="f-size12" class="q-pb-md text-medium">STAKERS STATS</div>
         <div class="text-h6">
         <div
-          class="text-medium q-mt-xs"
-          style="border: solid 0.5px;border-radius: 3px;max-width: 60px;font-size: 13.9px;color: #9c929c;"
+          class="text-medium q-mt-sm"
+          style="border: solid 0.5px;border-radius: 3px;max-height: 30px;max-width: 70px;font-size: 60%;color: #9c929c;text-align: center;padding-bottom: 2px;"
           @mouseover="statOver=true"
           @mouseleave="statOver=false"
         >
-        <div class="fit flex flex-center text-center non-selectable">
+        <div>
             <span>{{ statsMode }}</span>
             <q-icon v-if="statMenu" name="keyboard_arrow_up" />
             <q-icon v-else name="keyboard_arrow_down" />
@@ -26,13 +26,13 @@
         >
             <q-item class="panel" v-if="statsMode!=='24H'" clickable v-close-popup @click="statsMode='24H'">
             <q-item-section>
-                <small class="text-panel">24H</small>
+              <small class="text-panel">24H</small>
             </q-item-section>
             </q-item>
-            <q-separator color="panel"/>
+            <q-separator color="panel" />
             <q-item class="panel" v-if="statsMode!=='WEEK'" clickable v-close-popup @click="statsMode='WEEK'">
             <q-item-section>
-                <small class="text-panel">WEEK</small>
+              <small class="text-panel">WEEK</small>
             </q-item-section>
             </q-item>
             <q-separator color="panel" />
