@@ -63,6 +63,7 @@ module.exports = {
         }
         const peersResponse = resP.data.result
         const p = peersResponse.peers
+        console.log(p)
         let newPeers = []
         let peersInJson = fs.readFileSync('ips.json').toString()
         if (!peersInJson) peersInJson = {}
