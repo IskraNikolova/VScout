@@ -348,7 +348,7 @@ export default {
       }
     },
     async onSubmit () {
-      if (!this.link && !this.name && !this.avatar && !this.bio) {
+      if (!this.link && !this.name && !this.avatar && !this.bio && !this.website) {
         this.error = 'Empty fields!'
         return
       }
