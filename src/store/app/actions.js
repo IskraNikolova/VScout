@@ -539,6 +539,7 @@ async function getNodeVersions (
     const regex = /(?<=version=")([a-z]+\W*\d*\W*\d*\W*\d*)",nodeCount=(\d+),stakeAmount=(\d+)/gm
     const matches = versions.matchAll(regex)
     let nodesVersions = []
+    let allCount = 0
     for (const match of matches) {
       if (!match) return
       const version = match[1]
@@ -548,10 +549,11 @@ async function getNodeVersions (
       stake = round(stake, 1000)
       let color = labelColors[`${version}`]
       if (!color) color = '#000000'
-
+      allCount += Number(nodeCount)
       nodesVersions.push({ version, count: nodeCount, stake: stake.toLocaleString(), color })
     }
     nodesVersions = nodesVersions.sort(compare)
+    nodesVersions.all = allCount
     commit(GET_NODE_VERSIONS, { nodesVersions })
   } catch (err) {
   }

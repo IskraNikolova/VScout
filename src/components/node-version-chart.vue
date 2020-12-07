@@ -13,8 +13,7 @@ export default {
   name: 'NodeVersionChart',
   computed: {
     ...mapGetters([
-      'nodesVersions',
-      'validators'
+      'nodesVersions'
     ])
   },
   data () {
@@ -61,7 +60,7 @@ export default {
             callbacks: {
               label: (tooltipItem, data) => {
                 const l = data.datasets[0].labels[tooltipItem.index].split('|')[0]
-                const percent = this.getPercent(data.datasets[0].data[tooltipItem.index], this.validators.length)
+                const percent = this.getPercent(data.datasets[0].data[tooltipItem.index], this.nodesVersions.all)
                 const label = l + ': ' + round(percent, 100) + '% Count: ' + data.datasets[0].data[tooltipItem.index]
                 return label
               }
