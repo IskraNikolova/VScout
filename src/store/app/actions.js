@@ -106,7 +106,7 @@ async function initApp (
       dispatch(GET_SUBNETS, {}),
       dispatch(GET_NODE_ID, {}),
       dispatch(GET_NODE_INFO, {}),
-      dispatch(GET_NODE_PEERS, { isIgnore: false }),
+      dispatch(GET_NODE_PEERS, {}),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(GET_HEIGHT, {}),
       dispatch(GET_CURRENT_SUPPLY),
