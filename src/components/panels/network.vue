@@ -271,7 +271,7 @@ export default {
 
 <style scoped>
   #custom-card {
-    border-right: 2px solid #588da8;
+    border-right: 2px solid #86b9b0;
   }
   #logo {
     width:45vw;

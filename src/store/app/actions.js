@@ -19,6 +19,7 @@ import {
   UPDATE_VALIDATOR,
   SET_ASSETS_COUNT,
   GET_CURRENT_SUPPLY,
+  GET_NODE_VERSIONS,
   SUBSCRIBE_TO_EVENT,
   GET_PENDING_STAKING,
   SET_DEFAULT_VALIDATORS,
@@ -56,6 +57,7 @@ import {
   _getNetworkName,
   _getNodeVersion,
   _getBlockchains,
+  _getNodeVersions,
   _getAssetsCount,
   _getBlockchainStatus,
   _getPendingValidators
@@ -72,7 +74,7 @@ const {
   network
 } = require('./../../modules/config.js')
   .default
-
+import { getAvaFromnAva } from './../../utils/avax.js'
 import {
   _initializeNetwork,
   _getValidatorByEvent,
@@ -84,14 +86,21 @@ import {
 } from './../../modules/avalanche.js'
 
 import {
-  groupBy
+  groupBy,
+  round
 } from './../../utils/commons.js'
+
+import {
+  labelColors,
+  versionNum
+} from './../../utils/constants.js'
 
 async function initApp (
   { dispatch, getters }) {
   try {
     await Promise.all([
       dispatch(INIT_ENDPOINT),
+      dispatch(GET_NODE_VERSIONS),
       dispatch(GET_AVAX_PRICE),
       dispatch(GET_BLOCKCHAINS, {}),
       dispatch(GET_SUBNETS, {}),
@@ -523,6 +532,37 @@ function getAvaxPrice (
     .catch((err) => console.log(err))
 }
 
+async function getNodeVersions (
+  { commit, getters }) {
+  try {
+    const versions = await _getNodeVersions()
+    const regex = /(?<=version=")([a-z]+\W*\d*\W*\d*\W*\d*)",nodeCount=(\d+),stakeAmount=(\d+)/gm
+    const matches = versions.matchAll(regex)
+    let nodesVersions = []
+    for (const match of matches) {
+      if (!match) return
+      const version = match[1]
+      const nodeCount = match[2]
+      const stakeAmount = match[3]
+      let stake = getAvaFromnAva(stakeAmount)
+      stake = round(stake, 1000)
+      let color = labelColors[`${version}`]
+      if (!color) color = '#000000'
+
+      nodesVersions.push({ version, count: nodeCount, stake: stake.toLocaleString(), color })
+    }
+    nodesVersions = nodesVersions.sort(compare)
+    commit(GET_NODE_VERSIONS, { nodesVersions })
+  } catch (err) {
+  }
+}
+
+function compare (a, b) {
+  const aNum = versionNum[`${a.version}`]
+  const bNum = versionNum[`${b.version}`]
+  return bNum - aNum
+}
+
 async function getNodeHealth (
   { commit, getters }) {
   const response = await _health({
@@ -647,6 +687,7 @@ export default {
   [GET_STAKING]: getValidators,
   [GET_AVAX_PRICE]: getAvaxPrice,
   [GET_NODE_HEALTH]: getNodeHealth,
+  [GET_NODE_VERSIONS]: getNodeVersions,
   [GET_BLOCKCHAINS]: getBlockchains,
   [GET_CURRENT_SUPPLY]: getCurrentSupply,
   [GET_PENDING_STAKING]: getPValidators,

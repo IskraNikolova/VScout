@@ -2,6 +2,7 @@ export const c = {
   // enpoints
   cChainWs: 'ext/C/ws',
   listAssests: 'x/assets?limit=1',
+  nodeVersions: 'validators',
   getTxApi: (id) => `x/transactions/${id}`,
   assestById: (id) => `x/assets/${id}`,
   assetsWithOffset: (offset) => `x/assets?&offset=${offset}&limit=100`,
@@ -169,4 +170,28 @@ export const currencies = {
   xrp: { symbol: 'XRP', currency: 'XRP', isoCode: 'XRP' },
   yfi: { symbol: 'YFI', currency: 'Yearn.finance', isoCode: 'YFI' },
   zar: { symbol: 'R', currency: 'South African rand', isoCode: 'ZAR' }
+}
+
+export const labelColors = {
+  offline: '#000000',
+  'avalanche/1.0.0': '#041421',
+  'avalanche/1.0.1': '#042630',
+  'avalanche/1.0.2': '#4c7273',
+  'avalanche/1.0.3': '#86b9b0',
+  'avalanche/1.0.4': '#d0d6d6',
+  'avalanche/1.0.5': '#ccc8cc',
+  'avalanche/1.0.6': '#ffffff',
+  'avalanche/1.1.0': '#8f8894'
+}
+
+export const versionNum = {
+  offline: 0,
+  'avalanche/1.0.0': 1,
+  'avalanche/1.0.1': 2,
+  'avalanche/1.0.2': 3,
+  'avalanche/1.0.3': 4,
+  'avalanche/1.0.4': 5,
+  'avalanche/1.0.5': 6,
+  'avalanche/1.0.6': 7,
+  'avalanche/1.1.0': 8
 }

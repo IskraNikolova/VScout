@@ -1,20 +1,16 @@
 <template>
-  <q-card
-    class="q-mt-xs q-pl-xl q-pr-xs q-ml-xs q-pb-md q-pt-md panel"
-    id="custom-card"
-  >
   <div class="row">
       <div class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">CURRENT SUPPLY</div>
-        <div class="text-h6 text-panel">
-          <small>
+        <div class="text-h6">
+          <small class="text-panel">
             <animated-number
               :value="getCurrentSupply()"
               :formatValue="format"
               :duration="3000"
             />
           </small>
-          <span style="font-size: 13px;" class="text-medium text-accent"><small> AVAX</small></span>
+          <span style="font-size: 13px;"><small> AVAX</small></span>
         </div>
       </div>
       <div class="col-1 q-pt-md icon">
@@ -25,8 +21,8 @@
         <div id="f-size12" class="q-pb-md text-medium">STAKING RATIO</div>
         <div>
           <span class="text-h6 text-panel">
-            <small>{{ stakingRatio }} <span class="text-accent"> %</span></small>
-          </span>
+            <small>{{ stakingRatio }}</small>
+          </span> %
         </div>
       </div>
       <div class="col-1 q-pt-md icon">
@@ -40,17 +36,16 @@
             <small>
               <span style="opacity: 0.7;">MIN </span>
             </small>
-            <span class="text-h6 text-panel"><small>{{ minPercent }} <span class="text-accent">%</span></small></span>
+            <span class="text-h6 text-panel"><small>{{ minPercent }}</small></span> %
             &nbsp;&nbsp;
             <small>
               <span style="opacity: 0.7;">MAX </span>
             </small>
-            <span class="text-h6 text-panel"><small>{{ maxPercent }} <span class="text-accent">%</span></small></span>
+            <span class="text-h6 text-panel"><small>{{ maxPercent }}</small></span> %
           </span>
         </div>
       </div>
     </div>
-  </q-card>
 </template>
 <script>
 import { mapGetters } from 'vuex'

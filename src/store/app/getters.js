@@ -70,6 +70,10 @@ export function stakedAVAX (state) {
   return state.stakedAVAX
 }
 
+export function nodesVersions (state) {
+  return state.nodesVersions
+}
+
 export function appTheme (state) {
   return state.theme
 }

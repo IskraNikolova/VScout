@@ -1,8 +1,4 @@
 <template>
-  <q-card
-    class="q-pl-xl q-pr-xs q-ml-xs q-pb-md q-pt-md panel"
-    id="custom-card"
-  >
     <div class="row">
       <div class="col-md-3 col-xs-10">
         <div id="f-size12" class="q-pb-md text-medium">VALIDATORS / DELEGATIONS</div>
@@ -17,11 +13,12 @@
               :value="delegationsCount"
               :formatValue="format"
               :duration="3000"
-            /> <span style="font-size: 13px;" class="text-medium text-accent"> <small> ACTIVE</small></span>
+            />
           </span>
+          <span style="font-size: 13px;"> <small > ACTIVE</small></span>
         </div>
         <small style="opacity: 0.7;">
-          <span>
+          <span class="text-panel text-medium">
             <animated-number
               :value="pendingValidators.length"
               :formatValue="format"
@@ -32,7 +29,7 @@
             :value="pendingDelegators.length"
             :formatValue="format"
             :duration="3000"
-          /> </span> <span style="font-size: 13px;" class="text-medium text-accent"> <small> PENDING</small></span>
+          /> </span> <span style="font-size: 13px;"> <small> PENDING</small></span>
         </small>
       </div>
       <div class="col-1 q-pt-md icon">
@@ -51,15 +48,16 @@
                 />
               </small>
             </span>
-            <span style="font-size: 13px;" class="text-medium text-accent"><small> AVAX</small></span>
+            <span style="font-size: 13px;"><small> AVAX</small></span>
         </div>
         <small style="opacity: 0.7;">
            <animated-number
+              class="text-panel text-medium"
               :value="getReward(stakedAVAX)"
               :formatValue="getFormatReward"
               :duration="3000"
             />
-           <span style="font-size: 13px;" class="text-medium text-accent">
+           <span style="font-size: 13px;">
              <small> {{ getISO(currentCurrency) }}</small>
            </span>
         </small>
@@ -72,16 +70,14 @@
        <div id="f-size12" class="q-pb-md text-medium">VALIDATION / DELEGATED STAKE</div>
        <div class="text-h6" style="min-width: 320px;">
         <span class="text-panel">
-          <small>
+        <small>
             <animated-number
               :value="valStake"
               :formatValue="formatToAvax"
               :duration="2000"
             />
           </small>
-        </span>
-        /
-        <span class="text-panel">
+          /
           <small>
             <animated-number
               :value="delStake"
@@ -89,27 +85,28 @@
               :duration="2000"
             />
           </small>
-        </span>
-        <span style="font-size: 13px;" class="text-medium text-accent"> <small> AVAX</small></span>
+         </span>
+        <span style="font-size: 13px;"> <small> AVAX</small></span>
       </div>
       <small style="opacity: 0.7;">
-        <animated-number
-          :value="getReward(validatedStake)"
-          :formatValue="getFormatReward"
-          :duration="3000"
-        /> /
-        <animated-number
-          :value="getReward(delegatedStake)"
-          :formatValue="getFormatReward"
-          :duration="3000"
-        />
-        <span style="font-size: 13px;" class="text-medium text-accent">
+        <span class="text-panel text-medium">
+          <animated-number
+            :value="getReward(validatedStake)"
+            :formatValue="getFormatReward"
+            :duration="3000"
+          /> /
+          <animated-number
+            :value="getReward(delegatedStake)"
+            :formatValue="getFormatReward"
+            :duration="3000"
+          />
+        </span>
+        <span style="font-size: 13px;">
           <small> {{ getISO(currentCurrency) }}</small>
         </span>
         </small>
       </div>
     </div>
-  </q-card>
 </template>
 
 <script>

@@ -29,6 +29,19 @@ export const _getAssetsCount = async () => {
   }
 }
 
+export const _getNodeVersions = async () => {
+  try {
+    const req = await axios
+      .get(server + 'api/validators/versions')
+
+    if (!req.data) return 0
+
+    return req.data
+  } catch (err) {
+    return 0
+  }
+}
+
 export const _getTxApi = async (id) => {
   try {
     const req = await axios

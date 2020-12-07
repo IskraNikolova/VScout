@@ -25,6 +25,7 @@ import {
   SET_NETWORK_STATUS,
   GET_CURRENT_SUPPLY,
   UPDATE_VALIDATOR,
+  GET_NODE_VERSIONS,
   SET_CURRENT_CURRENCY,
   SET_DEFAULT_VALIDATORS,
   SET_PENDING_DELEGATORS,
@@ -133,6 +134,9 @@ const mutations = {
   },
   [SET_CURRENT_CURRENCY]: (state, { currentCurrency }) => {
     state.currentCurrency = currentCurrency
+  },
+  [GET_NODE_VERSIONS]: (state, { nodesVersions }) => {
+    state.nodesVersions = nodesVersions
   },
   [GET_AVAX_PRICE]: (state, { avaxPrice }) => {
     const currentPrice = avaxPrice.current_price

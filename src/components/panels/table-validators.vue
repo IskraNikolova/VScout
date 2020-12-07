@@ -729,14 +729,14 @@ export default {
     },
     getIsDelegatable (isMinimumAmountForStake) {
       const temp = {
-        true: '#588da8',
+        true: '#86b9b0',
         false: '#e8e8e8'
       }
       return temp[isMinimumAmountForStake]
     },
     getBorderIsDelegatable (isMinimumAmountForStake, remainingCapacity) {
       const temp = {
-        true: '#588da8',
+        true: '#86b9b0',
         false: '#e8e8e8'
       }
       return temp[isMinimumAmountForStake && remainingCapacity > 25]
@@ -816,7 +816,7 @@ export default {
 </script>
 <style scoped>
  #custom-table {
-   border-right: 2px solid #588da8;
+   border-right: 2px solid #86b9b0;
  }
  .container_row{
   display: grid;
