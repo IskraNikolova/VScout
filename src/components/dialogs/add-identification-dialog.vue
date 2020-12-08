@@ -158,7 +158,7 @@
       <q-card flat class="q-pb-md panel">
         <q-card-section class="row items-center">
           <q-img
-            style="width: 30vw;max-width: 30px;margin: auto;"
+            style="width: 45vw;max-width: 45px;margin: auto;"
             src="https://wallet.avax.network/img/diamond-primary.6818c3c7.svg"
           />
           <q-btn icon="close" class="text-white" flat round dense v-close-popup />
@@ -166,18 +166,17 @@
         <q-card-section style="min-height: 125px;">
           <div class="text-subtitle2">
             <p id="label">
-              <p>Send 0.1 <span class="text-medium text-accent"><small> AVAX</small></span></p>
+              <p><span class="text-panel">Send</span> 0.1 <span class="text-medium text-accent"><small> AVAX</small></span></p>
               <p>
-                To:
+                <span class="text-panel">To:</span>
                 <span
                   style="font-size: 15px;cursor: pointer;"
                   @click="copyToClipboard(admin)"
-                  class="text-panel text-medium"
                 >
                   {{ admin }}
                 </span>
               </p>
-              <p>Supplies the fees required to make an ID record in the smart contract!</p>
+              <p class="text-panel">Supplies the fees required to make an ID record in the smart contract!</p>
           </div>
         </q-card-section>
 
@@ -188,6 +187,7 @@
             outlined
             v-model="txID"
             clearable
+            :dark="appTheme==='dark'"
             label="Tx ID..."
           />
           <q-card-actions align="right" class="col-4">
@@ -261,7 +261,7 @@ export default {
       nodeIDModel: '',
       error: null,
       loading: null,
-      dialog: false,
+      dialog: true,
       preview: false,
       isValidCode: false,
       getPreview: false,
@@ -329,6 +329,7 @@ export default {
           return
         }
         const minutes = getDurationByMinutesCount(timestamp)
+
         if (minutes > 120) {
           this.onFailed('Verification Transaction Failed! Expired Transaction.')
           return

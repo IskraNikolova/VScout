@@ -2,7 +2,7 @@
   <q-page>
     <div style="padding: 1%;">
       <div>
-        <span class="text-h6 q-pl-sm q-mb-xl text-white">{{ peersView.length }} Peers Connected with</span> <span class="text-medium text-purple"> {{ getNodeFormat(nodeID) }}</span>
+        <span class="text-h6 q-pl-sm q-mb-xl text-white">{{ getPeersLength }} Peers Connected with</span> <span class="text-medium text-purple"> {{ getNodeFormat(nodeID) }}</span>
       </div>
       <div class="row q-pl-xs q-pt-md">
       <div class="col-2 text-purple">
@@ -42,12 +42,23 @@
           :columns="columns"
           :filter="filter"
           row-key="id"
-          title="Peers"
           class="panel"
           color="accent"
           :pagination="pagination"
           :dark="appTheme==='dark'"
         >
+        <template slot="top-left">
+          <q-btn
+              size="sm"
+              flat
+              class="q-ml-sm"
+              color="panel"
+              icon-right="archive"
+              label="Export to csv"
+              no-caps
+              @click="exportTable"
+            />
+          </template>
           <template v-slot:top-right="props">
             <q-input
                 borderless
@@ -108,10 +119,33 @@ import { mapGetters } from 'vuex'
 import MapChart from 'vue-chart-map'
 
 import {
-  groupBy
+  groupBy,
+  round
 } from './../utils/commons.js'
 
 import { datePickerFormat } from './../modules/time.js'
+import { getAvaFromnAva } from './../utils/avax.js'
+
+import {
+  exportFile
+} from 'quasar'
+
+function wrapCsvValue (val, formatFn) {
+  let formatted = formatFn !== undefined
+    ? formatFn(val)
+    : val
+  formatted = formatted === undefined || formatted === null
+    ? ''
+    : String(formatted)
+  formatted = formatted.split('"').join('""')
+  /**
+   * Excel accepts \n and \r in strings, but some other CSV parsers do not
+   * Uncomment the next two lines to escape new lines
+   */
+  // .split('\n').join('\\n')
+  // .split('\r').join('\\r')
+  return `"${formatted}"`
+}
 
 export default {
   name: 'PagePeers',
@@ -153,6 +187,20 @@ export default {
           align: 'left',
           label: 'IS VALIDATOR',
           field: row => row.isValidator,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'stake',
+          align: 'left',
+          label: 'STAKE (AVAX)',
+          field: row => row.stake,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'owner',
+          align: 'left',
+          label: 'OWNER',
+          field: row => row.owner,
           headerClasses: 'text-medium'
         },
         {
@@ -210,9 +258,35 @@ export default {
       const keys = Object.keys(this.statics)
       const index = keys.length / 2
       return keys.splice(index)
+    },
+    getPeersLength: function () {
+      if (!this.peers || !this.peers.numPeers) return
+      return this.peers.numPeers
     }
   },
   methods: {
+    exportTable () {
+      const content = [this.columns.map(col => wrapCsvValue(col.label))].concat(
+        this.peersView.map(row => this.columns.map(col => wrapCsvValue(
+          typeof col.field === 'function'
+            ? col.field(row)
+            : row[col.field === undefined ? col.name : col.field],
+          col.format
+        )).join(','))
+      ).join('\r\n')
+      const status = exportFile(
+        'table-export.csv',
+        content,
+        'text/csv'
+      )
+      if (status !== true) {
+        this.$q.notify({
+          message: 'Browser denied file download...',
+          color: 'negative',
+          icon: 'warning'
+        })
+      }
+    },
     getCode (val) {
       if (!val) return
       if (!val.countryCode) return ''
@@ -228,9 +302,13 @@ export default {
           if (isValidator) {
             p.isValidator = true
             p.uptime = `${Math.round(Number(isValidator.uptime) * 100, 2)} %`
+            p.stake = round(getAvaFromnAva(isValidator.stakeAmount), 1000).toLocaleString()
+            p.owner = isValidator.rewardOwner.addresses[0]
           } else {
             p.isValidator = false
             p.uptime = ''
+            p.stake = ''
+            p.owner = ''
           }
           p.index = i + 1
           peersRes.push(p)

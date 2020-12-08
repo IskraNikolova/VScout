@@ -317,6 +317,9 @@ export default {
       return ''
     }
   },
+  created () {
+    if (!this.validator.nodeID) this.$router.push('/search/' + this.$route.params.id)
+  },
   methods: {
     getId () {
       if (!this.id) return ''
