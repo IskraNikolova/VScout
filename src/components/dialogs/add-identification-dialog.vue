@@ -261,7 +261,7 @@ export default {
       nodeIDModel: '',
       error: null,
       loading: null,
-      dialog: true,
+      dialog: false,
       preview: false,
       isValidCode: false,
       getPreview: false,
