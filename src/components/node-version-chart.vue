@@ -5,16 +5,30 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import Chart from 'chart.js'
 import { round } from './../utils/commons.js'
+
+import {
+  GET_NODE_VERSIONS
+} from '../store/app/types'
 
 export default {
   name: 'NodeVersionChart',
   computed: {
     ...mapGetters([
-      'nodesVersions'
+      'nodesVersions',
+      'stakedAVAX'
     ])
+  },
+  watch: {
+    stakedAVAX: function () {
+      this.getNodeVersions()
+    },
+    nodesVersions: function () {
+      this.getChart()
+      this.chart.update()
+    }
   },
   data () {
     return {
@@ -22,6 +36,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      getNodeVersions: GET_NODE_VERSIONS
+    }),
     getPercent (val, all) {
       if (!val) return
       return (Number(val) / Number(all)) * 100
