@@ -627,10 +627,14 @@ export default {
   methods: {
     filterMethod () {
       if (this.curentValidators && this.curentValidators.length > 0) {
+        console.log(this.curentValidators, this.filter)
         return this.curentValidators
-          .filter(row => row.nodeID.toLowerCase().includes(this.filter.toLowerCase()) ||
-          row.name.toLowerCase().includes(this.filter.toLowerCase()) ||
-          this.getRewardOwner(row.rewardOwner).toLowerCase().includes(this.filter.toLowerCase()))
+          .filter(
+            row => row.nodeID.toLowerCase().includes(this.filter.toLowerCase()) ||
+            row.name.toLowerCase().includes(this.filter.toLowerCase()) ||
+            // row.connected.toString() === this.filter ||
+            this.getRewardOwner(row.rewardOwner).toLowerCase().includes(this.filter.toLowerCase())
+          )
       }
     },
     reorder () {

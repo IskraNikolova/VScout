@@ -4,7 +4,7 @@
       :data="curentDelegators"
       :columns="columns"
       :filter="filter"
-      row-key="nodeID"
+      row-key="rewardOwner"
       :pagination="pagination"
       :visible-columns="visibleColumns"
       :class="tableClass + ' panel'"
@@ -92,7 +92,6 @@
           :props="props"
           style="cursor: pointer;"
           auto-width
-          @click="props.expand = !props.expand"
         >
           <q-td
             v-for="(col) in props.cols"
@@ -100,7 +99,7 @@
             :props="props"
             style="padding: 0px!important;margin:0px!important;"
           >
-            <div v-if="col.name === 'rewardOwner'" class="row q-ml-xs">
+            <div v-if="col.name === 'rewardOwner'" class="row q-ml-xs" @click="props.expand = !props.expand">
               <q-avatar size="25px">
                 <img :src="props.row.avatar" />
               </q-avatar>
