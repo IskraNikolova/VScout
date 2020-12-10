@@ -3,7 +3,7 @@
     class="q-pt-md q-pl-xl q-pr-xs q-ml-xs q-pb-md panel" id="custom-card" >
     <div class="row">
       <div class="col-md-3 col-xs-10">
-        <div v-if="validatorById(nodeID)" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
+        <div v-if="isValidatorShow(nodeID)" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
           <div id="f-size12" class="q-pb-md text-medium">NODE - VALIDATOR</div>
           <div class="text-h7 text-panel q-pb-md q-pt-xs">{{ formatNodeID }}</div>
           <tooltip-style v-bind:text="'Copy to Clipboard'" />
@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="col-1 q-pt-md icon">
-        <img src="~assets/ribbon.svg" v-if="validatorById(nodeID)" id="logo2" />
+        <img src="~assets/ribbon.svg" v-if="isValidatorShow(nodeID)" id="logo2" />
         <img src="~assets/node1.svg" v-else id="logo2">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md" />
@@ -116,6 +116,13 @@ export default {
     }
   },
   methods: {
+    isValidatorShow (id) {
+      const isVal = this.validatorById(id)
+      if (isVal) {
+        return id !== 'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj'
+      }
+      return false
+    },
     format (value) {
       return `${Math.round(value)} peers`
     },

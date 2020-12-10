@@ -152,7 +152,7 @@
           <q-toolbar-title>
             <img src="~assets/vscoutlogo5.svg" style="width: 200px;">
           </q-toolbar-title>
-          <span v-if="validatorById(nodeID)" style="min-width: 300px;margin-right: 15%;">
+          <span v-if="isValidatorShow(nodeID)" style="min-width: 300px;margin-right: 15%;">
             <countdown class="row" v-bind:color="'#ffffff'" v-bind:textColor="'white'" v-bind:countdown="getRemainigTime()" />
             <tooltip-style v-bind:text="'Remaining validation time for ' + nodeID  + ''" />
           </span>
@@ -288,13 +288,13 @@
         </q-toolbar>
         <q-toolbar>
           <div class="row">
-            <div class="col-5 q-pb-md" v-if="validatorById(nodeID)">
+            <div class="col-5 q-pb-md" v-if="isValidatorShow(nodeID)">
               <span>
                 <countdown class="row" v-bind:color="'#ffffff'" v-bind:countdown="getRemainigTime()" />
                 <tooltip-style v-bind:text="'Remaining validation time for ' + nodeID  + ''" />
               </span>
             </div>
-            <div class="col-2" v-if="validatorById(nodeID)"></div>
+            <div class="col-2" v-if="isValidatorShow(nodeID)"></div>
             <div class="col-9 q-pb-md" v-else></div>
             <div class="col-3 q-pb-md">
               <q-bar style="min-width: 420px;">
@@ -324,7 +324,7 @@
           <a id="faq2" href="#faqs">FAQ</a>
         </q-toolbar>
         <div class="q-pb-md">
-          <span v-if="validatorById(nodeID)">
+          <span v-if="isValidatorShow(nodeID)">
             <countdown
               class="row"
               v-bind:color="'#32353b'"
@@ -655,6 +655,13 @@ export default {
     ...mapActions({
       setTheme: SET_THEME
     }),
+    isValidatorShow (id) {
+      const isVal = this.validatorById(id)
+      if (isVal) {
+        return id !== 'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj'
+      }
+      return false
+    },
     switchTheme (theme) {
       this.setTheme(theme)
     },

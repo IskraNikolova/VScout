@@ -410,7 +410,10 @@ export default {
         this.error = errorNodeID
       } else if (validator && this.networkEndpoint.url.startsWith('http://127.0.0.1')) {
         this.$store.commit(UPDATE_UI, { addIdentification: { isAuth: true } })
+      } else if (validator.nodeID === 'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj') {
+        this.error = errorNodeID
       }
+
       this.loading = null
     },
     onReset () {

@@ -1,6 +1,6 @@
 <template>
   <div class="q-mt-md">
-   <canvas id="pie" width="300px" height="500px"></canvas>
+    <canvas id="pie" width="300px" height="500px"></canvas>
   </div>
 </template>
 
