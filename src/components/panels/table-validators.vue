@@ -93,7 +93,8 @@
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="networkShare" label="Network Share" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="percent" label="Cumulative Stake" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="uptime" label="Uptime" />
-          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="duration" label="Duration" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="connected" label="State" />
+           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="duration" label="Duration" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="startTime" label="Start Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="endTime" label="End Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="progress" label="Progress" />
@@ -213,6 +214,10 @@
               <q-badge :color="getColorUptime(col.value)" outline class="text-medium" style="min-width: 57px;">
                 <span style="margin: auto;">{{ getUpTime(col.value) }} %</span>
               </q-badge>
+            </div>
+            <div v-else-if="col.name === 'connected'">
+              <small v-if="col.value" class="text-positive">CONNECTED</small>
+              <small v-else class="text-negative">DISCONNECTED</small>
             </div>
             <countdown
               class="row"
@@ -525,14 +530,14 @@ export default {
           field: row => row.uptime,
           headerClasses: 'text-medium'
         },
-        // {
-        //   name: 'connected',
-        //   align: 'left',
-        //   label: 'CONNECTED',
-        //   sortable: true,
-        //   field: row => row.connected,
-        //   headerClasses: 'text-medium'
-        // },
+        {
+          name: 'connected',
+          align: 'left',
+          label: 'STATE',
+          sortable: true,
+          field: row => row.connected,
+          headerClasses: 'text-medium'
+        },
         {
           name: 'duration',
           align: 'left',
@@ -627,14 +632,20 @@ export default {
   methods: {
     filterMethod () {
       if (this.curentValidators && this.curentValidators.length > 0) {
-        console.log(this.curentValidators, this.filter)
         return this.curentValidators
           .filter(
             row => row.nodeID.toLowerCase().includes(this.filter.toLowerCase()) ||
             row.name.toLowerCase().includes(this.filter.toLowerCase()) ||
-            // row.connected.toString() === this.filter ||
+            this.getConnection(row.connected).includes(this.filter.toLowerCase()) ||
             this.getRewardOwner(row.rewardOwner).toLowerCase().includes(this.filter.toLowerCase())
           )
+      }
+    },
+    getConnection (val) {
+      if (val) {
+        return 'connected'
+      } else {
+        return 'disconnect'
       }
     },
     reorder () {
