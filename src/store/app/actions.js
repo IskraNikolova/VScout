@@ -132,7 +132,7 @@ async function initApp (
       ])
     } catch (err) {
     }
-  }, 18000)
+  }, 17000)
 }
 
 async function initEndpoint (
@@ -209,7 +209,8 @@ async function getValidators (
       const res = await mapDefaultValidators(
         validators.validators,
         getters.defaultValidators,
-        isInit
+        isInit,
+        getters.peers.peers
       )
 
       commit(SET_VALIDATORS, { validators: res.validators })
@@ -242,7 +243,8 @@ async function getValidators (
         validators,
         delegators,
         getters.defaultValidators,
-        isInit
+        isInit,
+        getters.peers.peers
       )
       if (res.allStake !== getters.stakedAVAX) {
         dispatch(GET_CURRENT_SUPPLY)

@@ -495,6 +495,14 @@ export default {
           sortable: true,
           headerClasses: 'text-medium'
         },
+        // {
+        //   name: 'version',
+        //   align: 'center',
+        //   label: 'VERSION',
+        //   field: row => row.version,
+        //   sortable: true,
+        //   headerClasses: 'text-medium'
+        // },
         {
           name: 'networkShare',
           align: 'left',

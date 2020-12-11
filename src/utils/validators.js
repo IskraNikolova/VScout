@@ -16,7 +16,8 @@ export async function validatorProcessing (
   validators,
   delegatorsD,
   defaultValidators,
-  isInit) {
+  isInit,
+  peers) {
   if (!validators) {
     return {
       allStake: 0,
@@ -30,7 +31,8 @@ export async function validatorProcessing (
     validators,
     delegatorsD,
     defaultValidators,
-    isInit
+    isInit,
+    peers
   )
 
   const {
@@ -93,12 +95,43 @@ export function compare (a, b) {
 export async function mapDefaultValidators (
   validators,
   defaultValidators,
-  isInit) {
+  isInit,
+  peers = []) {
   const validatorsMap = await Promise.all(validators.map(async (val) => {
     if (!defaultValidators) defaultValidators = []
 
     const currentValidator = defaultValidators
       .find(v => v.nodeID === val.nodeID)
+
+    const peerInfo = {
+      continent: '',
+      country: '',
+      countryCode: '',
+      version: '',
+      lastReceived: '',
+      lastSent: ''
+    }
+
+    if (currentValidator && currentValidator.version) {
+      peerInfo.continent = currentValidator.continent
+      peerInfo.country = currentValidator.country
+      peerInfo.countryCode = currentValidator.countryCode
+      peerInfo.version = currentValidator.version
+      peerInfo.lastReceived = currentValidator.lastReceived
+      peerInfo.lastSent = currentValidator.lastSent
+    }
+
+    const peer = peers
+      .find(p => p.nodeID === val.nodeID)
+
+    if (peer) {
+      peerInfo.continent = peer.continent
+      peerInfo.country = peer.country
+      peerInfo.countryCode = peer.countryCode
+      peerInfo.version = peer.version
+      peerInfo.lastReceived = peer.lastReceived
+      peerInfo.lastSent = peer.lastSent
+    }
 
     let info = {}
     if (currentValidator) {
@@ -146,7 +179,13 @@ export async function mapDefaultValidators (
       avatar,
       link: info.link,
       bio: info.bio,
-      website: info.website
+      website: info.website,
+      continent: peerInfo.continent,
+      country: peerInfo.country,
+      countryCode: peerInfo.countryCode,
+      version: peerInfo.version,
+      lastReceived: peerInfo.lastReceived,
+      lastSent: peerInfo.lastSent
     }
   }))
 
@@ -159,14 +198,46 @@ export async function mapValidators (
   validators,
   del,
   defaultValidators,
-  isInit) {
+  isInit,
+  peers = []) {
   let validatedStake = new BigNumber(0)
   let delegatedStake = new BigNumber(0)
 
   const validatorsMap = await Promise.all(validators.map(async (val) => {
     if (!defaultValidators) defaultValidators = []
+
     const currentValidator = defaultValidators
       .find(v => v.nodeID === val.nodeID)
+
+    const peerInfo = {
+      continent: '',
+      country: '',
+      countryCode: '',
+      version: '',
+      lastReceived: '',
+      lastSent: ''
+    }
+
+    if (currentValidator && currentValidator.version) {
+      peerInfo.continent = currentValidator.continent
+      peerInfo.country = currentValidator.country
+      peerInfo.countryCode = currentValidator.countryCode
+      peerInfo.version = currentValidator.version
+      peerInfo.lastReceived = currentValidator.lastReceived
+      peerInfo.lastSent = currentValidator.lastSent
+    }
+    const peer = peers
+      .find(p => p.nodeID === val.nodeID)
+
+    if (peer) {
+      peerInfo.continent = peer.continent
+      peerInfo.country = peer.country
+      peerInfo.countryCode = peer.countryCode
+      peerInfo.version = peer.version
+      peerInfo.lastReceived = peer.lastReceived
+      peerInfo.lastSent = peer.lastSent
+    }
+
     let info = {}
     if (currentValidator) {
       info = {
@@ -251,7 +322,13 @@ export async function mapValidators (
       remainingCapacity,
       isMinimumAmountForStake,
       delegatePotentialReward,
-      delegators: currentDelegators
+      delegators: currentDelegators,
+      continent: peerInfo.continent,
+      country: peerInfo.country,
+      countryCode: peerInfo.countryCode,
+      version: peerInfo.version,
+      lastReceived: peerInfo.lastReceived,
+      lastSent: peerInfo.lastSent
     }
   }))
 
