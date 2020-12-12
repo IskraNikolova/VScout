@@ -165,7 +165,7 @@ import {
 
 const colors = {
   Validating: 'accent',
-  Created: 'green',
+  Created: 'positive',
   Preferred: 'grey',
   Unknown: 'negative'
 }

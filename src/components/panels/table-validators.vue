@@ -93,7 +93,7 @@
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="networkShare" label="Network Share" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="percent" label="Cumulative Stake" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="uptime" label="Uptime" />
-          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="connected" label="State" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="connected" label="State" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="version" label="Node Version" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="duration" label="Duration" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="startTime" label="Start Time" />
@@ -756,7 +756,7 @@ export default {
           c !== 'connected'
         )
       } else if (curentValidators.find(a => a.weight)) {
-        return columns.filter(c => c !== 'uptime' && c !== 'delegationFee' && c !== 'networkShare' && c !== 'percent')
+        return columns.filter(c => c !== 'uptime' && c !== 'delegationFee' && c !== 'networkShare' && c !== 'percent' && c !== 'connected')
       }
 
       return columns.filter(c => c !== 'stake')
