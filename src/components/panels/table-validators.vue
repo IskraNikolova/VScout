@@ -94,7 +94,8 @@
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="percent" label="Cumulative Stake" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="uptime" label="Uptime" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="connected" label="State" />
-           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="duration" label="Duration" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="version" label="Node Version" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="duration" label="Duration" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="startTime" label="Start Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="endTime" label="End Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="progress" label="Progress" />
@@ -218,6 +219,11 @@
             <div v-else-if="col.name === 'connected'">
               <small v-if="col.value" class="text-positive">CONNECTED</small>
               <small v-else class="text-negative">DISCONNECTED</small>
+            </div>
+            <div v-else-if="col.name === 'version'">
+              <span v-if="col.value === '1.1.0'">{{ col.value }}</span>
+              <span v-else-if="col.value !== 'undefined'" class="text-panel">{{ col.value }}</span>
+              <span v-else class="text-panel"> - </span>
             </div>
             <countdown
               class="row"
@@ -488,21 +494,21 @@ export default {
         },
         {
           name: 'weight',
-          align: 'center',
+          align: 'left',
           label: 'WEIGHT',
           field: row => row.weight,
           format: (val, row) => `${this.getWeight(val)}`,
           sortable: true,
           headerClasses: 'text-medium'
         },
-        // {
-        //   name: 'version',
-        //   align: 'center',
-        //   label: 'VERSION',
-        //   field: row => row.version,
-        //   sortable: true,
-        //   headerClasses: 'text-medium'
-        // },
+        {
+          name: 'version',
+          align: 'left',
+          label: 'VERSION',
+          field: row => row.version,
+          format: (val, row) => `${this.getFormatVersion(val)}`,
+          style: 'font-size: 15px;letter-spacing: 2px;'
+        },
         {
           name: 'networkShare',
           align: 'left',
@@ -660,6 +666,10 @@ export default {
       this.isNotSticky = true
       this.isGrid = true
     },
+    getFormatVersion (val) {
+      if (!val) return
+      return val.split('/')[1]
+    },
     getDurationL (val) {
       if (!val) return
       return humanizeDuration(val, {
@@ -741,7 +751,9 @@ export default {
           c !== 'percent' &&
           c !== 'progress' &&
           c !== 'networkShare' &&
-          c !== 'endTime'
+          c !== 'endTime' &&
+          c !== 'version' &&
+          c !== 'connected'
         )
       } else if (curentValidators.find(a => a.weight)) {
         return columns.filter(c => c !== 'uptime' && c !== 'delegationFee' && c !== 'networkShare' && c !== 'percent')

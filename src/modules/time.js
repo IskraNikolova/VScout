@@ -62,7 +62,7 @@ export const countDownCounter = (e) => {
 }
 
 export const timeago = (t) => {
-  return moment.duration(t).humanize(true)
+  return moment(new Date(t)).fromNow()
 }
 
 export const date = (time) => {

@@ -1,8 +1,8 @@
 <template>
   <div>
     <!--gt-xs-->
-    <q-card flat class="gt-xs q-pl-xl q-pb-md q-ml-xl q-pt-md panel custom-card">
-      <div class="row" style="max-width: 1100px;">
+    <q-card flat class="gt-xs q-pa-xl panel">
+      <div class="row">
         <q-item class="col-9">
           <avatar v-bind:avatar="getAvatar()" style="cursor:pointer;" @click="onClick(getLink())"/>
           <q-item-section>
@@ -13,23 +13,22 @@
         </q-item>
         <div class="col-3 q-pt-sm">
           <span class="text-subtitle2 q-mr-xs"><small style="opacity: 0.8;">UPTIME</small></span>
-          <q-badge :color="getColorUptime(validator.uptime)" class="text-medium" style="font-size: 16px;padding: 7px;">
+          <q-badge :color="getColorUptime(validator.uptime)" class="text-medium q-ml-xs" style="font-size: 16px;padding: 7px">
             <span style="margin: auto;">{{ getUpTime(validator.uptime) }}%</span>
           </q-badge>
-          <br />
-          <span class="text-subtitle2"><small style="opacity: 0.8;">STAKED BY</small></span>
-          <span class="q-pl-xs">
-            {{ stakedBy(validator.startTime) }}
+          <div class="q-mt-xs">
+            <span class="text-subtitle2 q-mr-xs q-mt-sm"><small style="opacity: 0.8;">STATUS</small></span>
+            <small class="q-pl-xs text-positive" v-if="status">CONNECTED</small>
+            <small class="q-pl-xs text-negative" v-else>DISCONNECTED</small>
+          </div>
+          <span class="text-subtitle2"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
+          <span class="q-pl-xs" v-if="validator.percent !== 'NaN'">
+            {{ validator.percent }}<span class="text-accent text-medium"> %</span>
           </span>
           <br />
           <span class="text-subtitle2"><small style="opacity: 0.8;">STAKING PERIOD</small></span>
           <span class="q-pl-xs">
             {{ getDurationL(validator.duration) }}
-          </span>
-          <br />
-          <span class="text-subtitle2"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
-          <span class="q-pl-xs" v-if="validator.percent !== 'NaN'">
-            {{ validator.percent }}<span class="text-accent text-medium"> %</span>
           </span>
         </div>
       </div>
@@ -39,14 +38,29 @@
         v-bind:link="getLink()"
         v-bind:nodeID="validator.nodeID"
       />
-      <div style="max-width: 1130px;" class="q-pl-sm q-pt-sm">
+      <div class="q-pl-sm q-pt-sm">
         <i v-if="!more">{{ getLessBio(getBio()) }}</i>
         <i v-else>{{ getBio() }}</i>
         <span v-if="isEnav(getBio()) && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
         <span v-if="isEnav(getBio()) && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
       </div>
-      <div class="row q-gutter-xl">
-        <div class="col-5">
+      <div class="row" v-if="validator.version">
+        <div class="col-12">
+        <info
+          class="q-mt-md my-card text-white"
+          style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%)"
+          v-bind:version="validator.version"
+          v-bind:country="validator.country"
+          v-bind:continent="validator.continent"
+          v-bind:countryCode="validator.countryCode"
+          v-bind:lastReceived="validator.lastReceived"
+          v-bind:lastSent="validator.lastSent"
+        />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="q-mr-md">
           <stake
             class="q-mt-md my-card text-white"
             style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%)"
@@ -79,8 +93,9 @@
               </div>
             </div>
           </div>
+          </div>
         </div>
-        <div class="col-5">
+        <div class="col-6">
           <reward
             class="q-mt-md my-card text-white"
             style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%)"
@@ -160,6 +175,18 @@
         <i v-else>{{ validator.bio }}</i>
         <span v-if="isEnav(validator.bio) && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
         <span v-if="isEnav(validator.bio) && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
+      </div>
+      <q-separator v-if="validator.version"/>
+      <div class="row" v-if="validator.version">
+        <info
+          flat
+          v-bind:version="validator.version"
+          v-bind:country="validator.country"
+          v-bind:continent="validator.continent"
+          v-bind:countryCode="validator.countryCode"
+          v-bind:lastReceived="validator.lastReceived"
+          v-bind:lastSent="validator.lastSent"
+        />
       </div>
       <q-separator/>
       <div class="row">
@@ -241,6 +268,7 @@ export default {
   components: {
     Name: () => import('components/validator/name.vue'),
     Rank: () => import('components/validator/rank.vue'),
+    Info: () => import('components/validator/info.vue'),
     Stake: () => import('components/validator/stake.vue'),
     Delegate: () => import('components/validator/delegate.vue'),
     Delegations: () => import('components/validator/delegations.vue'),
@@ -304,6 +332,11 @@ export default {
       if (!this.validator.stakeAmount) return ''
       return this.validator
         .stakeAmount
+    },
+    status: function () {
+      if (!this.validator.connected) return ''
+      return this.validator
+        .connected
     },
     totalStakeAmount: function () {
       if (!this.validator.totalStakeAmount) return ''
