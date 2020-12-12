@@ -3,7 +3,7 @@
     flat
   >
     <div class="q-mb-md text-medium text-purple">
-    <span class="text-white" style="font-size: 18px;">{{ delegatorsCount }} </span>
+    <span style="font-size: 18px;">{{ delegatorsCount }} </span>
     DELEGATIONS
     </div>
     <q-scroll-area style="height: 230px;">

@@ -100,6 +100,12 @@ module.exports = {
                 })
               }
               catch (err) {
+                newPeers.push({
+                  ...p[i],
+                  countryCode: '',
+                  continent: '',
+                  country: ''
+                })
               }
             } else {
               newPeers.push({
