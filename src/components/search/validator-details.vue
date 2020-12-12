@@ -47,8 +47,8 @@
       <div class="row" v-if="validator.version">
         <div class="col-12">
         <info
-          class="q-mt-md my-card text-white"
-          style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%)"
+          class="q-mt-md my-card dark-panel"
+          style="border-radius: 10px;"
           v-bind:version="validator.version"
           v-bind:country="validator.country"
           v-bind:continent="validator.continent"
@@ -62,19 +62,19 @@
         <div class="col-6">
           <div class="q-mr-md">
           <stake
-            class="q-mt-md my-card text-white"
-            style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%)"
+            class="q-mt-md my-card dark-panel"
+            style="border-radius: 10px;"
             v-bind:stakeAmount="stakeAmount"
             v-bind:delegateStake="delegateStake"
             v-bind:totalStakeAmount="totalStakeAmount"
           />
           <delegate
-            class="q-mt-md my-card text-white"
-            style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%)"
+            class="q-mt-md my-card dark-panel"
+            style="border-radius: 10px;"
             v-bind:validator="validator"
           />
-          <div class="q-mt-md q-pa-md my-card text-white"
-          style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%)">
+          <div class="q-mt-md q-pa-md my-card dark-panel"
+          style="border-radius: 10px;">
             <div class="q-mb-sm">Progress (%)</div>
             <progress-bar-validate-session
               v-bind:startTime="validator.startTime"
@@ -97,13 +97,13 @@
         </div>
         <div class="col-6">
           <reward
-            class="q-mt-md my-card text-white"
-            style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%)"
+            class="q-mt-md my-card dark-panel"
+            style="border-radius: 10px;"
             v-bind:validator="validator"
           />
           <delegations
-            class="q-mt-md my-card text-white q-pa-md"
-            style="border-radius: 10px;background: radial-gradient(circle, #575b63 0%, #32353b 100%);"
+            class="q-mt-md my-card dark-panel q-pa-md"
+            style="border-radius: 10px;"
             v-bind:delegators="delegators"
           />
         </div>
