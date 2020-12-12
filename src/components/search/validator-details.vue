@@ -17,9 +17,13 @@
             <span style="margin: auto;">{{ getUpTime(validator.uptime) }}%</span>
           </q-badge>
           <div class="q-mt-xs">
-            <span class="text-subtitle2 q-mr-xs q-mt-sm"><small style="opacity: 0.8;">STATUS</small></span>
-            <small class="q-pl-xs text-positive" v-if="status">CONNECTED</small>
-            <small class="q-pl-xs text-negative" v-else>DISCONNECTED</small>
+            <span class="text-subtitle2 q-mr-xs q-mt-sm"><small style="opacity: 0.8;">STATE</small></span>
+            <small class="q-pl-xs text-positive" v-if="state">CONNECTED</small>
+            <small class="q-pl-xs text-negative" v-else>
+              DISCONNECTED
+              <q-icon name="info" @click="onClick('https://docs.avax.network/learn/platform-overview/staking#why-is-my-uptime-low')"/>
+              <tooltip-style v-bind:text="'This is only one node’s point of view. Read more...'" />
+            </small>
           </div>
           <span class="text-subtitle2"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
           <span class="q-pl-xs" v-if="validator.percent !== 'NaN'">
@@ -142,7 +146,15 @@
                 {{ getUpTime(validator.uptime) }} %
               </q-badge>
             </span>
-            <br />
+            <div class="q-mt-xs">
+              <span class="text-subtitle2"><small style="opacity: 0.8;">STATE</small></span>
+              <small class="q-pl-xs text-positive" v-if="state">CONNECTED</small>
+              <small class="q-pl-xs text-negative" v-else>
+                DISCONNECTED
+                <q-icon name="info" @click="onClick('https://docs.avax.network/learn/platform-overview/staking#why-is-my-uptime-low')"/>
+                <tooltip-style v-bind:text="'This is only one node’s point of view. Read more...'" />
+              </small>
+            </div>
             </span>
             <span class="text-subtitle2">
               <small style="opacity: 0.8;">STAKED BY</small>
@@ -266,6 +278,7 @@ const humanizeDuration = require('humanize-duration')
 export default {
   name: 'ValidatorDetails',
   components: {
+    TooltipStyle: () => import('components/tooltip-style.vue'),
     Name: () => import('components/validator/name.vue'),
     Rank: () => import('components/validator/rank.vue'),
     Info: () => import('components/validator/info.vue'),
@@ -333,7 +346,7 @@ export default {
       return this.validator
         .stakeAmount
     },
-    status: function () {
+    state: function () {
       if (!this.validator.connected) return ''
       return this.validator
         .connected
