@@ -6,18 +6,18 @@
     <q-card-section>
       <div class="q-mb-md text-medium text-purple">REWARD (AVAX)</div>
       <div>
-      <div>
-          <span class="text-subtitle2"><small style="opacity: 0.8;">POTENTIAL REWARD</small></span>
-          <span class="on-right text-h6">{{ getFormatAva(validator.potentialReward) }}</span>
-          <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
+      <div class="q-pl-sm">
+        <span class="text-subtitle2"><small style="opacity: 0.8;">POTENTIAL REWARD</small></span>
+        <span class="on-right text-h6">{{ getFormatAva(validator.potentialReward) }}</span>
+        <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
       </div>
-      <div>
-          <span class="text-subtitle2"><small style="opacity: 0.8;">DELEGATIONS FEES REWARD</small></span>
-          <span class="on-right">{{ potentialRewardFromDelegators() }}</span>
-          <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
+      <div class="q-pl-sm">
+        <span class="text-subtitle2"><small style="opacity: 0.8;">DELEGATIONS FEES REWARD</small></span>
+        <span class="on-right">{{ potentialRewardFromDelegators() }}</span>
+        <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
       </div>
-      <q-separator class="q-mt-xs q-mb-xs" dark />
-      <div>
+      <q-separator class="q-mt-xs q-mb-xs q-pl-sm" dark />
+      <div class="q-pl-sm">
           <span class="text-subtitle2"><small style="opacity: 0.8;">TOTAL</small></span>
           <span class="on-right">{{ totalReward() }}</span>
           <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span> /

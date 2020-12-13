@@ -44,6 +44,15 @@ export const getEndOfDay = (e) => {
   return moment(new Date(Number(e) * 1000)).endOf('day').fromNow()
 }
 
+export const countDownDays = (e) => {
+  const currentTime = moment(new Date() / 1000)
+  const leftTime = moment(new Date(Number(e))) - currentTime
+  let duration = moment.duration(leftTime, 'seconds')
+  duration = moment.duration(duration.asSeconds(), 'seconds')
+
+  return duration
+}
+
 export const countDownCounter = (e) => {
   const currentTime = moment(new Date() / 1000)
   const leftTime = moment(new Date(Number(e))) - currentTime

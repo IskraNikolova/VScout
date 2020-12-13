@@ -239,10 +239,6 @@ export default {
       this.calculate()
     },
     calculate () {
-      console.log(
-        this.stakeTime,
-        this.stakeAmount,
-        this.currentSupply)
       const rewardNAvax = reward(
         this.stakeTime,
         this.stakeAmount,

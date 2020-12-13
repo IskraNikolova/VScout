@@ -5,20 +5,20 @@
   >
   <q-card-section>
     <div class="q-mb-md text-medium text-purple">VALIDATOR (NODE)</div>
-    <div>
+    <div class="q-pl-sm">
       <span class="text-subtitle2"><small style="opacity: 0.8;">VERSION</small></span>
       <span class="on-right" style="font-size: 15.7px;">{{ version }}</span>
     </div>
-    <div>
+    <div class="q-pl-sm">
       <span class="text-subtitle2"><small style="opacity: 0.8;">LOCATION</small></span>
       <img class="on-right" :src="'./statics/flag/' + countryCode.toLowerCase() + '.png'" id="logo-s" />
       <span class="on-right" style="font-size: 14px;">{{ country }}</span>
     </div>
-    <div>
+    <div class="q-pl-sm">
       <span class="text-subtitle2"><small style="opacity: 0.8;">LAST RECEIVE</small></span>
       <span class="on-right" style="font-size: 14px;">{{ timeReceived }}</span>
     </div>
-    <div>
+    <div class="q-pl-sm">
       <span class="text-subtitle2"><small style="opacity: 0.8;">LAST SENT</small></span>
       <span class="on-right" style="font-size: 14px;">{{ timeSent }}</span>
     </div>
