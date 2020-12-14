@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>allnodes_logo copy 5</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="512" height="512" rx="256"></rect>
+        <linearGradient x1="100%" y1="0%" x2="0%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#21D4FD" offset="0%"></stop>
+            <stop stop-color="#B721FF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="allnodes_logo-copy-5" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="allnodes_logo"></g>
+        <g id="allnodes_full">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="Rectangle" fill="#FFFFFF" xlink:href="#path-1"></use>
+            <path d="M512,0 L512,512 L503.623,512 L355.300903,227.381286 C355.02845,226.85847 354.74647,226.34258 354.455241,225.833782 L354.011494,225.075925 L313.000903,146.381286 C305.331641,131.664595 290.113829,122.434783 273.518693,122.434783 L273.518693,122.434783 L213.134105,122.434783 C211.34311,122.434783 209.578564,122.866976 207.990296,123.694665 C202.53894,126.535512 200.422705,133.257671 203.263553,138.709026 L203.263553,138.709026 L392.14748,501.161969 L392.211913,501.115783 L397.884,512 L113.057,512 L237.985765,272.274244 L238.121489,272.005143 C240.756331,266.603533 238.62101,260.054158 233.259021,257.259882 C231.670754,256.432194 229.906207,256 228.115212,256 L228.115212,256 L167.730625,256 L167.223047,256.002879 C150.825706,256.188935 135.839418,265.379982 128.248415,279.946503 L128.248415,279.946503 L7.319,512 L0,512 L0,0 L512,0 Z" id="Combined-Shape" fill="url(#linearGradient-3)" mask="url(#mask-2)"></path>
+        </g>
+    </g>
+</svg>
