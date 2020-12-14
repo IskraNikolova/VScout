@@ -34,7 +34,7 @@
         </div>
         <q-separator class="q-mt-sm q-mb-sm" />
         <div id="f-size12" class="q-pl-sm q-pb-sm q-pt-md text-medium text-white">VERSION DISTRIBUTION</div>
-        <node-version-chart />
+        <!--<node-version-chart />-->
       </div>
       <div class="col-md-10 col-xs-12">
         <node />
@@ -81,7 +81,7 @@ export default {
   name: 'PageIndex',
   components: {
     MapChart,
-    NodeVersionChart: () => import('components/node-version-chart.vue'),
+    // NodeVersionChart: () => import('components/node-version-chart.vue'),
     Node: () => import('components/panels/node.vue'),
     Network: () => import('components/panels/network.vue'),
     WrapMarket: () => import('components/panels/wrap-market.vue'),

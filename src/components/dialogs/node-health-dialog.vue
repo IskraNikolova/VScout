@@ -29,7 +29,7 @@
             <span v-if="healthy"><span>Healthy: </span> <span class="text-positive">Yes</span></span>
             <span v-else><span>Healthy: </span>  <span class="text-negative">No</span></span>
             <div v-if="upTime">
-              <span>Up Time: </span>
+              <span>Uptime: </span>
               <q-badge :color="getColorUptime(upTime)">
                 {{ upTime }} %
               </q-badge>

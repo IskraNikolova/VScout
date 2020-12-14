@@ -46,7 +46,11 @@
         </span><small class="text-panel"> ~ ({{ getRemainingTimeDays }} days)</small>
       </div>
       <div class="q-pl-sm">
-        <span class="text-subtitle2"><small style="opacity: 0.8;">POTENTIAL YIELD</small></span>
+        <span class="text-subtitle2">
+        <small style="opacity: 0.8;">
+          <q-icon name="info"><tooltip-style v-bind:text="'Delegation fees is deducted'" /></q-icon>
+          POTENTIAL YIELD
+        </small></span>
         <span class="on-right">{{ potentialYield }}</span>
         <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
         <q-list dense class="q-mt-md  q-pt-sm q-pl-xs" style="max-width: 400px;">
@@ -125,7 +129,7 @@ export default {
   watch: {
     remainingCapacity: function (val) {
       this.time = this.getRemainingTimeDays
-      this.avax = this.remainingCapacity
+      this.avax = val
       this.calculate()
     }
   },
@@ -224,6 +228,7 @@ export default {
         rewardNAvax,
         this.validator.delegationFee
       )
+
       rewardNAvax = delegation.result
 
       this.potentialYield = this.getFormatAva(getAvaFromnAva(rewardNAvax))
