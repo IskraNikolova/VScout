@@ -169,9 +169,12 @@ export async function mapDefaultValidators (
       val.potentialReward = currentValidator.potentialReward
     }
 
-    const avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
+    let avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
     const name = info.name ? info.name : val.nodeID
     const link = info.link ? info.link : ''
+    if (name.startsWith('Allnodes')) {
+      avatar = '/statics/circle_symbol.svg'
+    }
 
     return {
       ...val,
