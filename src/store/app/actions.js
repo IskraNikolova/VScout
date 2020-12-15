@@ -132,6 +132,7 @@ async function initApp (
         dispatch(GET_NODE_INFO, {})
       ])
     } catch (err) {
+      throw new Error(err.message)
     }
   }, 17000)
 }

@@ -37,7 +37,13 @@ export default {
     }
   },
   created () {
-    document.querySelector('html').dataset.theme = this.appTheme
+    try {
+      document.querySelector('html').dataset.theme = this.appTheme
+    } catch (err) {
+      alert('Error |')
+      alert(err.message)
+      this.error = err.message
+    }
   },
   mounted () {
     try {
@@ -49,7 +55,9 @@ export default {
         this.$store.dispatch(GET_AVAX_PRICE)
       }, 10000)
     } catch (err) {
-      this.error = err
+      alert('Error ')
+      alert(err.message)
+      this.error = err.message
     }
   }
 }
