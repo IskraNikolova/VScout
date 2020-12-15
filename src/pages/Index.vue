@@ -39,10 +39,12 @@
           </div>
       </div>
       <div class="col-md-10 col-xs-12">
-        <node />
-        <network />
-        <wrap-market />
-        <wrap-stake />
+        <div v-if="!$q.platform.is.safari">
+          <node />
+          <network />
+          <wrap-market />
+          <wrap-stake />
+        </div>
       </div>
     </div>
     <div class="q-pl-sm q-pr-sm">
