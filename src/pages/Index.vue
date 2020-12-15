@@ -1,5 +1,6 @@
 <template>
   <q-page>
+    <div v-if="!$q.platform.is.safari">
     <error class="q-pr-sm" />
     <div class="row q-pt-sm q-pr-sm">
       <div class="col-md-2 col-xs-12">
@@ -21,30 +22,26 @@
             </span>
           </div>
           <div id="f-size12" class="q-pb-md q-pt-md text-medium text-white">PEERS</div>
-            <div v-if="!$q.platform.is.safari">
-              <div @click="$router.push('/peers/' + nodeID)"><MapChart
-                style="z-index: 30;"
-                :countryData="peersMap"
-                highColor="#aa7dc9"
-                defaultCountryFillColor="#ffffff"
-                legendBoxShadowCss="0px 0px 15px #fff"
-                :showLegend="true"
-                :currencyAdd="false"
-                :showEmptyValue="true"
-              /></div>
-            <q-separator class="q-mt-sm q-mb-sm" />
-            <div id="f-size12" class="q-pl-sm q-pb-sm q-pt-md text-medium text-white">VERSION DISTRIBUTION</div>
-            <node-version-chart />
-            </div>
-          </div>
+          <div @click="$router.push('/peers/' + nodeID)"><MapChart
+            style="z-index: 30;"
+            :countryData="peersMap"
+            highColor="#aa7dc9"
+            defaultCountryFillColor="#ffffff"
+            legendBoxShadowCss="0px 0px 15px #fff"
+            :showLegend="true"
+            :currencyAdd="false"
+            :showEmptyValue="true"
+          /></div>
+        </div>
+        <q-separator class="q-mt-sm q-mb-sm" />
+        <div id="f-size12" class="q-pl-sm q-pb-sm q-pt-md text-medium text-white">VERSION DISTRIBUTION</div>
+        <node-version-chart />
       </div>
       <div class="col-md-10 col-xs-12">
-        <div v-if="!$q.platform.is.safari">
-          <node />
-          <network />
-          <wrap-market />
-          <wrap-stake />
-        </div>
+        <node />
+        <network />
+        <wrap-market />
+        <wrap-stake />
       </div>
     </div>
     <div class="q-pl-sm q-pr-sm">
@@ -62,6 +59,7 @@
       <div class="flex flex-center q-mt-xl text-white">
         Made with ❤️ for builders everywhere.
       </div>
+    </div>
     </div>
   </q-page>
 </template>
