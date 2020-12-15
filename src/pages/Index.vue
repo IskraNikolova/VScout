@@ -1,6 +1,5 @@
 <template>
   <q-page>
-    <div v-if="!$q.platform.is.safari">
     <error class="q-pr-sm" />
     <div class="row q-pt-sm q-pr-sm">
       <div class="col-md-2 col-xs-12">
@@ -59,7 +58,6 @@
       <div class="flex flex-center q-mt-xl text-white">
         Made with ❤️ for builders everywhere.
       </div>
-    </div>
     </div>
   </q-page>
 </template>

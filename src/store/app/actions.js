@@ -117,6 +117,7 @@ async function initApp (
       dispatch(GET_IN_OUT)
     ]).then(() => dispatch(SUBSCRIBE_TO_EVENT))
   } catch (err) {
+    throw new Error(err.message)
   }
 
   setInterval(async () => {

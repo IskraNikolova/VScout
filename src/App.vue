@@ -1,5 +1,6 @@
 <template>
   <div id="q-app">
+    {{ error }}
     <router-view />
   </div>
 </template>
@@ -30,17 +31,26 @@ export default {
       'appTheme'
     ])
   },
+  data () {
+    return {
+      error: ''
+    }
+  },
   created () {
     document.querySelector('html').dataset.theme = this.appTheme
   },
   mounted () {
-    this.initApp()
-    setInterval(() => {
-      this.$store.commit(SET_NETWORK_STATUS, {
-        hasNetworkConnection: window.navigator.onLine
-      })
-      this.$store.dispatch(GET_AVAX_PRICE)
-    }, 10000)
+    try {
+      this.initApp()
+      setInterval(() => {
+        this.$store.commit(SET_NETWORK_STATUS, {
+          hasNetworkConnection: window.navigator.onLine
+        })
+        this.$store.dispatch(GET_AVAX_PRICE)
+      }, 10000)
+    } catch (err) {
+      this.error = err
+    }
   }
 }
 </script>
