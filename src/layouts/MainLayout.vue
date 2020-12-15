@@ -318,6 +318,7 @@
         </q-toolbar>
       </div>
       <!--lt-sm view-->
+      <div v-if="!$q.platform.is.safari">
       <div class="lt-sm background-white">
         <q-toolbar>
           <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm />
@@ -357,6 +358,7 @@
         </div>
       </div>
       <div id="header-line"></div>
+      </div>
       <add-identification-dialog ref="addIdentificationRef" />
     </q-header>
     <q-drawer
