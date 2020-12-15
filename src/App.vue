@@ -1,6 +1,5 @@
 <template>
   <div id="q-app">
-    {{ error }}
     <router-view />
   </div>
 </template>
@@ -31,23 +30,18 @@ export default {
       'appTheme'
     ])
   },
-  data () {
-    return {
-      error: ''
-    }
-  },
   created () {
     try {
       document.querySelector('html').dataset.theme = this.appTheme
     } catch (err) {
-      alert('Error |')
-      alert(err.message)
-      this.error = err.message
+      console.log(err.message)
     }
   },
   mounted () {
     try {
-      this.initApp()
+      if (!this.$q.platform.is.safari) {
+        this.initApp()
+      }
       setInterval(() => {
         this.$store.commit(SET_NETWORK_STATUS, {
           hasNetworkConnection: window.navigator.onLine
@@ -55,9 +49,7 @@ export default {
         this.$store.dispatch(GET_AVAX_PRICE)
       }, 10000)
     } catch (err) {
-      alert('Error ')
-      alert(err.message)
-      this.error = err.message
+      console.log(err.message)
     }
   }
 }
