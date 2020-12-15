@@ -21,20 +21,22 @@
             </span>
           </div>
           <div id="f-size12" class="q-pb-md q-pt-md text-medium text-white">PEERS</div>
-          <div @click="$router.push('/peers/' + nodeID)"><MapChart
-            style="z-index: 30;"
-            :countryData="peersMap"
-            highColor="#aa7dc9"
-            defaultCountryFillColor="#ffffff"
-            legendBoxShadowCss="0px 0px 15px #fff"
-            :showLegend="true"
-            :currencyAdd="false"
-            :showEmptyValue="true"
-          /></div>
-        </div>
-        <q-separator class="q-mt-sm q-mb-sm" />
-        <div id="f-size12" class="q-pl-sm q-pb-sm q-pt-md text-medium text-white">VERSION DISTRIBUTION</div>
-        <node-version-chart />
+            <div v-if="!$q.platform.is.safari">
+              <div @click="$router.push('/peers/' + nodeID)"><MapChart
+                style="z-index: 30;"
+                :countryData="peersMap"
+                highColor="#aa7dc9"
+                defaultCountryFillColor="#ffffff"
+                legendBoxShadowCss="0px 0px 15px #fff"
+                :showLegend="true"
+                :currencyAdd="false"
+                :showEmptyValue="true"
+              /></div>
+            <q-separator class="q-mt-sm q-mb-sm" />
+            <div id="f-size12" class="q-pl-sm q-pb-sm q-pt-md text-medium text-white">VERSION DISTRIBUTION</div>
+            <node-version-chart />
+            </div>
+          </div>
       </div>
       <div class="col-md-10 col-xs-12">
         <node />
