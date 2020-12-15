@@ -563,6 +563,7 @@ export default {
   },
   created () {
     this.allCurrencies = Object.keys(this.currenciesPriceList)
+    if (!this.allCurrencies) return
     this.currency = {
       label: `${currencies.usd.isoCode} - ${currencies.usd.symbol} ${this.currenciesPriceList.usd}`,
       value: 'usd'
@@ -656,6 +657,7 @@ export default {
       setTheme: SET_THEME
     }),
     isValidatorShow (id) {
+      if (!id) return
       const isVal = this.validatorById(id)
       if (isVal) {
         return id !== 'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj'
@@ -663,6 +665,7 @@ export default {
       return false
     },
     switchTheme (theme) {
+      if (!theme) return
       this.setTheme(theme)
     },
     debounceFunc: (fn) => debounce(function () { fn() }, 300),
@@ -698,15 +701,19 @@ export default {
       openURL('https://discord.gg/PPB67JYyAp')
     },
     getSymbol (currency) {
+      if (!currency) return
       return currencies[`${currency}`].symbol
     },
     getISO (currency) {
+      if (!currency) return
       return currencies[`${currency}`].isoCode
     },
     getCurrencyName (currency) {
+      if (!currency) return
       return currencies[`${currency}`].currency
     },
     setCurrentCurrency (currentCurrency) {
+      if (!currentCurrency) return
       this.$store.commit(SET_CURRENT_CURRENCY, { currentCurrency })
     },
     filterFn (update) {
