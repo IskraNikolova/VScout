@@ -6,7 +6,7 @@ export default {
     chainId: 'X',
     port: 443,
     cChainId: 43114,
-    explorerApiBaseUrl: 'https://explorerapi.avax-dev.network/',
+    explorerApiBaseUrl: 'https://explorerapi.avax.network/',
     contract: '0x95042281AF6566Fc6748f28263CeEecaEfB4D2B4',
     // endpointCChain: 'vscout.io/vscout-api/ext/bc/C/rpc',
     // endpointCChain: 'api.avax.network/ext/bc/C/ws',
