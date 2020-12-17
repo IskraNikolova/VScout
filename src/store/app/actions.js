@@ -65,6 +65,7 @@ import {
 
 import {
   mapDelegators,
+  mapPendingDelegations,
   mapDefaultValidators,
   mapPendingValidators,
   validatorProcessing
@@ -319,7 +320,7 @@ async function getPValidators (
   if (typeof validators === 'undefined' ||
       validators === null) validators = []
 
-  commit(SET_PENDING_DELEGATORS, { delegators })
+  commit(SET_PENDING_DELEGATORS, { delegators: mapPendingDelegations(delegators) })
 
   const val = mapPendingValidators(
     validators,

@@ -397,6 +397,24 @@ export function mapPendingValidators (
   })
 }
 
+export function mapPendingDelegations (
+  delegations) {
+  if (!delegations) return []
+
+  return delegations.map((val) => {
+    const countDownCounterRes = countDownCounter(val.endTime)
+    const remainingTime = countDownCounterRes
+      .countdown
+    const duration = diff(val.endTime, val.startTime)
+
+    return {
+      ...val,
+      duration,
+      remainingTime
+    }
+  })
+}
+
 export function getDelegatorDetails (delegators) {
   if (!delegators) {
     return {
@@ -430,9 +448,13 @@ export function mapDelegators (delegators) {
         .rewardOwner
         .addresses[0]
     )
+    const countDownCounterRes = countDownCounter(delegator.endTime)
+    const remainingTime = countDownCounterRes
+      .countdown
     const duration = diff(delegator.endTime, delegator.startTime)
     return {
       ...delegator,
+      remainingTime,
       duration,
       avatar,
       index: i + 1

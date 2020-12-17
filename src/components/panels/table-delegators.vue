@@ -55,10 +55,18 @@
           ]"
         />
       </template>
+      <template slot="top-left">
+        <small><div class="col" style="margin-top: 20px; margin-bottom: 10px;">
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="duration" label="Duration" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="startTime" label="Start Time" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="endTime" label="End Time" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="progress" label="Progress" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="remainingTime" label="Countdown" />
+        </div></small>
+      </template>
       <template v-slot:header-cell-index="props">
         <q-th :props="props">
           <q-icon
-            style="margin-left: 13px;"
             size="2.0em"
             name="group"
           />
@@ -97,16 +105,13 @@
             v-for="(col) in props.cols"
             :key="col.name"
             :props="props"
-            style="padding: 0px!important;margin:0px!important;"
+            id="custom-td"
           >
             <div v-if="col.name === 'rewardOwner'" class="row q-ml-xs" @click="props.expand = !props.expand">
-              <q-avatar size="25px">
-                <img :src="props.row.avatar" />
-              </q-avatar>
+              <img :src="props.row.avatar" class="avatar" />
               <div
-                style="font-size: 90%;"
-                class="q-pt-xs q-ml-xs">
-                {{ col.value }}
+                class="q-pt-sm q-ml-sm">
+                {{ getFormatOwner(col.value) }}
               </div>
             </div>
             <div v-else-if="col.name === 'progress'">
@@ -121,7 +126,14 @@
                 <small> AVAX</small>
               </span>
             </div>
-            <div v-else class="q-pl-md">
+            <countdown
+              class="row"
+              v-bind:countdown="col.value"
+              v-bind:color="'#86b9b0'"
+              v-else-if="col.name === 'remainingTime'"
+              style="min-width: 180px;"
+            />
+            <div v-else>
               {{ col.value }}
             </div>
           </q-td>
@@ -155,6 +167,7 @@ import { UPDATE_UI } from './../../store/ui/types'
 export default {
   name: 'TableDelegators',
   components: {
+    Countdown: () => import('components/items/countdown'),
     DetailsDelegator: () => import('components/details-delegator'),
     TooltipStyle: () => import('components/tooltip-style'),
     ProgressBarValidateSession
@@ -173,6 +186,11 @@ export default {
       else if (val === 'default' && !this.isNotSticky) this.tableClass = 'sticky-header-table-light'
       else if (val === 'dark' && this.isNotSticky) this.tableClass = ''
       else this.tableClass = 'sticky-header-table-dark'
+    },
+    curentDelegators: function (newDelegators, oldDelegators) {
+      if (newDelegators.length !== oldDelegators.length) {
+        this.visibleColumns = this.getVisibleColumns(this.curentDelegators)
+      }
     }
   },
   data () {
@@ -190,7 +208,7 @@ export default {
         {
           name: 'index',
           label: '#',
-          align: 'center',
+          align: 'left',
           field: row => row.index,
           headerClasses: 'text-medium'
         },
@@ -205,13 +223,13 @@ export default {
           name: 'nodeID',
           align: 'left',
           label: 'NODE ID',
-          field: row => `[${row.nodeID}]`,
+          field: row => row.nodeID,
           style: 'font-size: 12px;',
           headerClasses: 'text-medium'
         },
         {
           name: 'stake',
-          align: 'center',
+          align: 'left',
           label: 'DELEGATED',
           field: row => Number(row.stakeAmount),
           format: (val, row) => `${this.getFormatReward(row.stakeAmount)}`,
@@ -234,7 +252,7 @@ export default {
           label: 'START TIME',
           field: row => row.startTime,
           format: (val, row) => `${this.formatDate(row.startTime, 'll')}`,
-          style: 'font-size: 10px;',
+          style: 'font-size: 13px;',
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -244,7 +262,7 @@ export default {
           label: 'END TIME',
           field: row => row.endTime,
           format: (val, row) => `${this.formatDate(row.endTime, 'll')}`,
-          style: 'font-size: 10px;',
+          style: 'font-size: 13px;',
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -254,12 +272,23 @@ export default {
           label: 'Progress (%)',
           field: 'progress',
           headerClasses: 'text-medium'
+        },
+        {
+          name: 'remainingTime',
+          align: 'center',
+          label: 'COUNTDOWN',
+          field: row => row.remainingTime,
+          headerClasses: 'text-medium'
         }
       ],
       textStickyPositive: 'Sticky header',
       textStickyNegative: 'Remove a sticky header',
-      tableClass: ''
+      tableClass: '',
+      visibleColumns: []
     }
+  },
+  created () {
+    this.visibleColumns = this.getVisibleColumns(this.curentDelegators)
   },
   computed: {
     ...mapGetters([
@@ -271,25 +300,54 @@ export default {
     curentDelegators: function () {
       if (this.isActive) return this.delegators
       return this.pendingDelegators
-    },
-    visibleColumns: function () {
+    }
+  },
+  methods: {
+    getVisibleColumns (curentDelegators) {
       const columns = this.columns.map(c => c.name)
-      if (this.curentDelegators.find(a => !a.rewardOwner)) {
+      if (curentDelegators.find(a => !a.rewardOwner)) {
+        console.log(curentDelegators)
         return columns
           .filter(c =>
             c !== 'rewardOwner' &&
             c !== 'index' &&
+            c !== 'progress' &&
             c !== 'potentialReward')
       }
       return columns
-    }
-  },
-  methods: {
+        .filter(c =>
+          c !== 'endTime' &&
+          c !== 'progress')
+    },
     getDurationL (val) {
       return humanizeDuration(val, {
         units: ['d'],
         round: true
       })
+    },
+    getFormatOwner (val) {
+      if (!val) return
+      if (val.length > 20) return `${val.substr(0, 20)}...${val.substr(28)}`
+      return val
+    },
+    getColor (nodeID) {
+      const color = this.intToRGB(this.hashCode(nodeID))
+      console.log(color)
+      return color
+    },
+    hashCode (str) {
+      let hash = 0
+      for (var i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash)
+      }
+      return hash
+    },
+    intToRGB (i) {
+      const c = (i & 0x00FFFFFF)
+        .toString(16)
+        .toUpperCase()
+
+      return '00000'.substring(0, 6 - c.length) + c
     },
     getRewardOwnerFormat (val) {
       if (!val) return
@@ -340,8 +398,13 @@ export default {
 </script>
 <style scoped>
  #custom-table {
-   border-right: 2px solid #87C5D6;
+   border-right: 2px solid #86b9b0;
  }
+ #custom-td {
+  padding-top: 0px!important;
+  padding-bottom: 0px!important;
+  height: 50px!important;
+}
 </style>
 <style lang="sass">
 .sticky-header-table-light
