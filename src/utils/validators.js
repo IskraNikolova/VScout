@@ -5,6 +5,12 @@ import { getRemainingCapacity } from './stake.js'
 import { countDownCounter, diff } from './../modules/time.js'
 import { _getValidatorById } from './../modules/networkCChain.js'
 
+const t = {
+  Allnodes: {
+    avatar: '/statics/circle_symbol.svg'
+  }
+}
+
 /**
 * @param {Array} Array of validators
 * @param {Array} Array of delegators
@@ -169,19 +175,22 @@ export async function mapDefaultValidators (
       val.potentialReward = currentValidator.potentialReward
     }
 
-    let avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
+    let avatar = ''
     const name = info.name ? info.name : val.nodeID
     const link = info.link ? info.link : ''
-    if (name.startsWith('Allnodes')) {
-      avatar = '/statics/circle_symbol.svg'
+
+    try {
+      avatar = t[`${info.website}`].avatar
+    } catch (err) {
+      avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
     }
+    val.avatar = avatar
+    val.name = name
+    val.link = link
 
     return {
       ...val,
       rating: info.rating,
-      name,
-      avatar,
-      link,
       bio: info.bio,
       website: info.website,
       continent: peerInfo.continent,
@@ -258,7 +267,6 @@ export async function mapValidators (
         info = await _getValidatorById(val.nodeID)
       }
     } catch (err) {
-      console.log(err)
       if (currentValidator) {
         info = {
           name: currentValidator.name,
@@ -307,17 +315,25 @@ export async function mapValidators (
     const isMinimumAmountForStake = countDownCounterRes
       .isMinimumAmountForStake
 
-    const avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
+    let avatar = ''
     const name = info.name ? info.name : val.nodeID
+    const link = info.link ? info.link : ''
+
+    try {
+      avatar = t[`${info.website}`].avatar
+    } catch (err) {
+      avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
+    }
+    val.avatar = avatar
+    val.name = name
+    val.link = link
+
     const duration = diff(val.endTime, val.startTime)
 
     return {
       ...val,
       rating: info.rating,
-      name,
-      avatar,
       duration,
-      link: info.link,
       bio: info.bio,
       website: info.website,
       remainingTime,

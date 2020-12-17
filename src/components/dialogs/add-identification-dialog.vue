@@ -78,7 +78,8 @@
                 clearable
                 v-model="avatar"
                 label="Avatar Url"
-                hint="For avatar you must use url.(optional)"
+                hint="For avatar you must use url."
+                :rules="[val => !val.startsWith('http:') || 'Content should be loaded over HTTPS!']"
                 :error="validateData.errors.avatar"
               />
             </div>
@@ -100,8 +101,8 @@
                   v-model="website"
                   placeholder="VScout"
                   label="Hypertext (website name)"
-                  :rules="[val => val.length <= 32 || 'Text must be less than or equal to 32 characters']"
-                  hint="Name of your website/business link or other. (optional)"
+                  :rules="[val => val.length <= 32 || 'Website name must be less than or equal to 32 characters']"
+                  hint="Name of your website/business link or other."
                 />
                 <q-input
                   :dark="appTheme==='dark'"
@@ -112,7 +113,8 @@
                   v-model="link"
                   placeholder="https://www.vscout.io"
                   label="Hyperlink (link)"
-                  hint="Your website/business link or other hyperlink target.(optional)"
+                  hint="Your website/business link or other hyperlink target."
+                  :rules="[val => !val.startsWith('http:') || 'Content should be loaded over HTTPS!']"
                   :error="validateData.errors.link"
                 />
             </div>
@@ -291,9 +293,10 @@ export default {
       return {
         errors: {
           name: ((DOMPurify.sanitize(this.name) !== this.name) && this.name) || this.name.length > 32,
+          website: this.website.length > 32,
           bio: (DOMPurify.sanitize(this.bio) !== this.bio) && this.bio,
-          link: DOMPurify.sanitize(inputLink) !== inputLink,
-          avatar: DOMPurify.sanitize(inputAvatar) !== inputAvatar
+          link: DOMPurify.sanitize(inputLink) !== inputLink || this.link.startsWith('http:'),
+          avatar: DOMPurify.sanitize(inputAvatar) !== inputAvatar || this.avatar.startsWith('http:')
         }
       }
     }
@@ -351,6 +354,14 @@ export default {
     async onSubmit () {
       if (!this.link && !this.name && !this.avatar && !this.bio && !this.website) {
         this.error = 'Empty fields!'
+        return
+      }
+
+      if (this.validateData.errors.name ||
+          this.validateData.errors.bio ||
+          this.validateData.errors.link ||
+          this.validateData.errors.website ||
+          this.validateData.errors.avatar) {
         return
       }
 
