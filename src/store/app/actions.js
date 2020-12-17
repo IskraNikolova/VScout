@@ -537,21 +537,17 @@ function getAvaxPrice (
 async function getNodeVersions (
   { commit, getters }) {
   try {
-    const versions = await _getNodeVersions()
-    const regex = /(?<=version=")([a-z]+\W*\d*\W*\d*\W*\d*)",nodeCount=(\d+),stakeAmount=(\d+)/gm
-    const matches = versions.matchAll(regex)
-    let nodesVersions = []
+    const { stakeInfo } = await _getNodeVersions()
     let allCount = 0
-    for (const match of matches) {
-      if (!match) return
-      const version = match[1]
-      const nodeCount = match[2]
-      const stakeAmount = match[3]
-      let stake = getAvaFromnAva(stakeAmount)
-      stake = round(stake, 1000)
+    let nodesVersions = []
+    for (const info of stakeInfo) {
+      if (!info) return
+      let { version, nodeCount, stakeAmount } = info
+      stakeAmount = round(stakeAmount, 1000)
       let color = labelColors[`${version}`]
       if (!color) color = '#000000'
       allCount += Number(nodeCount)
+      const stake = getAvaFromnAva(stakeAmount)
       nodesVersions.push({ version, count: nodeCount, stake: stake.toLocaleString(), color })
     }
     nodesVersions = nodesVersions.sort(compare)
