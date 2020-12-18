@@ -6,7 +6,7 @@ import { countDownCounter, diff } from './../modules/time.js'
 import { _getValidatorById } from './../modules/networkCChain.js'
 
 const t = {
-  Allnodes: {
+  'https://bit.ly/3q5aMGC': {
     avatar: '/statics/circle_symbol.svg'
   }
 }
@@ -180,7 +180,7 @@ export async function mapDefaultValidators (
     const link = info.link ? info.link : ''
 
     try {
-      avatar = t[`${info.website}`].avatar
+      avatar = t[`${info.avatarUrl}`].avatar
     } catch (err) {
       avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
     }
@@ -320,7 +320,7 @@ export async function mapValidators (
     const link = info.link ? info.link : ''
 
     try {
-      avatar = t[`${info.website}`].avatar
+      avatar = t[`${info.avatarUrl}`].avatar
     } catch (err) {
       avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
     }

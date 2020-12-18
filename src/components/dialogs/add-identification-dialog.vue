@@ -288,15 +288,15 @@ export default {
       'networkEndpoint'
     ]),
     validateData () {
-      const inputAvatar = `<img src="${this.avatar}">`
-      const inputLink = `<a href="${this.link}"></a>`
+      // const inputAvatar = `<img src="${this.avatar}">`
+      // const inputLink = `<a href="${this.link}"></a>`
       return {
         errors: {
           name: ((DOMPurify.sanitize(this.name) !== this.name) && this.name) || this.name.length > 32,
           website: this.website.length > 32,
           bio: (DOMPurify.sanitize(this.bio) !== this.bio) && this.bio,
-          link: DOMPurify.sanitize(inputLink) !== inputLink || this.link.startsWith('http:'),
-          avatar: DOMPurify.sanitize(inputAvatar) !== inputAvatar || this.avatar.startsWith('http:')
+          link: this.link.startsWith('http:'),
+          avatar: this.avatar.startsWith('http:')
         }
       }
     }
