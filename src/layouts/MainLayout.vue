@@ -565,7 +565,7 @@ export default {
     this.allCurrencies = Object.keys(this.currenciesPriceList)
     if (!this.allCurrencies) return
     this.currency = {
-      label: `${currencies.usd.isoCode} - ${currencies.usd.symbol} ${this.currenciesPriceList.usd}`,
+      label: `${this.getISO('usd')} - ${this.getISO('usd')} ${this.currenciesPriceList.usd}`,
       value: 'usd'
     }
     this.stringOptions = Object.keys(this.currenciesPriceList)
@@ -701,15 +701,15 @@ export default {
       openURL('https://discord.gg/PPB67JYyAp')
     },
     getSymbol (currency) {
-      if (!currency) return
+      if (!currency || !currencies[`${currency}`]) return
       return currencies[`${currency}`].symbol
     },
     getISO (currency) {
-      if (!currency) return
+      if (!currency || !currencies[`${currency}`]) return
       return currencies[`${currency}`].isoCode
     },
     getCurrencyName (currency) {
-      if (!currency) return
+      if (!currency || !currencies[`${currency}`]) return
       return currencies[`${currency}`].currency
     },
     setCurrentCurrency (currentCurrency) {
