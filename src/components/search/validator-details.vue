@@ -368,7 +368,7 @@ export default {
   },
   methods: {
     getId () {
-      if (!this.id) return ''
+      if (!this.id) return this.$route.params.id
       return this.id
     },
     getBio () {
