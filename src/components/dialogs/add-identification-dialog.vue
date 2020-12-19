@@ -288,8 +288,6 @@ export default {
       'networkEndpoint'
     ]),
     validateData () {
-      // const inputAvatar = `<img src="${this.avatar}">`
-      // const inputLink = `<a href="${this.link}"></a>`
       return {
         errors: {
           name: ((DOMPurify.sanitize(this.name) !== this.name) && this.name) || this.name.length > 32,
