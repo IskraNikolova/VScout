@@ -9,6 +9,7 @@ import { mapActions, mapGetters } from 'vuex'
 
 import {
   INIT_APP,
+  GET_NODE_PEERS,
   GET_AVAX_PRICE,
   SET_NETWORK_STATUS
 } from './store/app/types'
@@ -30,16 +31,12 @@ export default {
       'appTheme'
     ])
   },
-  created () {
+  async created () {
     try {
       document.querySelector('html').dataset.theme = this.appTheme
-    } catch (err) {
-      console.log(err.message)
-    }
-  },
-  mounted () {
-    try {
-      this.initApp()
+      this.$store.dispatch(GET_AVAX_PRICE)
+      await this.initApp()
+      this.$store.dispatch(GET_NODE_PEERS, {})
       setInterval(() => {
         this.$store.commit(SET_NETWORK_STATUS, {
           hasNetworkConnection: window.navigator.onLine

@@ -102,12 +102,11 @@ async function initApp (
     await Promise.all([
       dispatch(INIT_ENDPOINT),
       dispatch(GET_NODE_VERSIONS),
-      dispatch(GET_AVAX_PRICE),
-      dispatch(GET_BLOCKCHAINS, {}),
-      dispatch(GET_SUBNETS, {}),
       dispatch(GET_NODE_ID, {}),
       dispatch(GET_NODE_INFO, {}),
-      dispatch(GET_NODE_PEERS, {}),
+      dispatch(GET_BLOCKCHAINS, {}),
+      dispatch(GET_SUBNETS, {}),
+      // dispatch(GET_NODE_PEERS, {}),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(GET_HEIGHT, {}),
       dispatch(GET_CURRENT_SUPPLY),
@@ -420,7 +419,6 @@ async function getNodeInfo (
     }
 
     const nodeInfo = {
-      health: response.data.result.health,
       networkID: response.data.result.networkID,
       networkName: response.data.result.networkName,
       nodeVersion: response.data.result.version
@@ -428,8 +426,9 @@ async function getNodeInfo (
 
     commit(GET_NODE_HEALTH, {
       nodeID: getters.nodeID,
-      nodeHealth: nodeInfo.health
+      nodeHealth: response.data.result.health
     })
+
     commit(GET_NODE_INFO, { nodeInfo })
   } else {
     try {

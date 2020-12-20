@@ -100,11 +100,8 @@ export default {
       return 0
     },
     healthy: function () {
-      try {
-        return this.nodeHealthInfo.healthy
-      } catch (err) {
-        return false
-      }
+      if (!this.nodeHealth(this.nodeID)) return
+      return this.nodeHealthInfo.healthy
     },
     color: function () {
       if (this.healthy) return 'positive'

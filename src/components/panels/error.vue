@@ -1,7 +1,7 @@
 <template>
   <q-card
     flat
-    v-if="!healthy"
+    v-if="error"
     class="q-mt-xs"
     id="custom-card-2"
     align="right"
@@ -25,11 +25,8 @@ export default {
       return this.nodeHealth(this.nodeID)
     },
     healthy: function () {
-      try {
-        return this.nodeHealthInfo.healthy
-      } catch (err) {
-        return false
-      }
+      if (!this.nodeHealthInfo) return false
+      return this.nodeHealthInfo.healthy
     },
     error: function () {
       try {
