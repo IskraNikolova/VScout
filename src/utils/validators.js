@@ -105,7 +105,6 @@ export async function mapDefaultValidators (
   peers = []) {
   const validatorsMap = await Promise.all(validators.map(async (val) => {
     if (!defaultValidators) defaultValidators = []
-
     const currentValidator = defaultValidators
       .find(v => v.nodeID === val.nodeID)
 

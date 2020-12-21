@@ -221,7 +221,7 @@
               <small v-else class="text-negative">DISCONNECTED</small>
             </div>
             <div v-else-if="col.name === 'version'">
-              <span v-if="col.value === '1.1.0'">{{ col.value }}</span>
+              <span v-if="getNumberFromVer(props.row.version) >= 8">{{ col.value }}</span>
               <span v-else-if="col.value !== 'undefined'" class="text-panel">{{ col.value }}</span>
               <span v-else class="text-panel"> - </span>
             </div>
@@ -390,6 +390,8 @@ import {
   exportFile,
   openURL
 } from 'quasar'
+
+import { versionNum } from './../../utils/constants.js'
 
 function wrapCsvValue (val, formatFn) {
   let formatted = formatFn !== undefined
@@ -644,6 +646,10 @@ export default {
     }
   },
   methods: {
+    getNumberFromVer (val) {
+      if (!val) return 0
+      return versionNum[`${val}`]
+    },
     filterMethod () {
       if (this.curentValidators && this.curentValidators.length > 0) {
         return this.curentValidators

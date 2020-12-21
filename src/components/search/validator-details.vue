@@ -70,6 +70,7 @@
             style="border-radius: 10px;"
             v-bind:stakeAmount="stakeAmount"
             v-bind:delegateStake="delegateStake"
+            v-bind:txID="txID"
             v-bind:totalStakeAmount="totalStakeAmount"
           />
           <delegate
@@ -206,6 +207,7 @@
           flat class="col-12"
           v-bind:stakeAmount="stakeAmount"
           v-bind:delegateStake="delegateStake"
+          v-bind:txID="txID"
           v-bind:totalStakeAmount="totalStakeAmount"
         />
         <q-separator />
@@ -335,6 +337,11 @@ export default {
       if (!this.validator.delegateStake) return ''
       return this.validator
         .delegateStake
+    },
+    txID: function () {
+      if (!this.validator.txID) return ''
+      return this.validator
+        .txID
     },
     avatar: function () {
       if (!this.validator.avatar) return ''
