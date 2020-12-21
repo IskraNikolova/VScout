@@ -1,6 +1,10 @@
 <template>
   <div class="q-mt-md">
-    <canvas id="pie" width="300px" height="500px"></canvas>
+    <q-scroll-area
+      style="height: 350px; max-width: 300px;"
+    >
+      <canvas id="pie" width="300px" height="500px"></canvas>
+    </q-scroll-area>
   </div>
 </template>
 
@@ -64,13 +68,10 @@ export default {
           legend: {
             display: true,
             position: 'bottom',
-            fontFamily: 'Rubik',
-            padding: 5,
             labels: {
               boxWidth: 15,
               fontColor: '#9c929c',
-              textAlign: 'left',
-              lineWidth: 4
+              textAlign: 'left'
             }
           },
           tooltips: {
