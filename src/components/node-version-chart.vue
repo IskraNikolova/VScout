@@ -1,7 +1,7 @@
 <template>
   <div class="q-mt-md">
     <q-scroll-area
-      style="height: 350px; max-width: 300px;"
+      style="height: 350px; max-width: 380px;"
     >
       <canvas id="pie" width="300px" height="500px"></canvas>
     </q-scroll-area>
