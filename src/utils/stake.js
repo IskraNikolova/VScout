@@ -16,7 +16,6 @@ export const getRemainingCapacity = (stakeAmount, delegateStakeAmount) => {
 }
 
 function maxStake (ownStake) {
-  // 5 times the validator's stake
   const relativeMaxStake = ownStake.multipliedBy(CAPACITY)
 
   // absolute max stake
