@@ -1,14 +1,11 @@
 <template>
-  <div class="q-mt-md">
-    <q-scroll-area
-      style="height: 350px; max-width: 380px;"
-    >
-      <canvas id="pie" width="300px" height="500px"></canvas>
-    </q-scroll-area>
+  <div class="q-mt-md" :style="styleFn()">
+    <canvas id="pie"></canvas>
   </div>
 </template>
 
 <script>
+import { Screen } from 'quasar'
 import { mapGetters, mapActions } from 'vuex'
 import Chart from 'chart.js'
 import { round } from './../utils/commons.js'
@@ -32,6 +29,10 @@ export default {
     nodesVersions: function () {
       this.getChart()
       this.chart.update()
+    },
+    '$q.screen.width': function () {
+      this.getChart()
+      this.chart.update()
     }
   },
   data () {
@@ -47,12 +48,19 @@ export default {
       if (!val) return
       return (Number(val) / Number(all)) * 100
     },
+    styleFn () {
+      if (Screen.sm || Screen.xs) return 'margin-left: 40px!important;position:relative;height:35vh; width:20vw;'
+      else if (Screen.xl || Screen.lg) return 'margin-left: 30px!important;position:relative;height:20vh; width:20vw;'
+      return 'margin-left: -40px!important;position:relative;height:20vh; width:60vw;'
+    },
     start () {
       const el = document.getElementById('pie')
       if (el === null) return
       const ctx = el.getContext('2d')
       const dataArray = this.nodesVersions.map(d => Number(d.count))
-      const labels = this.nodesVersions.map(d => `${d.version.split('/')[1] ? 'v' + d.version.split('/')[1] : d.version} | Stake: ${d.stake}`)
+      const labels = this.nodesVersions
+        .filter(d => d.stake !== '0')
+        .map(d => `${d.version.split('/')[1] ? 'v' + d.version.split('/')[1] : d.version} | Stake: ${d.stake}`)
       this.chart = new Chart(ctx, {
         type: 'pie',
         data: {
@@ -67,13 +75,15 @@ export default {
         options: {
           legend: {
             display: true,
-            position: 'bottom',
+            position: Screen.md ? 'bottom' : 'right',
             labels: {
               boxWidth: 15,
-              fontColor: '#9c929c',
-              textAlign: 'left'
+              fontColor: '#9c929c'
             }
           },
+          responsive: false,
+          maintainAspectRatio: false,
+          aspectRatio: Screen.md ? 0.9 : 1.3,
           tooltips: {
             callbacks: {
               label: (tooltipItem, data) => {

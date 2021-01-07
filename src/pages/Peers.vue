@@ -182,6 +182,13 @@ export default {
           field: row => `${row.nodeID}`,
           headerClasses: 'text-medium'
         },
+        // {
+        //   name: 'ip',
+        //   align: 'left',
+        //   label: 'IP',
+        //   field: row => `${row.ip}`,
+        //   headerClasses: 'text-medium'
+        // },
         {
           name: 'validator',
           align: 'left',
