@@ -4,21 +4,54 @@ import {
   VERIFY_OWNER,
   SET_TX_HASH_EVM,
   SET_VERIFY_CODE,
+  SET_VALIDATOR,
   SET_VALIDATOR_INFO
 } from './types.js'
 
 import {
-  _getTxApi
+  _getTxApi,
+  _getValidator
 } from './../../modules/network.js'
+
+import { getAvatar } from './../../utils/commons.js'
 
 import {
   _setVerifyCode,
-  _setValidatorInfo
+  _setValidatorInfo,
+  _getValidatorById
 } from './../../modules/networkCChain.js'
 
 import {
   _outputSearch
 } from './../../modules/transactions.js'
+
+async function setValidator ({ commit, getters }, { id }) {
+  try {
+    let validator = getters.validatorById(id)
+    if (!validator) {
+      const res = await _getValidator({ id })
+      validator = res.data
+      const info = await _getValidatorById(id)
+      validator.avatarUrl = info.avatarUrl ? info.avatarUrl : getAvatar(id).monster
+      validator.name = info.name ? info.name : id
+      validator.link = info.link ? info.link : ''
+      validator.bio = info.bio ? info.bio : ''
+      validator.website = info.website ? info.website : ''
+      validator.link = info.link ? info.link : ''
+
+      const t = {
+        'https://bit.ly/3q5aMGC': {
+          avatar: '/statics/circle_symbol.svg'
+        }
+      }
+      const avatar = t[`${validator.avatarUrl}`]
+      if (avatar) validator.avatar = avatar.avatar
+    }
+    commit(SET_VALIDATOR, { validator })
+  } catch (err) {
+    return false
+  }
+}
 
 async function getTxAvm ({ commit },
   { txID }) {
@@ -98,6 +131,7 @@ async function setValidatorInfo (
 export default {
   [GET_TX_AVM]: getTxAvm,
   [VERIFY_OWNER]: verifyOwner,
+  [SET_VALIDATOR]: setValidator,
   [SET_VERIFY_CODE]: setVerifyCode,
   [SET_VALIDATOR_INFO]: setValidatorInfo
 }

@@ -42,6 +42,10 @@ export function validators (state) {
   return state.validators
 }
 
+export function validator (state) {
+  return state.validator
+}
+
 export function delegators (state) {
   return state.delegators
 }

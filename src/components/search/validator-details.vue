@@ -82,19 +82,19 @@
           style="border-radius: 10px;">
             <div class="q-mb-sm">Progress (%)</div>
             <progress-bar-validate-session
-              v-bind:startTime="validator.startTime"
-              v-bind:endTime="validator.endTime"
+              v-bind:startTime="startTime"
+              v-bind:endTime="endTime"
             />
             <div class="row">
               <div class="col-6">
                 <small class="text-bold">Start Time</small>
                 <br />
-                <small>{{ formatDate(validator.startTime) }}</small>
+                <small>{{ formatDate(startTime) }}</small>
               </div>
               <div class="col-6" style="text-align: right;">
                 <small class="text-bold">End Time</small>
                 <br />
-                <small>{{ formatDate(validator.endTime) }}</small>
+                <small>{{ formatDate(endTime) }}</small>
               </div>
             </div>
           </div>
@@ -119,7 +119,7 @@
     <q-card flat class="lt-sm panel">
       <q-item>
         <avatar
-          v-bind:avatar="avatar"
+          v-bind:avatar="getAvatar()"
           style="cursor:pointer;"
           @click="onClick(validator.link)"
         />
@@ -161,7 +161,7 @@
               <small style="opacity: 0.8;">STAKED BY</small>
             </span>
             <span class="q-pl-xs">
-              {{ stakedBy(validator.startTime) }}
+              {{ stakedBy(startTime) }}
             </span>
             <br />
             <span class="text-subtitle2">
@@ -233,21 +233,21 @@
           <q-card-section>
             <div class="text-grey q-pt-xl">Progress (%)</div>
             <progress-bar-validate-session
-              v-bind:startTime="validator.startTime"
-              v-bind:endTime="validator.endTime"
+              v-bind:startTime="startTime"
+              v-bind:endTime="endTime"
             />
           </q-card-section>
           <q-card-section horizontal>
             <q-card-section class="col-6">
             <small class="text-grey text-bold">Start Time</small>
             <br />
-            <small>{{ formatDate(validator.startTime) }}</small>
+            <small>{{ formatDate(startTime) }}</small>
             </q-card-section>
             <q-separator vertical/>
             <q-card-section class="col-6" style="text-align: right;">
             <small class="text-grey text-bold">End Time</small>
             <br />
-            <small>{{ formatDate(validator.endTime) }}</small>
+            <small>{{ formatDate(endTime) }}</small>
             </q-card-section>
           </q-card-section>
         </div>
@@ -257,9 +257,7 @@
 </template>
 
 <script>
-import {
-  mapGetters
-} from 'vuex'
+import { mapGetters } from 'vuex'
 
 import {
   openURL
@@ -276,7 +274,6 @@ import {
 
 import { round } from './../../utils/commons.js'
 const humanizeDuration = require('humanize-duration')
-import { _getValidator } from './../../modules/network.js'
 
 export default {
   name: 'ValidatorDetails',
@@ -294,47 +291,10 @@ export default {
     Website: () => import('components/validator/website.vue'),
     ProgressBarValidateSession: () => import('components/progress-bar-validatе-session.vue')
   },
-  props: {
-    id: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      required: false
-    },
-    avatarUrl: {
-      type: String,
-      required: false
-    },
-    bio: {
-      type: String,
-      required: false
-    },
-    link: {
-      type: String,
-      required: false
-    },
-    website: {
-      type: String,
-      required: false
-    }
-  },
   computed: {
     ...mapGetters([
-      'validatorById'
+      'validator'
     ]),
-    validator: {
-      // getter
-      get: function () {
-        const validator = this.getValidator(this.getId())
-        return validator
-      },
-      // setter
-      set: function (validator) {
-        this.validator = validator
-      }
-    },
     delegators: function () {
       if (!this.validator.delegators) return []
       return this.validator.delegators
@@ -344,15 +304,20 @@ export default {
       return this.validator
         .delegateStake
     },
+    startTime: function () {
+      if (!this.validator.startTime) return ''
+      return this.validator
+        .startTime
+    },
+    endTime: function () {
+      if (!this.validator.endTime) return ''
+      return this.validator
+        .endTime
+    },
     txID: function () {
       if (!this.validator.txID) return ''
       return this.validator
         .txID
-    },
-    avatar: function () {
-      if (!this.validator.avatar) return ''
-      return this.validator
-        .avatar
     },
     stakeAmount: function () {
       if (!this.validator.stakeAmount) return ''
@@ -376,51 +341,28 @@ export default {
       return ''
     }
   },
-  async created () {
-    if (!this.validator.nodeID) {
-      try {
-        const res = await _getValidator({ id: this.$route.params.id })
-        this.validator = res.data
-      } catch (err) {
-        this.$router.push('/search/' + this.$route.params.id)
-      }
-    }
-    if (!this.validator.nodeID) this.$router.push('/search/' + this.$route.params.id)
+  created () {
+    if (!this.validator) this.$router.push('/search/' + this.$route.params.id)
   },
   methods: {
-    getId () {
-      if (!this.id) return this.$route.params.id
-      return this.id
-    },
     getBio () {
-      if (!this.bio) {
-        return this.validator.bio
-      }
-      return this.bio
-    },
-    getAvatar () {
-      if (!this.avatarUrl) {
-        return this.avatar
-      }
-      return this.avatarUrl
+      if (!this.validator.bio) return
+      return this.validator.bio
     },
     getName () {
-      if (!this.name) {
-        return this.validator.name
-      }
-      return this.name
+      if (!this.validator.name) return
+      return this.validator.name
     },
     getLink () {
-      if (!this.link) {
-        return this.validator.link
-      }
-      return this.link
+      if (!this.validator.link) return
+      return this.validator.link
+    },
+    getAvatar () {
+      return this.validator.avatar ? this.validator.avatar : this.validator.avatarUrl
     },
     getWebsite () {
-      if (!this.website) {
-        return this.validator.website
-      }
-      return this.website
+      if (!this.validator.website) return
+      return this.validator.website
     },
     getDurationL (val) {
       if (!val) return
@@ -439,12 +381,6 @@ export default {
     },
     stakedBy (date) {
       return fromNow(date)
-    },
-    getValidator (param) {
-      const validator = this.validatorById(param)
-      if (!validator) return { rewardOwner: { addresses: [] }, startTime: '', endTime: '' }
-
-      return validator
     },
     async getRating () {
       const events = await _getPastRatingEvents(this.validator.nodeID)

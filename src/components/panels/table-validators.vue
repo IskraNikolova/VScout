@@ -634,6 +634,7 @@ export default {
       'validators',
       'subnetID',
       'appTheme',
+      'defaultValidators',
       'isDefaultSubnetID',
       'pendingValidators'
     ]),
@@ -641,6 +642,7 @@ export default {
       return id === this.nodeID
     },
     curentValidators: function () {
+      if (this.isActive && this.isDefaultSubnetID) return this.defaultValidators
       if (this.isActive) return this.validators
       return this.pendingValidators
     }

@@ -5,7 +5,7 @@
         <div>
           <span class="text-h5 text-panel">
             <animated-number
-              :value="validators.length"
+              :value="validatorsCount"
               :formatValue="format"
               :duration="3000"
             /> /
@@ -131,11 +131,17 @@ export default {
       'delegatedStake',
       'validatedStake',
       'delegationsCount',
+      'isDefaultSubnetID',
       'pendingValidators',
+      'defaultValidators',
       'pendingDelegators',
       'currenciesPriceList',
       'currentCurrency'
     ]),
+    validatorsCount: function () {
+      if (this.isDefaultSubnetID) return this.defaultValidators.length
+      return this.validators.length
+    },
     delStake: function () {
       if (!this.delegatedStake) return 0
       const toAvax = getAvaFromnAva(this.delegatedStake)

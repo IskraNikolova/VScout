@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div style="padding: 1%;">
-      <validator-details v-bind:id="getID()" />
+      <validator-details />
       <div class="flex flex-center">
         <img src="~assets/vscoutlogo5.svg" id="logo">
       </div>
@@ -13,17 +13,40 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
+import {
+  SET_VALIDATOR
+} from './../store/access/types'
 
 export default {
   name: 'PageValidator',
   components: {
     ValidatorDetails: () => import('components/search/validator-details.vue')
   },
-  methods: {
-    getID () {
-      if (!this.$route.params.id) return ''
-      return this.$route.params.id
+  data () {
+    return {
+      isStart: false
     }
+  },
+  watch: {
+    '$route.params.id': {
+      handler: async function (id) {
+        this.isStart = true
+        await this.setValidator({ id })
+      },
+      deep: true,
+      immediate: true
+    }
+  },
+  async created () {
+    if (this.isStart) return
+    await this.setValidator({ id: this.$route.params.id })
+  },
+  methods: {
+    ...mapActions({
+      setValidator: SET_VALIDATOR
+    })
   }
 }
 </script>

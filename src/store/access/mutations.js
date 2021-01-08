@@ -10,6 +10,7 @@ import {
   GET_NODE_HEALTH,
   SET_DELEGATORS,
   SET_VALIDATORS,
+  SET_VALIDATOR,
   SET_PENDING_VALIDATORS,
   SET_PENDING_DELEGATORS,
   SET_ASSETS_COUNT
@@ -52,6 +53,9 @@ const mutations = {
   },
   [SET_VALIDATORS]: (state, { validators }) => {
     state.validators = validators
+  },
+  [SET_VALIDATOR]: (state, { validator }) => {
+    state.validator = validator
   }
 }
 

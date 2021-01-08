@@ -14,6 +14,7 @@ export default function () {
     nodeHealth: {},
     assetsCount: 0,
     validators: [],
-    delegators: []
+    delegators: [],
+    validator: {}
   }
 }
