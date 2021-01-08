@@ -30,20 +30,7 @@
 </template>
 
 <script>
-import {
-  mapGetters
-} from 'vuex'
-
 export default {
-  name: 'PageNotFound',
-  created () {
-    const val = this.validatorById(this.$route.params.id)
-    if (val) this.$router.push('/validator/' + this.$route.params.id)
-  },
-  computed: {
-    ...mapGetters([
-      'validatorById'
-    ])
-  }
+  name: 'PageNotFound'
 }
 </script>

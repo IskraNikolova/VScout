@@ -67,6 +67,24 @@ module.exports = {
       fs.writeFileSync('logs.json', data)
     }
   },
+  validator: (req, res) => {
+    const id = req.body.id
+    fs.readFile('validators.json', (err, data) => {
+      if (err) {
+        res.status(400).send(err)
+        res.end()
+      }
+      try {
+        const validators = JSON.parse(data).validators.validators
+        const validator = validators.find(v => v.nodeID === id)
+        res.status(200).send(validator)
+        res.end()
+      } catch (err) {
+        res.status(400).send(err)
+        res.end()
+      }
+    })
+  },
   // GET
   staking: (req, res) => {
     fs.readFile('validators.json', (err, data) => {

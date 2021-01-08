@@ -3,6 +3,7 @@ const controllers = require('../controllers')
 module.exports = app => {
   app.get(controllers.platform.baseUrl(), controllers.platform.height)
   app.get(controllers.validators.baseUrl(), controllers.validators.staking)
+  app.post(controllers.validators.baseUrl() , controllers.validators.validator)
   app.get(controllers.validators.baseUrl() + '/stats', controllers.validators.stats)
   app.get(controllers.validators.baseUrl() + '/versions', controllers.validators.nodeVersions)
   app.get(controllers.node.baseUrl() + '/info', controllers.node.nodeInfo)

@@ -545,9 +545,10 @@ import {
   SET_THEME,
   SET_CURRENT_CURRENCY
 } from './../store/app/types'
+
 import { openURL, debounce } from 'quasar'
 
-import { _getTxStatus, _getBalance } from './../modules/network.js'
+import { _getTxStatus, _getBalance, _getValidator } from './../modules/network.js'
 import { currencies } from './../utils/constants.js'
 
 export default {
@@ -742,6 +743,13 @@ export default {
       if (!this.filter || this.filter === 'undefined') return
       const validator = this.getValidator(this.filter)
       if (validator) {
+        this.$router.push(`/validator/${this.filter}`)
+        this.filter = ''
+        return
+      }
+
+      const res = await _getValidator({ id: this.filter })
+      if (res.data) {
         this.$router.push(`/validator/${this.filter}`)
         this.filter = ''
         return

@@ -66,7 +66,6 @@
 import { mapGetters, mapActions } from 'vuex'
 
 import {
-  GET_HEIGHT,
   GET_STAKING,
   GET_SUBNETS,
   GET_NODE_ID,
@@ -79,6 +78,10 @@ import {
 import {
   UPDATE_UI
 } from '../store/ui/types'
+
+import {
+  GET_HEIGHT
+} from '../store/access/types'
 
 import {
   SET_ENDPOINT,

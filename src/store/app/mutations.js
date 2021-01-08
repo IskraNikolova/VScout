@@ -1,4 +1,3 @@
-import Vue from 'vue'
 const BigNumber = require('bignumber.js')
 
 import { VMDict } from './../../utils/constants.js'
@@ -9,33 +8,21 @@ import {
   GET_IN_OUT,
   GET_NODE_ID,
   GET_SUBNETS,
-  GET_HEIGHT,
   SET_BALANCE,
   SET_SUBNET_ID,
   GET_NODE_INFO,
   GET_NODE_PEERS,
-  SET_VALIDATORS,
+  GET_AVAX_PRICE,
   GET_INFO_PEERS,
   SET_STAKED_AVAX,
-  SET_DELEGATORS,
   GET_BLOCKCHAINS,
-  GET_AVAX_PRICE,
-  GET_NODE_HEALTH,
-  SET_ASSETS_COUNT,
-  SET_NETWORK_STATUS,
-  GET_CURRENT_SUPPLY,
   UPDATE_VALIDATOR,
   GET_NODE_VERSIONS,
   SET_CURRENT_CURRENCY,
-  SET_DEFAULT_VALIDATORS,
-  SET_PENDING_DELEGATORS,
-  SET_PENDING_VALIDATORS
+  SET_DEFAULT_VALIDATORS
 } from './types'
 
 const mutations = {
-  [SET_NETWORK_STATUS]: (state, { hasNetworkConnection }) => {
-    state.hasNetworkConnection = hasNetworkConnection
-  },
   [GET_IN_OUT]: (state, { incomingVal, incomingDel, outcomingVal, outcomingDel }) => {
     let result = {
       // 24 hours
@@ -129,14 +116,8 @@ const mutations = {
 
     state.inData = result
   },
-  [GET_CURRENT_SUPPLY]: (state, { currentSupply }) => {
-    state.currentSupply = currentSupply
-  },
   [SET_CURRENT_CURRENCY]: (state, { currentCurrency }) => {
     state.currentCurrency = currentCurrency
-  },
-  [GET_NODE_VERSIONS]: (state, { nodesVersions }) => {
-    state.nodesVersions = nodesVersions
   },
   [GET_AVAX_PRICE]: (state, { avaxPrice }) => {
     const currentPrice = avaxPrice.current_price
@@ -147,6 +128,9 @@ const mutations = {
     state.low_24h = low24h
     state.price_change_24h = avaxPrice.price_change_24h_in_currency
     state.price_change_24h_percentage = avaxPrice.price_change_percentage_24h_in_currency
+  },
+  [GET_NODE_VERSIONS]: (state, { nodesVersions }) => {
+    state.nodesVersions = nodesVersions
   },
   [SET_THEME]: (state, { themeName }) => {
     state.theme = themeName
@@ -160,17 +144,11 @@ const mutations = {
   [SET_BALANCE]: (state, { addressBalance }) => {
     state.addressBalance = addressBalance
   },
-  [GET_HEIGHT]: (state, { height }) => {
-    state.height = height
-  },
   [GET_NODE_INFO]: (state, { nodeInfo }) => {
     state.nodeInfo = nodeInfo
   },
   [GET_NODE_PEERS]: (state, { peers }) => {
     state.peers = peers
-  },
-  [SET_VALIDATORS]: (state, { validators }) => {
-    state.validators = validators
   },
   [GET_INFO_PEERS]: (state, { peersMap }) => {
     state.peersMap = peersMap
@@ -190,9 +168,6 @@ const mutations = {
     state.validatedStake = validatedStake
     state.delegatedStake = delegatedStake
   },
-  [SET_DELEGATORS]: (state, { delegators }) => {
-    state.delegators = delegators
-  },
   [GET_BLOCKCHAINS]: (state, { blockchains }) => {
     blockchains = blockchains.map(b => {
       b.vmName = VMDict[b.vmID].name
@@ -201,24 +176,11 @@ const mutations = {
     })
     state.blockchains = blockchains
   },
-  [GET_NODE_HEALTH]: (state, { nodeID, nodeHealth }) => {
-    if (!state.nodeHealth[nodeID]) Vue.set(state.nodeHealth, nodeID, {})
-    state.nodeHealth[nodeID] = nodeHealth
-  },
   [SET_SUBNET_ID]: (state, { subnetID }) => {
     state.subnetID = subnetID
   },
   [SET_DEFAULT_VALIDATORS]: (state, { defaultValidators }) => {
     state.defaultValidators = defaultValidators
-  },
-  [SET_PENDING_VALIDATORS]: (state, { validators }) => {
-    state.pendingValidators = validators
-  },
-  [SET_PENDING_DELEGATORS]: (state, { delegators }) => {
-    state.pendingDelegators = delegators
-  },
-  [SET_ASSETS_COUNT]: (state, { assetsCount }) => {
-    state.assetsCount = assetsCount
   }
 }
 

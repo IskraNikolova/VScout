@@ -1,33 +1,36 @@
 import {
   INIT_APP,
   SET_THEME,
-  GET_HEIGHT,
   GET_IN_OUT,
   GET_NODE_ID,
   GET_SUBNETS,
   GET_NODE_INFO,
   GET_NODE_PEERS,
   GET_STAKING,
-  GET_AVAX_PRICE,
   INIT_ENDPOINT,
   GET_INFO_PEERS,
-  SET_VALIDATORS,
-  SET_DELEGATORS,
   SET_STAKED_AVAX,
-  GET_NODE_HEALTH,
   GET_BLOCKCHAINS,
   UPDATE_VALIDATOR,
-  SET_ASSETS_COUNT,
-  GET_CURRENT_SUPPLY,
   GET_NODE_VERSIONS,
   SUBSCRIBE_TO_EVENT,
   GET_PENDING_STAKING,
-  SET_DEFAULT_VALIDATORS,
-  SET_PENDING_VALIDATORS,
-  SET_PENDING_DELEGATORS,
-  GET_ASSETS_BY_BLOCKCHAINS
+  GET_AVAX_PRICE,
+  SET_DEFAULT_VALIDATORS
 } from './types'
 const COUNTRY_CODE = 'countryCode'
+
+import {
+  GET_HEIGHT,
+  GET_CURRENT_SUPPLY,
+  SET_ASSETS_COUNT,
+  SET_VALIDATORS,
+  SET_DELEGATORS,
+  SET_PENDING_VALIDATORS,
+  SET_PENDING_DELEGATORS,
+  GET_NODE_HEALTH,
+  GET_ASSETS_BY_BLOCKCHAINS
+} from './../access/types'
 
 import {
   SET_ENDPOINT,
@@ -106,7 +109,6 @@ async function initApp (
       dispatch(GET_NODE_INFO, {}),
       dispatch(GET_BLOCKCHAINS, {}),
       dispatch(GET_SUBNETS, {}),
-      // dispatch(GET_NODE_PEERS, {}),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(GET_HEIGHT, {}),
       dispatch(GET_CURRENT_SUPPLY),
@@ -117,6 +119,7 @@ async function initApp (
       dispatch(GET_IN_OUT)
     ]).then(() => dispatch(SUBSCRIBE_TO_EVENT))
   } catch (err) {
+    window.localStorage.clear()
   }
 
   setInterval(async () => {

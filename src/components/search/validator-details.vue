@@ -276,6 +276,7 @@ import {
 
 import { round } from './../../utils/commons.js'
 const humanizeDuration = require('humanize-duration')
+import { _getValidator } from './../../modules/network.js'
 
 export default {
   name: 'ValidatorDetails',
@@ -323,11 +324,16 @@ export default {
     ...mapGetters([
       'validatorById'
     ]),
-    validator: function () {
-      const validator = this.getValidator(this.getId())
-      if (!validator) return {}
-
-      return validator
+    validator: {
+      // getter
+      get: function () {
+        const validator = this.getValidator(this.getId())
+        return validator
+      },
+      // setter
+      set: function (validator) {
+        this.validator = validator
+      }
     },
     delegators: function () {
       if (!this.validator.delegators) return []
@@ -370,7 +376,15 @@ export default {
       return ''
     }
   },
-  created () {
+  async created () {
+    if (!this.validator.nodeID) {
+      try {
+        const res = await _getValidator({ id: this.$route.params.id })
+        this.validator = res.data
+      } catch (err) {
+        this.$router.push('/search/' + this.$route.params.id)
+      }
+    }
     if (!this.validator.nodeID) this.$router.push('/search/' + this.$route.params.id)
   },
   methods: {

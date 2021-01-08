@@ -10,9 +10,12 @@ import { mapActions, mapGetters } from 'vuex'
 import {
   INIT_APP,
   GET_NODE_PEERS,
-  GET_AVAX_PRICE,
-  SET_NETWORK_STATUS
+  GET_AVAX_PRICE
 } from './store/app/types'
+
+import {
+  SET_NETWORK_STATUS
+} from './store/access/types'
 
 export default {
   name: 'App',

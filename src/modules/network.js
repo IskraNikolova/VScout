@@ -80,6 +80,20 @@ export const _getPeerInfo = async ({ ip }) => {
   }
 }
 
+export const _getValidator = async ({ id }) => {
+  try {
+    const req = await axios
+      .post(server + 'api/validators', { id })
+
+    if (!req.data) {
+      throw new Error()
+    }
+    return req
+  } catch (err) {
+    return null
+  }
+}
+
 export const _getAssetById = async (id) => {
   try {
     const req = await axios
