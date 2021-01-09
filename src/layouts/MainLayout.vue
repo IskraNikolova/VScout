@@ -546,9 +546,13 @@ import {
   SET_CURRENT_CURRENCY
 } from './../store/app/types'
 
+import {
+  SET_VALIDATOR
+} from './../store/access/types'
+
 import { openURL, debounce } from 'quasar'
 
-import { _getTxStatus, _getBalance, _getValidator } from './../modules/network.js'
+import { _getTxStatus, _getBalance } from './../modules/network.js'
 import { currencies } from './../utils/constants.js'
 
 export default {
@@ -655,7 +659,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      setTheme: SET_THEME
+      setTheme: SET_THEME,
+      setValidator: SET_VALIDATOR
     }),
     isValidatorShow (id) {
       if (!id) return
@@ -741,21 +746,11 @@ export default {
     },
     async search () {
       if (!this.filter || this.filter === 'undefined') return
-      const validator = this.getValidator(this.filter)
+      const validator = await this.setValidator({ id: this.filter })
       if (validator) {
         this.$router.push(`/validator/${this.filter}`)
         this.filter = ''
         return
-      }
-
-      const res = await _getValidator({ id: this.filter })
-      try {
-        if (res && res.data) {
-          this.$router.push(`/validator/${this.filter}`)
-          this.filter = ''
-          return
-        }
-      } catch (err) {
       }
 
       const subnet = this.getSubnet(this.filter)

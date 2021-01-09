@@ -1,6 +1,7 @@
 <template>
   <q-page class="q-pr-md q-pl-md">
     <q-card
+      v-if="isShow"
       class="q-mt-md q-ml-xl q-mr-xl q-pt-md q-pb-md panel"
       id="custom-card"
       style="padding-top: 3%;min-height: 400px;"
@@ -30,8 +31,30 @@
 </template>
 
 <script>
+import {
+  mapActions
+} from 'vuex'
+
+import {
+  SET_VALIDATOR
+} from './../store/access/types'
 
 export default {
-  name: 'PageNotFound'
+  name: 'PageNotFound',
+  async created () {
+    const val = await this.setValidator({ id: this.$route.params.id })
+    if (val) this.$router.push('/validator/' + this.$route.params.id)
+    else this.isShow = true
+  },
+  data () {
+    return {
+      isShow: false
+    }
+  },
+  methods: {
+    ...mapActions({
+      setValidator: SET_VALIDATOR
+    })
+  }
 }
 </script>

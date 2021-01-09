@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 import {
   SET_VALIDATOR
@@ -29,6 +29,11 @@ export default {
       isStart: false
     }
   },
+  computed: {
+    ...mapGetters([
+      'validator'
+    ])
+  },
   watch: {
     '$route.params.id': {
       handler: async function (id) {
@@ -40,7 +45,7 @@ export default {
     }
   },
   async created () {
-    if (this.isStart) return
+    if (this.isStart || this.validator.nodeID === this.$route.params.id) return
     await this.setValidator({ id: this.$route.params.id })
   },
   methods: {

@@ -48,6 +48,7 @@ async function setValidator ({ commit, getters }, { id }) {
       if (avatar) validator.avatar = avatar.avatar
     }
     commit(SET_VALIDATOR, { validator })
+    return true
   } catch (err) {
     return false
   }
