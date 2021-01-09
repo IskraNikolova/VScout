@@ -749,10 +749,13 @@ export default {
       }
 
       const res = await _getValidator({ id: this.filter })
-      if (res.data) {
-        this.$router.push(`/validator/${this.filter}`)
-        this.filter = ''
-        return
+      try {
+        if (res && res.data) {
+          this.$router.push(`/validator/${this.filter}`)
+          this.filter = ''
+          return
+        }
+      } catch (err) {
       }
 
       const subnet = this.getSubnet(this.filter)
