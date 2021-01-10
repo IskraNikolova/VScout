@@ -365,7 +365,7 @@ export default {
 
       this.isValidCode = await _isValidCode(this.vCode, this.nodeIDModel.trim())
       if (!this.vCode || !this.isValidCode) {
-        this.error = 'Invalid code! '
+        this.error = 'Invalid code!'
         return
       }
 

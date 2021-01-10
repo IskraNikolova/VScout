@@ -2,7 +2,7 @@
   <q-page>
     <error class="q-pr-sm" />
     <div class="row q-pt-sm q-pr-sm">
-      <div class="col-md-2 col-xs-12 col-xl-3 col-lg-3">
+      <div class="col-md-2 col-xs-12 col-xs-12 col-lg-3">
         <div class="q-pt-sm q-pl-sm">
           <div id="f-size12" class="q-pb-md text-medium text-white">NETWORK</div>
           <div style="text-transform: uppercase;" class="text-h6 text-purple">
@@ -34,9 +34,9 @@
         </div>
         <q-separator class="q-mt-sm q-mb-sm" />
         <div id="f-size12" class="q-pl-sm q-pb-sm q-pt-md text-medium text-white">VERSION DISTRIBUTION</div>
-        <node-version-chart />
+        <div style="max-width: 250px!important;"><node-version-chart /></div>
       </div>
-      <div class="col-md-10 col-xs-12  col-lg-9">
+      <div class="col-md-10 col-xs-12 col-xl-9 col-lg-9">
         <node />
         <network />
         <wrap-market />

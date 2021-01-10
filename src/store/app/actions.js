@@ -551,7 +551,7 @@ async function getNodeVersions (
       if (!color) color = '#000000'
       allCount += Number(nodeCount)
       const stake = getAvaFromnAva(stakeAmount)
-      nodesVersions.push({ version, count: nodeCount, stake: stake.toLocaleString(), color })
+      nodesVersions.push({ version, count: nodeCount, stake, color })
     }
     nodesVersions = nodesVersions.sort(compare)
     nodesVersions.all = allCount
