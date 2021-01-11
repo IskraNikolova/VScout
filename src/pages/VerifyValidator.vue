@@ -306,7 +306,6 @@ export default {
           this.isSuccessSend = true
         }
       } catch (err) {
-        console.log(err)
         this.$q.notify({
           message: 'Something Wrong! Try again!',
           color: 'white',

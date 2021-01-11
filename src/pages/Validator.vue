@@ -44,10 +44,10 @@ export default {
       immediate: true
     }
   },
-  async created () {
-    if (this.isStart || this.validator.nodeID === this.$route.params.id) return
-    await this.setValidator({ id: this.$route.params.id })
-  },
+  // async created () {
+  //   if (this.isStart || this.validator.nodeID === this.$route.params.id) return
+  //   await this.setValidator({ id: this.$route.params.id })
+  // },
   methods: {
     ...mapActions({
       setValidator: SET_VALIDATOR

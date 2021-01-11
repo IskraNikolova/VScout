@@ -6,15 +6,15 @@
         <q-item class="col-9">
           <avatar v-bind:avatar="getAvatar()" style="cursor:pointer;" @click="onClick(getLink())"/>
           <q-item-section>
-            <rank v-bind:rank="validator.rank" />
-            <name v-bind:name="getName()" v-bind:nodeID="validator.nodeID" v-bind:link="getLink()" />
+            <rank v-bind:rank="val.rank" />
+            <name v-bind:name="getName()" v-bind:nodeID="val.nodeID" v-bind:link="getLink()" />
             <owner v-bind:owner="rewardOwner" v-if="rewardOwner"/>
           </q-item-section>
         </q-item>
         <div class="col-3 q-pt-sm">
           <span class="text-subtitle2 q-mr-xs"><small style="opacity: 0.8;">UPTIME</small></span>
-          <q-badge :color="getColorUptime(validator.uptime)" class="text-medium q-ml-xs" style="font-size: 16px;padding: 7px">
-            <span style="margin: auto;">{{ getUpTime(validator.uptime) }}%</span>
+          <q-badge :color="getColorUptime(val.uptime)" class="text-medium q-ml-xs" style="font-size: 16px;padding: 7px">
+            <span style="margin: auto;">{{ getUpTime(val.uptime) }}%</span>
           </q-badge>
           <div class="q-mt-xs">
             <span class="text-subtitle2 q-mr-xs q-mt-sm"><small style="opacity: 0.8;">STATE</small></span>
@@ -26,13 +26,13 @@
             </small>
           </div>
           <span class="text-subtitle2"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
-          <span class="q-pl-xs" v-if="validator.percent !== 'NaN'">
-            {{ validator.percent }}<span class="text-accent text-medium"> %</span>
+          <span class="q-pl-xs" v-if="val.percent !== 'NaN'">
+            {{ val.percent }}<span class="text-accent text-medium"> %</span>
           </span>
           <br />
           <span class="text-subtitle2"><small style="opacity: 0.8;">STAKING PERIOD</small></span>
           <span class="q-pl-xs">
-            {{ getDurationL(validator.duration) }}
+            {{ getDurationL(val.duration) }}
           </span>
         </div>
       </div>
@@ -40,7 +40,7 @@
         v-if="getWebsite()"
         v-bind:website ="getWebsite()"
         v-bind:link="getLink()"
-        v-bind:nodeID="validator.nodeID"
+        v-bind:nodeID="val.nodeID"
       />
       <div class="q-pl-sm q-pt-sm">
         <i v-if="!more">{{ getLessBio(getBio()) }}</i>
@@ -48,17 +48,17 @@
         <span v-if="isEnav(getBio()) && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
         <span v-if="isEnav(getBio()) && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
       </div>
-      <div class="row" v-if="validator.version">
+      <div class="row" v-if="val.version">
         <div class="col-12">
         <info
           class="q-mt-md my-card dark-panel"
           style="border-radius: 10px;"
-          v-bind:version="validator.version"
-          v-bind:country="validator.country"
-          v-bind:continent="validator.continent"
-          v-bind:countryCode="validator.countryCode"
-          v-bind:lastReceived="validator.lastReceived"
-          v-bind:lastSent="validator.lastSent"
+          v-bind:version="val.version"
+          v-bind:country="val.country"
+          v-bind:continent="val.continent"
+          v-bind:countryCode="val.countryCode"
+          v-bind:lastReceived="val.lastReceived"
+          v-bind:lastSent="val.lastSent"
         />
         </div>
       </div>
@@ -76,7 +76,7 @@
           <delegate
             class="q-mt-md my-card dark-panel"
             style="border-radius: 10px;"
-            v-bind:validator="validator"
+            v-bind:validator="val"
           />
           <div class="q-mt-md q-pa-md my-card dark-panel"
           style="border-radius: 10px;">
@@ -104,7 +104,7 @@
           <reward
             class="q-mt-md my-card dark-panel"
             style="border-radius: 10px;"
-            v-bind:validator="validator"
+            v-bind:validator="val"
           />
           <delegations
             class="q-mt-md my-card dark-panel q-pa-md"
@@ -121,30 +121,30 @@
         <avatar
           v-bind:avatar="getAvatar()"
           style="cursor:pointer;"
-          @click="onClick(validator.link)"
+          @click="onClick(getLink())"
         />
         <q-item-section  class="q-mt-xl">
-          <rank v-bind:rank="validator.rank" />
+          <rank v-bind:rank="val.rank" />
         </q-item-section>
       </q-item>
       <q-item>
         <q-item-section>
           <name
-            v-bind:name="validator.name"
-            v-bind:nodeID="validator.nodeID"
-            v-bind:link="validator.link"
+            v-bind:name="getName()"
+            v-bind:nodeID="val.nodeID"
+            v-bind:link="getLink()"
           />
           <owner v-bind:owner="rewardOwner" v-if="rewardOwner"/>
           <q-separator class="q-mt-md q-mb-md"/>
           <q-item-label>
             <div>
-            <span v-if="validator.uptime > 0">
+            <span v-if="val.uptime > 0">
             <span class="text-subtitle2">
               <small style="opacity: 0.8;">UPTIME</small>
             </span>
             <span class="q-pl-xs">
-              <q-badge :color="getColorUptime(validator.uptime)">
-                {{ getUpTime(validator.uptime) }} %
+              <q-badge :color="getColorUptime(val.uptime)">
+                {{ getUpTime(val.uptime) }} %
               </q-badge>
             </span>
             <div class="q-mt-xs">
@@ -167,38 +167,38 @@
             <span class="text-subtitle2">
               <small style="opacity: 0.8;">NETWORK SHARE</small>
             </span>
-            <span class="q-pl-xs" v-if="validator.percent !== 'NaN'">
-              {{ validator.percent }}
+            <span class="q-pl-xs" v-if="val.percent !== 'NaN'">
+              {{ val.percent }}
               <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;"> %</span>
             </span>
           </div>
           </q-item-label>
         </q-item-section>
       </q-item>
-      <q-separator v-if="validator.bio"/>
+      <q-separator v-if="getBio()"/>
       <website
         class="q-pr-sm q-pl-sm"
-        v-if="validator.website"
-        v-bind:website ="validator.website"
-        v-bind:link="validator.link"
-        v-bind:nodeID="validator.nodeID"
+        v-if="getWebsite()"
+        v-bind:website ="getWebsite()"
+        v-bind:link="getLink()"
+        v-bind:nodeID="val.nodeID"
       />
       <div style="max-width: 330px;" class="q-pl-sm q-pt-md q-pb-md">
-        <i v-if="!more">{{ getLessBio(validator.bio) }}</i>
-        <i v-else>{{ validator.bio }}</i>
-        <span v-if="isEnav(validator.bio) && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
-        <span v-if="isEnav(validator.bio) && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
+        <i v-if="!more">{{ getLessBio(getBio()) }}</i>
+        <i v-else>{{ getBio() }}</i>
+        <span v-if="isEnav(getBio()) && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
+        <span v-if="isEnav(getBio()) && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
       </div>
-      <q-separator v-if="validator.version"/>
-      <div class="row" v-if="validator.version">
+      <q-separator v-if="val.version"/>
+      <div class="row" v-if="val.version">
         <info
           flat
-          v-bind:version="validator.version"
-          v-bind:country="validator.country"
-          v-bind:continent="validator.continent"
-          v-bind:countryCode="validator.countryCode"
-          v-bind:lastReceived="validator.lastReceived"
-          v-bind:lastSent="validator.lastSent"
+          v-bind:version="val.version"
+          v-bind:country="val.country"
+          v-bind:continent="val.continent"
+          v-bind:countryCode="val.countryCode"
+          v-bind:lastReceived="val.lastReceived"
+          v-bind:lastSent="val.lastSent"
         />
       </div>
       <q-separator/>
@@ -213,12 +213,12 @@
         <q-separator />
         <delegate
           flat class="col-12"
-          v-bind:validator="validator"
+          v-bind:validator="val"
         />
         <q-separator />
         <reward
           flat class="col-12"
-          v-bind:validator="validator"
+          v-bind:validator="val"
         />
       </div>
       <q-separator />
@@ -291,78 +291,96 @@ export default {
     Website: () => import('components/validator/website.vue'),
     ProgressBarValidateSession: () => import('components/progress-bar-validatе-session.vue')
   },
+  watch: {
+    validator: {
+      handler: async function (v) {
+        this.val = v
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   computed: {
     ...mapGetters([
-      'validator'
+      'validator',
+      'validatorById'
     ]),
     delegators: function () {
-      if (!this.validator.delegators) return []
-      return this.validator.delegators
+      if (!this.val.delegators) return []
+      return this.val.delegators
     },
     delegateStake: function () {
-      if (!this.validator.delegateStake) return ''
-      return this.validator
+      if (!this.val.delegateStake) return ''
+      return this.val
         .delegateStake
     },
     startTime: function () {
-      if (!this.validator.startTime) return ''
-      return this.validator
+      if (!this.val.startTime) return ''
+      return this.val
         .startTime
     },
     endTime: function () {
-      if (!this.validator.endTime) return ''
-      return this.validator
+      if (!this.val.endTime) return ''
+      return this.val
         .endTime
     },
     txID: function () {
-      if (!this.validator.txID) return ''
-      return this.validator
+      if (!this.val.txID) return ''
+      return this.val
         .txID
     },
     stakeAmount: function () {
-      if (!this.validator.stakeAmount) return ''
-      return this.validator
+      if (!this.val.stakeAmount) return ''
+      return this.val
         .stakeAmount
     },
     state: function () {
-      if (!this.validator.connected) return ''
-      return this.validator
+      if (!this.val.connected) return ''
+      return this.val
         .connected
     },
     totalStakeAmount: function () {
-      if (!this.validator.totalStakeAmount) return ''
-      return this.validator
+      if (!this.val.totalStakeAmount) return ''
+      return this.val
         .totalStakeAmount
     },
     rewardOwner: function () {
-      if (!this.validator.rewardOwner) return ''
-      const result = this.validator.rewardOwner.addresses
+      if (!this.val.rewardOwner) return ''
+      const result = this.val.rewardOwner.addresses
       if (result) return result[0]
       return ''
     }
   },
   created () {
-    if (!this.validator) this.$router.push('/search/' + this.$route.params.id)
+    this.val = this.getValidator()
+    if (!this.val) this.$router.push('/search/' + this.$route.params.id)
   },
   methods: {
+    getValidator () {
+      if (this.id) {
+        return this.validatorById(this.id)
+      }
+      return this.validator
+    },
     getBio () {
-      if (!this.validator.bio) return
-      return this.validator.bio
+      if (this.bio) return this.bio
+      return this.val.bio
     },
     getName () {
-      if (!this.validator.name) return
-      return this.validator.name
+      if (this.name) return this.name
+      return this.val.name
     },
     getLink () {
-      if (!this.validator.link) return
-      return this.validator.link
+      if (this.link) return this.link
+      return this.val.link
     },
     getAvatar () {
-      return this.validator.avatar ? this.validator.avatar : this.validator.avatarUrl
+      if (this.avatarUrl) return this.avatarUrl
+      return this.val.avatar ? this.val.avatar : this.val.avatarUrl
     },
     getWebsite () {
-      if (!this.validator.website) return
-      return this.validator.website
+      if (this.website) return this.website
+      return this.val.website
     },
     getDurationL (val) {
       if (!val) return
@@ -383,7 +401,7 @@ export default {
       return fromNow(date)
     },
     async getRating () {
-      const events = await _getPastRatingEvents(this.validator.nodeID)
+      const events = await _getPastRatingEvents(this.val.nodeID)
       console.log(events)
     },
     getUpTime (val) {
@@ -408,7 +426,34 @@ export default {
   },
   data () {
     return {
-      more: false
+      more: false,
+      val: {}
+    }
+  },
+  props: {
+    id: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: false
+    },
+    avatarUrl: {
+      type: String,
+      required: false
+    },
+    bio: {
+      type: String,
+      required: false
+    },
+    link: {
+      type: String,
+      required: false
+    },
+    website: {
+      type: String,
+      required: false
     }
   }
 }
