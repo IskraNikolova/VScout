@@ -707,6 +707,7 @@ export default {
           }
         })
       }
+
       return data
     },
     getRewardOwner (val) {

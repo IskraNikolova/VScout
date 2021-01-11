@@ -2,25 +2,25 @@
   <q-page>
     <error class="q-pr-sm" />
     <div class="row q-pt-sm q-pr-sm">
-      <div class="col-md-2 col-xs-12 col-xs-12 col-lg-3">
+      <div class="col-md-2 col-xs-12">
         <div class="q-pt-sm q-pl-sm">
-          <div id="f-size12" class="q-pb-md text-medium text-white">NETWORK</div>
-          <div style="text-transform: uppercase;" class="text-h6 text-purple">
+          <div class="q-pb-md text-medium text-white label-title">NETWORK</div>
+          <div style="text-transform: uppercase;font-size: max(1.1vw, 12px);" class="text-purple">
             {{ nodeInfo.networkName }}
           </div>
-          <div class="q-pt-md" id="f-size12">
+          <div class="q-pt-md label-title">
             <span class="text-medium text-white">Network ID</span>
-            <span class="text-purple">
+            <span class="text-purple label-title">
               {{ nodeInfo.networkID }}
             </span>
           </div>
-          <div id="f-size12">
-            <span class="text-medium text-white">Version</span>
-            <span class="text-purple">
+          <div>
+            <span class="text-medium text-white label-title">Version</span>
+            <span class="text-purple label-title">
               {{ nodeInfo.version ? nodeInfo.version : nodeInfo.nodeVersion }}
             </span>
           </div>
-          <div id="f-size12" class="q-pb-md q-pt-md text-medium text-white">PEERS</div>
+          <div class="q-pb-md q-pt-md text-medium text-white label-title">PEERS</div>
           <div @click="$router.push('/peers/' + nodeID)"><MapChart
             style="z-index: 30;"
             :countryData="peersMap"
@@ -33,10 +33,10 @@
           /></div>
         </div>
         <q-separator class="q-mt-sm q-mb-sm" />
-        <div id="f-size12" class="q-pl-sm q-pb-sm q-pt-md text-medium text-white">VERSION DISTRIBUTION</div>
+        <div class="q-pl-sm q-pb-sm q-pt-md text-medium text-white label-title">VERSION DISTRIBUTION</div>
         <div style="max-width: 250px!important;"><node-version-chart /></div>
       </div>
-      <div class="col-md-10 col-xs-12 col-xl-9 col-lg-9">
+      <div class="col-md-10 col-xs-12">
         <node />
         <network />
         <wrap-market />
@@ -128,4 +128,10 @@ export default {
   width: 190vw;
   max-width: 190px;
  }
+ .label-title {
+  font-size: max(0.7vw, 12px);
+ }
+  .label-title2 {
+    font-size: max(0.55vw, 12px);
+  }
 </style>

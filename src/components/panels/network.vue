@@ -6,25 +6,25 @@
   >
     <div class="row">
       <div v-if="isBlockchainView" class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">
+        <div class="q-pb-md text-medium label-title">
           BLOCKCHAIN
         </div>
         <div class="q-mb-md">
           <div class="q-pb-md q-pr-md ">
-            <span class="text-h6 text-panel">{{ currentBlockchain.name }}</span>
+            <span class="text-panel" style="font-size: max(1.2vw, 12px);">{{ currentBlockchain.name }}</span>
             <span style="text-transform: uppercase; font-size: 85%;" :class="'q-ml-md text-' + getColor(currentBlockchain.status)">{{ currentBlockchain.status }}</span>
             <tooltip-style v-bind:text="getStatusInfo(currentBlockchain.status)" />
           </div>
         </div>
-        <div id="f-size12" v-if="isDefaultSubnetID(currentBlockchain.id)">
+        <div v-if="isDefaultSubnetID(currentBlockchain.id)">
           <span class="text-medium">Height</span>
           <span class="text-panel">
             {{ height }}
           </span>
         </div>
-        <div id="f-size12" style="max-width: 340px;">
-          <span class="text-medium">Blockchain ID</span>
-          <span class="text-panel" style="cursor:pointer;" @click="$router.push(`/blockchain/${currentBlockchain.id}`)">
+        <div>
+          <span class="text-medium label-title">Blockchain ID</span>
+          <span class="text-panel label-title" style="cursor:pointer;" @click="$router.push(`/blockchain/${currentBlockchain.id}`)">
             {{ currentBlockchain.id }}
           </span>
         </div>
@@ -35,29 +35,29 @@
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div v-if="isBlockchainView" class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">
+        <div class="q-pb-md text-medium label-title">
           SUBNET ID
         </div>
-        <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultSubnetID(currentBlockchain.subnetID)">
+        <div class="q-pt-xs" style="cursor: pointer;font-size: max(0.73vw, 12px);" v-if="isDefaultSubnetID(currentBlockchain.subnetID)">
           Default Subnet
         </div>
-        <div class="q-pb-md text-panel" style="font-size: 17px;cursor: pointer;max-width: 300px;" @click="$router.push(`/subnet/${currentBlockchain.subnetID}`)">
+        <div class="q-pb-md text-panel" style="cursor: pointer;font-size: max(0.73vw, 12px);" @click="$router.push(`/subnet/${currentBlockchain.subnetID}`)">
           <small>{{ currentBlockchain.subnetID }}</small>
         </div>
-        <div id="f-size12">
-          <span class="text-medium">VM ID</span>
-          <div class="text-panel" style="max-width: 360px;cursor: pointer;" @click="goToDoc(currentBlockchain.vmDocumentation)">
+        <div>
+          <span class="text-medium label-title">VM ID</span>
+          <div class="text-panel label-title" style="cursor: pointer;" @click="goToDoc(currentBlockchain.vmDocumentation)">
             {{ currentBlockchain.vmID }} ({{ currentBlockchain.vmName }})
           </div>
         </div>
       </div>
       <div v-else class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">SUBNETWORK (ID)</div>
+        <div class="q-pb-md text-medium label-title">SUBNETWORK (ID)</div>
         <div>
-          <div class="q-pt-xs" style="cursor: pointer;" v-if="isDefaultSubnetID(currentSubnet.id)">
+          <div class="q-pt-xs label-title" style="cursor: pointer;" v-if="isDefaultSubnetID(currentSubnet.id)">
             Default Subnet
           </div>
-          <div class="q-pb-md" style="cursor: pointer;" @click="$router.push(`/subnet/${currentSubnet.id}`)">
+          <div class="q-pb-md label-title" style="cursor: pointer;" @click="$router.push(`/subnet/${currentSubnet.id}`)">
             <span class="text-panel">{{ currentSubnet.id }}</span>
           </div>
         </div>
@@ -72,7 +72,7 @@
       <div class="col-md-3 col-xs-10">
         <div v-if="isBlockchainView">
           <!--<EVM-info v-bind:bcID="currentBlockchain.id" v-if="currentBlockchain.vmName === 'evm'"/>-->
-          <div id="f-size12" class="q-pb-md text-medium">ASSETS</div>
+          <div class="q-pb-md text-medium label-title">ASSETS</div>
             <div class="q-pb-md q-pr-md ">
               <span class="text-h6 text-panel">
                 <animated-number
@@ -85,7 +85,7 @@
           <div class="q-pt-xs">
             <q-btn-dropdown
               outline
-              size="xs"
+              size="sm"
               no-caps
               label="Smart Digital Assets"
             >
@@ -118,10 +118,10 @@
           </div>
         </div>
         <div v-else>
-          <div id="f-size12" class="q-pb-md text-medium">CONTROL KEYS</div>
+          <div class="q-pb-md text-medium label-title">CONTROL KEYS</div>
           <div >
             <div class="col-4 q-mt-xs" id="f-size12">
-              <span class="text-h6 text-panel"> {{ currentSubnet.threshold }}</span> Threshold
+              <span class="text-panel label-title"> {{ currentSubnet.threshold }}</span> Threshold
             </div>
             <q-btn-dropdown
               size="xs" no-caps
@@ -276,5 +276,11 @@ export default {
   #logo {
     width:45vw;
     max-width:45px;
+  }
+  .label-title {
+    font-size: max(0.7vw, 12px);
+   }
+  .label-title2 {
+    font-size: max(0.55vw, 12px);
   }
 </style>

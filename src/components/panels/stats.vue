@@ -1,18 +1,18 @@
 <template>
   <div class="row">
     <div class="col-md-3 col-xs-10">
-    <div id="f-size12" class="q-pb-md text-medium">STAKERS STATS</div>
-        <div class="text-h6">
+    <div class="q-pb-md text-medium label-title">STAKERS STATS</div>
+        <div>
         <div
-          class="text-medium q-mt-sm"
-          style="border: solid 0.5px;border-radius: 3px;max-height: 30px;max-width: 70px;font-size: 60%;color: #9c929c;text-align: center;padding-bottom: 2px;"
+          class="text-medium q-mt-sm label-title"
+          style="border: solid 0.5px;border-radius: 3px;max-width: 120px;color: #9c929c;text-align: center;padding-bottom: 2px;"
           @mouseover="statOver=true"
           @mouseleave="statOver=false"
         >
         <div>
-            <span>{{ statsMode }}</span>
-            <q-icon v-if="statMenu" name="keyboard_arrow_up" />
-            <q-icon v-else name="keyboard_arrow_down" />
+          <span>{{ statsMode }}</span>
+          <q-icon v-if="statMenu" name="keyboard_arrow_up" />
+          <q-icon v-else name="keyboard_arrow_down" />
         </div>
         <q-menu
             :dark="appTheme==='dark'"
@@ -50,44 +50,42 @@
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">NEW STAKING LAST {{ statsMode }}</div>
+        <div class="q-pb-md text-medium label-title">NEW STAKING LAST {{ statsMode }}</div>
         <div>
-          <span class="text-h6">
-            <span class="text-panel"><small>{{ incomingValidators }}</small></span><span style="font-size: 10px;"><small> VALIDATORS</small></span> /
-             <span class="text-panel"><small>{{ incomingDelegations }}</small></span><span style="font-size: 10px;"><small> DELEGATIONS</small></span>
-          </span>
+          <span style="font-size: max(1.2vw, 12px);" class="text-panel">{{ incomingValidators }}</span><span class="label-title2"> VALIDATORS</span>
+          <span style="font-size: max(1.2vw, 12px);" class="text-panel"> {{ incomingDelegations }}</span><span class="label-title2"> DELEGATIONS</span>
         </div>
         <div>
-          <span style="font-size: 10px;">STAKE </span>
+          <span class="label-title2">STAKE </span>
           <animated-number
+            style="font-size: max(0.8vw, 12px);"
             class="text-purple"
             :value="incomingStake"
             :formatValue="format"
             :duration="3000"
           />
-          <span style="font-size: 12px;"><small> AVAX</small></span>
+          <span class="label-title2"><small> AVAX</small></span>
         </div>
       </div>
       <div class="col-1 q-pt-md icon">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">ENDING NEXT {{ statsMode }}</div>
+        <div class="q-pb-md text-medium label-title">ENDING NEXT {{ statsMode }}</div>
         <div>
-          <span class="text-h6">
-            <span class="text-panel"><small>{{ outcomingValidators }}</small></span><span style="font-size: 10px;"><small> VALIDATORS</small></span> /
-             <span class="text-panel"><small>{{ outcomingDelegations }}</small></span><span style="font-size: 10px;"><small> DELEGATIONS</small></span>
-          </span>
+          <span style="font-size: max(1.2vw, 12px);" class="text-panel">{{ outcomingValidators }}</span><span class="label-title2"> VALIDATORS</span>
+          <span style="font-size: max(1.2vw, 12px);" class="text-panel"> {{ outcomingDelegations }}</span><span class="label-title2"> DELEGATIONS</span>
         </div>
         <div>
-          <span style="font-size: 10px;">STAKE </span>
+          <span class="label-title2">STAKE </span>
           <animated-number
+            style="font-size: max(0.8vw, 12px);"
             class="text-purple"
             :value="outcomingStake"
             :formatValue="format"
             :duration="3000"
           />
-          <span style="font-size: 12px;"><small> AVAX</small></span>
+          <span class="label-title2"><small> AVAX</small></span>
         </div>
       </div>
     </div>
@@ -275,4 +273,10 @@ export default {
    width:30vw;
    max-width:30px;
  }
+ .label-title {
+    font-size: max(0.7vw, 12px);
+  }
+  .label-title2 {
+    font-size: max(0.55vw, 10px);
+  }
 </style>

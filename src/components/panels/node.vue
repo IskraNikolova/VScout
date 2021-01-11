@@ -4,16 +4,16 @@
     <div class="row">
       <div class="col-md-3 col-xs-10">
         <div v-if="isValidatorShow(nodeID)" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
-          <div id="f-size12" class="q-pb-md text-medium">NODE - VALIDATOR</div>
-          <div class="text-h7 text-panel q-pb-md q-pt-xs">{{ formatNodeID }}</div>
+          <div class="q-pb-md text-medium label-title">NODE - VALIDATOR</div>
+          <div class="text-h7 text-panel q-pb-md q-pt-xs" style="font-size: max(1vw, 12px);">{{ formatNodeID }}</div>
           <tooltip-style v-bind:text="'Copy to Clipboard'" />
         </div>
         <div v-else>
-          <div id="f-size12" class="q-pb-md text-medium">NODE</div>
-          <div class="text-h7 text-panel q-pb-md q-pt-xs">{{ formatNodeID }}</div>
+          <div class="q-pb-md text-medium label-title">NODE</div>
+          <div class="text-h7 text-panel q-pb-md q-pt-xs" style="font-size: max(1vw, 12px);">{{ formatNodeID }}</div>
         </div>
         <div class="q-pt-md">
-          <q-btn :color="color" no-caps outline size="xs" label="Check Health" @click="onOpenHealth"/>
+          <q-btn :color="color" no-caps outline size="sm" label="Check Health" @click="onOpenHealth"/>
           <node-health-dialog ref="nodeHealthDialog" v-bind:validator="validatorById(nodeID) ? validatorById(nodeID) : {}"/>
         </div>
       </div>
@@ -23,8 +23,8 @@
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md" />
       <div class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">PEER CONNECTIONS</div>
-        <div class="q-pb-md">
+        <div class="q-pb-md text-medium label-title">PEER CONNECTIONS</div>
+        <div class="q-pb-md" style="font-size: max(0.8vw, 12px);">
          <small>Connected with</small>
          <div class="text-panel">
             <animated-number
@@ -34,21 +34,21 @@
             />
          </div>
         </div>
-        <q-btn outline label="Peers" no-caps size="xs" @click="$router.push('/peers/' + nodeID)" />
+        <q-btn outline label="Peers" no-caps size="sm" @click="$router.push('/peers/' + nodeID)" />
       </div>
       <div class="col-1 q-pt-md icon">
         <img src="~assets/peers.svg" id="logo2"/>
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">
+        <div class="q-pb-md text-medium label-title">
           ENDPOINT
           <q-spinner-ball v-if="ui.doesItConnect" />
         </div>
         <div class="q-pb-md">
-          <div class="text-h7 text-panel">{{ networkEndpoint.name }}</div>
+          <div class="text-h7 text-panel" style="font-size: max(1vw, 12px);">{{ networkEndpoint.name }}</div>
         </div>
-        <div id="f-size12" class="q-mt-md">
+        <div class="q-mt-md label-title">
           <span class="q-pt-xl">{{ networkEndpoint.urlView }}</span>
         </div>
       </div>
@@ -141,4 +141,7 @@ export default {
    width:30vw;
    max-width:30px;
  }
+ .label-title {
+    font-size: max(0.7vw, 12px);
+  }
 </style>

@@ -1,9 +1,9 @@
 <template>
     <div class="row">
       <div class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">VALIDATORS / DELEGATIONS</div>
+        <div class="q-pb-md text-medium label-title">VALIDATORS / DELEGATIONS</div>
         <div>
-          <span class="text-h5 text-panel">
+          <span class="text-panel" style="font-size: max(1.2vw, 12px);">
             <animated-number
               :value="validatorsCount"
               :formatValue="format"
@@ -15,10 +15,10 @@
               :duration="3000"
             />
           </span>
-          <span style="font-size: 13px;"> <small > ACTIVE</small></span>
+          <span class="label-title2"> <small > ACTIVE</small></span>
         </div>
-        <small style="opacity: 0.7;">
-          <span class="text-panel text-medium">
+        <small>
+          <span style="opacity: 0.5;font-size: max(0.8vw, 12px);">
             <animated-number
               :value="pendingValidators.length"
               :formatValue="format"
@@ -29,7 +29,7 @@
             :value="pendingDelegators.length"
             :formatValue="format"
             :duration="3000"
-          /> </span> <span style="font-size: 13px;"> <small> PENDING</small></span>
+          /> </span> <span class="label-title2"> <small> PENDING</small></span>
         </small>
       </div>
       <div class="col-1 q-pt-md icon">
@@ -37,27 +37,24 @@
       </div>
       <q-separator  class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">TOTAL STAKE</div>
-        <div class="text-h6">
+        <div class="q-pb-md text-medium label-title">TOTAL STAKE</div>
+        <div style="font-size: max(1vw, 12px);">
             <span class="text-panel">
-              <small>
-                <animated-number
-                  :value="allStake"
-                  :formatValue="formatToAvax"
-                  :duration="3000"
-                />
-              </small>
+              <animated-number
+                :value="allStake"
+                :formatValue="formatToAvax"
+                :duration="3000"
+              />
             </span>
-            <span style="font-size: 13px;"><small> AVAX</small></span>
+            <span class="label-title2"><small> AVAX</small></span>
         </div>
-        <small style="opacity: 0.7;">
-           <animated-number
-              class="text-panel text-medium"
+        <small>
+           <span style="font-size: max(0.8vw, 12px);" class="text-panel"><animated-number
               :value="getReward(stakedAVAX)"
               :formatValue="getFormatReward"
               :duration="3000"
-            />
-           <span style="font-size: 13px;">
+            /></span>
+           <span class="label-title2">
              <small> {{ getISO(currentCurrency) }}</small>
            </span>
         </small>
@@ -67,29 +64,25 @@
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
-       <div id="f-size12" class="q-pb-md text-medium">VALIDATION / DELEGATED STAKE</div>
-       <div class="text-h6" style="min-width: 320px;">
+       <div class="q-pb-md text-medium label-title">VALIDATION / DELEGATED STAKE</div>
+       <div style="min-width: 320px;font-size: max(1vw, 13px);">
         <span class="text-panel">
-        <small>
             <animated-number
               :value="valStake"
               :formatValue="formatToAvax"
               :duration="2000"
             />
-          </small>
           /
-          <small>
             <animated-number
               :value="delStake"
               :formatValue="formatToAvax"
               :duration="2000"
             />
-          </small>
          </span>
-        <span style="font-size: 13px;"> <small> AVAX</small></span>
+        <span class="label-title2"> <small> AVAX</small></span>
       </div>
-      <small style="opacity: 0.7;">
-        <span class="text-panel text-medium">
+      <small class="q-mt-md">
+        <span style="font-size: max(0.8vw, 12px);" class="text-panel">
           <animated-number
             :value="getReward(validatedStake)"
             :formatValue="getFormatReward"
@@ -101,7 +94,7 @@
             :duration="3000"
           />
         </span>
-        <span style="font-size: 13px;">
+        <span class="label-title2">
           <small> {{ getISO(currentCurrency) }}</small>
         </span>
         </small>
@@ -197,4 +190,10 @@ export default {
    width:30vw;
    max-width:30px;
  }
+ .label-title {
+    font-size: max(0.7vw, 12px);
+  }
+  .label-title2 {
+    font-size: max(0.55vw, 12px);
+  }
 </style>

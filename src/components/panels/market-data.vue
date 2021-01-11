@@ -1,11 +1,11 @@
 <template>
     <div class="row">
       <div class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium ">PRICE</div>
-        <div class="text-h5 text-panel q-pb-sm">
+        <div class="q-pb-md text-medium label-title">PRICE</div>
+        <div class="text-panel q-pb-sm" style="font-size: max(1.5vw, 12px);">
           <small>{{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }} | AVAX/{{ getISO(currentCurrency) }}</small>
         </div>
-        <div v-if="currentCurrency !== 'btc'">
+        <div v-if="currentCurrency !== 'btc'" style="font-size: max(0.73vw, 12px);">
           <small><span style="opacity: 0.7;">{{ getSymbol('btc') }} {{ currenciesPriceList[`${'btc'}`] }} | AVAX/{{ getISO('btc') }}</span>
               <span v-if="changePercentage24h[`${'btc'}`] > 0" class="text-positive text-medium">
                 +{{ changePercentage24h[`${'btc'}`] }} %
@@ -17,7 +17,7 @@
               </span>
             </small>
         </div>
-        <div class="text-panel" v-else>
+        <div class="text-panel" v-else style="font-size: max(0.73vw, 12px);">
           <small>
             <span style="opacity: 0.7;">{{ getSymbol('usd') }} {{ currenciesPriceList[`${'usd'}`] }} | AVAX/{{ getISO('usd') }}</span>
             <span v-if="changePercentage24h[`${'usd'}`] > 0" class="text-positive text-medium">
@@ -37,15 +37,15 @@
       <q-separator class="q-mt-md q-mb-md lt-md" />
       <div class="col-md-3 col-xs-10">
         <div>
-          <div id="f-size12" class="q-pb-md text-medium">BLOCK HEIGHT</div>
-          <div class="text-h7 text-panel q-pb-md q-pt-xs">
+          <div class="q-pb-md text-medium label-title">BLOCK HEIGHT</div>
+          <div class="text-h7 text-panel q-pb-md q-pt-xs" style="font-size: max(1vw, 12px);">
             <animated-number
               :value="height"
               :formatValue="format"
               :duration="3000"
             />
           </div>
-          <div id="f-size12">
+          <div id="f-size12" style="font-size: max(0.65vw, 12px);">
             <span>Last accepted block on P-Chain</span>
           </div>
         </div>
@@ -55,14 +55,14 @@
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md" />
       <div class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">24H CHANGE</div>
-        <div class="q-pb-md">
+        <div class="q-pb-md text-medium label-title">24H CHANGE</div>
+        <div class="q-pb-md" style="font-size: max(0.8vw, 12px);">
           <span class="text-positive" v-if="change24h[`${currentCurrency}`] > 0">{{ change24h[`${currentCurrency}`] }}</span>
           <span class="text-negative" v-else>{{ change24h[`${currentCurrency}`] }}</span>
           <span class="text-positive" v-if="changePercentage24h[`${currentCurrency}`] > 0"> +{{ changePercentage24h[`${currentCurrency}`] }} %</span>
           <span class="text-negative" v-else> {{ changePercentage24h[`${currentCurrency}`] }} %</span>
         </div>
-        <div id="f-size12">
+        <div id="f-size12" style="font-size: max(0.65vw, 12px);">
           <span class="text-positive">24h High</span>
           <span>
             {{ high24h[`${currentCurrency}`] }}
@@ -122,5 +122,8 @@ export default {
  .custom-icon {
    width:30vw;
    max-width:30px;
+ }
+ .label-title {
+  font-size: max(0.7vw, 12px);
  }
 </style>

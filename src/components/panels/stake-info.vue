@@ -1,15 +1,15 @@
 <template>
   <div class="row">
       <div class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">CURRENT SUPPLY</div>
-        <div class="text-h6">
-          <small class="text-panel">
+        <div class="q-pb-md text-medium label-title">CURRENT SUPPLY</div>
+        <div style="font-size: max(1.1vw, 12px);">
+          <span class="text-panel">
             <animated-number
               :value="getCurrentSupply()"
               :formatValue="format"
               :duration="3000"
             />
-          </small>
+          </span>
           <span style="font-size: 13px;"><small> AVAX</small></span>
         </div>
       </div>
@@ -18,11 +18,11 @@
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">STAKING RATIO</div>
+        <div class="q-pb-md text-medium label-title">STAKING RATIO</div>
         <div>
-          <span class="text-h6 text-panel">
-            <small>{{ stakingRatio }}</small>
-          </span> %
+          <span class="text-panel" style="font-size: max(1.1vw, 12px);">
+            {{ stakingRatio }}
+          </span><span class="label-title"> %</span>
         </div>
       </div>
       <div class="col-1 q-pt-md icon">
@@ -30,18 +30,14 @@
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
-        <div id="f-size12" class="q-pb-md text-medium">REWARD RATE</div>
+        <div class="q-pb-md text-medium label-title">REWARD RATE</div>
         <div>
           <span>
-            <small>
-              <span style="opacity: 0.7;">MIN </span>
-            </small>
-            <span class="text-h6 text-panel"><small>{{ minPercent }}</small></span> %
+            <span style="opacity: 0.7;" class="label-title2">MIN </span>
+            <span class="text-panel" style="font-size: max(1.1vw, 12px);">{{ minPercent }}</span> <span class="label-title"> %</span>
             &nbsp;&nbsp;
-            <small>
-              <span style="opacity: 0.7;">MAX </span>
-            </small>
-            <span class="text-h6 text-panel"><small>{{ maxPercent }}</small></span> %
+            <span style="opacity: 0.7;" class="label-title2">MAX </span>
+            <span class="text-panel" style="font-size: max(1.1vw, 12px);">{{ maxPercent }}</span> <span class="label-title"> %</span>
           </span>
         </div>
       </div>
@@ -119,4 +115,10 @@ export default {
    width:30vw;
    max-width:30px;
  }
+ .label-title {
+    font-size: max(0.7vw, 12px);
+  }
+  .label-title2 {
+    font-size: max(0.55vw, 12px);
+  }
 </style>
