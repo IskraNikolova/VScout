@@ -231,7 +231,6 @@ export default {
       )
 
       rewardNAvax = delegation.result
-
       this.potentialYield = this.getFormatAva(getAvaFromnAva(rewardNAvax))
     }
   }

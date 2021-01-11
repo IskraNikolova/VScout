@@ -1,7 +1,9 @@
 const BigNumber = require('bignumber.js')
 
 export function getAvaFromnAva (v) {
-  return parseFloat(v) / 10 ** 9
+  const value = new BigNumber(v)
+  const result = value.dividedBy(10 ** 9)
+  return result.toNumber()
 }
 
 export function getPriceFromnAvax (v, d) {
