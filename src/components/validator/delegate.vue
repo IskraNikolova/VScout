@@ -214,6 +214,8 @@ export default {
     },
     calculate () {
       if (!this.validator.delegationFee) return
+      else if (this.currentSupply < 370000000) return
+
       if (this.avax < 25) {
         this.potentialYield = 0
         return
@@ -224,7 +226,6 @@ export default {
         this.avax,
         this.currentSupply
       )
-
       const delegation = substractDelegationFee(
         rewardNAvax,
         this.validator.delegationFee

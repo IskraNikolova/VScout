@@ -1,11 +1,9 @@
 const units = require('./../utils/constants.js')
 const BigNumber = require('bignumber.js')
 
-export const reward = (stakeTime, stakedAmount, currentSupply) => {
+export const reward = (stakeTime, stakedAmount, currentSupplyBig) => {
   // 365 * 24 * 60
   const maxStakePeriod = new BigNumber(units.maximumStakingDuration)
-
-  const currentSupplyBig = new BigNumber(currentSupply)
 
   // stakeTime * 24 * 60
   let duration = units.stakeDuration(stakeTime)

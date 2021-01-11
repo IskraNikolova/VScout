@@ -30,7 +30,7 @@ const mutations = {
     state.txHash = txHash
   },
   [GET_CURRENT_SUPPLY]: (state, { currentSupply }) => {
-    state.currentSupply = currentSupply
+    if (currentSupply > 370000000) state.currentSupply = currentSupply
   },
   [SET_NETWORK_STATUS]: (state, { hasNetworkConnection }) => {
     state.hasNetworkConnection = hasNetworkConnection
