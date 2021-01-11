@@ -134,6 +134,7 @@ async function initApp (
         dispatch(GET_NODE_INFO, {})
       ])
     } catch (err) {
+      window.localStorage.clear()
     }
   }, 17000)
 }
