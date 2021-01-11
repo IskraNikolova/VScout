@@ -137,6 +137,16 @@
           <span style="margin-left: -60px!important;">VALIDATOR (NAME / NODE ID)</span>
         </q-th>
       </template>
+      <template v-slot:header-cell-delegations="props">
+        <q-th :props="props">
+          <q-icon
+            size="1.5em"
+            name="group"
+          >
+          <tooltip-style v-bind:text="'Delegations'" />
+          </q-icon>
+        </q-th>
+      </template>
       <template v-slot:body="props">
         <q-tr :props="props" auto-width>
           <q-td
@@ -504,6 +514,14 @@ export default {
           headerClasses: 'text-medium'
         },
         {
+          name: 'delegations',
+          align: 'left',
+          label: 'DELEGATIONS',
+          field: row => this.getDelators(row.delegators),
+          format: (val, row) => `D: ${val}`,
+          style: 'font-size: 12px;letter-spacing: 2px;'
+        },
+        {
           name: 'version',
           align: 'left',
           label: 'VERSION',
@@ -713,6 +731,10 @@ export default {
     getRewardOwner (val) {
       if (!val) return ''
       return val.addresses[0]
+    },
+    getDelators (val) {
+      if (!val) return 0
+      return val.length
     },
     exportTable () {
       const content = [this.columns.map(col => wrapCsvValue(col.label))].concat(
