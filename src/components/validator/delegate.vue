@@ -213,6 +213,7 @@ export default {
       return this.getLocalString(val)
     },
     calculate () {
+      if (!this.validator.delegationFee) return
       if (this.avax < 25) {
         this.potentialYield = 0
         return
