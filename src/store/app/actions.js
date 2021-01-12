@@ -10,6 +10,7 @@ import {
   INIT_ENDPOINT,
   GET_INFO_PEERS,
   SET_STAKED_AVAX,
+  SET_IS_INIT_APP,
   GET_BLOCKCHAINS,
   UPDATE_VALIDATOR,
   GET_NODE_VERSIONS,
@@ -100,8 +101,12 @@ import {
 } from './../../utils/constants.js'
 
 async function initApp (
-  { dispatch, getters }) {
+  { dispatch, getters, commit }) {
   try {
+    if (getters.isInit) {
+      window.localStorage.clear()
+      commit(SET_IS_INIT_APP, { isInit: false })
+    }
     await Promise.all([
       dispatch(INIT_ENDPOINT),
       dispatch(GET_NODE_VERSIONS),
