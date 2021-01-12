@@ -10,10 +10,6 @@ export function blockchains (state) {
   return state.blockchains
 }
 
-export function isNotInit (state) {
-  return state.isNotInit
-}
-
 export function blockchainByID (state) {
   return (id) => state
     .blockchains

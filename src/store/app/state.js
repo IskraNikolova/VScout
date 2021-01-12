@@ -2,7 +2,6 @@ const { network } = require('./../../modules/config').default
 
 export default function () {
   return {
-    isNotInit: false,
     theme: 'dark',
     peersMap: {},
     inData: {},

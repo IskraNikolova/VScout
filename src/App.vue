@@ -6,6 +6,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+// import { resetState } from '../store'
 
 import {
   INIT_APP,

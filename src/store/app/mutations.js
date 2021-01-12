@@ -17,7 +17,6 @@ import {
   SET_STAKED_AVAX,
   GET_BLOCKCHAINS,
   UPDATE_VALIDATOR,
-  SET_IS_INIT_APP,
   GET_NODE_VERSIONS,
   SET_CURRENT_CURRENCY,
   SET_DEFAULT_VALIDATORS
@@ -119,9 +118,6 @@ const mutations = {
   },
   [SET_CURRENT_CURRENCY]: (state, { currentCurrency }) => {
     state.currentCurrency = currentCurrency
-  },
-  [SET_IS_INIT_APP]: (state, { isNotInit }) => {
-    state.isNotInit = isNotInit
   },
   [GET_AVAX_PRICE]: (state, { avaxPrice }) => {
     const currentPrice = avaxPrice.current_price

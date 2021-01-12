@@ -1,5 +1,4 @@
 export const INIT_APP = 'INIT_APP'
-export const SET_IS_INIT_APP = 'SET_IS_INIT_APP'
 export const SET_THEME = 'SET_THEME'
 export const GET_AVAX_PRICE = 'GET_AVAX_PRICE'
 export const SET_BALANCE = 'SET_BALANCE'

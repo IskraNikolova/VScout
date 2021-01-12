@@ -13,6 +13,7 @@ const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
   reducer: (state) => {
     const persistState = { ...state }
+    if (state.app.validators) delete persistState.app
     // don't persist UI and App state
     delete persistState.ui
     delete persistState.access
