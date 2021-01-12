@@ -6,7 +6,7 @@ export default function () {
     height: 0,
     txAVM: {},
     txHash: '',
-    currentSupply: new BN(374142935421374421),
+    currentSupply: new BN(1),
     pendingValidators: [],
     pendingDelegators: [],
     hasNodeConnection: true,

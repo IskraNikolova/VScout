@@ -214,6 +214,7 @@ export default {
     },
     calculate () {
       if (!this.validator.delegationFee) return
+      else if (!this.currentSupply || this.currentSupply === 1) return
 
       if (this.avax < 25) {
         this.potentialYield = 0
