@@ -103,9 +103,9 @@ import {
 async function initApp (
   { dispatch, getters, commit }) {
   try {
-    if (getters.isInit) {
+    if (!getters.isInit) {
       window.localStorage.clear()
-      commit(SET_IS_INIT_APP, { isInit: false })
+      commit(SET_IS_INIT_APP, { isInit: true })
     }
     await Promise.all([
       dispatch(INIT_ENDPOINT),
