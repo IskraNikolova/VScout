@@ -2,7 +2,7 @@
   <div class="row">
       <div class="col-md-3 col-xs-10">
         <div class="q-pb-md text-medium label-title">CURRENT SUPPLY</div>
-        <div style="font-size: max(1.1vw, 12px);">
+        <div class="label-title">
           <span class="text-panel">
             <animated-number
               :value="getCurrentSupply()"
@@ -20,7 +20,7 @@
       <div class="col-md-3 col-xs-10">
         <div class="q-pb-md text-medium label-title">STAKING RATIO</div>
         <div>
-          <span class="text-panel" style="font-size: max(1.1vw, 12px);">
+          <span class="text-panel label-title">
             {{ stakingRatio }}
           </span><span class="label-title"> %</span>
         </div>
@@ -33,11 +33,11 @@
         <div class="q-pb-md text-medium label-title">REWARD RATE</div>
         <div>
           <span>
-            <span style="opacity: 0.7;" class="label-title2">MIN </span>
-            <span class="text-panel" style="font-size: max(1.1vw, 12px);">{{ minPercent }}</span> <span class="label-title"> %</span>
+            <span class="label-title2">MIN </span>
+            <span class="text-panel label-title">{{ minPercent }}</span> <span class="label-title"> %</span>
             &nbsp;&nbsp;
-            <span style="opacity: 0.7;" class="label-title2">MAX </span>
-            <span class="text-panel" style="font-size: max(1.1vw, 12px);">{{ maxPercent }}</span> <span class="label-title"> %</span>
+            <span class="label-title2">MAX </span>
+            <span class="text-panel label-title">{{ maxPercent }}</span> <span class="label-title"> %</span>
           </span>
         </div>
       </div>
@@ -116,7 +116,10 @@ export default {
    max-width:30px;
  }
  .label-title {
-    font-size: max(0.7vw, 12px);
+  font-size: max(0.7vw, 12px);
+ }
+ .text-title1 {
+    font-size: max(0.8vw, 16px);
   }
   .label-title2 {
     font-size: max(0.55vw, 12px);

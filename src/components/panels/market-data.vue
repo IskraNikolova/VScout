@@ -2,12 +2,12 @@
     <div class="row">
       <div class="col-md-3 col-xs-10">
         <div class="q-pb-md text-medium label-title">PRICE</div>
-        <div class="text-panel q-pb-sm" style="font-size: max(1.5vw, 12px);">
-          <small>{{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }} | AVAX/{{ getISO(currentCurrency) }}</small>
+        <div class="text-panel q-pb-md text-title1">
+          {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }} | AVAX/{{ getISO(currentCurrency) }}
         </div>
-        <div v-if="currentCurrency !== 'btc'" style="font-size: max(0.73vw, 12px);">
-          <small><span style="opacity: 0.7;">{{ getSymbol('btc') }} {{ currenciesPriceList[`${'btc'}`] }} | AVAX/{{ getISO('btc') }}</span>
-              <span v-if="changePercentage24h[`${'btc'}`] > 0" class="text-positive text-medium">
+        <div v-if="currentCurrency !== 'btc'" class="label-title2">
+          <span>{{ getSymbol('btc') }} {{ currenciesPriceList[`${'btc'}`] }} | AVAX/{{ getISO('btc') }}</span>
+              <span v-if="changePercentage24h[`${'btc'}`] > 0" class="text-positive">
                 +{{ changePercentage24h[`${'btc'}`] }} %
                 <q-icon name="north" />
               </span>
@@ -15,20 +15,17 @@
                 {{ changePercentage24h[`${'btc'}`] }} %
                 <q-icon name="south" />
               </span>
-            </small>
         </div>
-        <div class="text-panel" v-else style="font-size: max(0.73vw, 12px);">
-          <small>
-            <span style="opacity: 0.7;">{{ getSymbol('usd') }} {{ currenciesPriceList[`${'usd'}`] }} | AVAX/{{ getISO('usd') }}</span>
-            <span v-if="changePercentage24h[`${'usd'}`] > 0" class="text-positive text-medium">
-              +{{ changePercentage24h[`${'usd'}`] }} %
-              <q-icon name="north" />
-            </span>
-            <span v-else class="text-negative">
-              {{ changePercentage24h[`${'usd'}`] }} %
-              <q-icon name="south" />
-            </span>
-          </small>
+        <div class="text-panel label-title2" v-else>
+          <span>{{ getSymbol('usd') }} {{ currenciesPriceList[`${'usd'}`] }} | AVAX/{{ getISO('usd') }}</span>
+          <span v-if="changePercentage24h[`${'usd'}`] > 0" class="text-positive">
+            +{{ changePercentage24h[`${'usd'}`] }} %
+            <q-icon name="north" />
+          </span>
+          <span v-else class="text-negative">
+            {{ changePercentage24h[`${'usd'}`] }} %
+            <q-icon name="south" />
+          </span>
         </div>
       </div>
       <div class="col-md-1 icon" style="padding-top: 23px;">
@@ -38,14 +35,14 @@
       <div class="col-md-3 col-xs-10">
         <div>
           <div class="q-pb-md text-medium label-title">BLOCK HEIGHT</div>
-          <div class="text-h7 text-panel q-pb-md q-pt-xs" style="font-size: max(1vw, 12px);">
+          <div class="text-panel q-pb-md text-title1">
             <animated-number
               :value="height"
               :formatValue="format"
               :duration="3000"
             />
           </div>
-          <div id="f-size12" style="font-size: max(0.65vw, 12px);">
+          <div id="f-size12" class="label-title2">
             <span>Last accepted block on P-Chain</span>
           </div>
         </div>
@@ -56,7 +53,7 @@
       <q-separator class="q-mt-md q-mb-md lt-md" />
       <div class="col-md-3 col-xs-10">
         <div class="q-pb-md text-medium label-title">24H CHANGE</div>
-        <div class="q-pb-md" style="font-size: max(0.8vw, 12px);">
+        <div class="q-pb-md text-title1">
           <span class="text-positive" v-if="change24h[`${currentCurrency}`] > 0">{{ change24h[`${currentCurrency}`] }}</span>
           <span class="text-negative" v-else>{{ change24h[`${currentCurrency}`] }}</span>
           <span class="text-positive" v-if="changePercentage24h[`${currentCurrency}`] > 0"> +{{ changePercentage24h[`${currentCurrency}`] }} %</span>
@@ -126,4 +123,10 @@ export default {
  .label-title {
   font-size: max(0.7vw, 12px);
  }
+ .text-title1 {
+    font-size: max(0.8vw, 16px);
+  }
+  .label-title2 {
+    font-size: max(0.55vw, 12px);
+  }
 </style>

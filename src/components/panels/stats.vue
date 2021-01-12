@@ -52,14 +52,13 @@
       <div class="col-md-3 col-xs-10">
         <div class="q-pb-md text-medium label-title">NEW STAKING LAST {{ statsMode }}</div>
         <div>
-          <span style="font-size: max(1.2vw, 12px);" class="text-panel">{{ incomingValidators }}</span><span class="label-title2"> VALIDATORS</span>
-          <span style="font-size: max(1.2vw, 12px);" class="text-panel"> {{ incomingDelegations }}</span><span class="label-title2"> DELEGATIONS</span>
+          <span class="text-panel text-title1">{{ incomingValidators }}</span><span class="label-title2"> VALIDATORS</span>
+          <span class="text-panel text-title1"> {{ incomingDelegations }}</span><span class="label-title2"> DELEGATIONS</span>
         </div>
         <div>
-          <span class="label-title2">STAKE </span>
+          <span class="label-title2"><small>STAKE </small></span>
           <animated-number
-            style="font-size: max(0.8vw, 12px);"
-            class="text-purple"
+            class="text-purple label-title"
             :value="incomingStake"
             :formatValue="format"
             :duration="3000"
@@ -73,14 +72,13 @@
       <div class="col-md-3 col-xs-10">
         <div class="q-pb-md text-medium label-title">ENDING NEXT {{ statsMode }}</div>
         <div>
-          <span style="font-size: max(1.2vw, 12px);" class="text-panel">{{ outcomingValidators }}</span><span class="label-title2"> VALIDATORS</span>
-          <span style="font-size: max(1.2vw, 12px);" class="text-panel"> {{ outcomingDelegations }}</span><span class="label-title2"> DELEGATIONS</span>
+          <span class="text-panel text-title1">{{ outcomingValidators }}</span><span class="label-title2"> VALIDATORS</span>
+          <span class="text-panel text-title1"> {{ outcomingDelegations }}</span><span class="label-title2"> DELEGATIONS</span>
         </div>
         <div>
-          <span class="label-title2">STAKE </span>
+          <span class="label-title2"><small>STAKE </small></span>
           <animated-number
-            style="font-size: max(0.8vw, 12px);"
-            class="text-purple"
+            class="text-purple label-title"
             :value="outcomingStake"
             :formatValue="format"
             :duration="3000"
@@ -274,9 +272,12 @@ export default {
    max-width:30px;
  }
  .label-title {
-    font-size: max(0.7vw, 12px);
+  font-size: max(0.7vw, 12px);
+ }
+ .text-title1 {
+    font-size: max(0.8vw, 16px);
   }
   .label-title2 {
-    font-size: max(0.55vw, 10px);
+    font-size: max(0.55vw, 12px);
   }
 </style>

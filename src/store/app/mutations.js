@@ -154,8 +154,9 @@ const mutations = {
     state.peersMap = peersMap
   },
   [UPDATE_VALIDATOR]: (state, { validator }) => {
-    const currentValidator = state
-      .validators
+    const validators = state.defaultValidators
+    if (!validators) return
+    const currentValidator = validators
       .find(val => val.nodeID.includes(validator.nodeID))
     if (!currentValidator) return
     const newVal = clean(validator)

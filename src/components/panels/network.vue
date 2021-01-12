@@ -11,7 +11,7 @@
         </div>
         <div class="q-mb-md">
           <div class="q-pb-md q-pr-md ">
-            <span class="text-panel" style="font-size: max(1.2vw, 12px);">{{ currentBlockchain.name }}</span>
+            <span class="text-panel text-title1">{{ currentBlockchain.name }}</span>
             <span style="text-transform: uppercase; font-size: 85%;" :class="'q-ml-md text-' + getColor(currentBlockchain.status)">{{ currentBlockchain.status }}</span>
             <tooltip-style v-bind:text="getStatusInfo(currentBlockchain.status)" />
           </div>
@@ -282,5 +282,8 @@ export default {
    }
   .label-title2 {
     font-size: max(0.55vw, 12px);
+  }
+  .text-title1 {
+    font-size: max(0.8vw, 16px);
   }
 </style>

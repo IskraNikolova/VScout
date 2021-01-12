@@ -8,11 +8,11 @@
         <div class="q-pb-xs q-pt-xs" >
         <span
           v-if="currentSubnet.blockchainsId"
-          class="text-h6 q-pb-md q-pt-xs text-panel"
+          class="q-pb-md q-pt-xs text-panel text-title1"
         >
           {{ currentSubnet.blockchainsId.length }}
         </span>
-        <span v-else class="text-h6 text-panel">None <br /></span>
+        <span v-else class="text-panel text-title1">None <br /></span>
         <small class="q-pt-xs">Validated by this subnet</small>
         </div>
       </div>
@@ -94,5 +94,8 @@ export default {
   #small-logo {
     width:15vw;
     max-width:15px;
+  }
+  .text-title1 {
+    font-size: max(0.8vw, 16px);
   }
 </style>

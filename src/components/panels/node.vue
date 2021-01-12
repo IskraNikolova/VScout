@@ -5,12 +5,12 @@
       <div class="col-md-3 col-xs-10">
         <div v-if="isValidatorShow(nodeID)" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
           <div class="q-pb-md text-medium label-title">NODE - VALIDATOR</div>
-          <div class="text-h7 text-panel q-pb-md q-pt-xs" style="font-size: max(1vw, 12px);">{{ formatNodeID }}</div>
+          <div class="text-h7 text-panel q-pb-md q-pt-xs text-title1">{{ formatNodeID }}</div>
           <tooltip-style v-bind:text="'Copy to Clipboard'" />
         </div>
         <div v-else>
           <div class="q-pb-md text-medium label-title">NODE</div>
-          <div class="text-h7 text-panel q-pb-md q-pt-xs" style="font-size: max(1vw, 12px);">{{ formatNodeID }}</div>
+          <div class="text-h7 text-panel q-pb-md q-pt-xs text-title1">{{ formatNodeID }}</div>
         </div>
         <div class="q-pt-md">
           <q-btn :color="color" no-caps outline size="sm" label="Check Health" @click="onOpenHealth"/>
@@ -46,7 +46,7 @@
           <q-spinner-ball v-if="ui.doesItConnect" />
         </div>
         <div class="q-pb-md">
-          <div class="text-h7 text-panel" style="font-size: max(1vw, 12px);">{{ networkEndpoint.name }}</div>
+          <div class="text-panel text-title1">{{ networkEndpoint.name }}</div>
         </div>
         <div class="q-mt-md label-title">
           <span class="q-pt-xl">{{ networkEndpoint.urlView }}</span>
@@ -143,5 +143,8 @@ export default {
  }
  .label-title {
     font-size: max(0.7vw, 12px);
+  }
+  .text-title1 {
+    font-size: max(0.8vw, 14.5px);
   }
 </style>
