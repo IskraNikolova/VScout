@@ -120,8 +120,8 @@ const mutations = {
   [SET_CURRENT_CURRENCY]: (state, { currentCurrency }) => {
     state.currentCurrency = currentCurrency
   },
-  [SET_IS_INIT_APP]: (state, { isInit }) => {
-    state.isInit = isInit
+  [SET_IS_INIT_APP]: (state, { isNotInit }) => {
+    state.isNotInit = isNotInit
   },
   [GET_AVAX_PRICE]: (state, { avaxPrice }) => {
     const currentPrice = avaxPrice.current_price
