@@ -119,6 +119,7 @@ async function initApp (
       dispatch(GET_IN_OUT)
     ]).then(() => dispatch(SUBSCRIBE_TO_EVENT))
   } catch (err) {
+    window.localStorage.clear()
   }
 
   setInterval(async () => {
