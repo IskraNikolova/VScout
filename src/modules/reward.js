@@ -2,7 +2,6 @@ const units = require('./../utils/constants.js')
 const BigNumber = require('bignumber.js')
 
 export const reward = (stakeTime, stakedAmount, currentSupplyBig) => {
-  if (!currentSupplyBig || currentSupplyBig === 1) return
   // 365 * 24 * 60
   const maxStakePeriod = new BigNumber(units.maximumStakingDuration)
 

@@ -120,6 +120,7 @@ async function initApp (
     ]).then(() => dispatch(SUBSCRIBE_TO_EVENT))
   } catch (err) {
     window.localStorage.clear()
+    await dispatch(INIT_APP)
   }
 
   setInterval(async () => {
