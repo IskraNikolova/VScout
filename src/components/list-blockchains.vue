@@ -1,5 +1,5 @@
 <template>
-<div class="panel">
+<div class="panel2">
   <q-list v-for="(blockchain, i) in blockchains" v-bind:key="i">
     <q-item clickable v-close-popup @click="onSelectBlockchain(blockchain)" :dark="appTheme==='dark'">
     <q-item-section>

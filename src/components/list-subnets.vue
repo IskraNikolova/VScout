@@ -1,5 +1,5 @@
 <template>
-  <div class="panel">
+  <div class="panel2">
     <q-list v-for="(subnet, i) in subnets" v-bind:key="i">
       <q-item clickable v-close-popup @click="onSelectSubnet(subnet)" :dark="appTheme==='dark'">
       <q-item-section>

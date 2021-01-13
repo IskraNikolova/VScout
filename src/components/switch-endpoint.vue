@@ -1,5 +1,5 @@
 <template>
- <div class="panel">
+ <div class="panel2">
     <q-list v-for="(endpoint, i) in endpoints" v-bind:key="i">
       <q-item
         :dark="appTheme==='dark'"
