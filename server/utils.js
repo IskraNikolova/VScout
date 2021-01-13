@@ -4,7 +4,7 @@ const BigNumber = require('bignumber.js')
 const CAPACITY = 5
 
 module.exports = {
-  mapValidators: (validators) => {
+  mapValidators: (validators, peers) => {
     let validatedStake = new BigNumber(0)
     let delegatedStake = new BigNumber(0)
     const delegators = []
@@ -12,6 +12,17 @@ module.exports = {
     const validatorsMap = validators.map((val) => {
       validatedStake = BigNumber
         .sum(validatedStake, val.stakeAmount)
+      
+      const peer = peers
+        .find(p => p.nodeID === val.nodeID)
+  
+      if (peer) {
+        val.country = peer.country
+        val.countryCode = peer.countryCode
+        val.version = peer.version
+        val.lastReceived = peer.lastReceived
+        val.lastSent = peer.lastSent
+      }
   
       let currentDelegators = val.delegators
       delegators.push.apply(delegators, currentDelegators)

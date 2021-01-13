@@ -15,15 +15,15 @@
           <q-icon v-else name="keyboard_arrow_down" />
         </div>
         <q-menu
-            :dark="appTheme==='dark'"
-            v-model="statMenu"
-            transition-show="scale"
-            transition-hide="scale"
+          :dark="appTheme==='dark'"
+          v-model="statMenu"
+          transition-show="scale"
+          transition-hide="scale"
         >
-        <q-list
+          <q-list
             @mouseover="listOver=true"
             @mouseleave="listOver=false"
-        >
+          >
             <q-item class="panel2" v-if="statsMode!=='24H'" clickable v-close-popup @click="statsMode='24H'">
             <q-item-section>
               <small class="text-panel">24H</small>
@@ -38,13 +38,13 @@
             <q-separator color="panel2" />
             <q-item class="panel2" v-if="statsMode!=='MONTH'" clickable v-close-popup @click="statsMode='MONTH'">
             <q-item-section>
-                <small class="text-panel">MONTH</small>
+              <small class="text-panel">MONTH</small>
             </q-item-section>
             </q-item>
-        </q-list>
+          </q-list>
         </q-menu>
-        </div>
-        </div>
+      </div>
+      </div>
       </div>
       <div class="col-1 q-pt-md icon">
       </div>
@@ -91,7 +91,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import { debounce } from 'quasar'
-// const BigNumber = require('bignumber.js')
 
 import AnimatedNumber from 'animated-number-vue'
 

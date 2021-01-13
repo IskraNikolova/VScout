@@ -212,8 +212,7 @@ async function getValidators (
       const res = await mapDefaultValidators(
         validators.validators,
         getters.defaultValidators,
-        isInit,
-        getters.peers.peers
+        isInit
       )
 
       commit(SET_VALIDATORS, { validators: res.validators })

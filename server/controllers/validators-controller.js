@@ -37,13 +37,18 @@ module.exports = {
         fs.writeFileSync('logs.json', data)
       }
       const pendingValidators = resPVal.data.result
+
+      let peersInJson = fs.readFileSync('peers.json').toString()
+      if (!peersInJson) peersInJson = {}
+      const peers = JSON.parse(peersInJson)
+
       const {
         allStake,
         validators,
         delegators,
         validatedStake,
         delegatedStake
-      } = utils.mapValidators(apiValidators.validators)
+      } = utils.mapValidators(apiValidators.validators, peers.peers)
 
       const response = {
         allStake,

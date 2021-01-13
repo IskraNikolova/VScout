@@ -24,11 +24,6 @@ export default {
   components: {
     ValidatorDetails: () => import('components/search/validator-details.vue')
   },
-  data () {
-    return {
-      isStart: false
-    }
-  },
   computed: {
     ...mapGetters([
       'validator'
@@ -37,17 +32,12 @@ export default {
   watch: {
     '$route.params.id': {
       handler: async function (id) {
-        this.isStart = true
         await this.setValidator({ id })
       },
       deep: true,
       immediate: true
     }
   },
-  // async created () {
-  //   if (this.isStart || this.validator.nodeID === this.$route.params.id) return
-  //   await this.setValidator({ id: this.$route.params.id })
-  // },
   methods: {
     ...mapActions({
       setValidator: SET_VALIDATOR
