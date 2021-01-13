@@ -831,7 +831,7 @@ export default {
     },
     getFormatValidator (val) {
       if (!val) return
-      if (val.length > 20) return `${val.substr(0, 20)}...${val.substr(28)}`
+      if (val.length > 29) return `${val.substr(0, 20)}...${val.substr(28)}`
       return val
     },
     onClick (link, id) {
