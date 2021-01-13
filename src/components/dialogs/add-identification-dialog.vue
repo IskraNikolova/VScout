@@ -332,7 +332,7 @@ export default {
         const minutes = getDurationByMinutesCount(timestamp)
 
         if (minutes > 60) {
-          this.onFailed('Verification Transaction Failed! Expired Transaction.')
+          this.onFailed('Verification Transaction Failed! Expired Transaction. ')
           return
         }
         const isReceiveFunds = _verifyReceiveFundsTx(
