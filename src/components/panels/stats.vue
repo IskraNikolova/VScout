@@ -24,19 +24,19 @@
             @mouseover="listOver=true"
             @mouseleave="listOver=false"
         >
-            <q-item class="panel" v-if="statsMode!=='24H'" clickable v-close-popup @click="statsMode='24H'">
+            <q-item class="panel2" v-if="statsMode!=='24H'" clickable v-close-popup @click="statsMode='24H'">
             <q-item-section>
               <small class="text-panel">24H</small>
             </q-item-section>
             </q-item>
-            <q-separator color="panel" />
-            <q-item class="panel" v-if="statsMode!=='WEEK'" clickable v-close-popup @click="statsMode='WEEK'">
+            <q-separator color="panel2" />
+            <q-item class="panel2" v-if="statsMode!=='WEEK'" clickable v-close-popup @click="statsMode='WEEK'">
             <q-item-section>
               <small class="text-panel">WEEK</small>
             </q-item-section>
             </q-item>
-            <q-separator color="panel" />
-            <q-item class="panel" v-if="statsMode!=='MONTH'" clickable v-close-popup @click="statsMode='MONTH'">
+            <q-separator color="panel2" />
+            <q-item class="panel2" v-if="statsMode!=='MONTH'" clickable v-close-popup @click="statsMode='MONTH'">
             <q-item-section>
                 <small class="text-panel">MONTH</small>
             </q-item-section>

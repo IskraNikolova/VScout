@@ -113,9 +113,6 @@ export default {
 </script>
 
 <style scoped>
- #custom-card {
-   border-right: 2px solid grey;
- }
  .custom-icon {
    width:30vw;
    max-width:30px;

@@ -2,7 +2,7 @@
   <q-page>
     <div style="padding: 1%;">
       <q-card
-        class="q-mt-md q-pt-md q-pb-md panel q-ml-xl q-mr-xl"
+        class="q-mt-md q-pt-md q-pb-md panel2 q-ml-xl q-mr-xl"
         id="custom-card"
         style="padding-top: 3%;min-height: 400px;"
       >

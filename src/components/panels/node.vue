@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="q-pt-md q-pl-xl q-pr-xs q-ml-xs q-pb-md panel" id="custom-card" >
+    class="q-pt-md q-pl-xl q-pr-xs q-ml-xs q-pb-md panel2" id="custom-card" >
     <div class="row">
       <div class="col-md-3 col-xs-10">
         <div v-if="isValidatorShow(nodeID)" style="cursor: pointer;" @click="copyToClipboard(nodeID)">

@@ -447,17 +447,17 @@ export default {
       }
     },
     isNotSticky: function (val) {
-      if (val) this.tableClass = 'panel shadow-3'
+      if (val) this.tableClass = 'panel2 shadow-3'
       else {
-        if (this.appTheme === 'default') this.tableClass = 'panel shadow-3 sticky-header-table-light'
-        else this.tableClass = 'panel shadow-3 sticky-header-table-dark'
+        if (this.appTheme === 'default') this.tableClass = 'panel2 shadow-3 sticky-header-table-light'
+        else this.tableClass = 'panel2 shadow-3 sticky-header-table-dark'
       }
     },
     appTheme: function (val) {
-      if (val === 'default' && this.isNotSticky) this.tableClass = 'panel shadow-3'
-      else if (val === 'default' && !this.isNotSticky) this.tableClass = 'panel shadow-3 sticky-header-table-light'
-      else if (val === 'dark' && this.isNotSticky) this.tableClass = 'panel shadow-3'
-      else this.tableClass = 'panel shadow-3 sticky-header-table-dark'
+      if (val === 'default' && this.isNotSticky) this.tableClass = 'panel2 shadow-3'
+      else if (val === 'default' && !this.isNotSticky) this.tableClass = 'panel2 shadow-3 sticky-header-table-light'
+      else if (val === 'dark' && this.isNotSticky) this.tableClass = 'panel2 shadow-3'
+      else this.tableClass = 'panel2 shadow-3 sticky-header-table-dark'
     }
   },
   data () {
@@ -632,7 +632,7 @@ export default {
       visibleColumns: [],
       textStickyPositive: 'Sticky header',
       textStickyNegative: 'Remove a sticky header',
-      tableClass: 'panel shadow-3'
+      tableClass: 'panel2 shadow-3'
     }
   },
   created () {

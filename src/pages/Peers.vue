@@ -31,7 +31,7 @@
       </div>
       </div>
       <q-card
-        class="q-pb-md q-mt-sm panel"
+        class="q-pb-md q-mt-sm panel2"
         id="custom-card"
         style="min-height: 400px;"
       >
@@ -42,7 +42,7 @@
           :columns="columns"
           :filter="filter"
           row-key="id"
-          class="panel"
+          class="panel2"
           color="accent"
           :pagination="pagination"
           :dark="appTheme==='dark'"
@@ -52,7 +52,7 @@
               size="sm"
               flat
               class="q-ml-sm"
-              color="panel"
+              color="panel2"
               icon-right="archive"
               label="Export to csv"
               no-caps

@@ -8,7 +8,7 @@
     </div>
     <q-slide-transition>
       <div v-show="visible">
-        <q-card class="q-mt-md q-pt-xl q-pl-xl q-pb-md q-mb-xl panel">
+        <q-card class="q-mt-md q-pt-xl q-pl-xl q-pb-md q-mb-xl panel2">
             <div v-for="(question, i) in questions"
               v-bind:key="i">
               <q-slide-transition>

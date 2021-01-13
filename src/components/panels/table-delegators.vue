@@ -1,5 +1,5 @@
 <template>
-  <div class="q-mt-md panel">
+  <div class="q-mt-md panel2">
     <q-table
       :data="curentDelegators"
       :columns="columns"
@@ -7,7 +7,7 @@
       row-key="rewardOwner"
       :pagination="pagination"
       :visible-columns="visibleColumns"
-      :class="tableClass + ' panel'"
+      :class="tableClass + ' panel2'"
       id="custom-table"
       color="accent"
       :dark="appTheme==='dark'"

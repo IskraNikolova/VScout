@@ -1,6 +1,6 @@
 <template>
     <q-card
-        class="q-mt-xs q-ml-xs q-pb-md q-pt-md panel"
+        class="q-mt-xs q-ml-xs q-pb-md q-pt-md panel2"
         id="custom-card"
     >
         <stake class="q-pl-xl q-pr-sm"/>
@@ -27,3 +27,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  #custom-card {
+    border-right: 2px solid #aa7dc9;
+  }
+</style>

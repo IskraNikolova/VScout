@@ -2,7 +2,7 @@
   <q-page class="q-pr-md q-pl-md">
     <q-card
       v-if="isShow"
-      class="q-mt-md q-ml-xl q-mr-xl q-pt-md q-pb-md panel"
+      class="q-mt-md q-ml-xl q-mr-xl q-pt-md q-pb-md panel2"
       id="custom-card"
       style="padding-top: 3%;min-height: 400px;"
     >

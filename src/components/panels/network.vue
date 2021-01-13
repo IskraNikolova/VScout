@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="q-mt-xs q-pt-md q-pr-xs q-ml-xs q-pl-xl q-pb-md panel"
+    class="q-mt-xs q-pt-md q-pr-xs q-ml-xs q-pl-xl q-pb-md panel2"
     id="custom-card"
     style="min-height: 160px;"
   >

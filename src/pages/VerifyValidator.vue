@@ -3,7 +3,7 @@
     <div style="padding: 0.5% 3% 0% 3%">
       <q-card
         id="custom-card"
-        class="dark-panel q-pt-xs"
+        class="panel q-pt-xs"
       >
         <div style="text-align: center;">
           <p class="text-h6">Verify</p>
@@ -14,7 +14,7 @@
         </div>
         <div class="row q-mt-md q-pb-xl">
           <div class="col-1"></div>
-          <q-card id="verify-card" class="col-5 q-mr-md panel" style="min-height: 370px;" @click="dialog1=true">
+          <q-card id="verify-card" class="col-5 q-mr-md panel2" style="min-height: 370px;" @click="dialog1=true">
             <q-card-section>
               <q-img style="width: 100vw;max-width: 100px;margin: auto;" src="~assets/node1.svg" />
               <div class="q-mt-md" style="cursor: pointer;">
@@ -31,7 +31,7 @@
               </div>
             </q-card-section>
           </q-card>
-          <q-card id="verify-card2" class="col-5 panel" style="min-height: 370px;" @click="dialog2=true">
+          <q-card id="verify-card2" class="col-5 panel2" style="min-height: 370px;" @click="dialog2=true">
             <q-card-section>
               <q-img
                 style="width: 100vw;max-width: 100px;margin: auto;"
@@ -56,7 +56,7 @@
         </div>
       </q-card>
       <q-dialog v-model="dialog1">
-        <q-card flat class="q-pb-md panel">
+        <q-card flat class="q-pb-md panel2">
           <q-card-section class="row items-center bg-secondary">
             <q-img style="width: 30vw;max-width: 30px;margin: auto;" src="~assets/node-white.svg" />
             <div class="text-h6 text-white q-pl-xs">Local Node Verification</div>
@@ -107,7 +107,7 @@
         </q-card>
       </q-dialog>
       <q-dialog v-model="dialog2">
-        <q-card flat class="q-pb-md panel">
+        <q-card flat class="q-pb-md panel2">
           <q-card-section class="row items-center bg-secondary">
             <q-img
               style="width: 30vw;max-width: 30px;margin: auto;"
