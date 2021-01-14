@@ -1,7 +1,7 @@
 <template>
   <q-card
    flat
-   class="panel"
+   class="panel2"
   >
     <q-card-section>
       <div class="q-mb-md text-medium text-purple">REWARD (AVAX)</div>

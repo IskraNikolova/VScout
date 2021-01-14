@@ -116,7 +116,7 @@
     </q-card>
 
     <!--lt-sm-->
-    <q-card flat class="lt-sm panel">
+    <q-card flat class="lt-sm panel2">
       <q-item>
         <avatar
           v-bind:avatar="getAvatar()"
@@ -177,7 +177,7 @@
       </q-item>
       <q-separator v-if="getBio()"/>
       <website
-        class="q-pr-sm q-pl-sm"
+        class="q-pr-sm q-pl-sm panel2"
         v-if="getWebsite()"
         v-bind:website ="getWebsite()"
         v-bind:link="getLink()"
