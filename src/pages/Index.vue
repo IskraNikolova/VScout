@@ -29,7 +29,7 @@
             legendBoxShadowCss="0px 0px 15px #fff"
             :showLegend="true"
             :currencyAdd="false"
-            :showEmptyValue="true"
+            :showEmptyValue="false"
           /></div>
         </div>
         <q-separator class="q-mt-sm q-mb-sm" />

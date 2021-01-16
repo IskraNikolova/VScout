@@ -231,8 +231,7 @@
               <small v-else class="text-negative">DISCONNECTED</small>
             </div>
             <div v-else-if="col.name === 'version'">
-              <span v-if="getNumberFromVer(props.row.version) >= 8">{{ col.value }}</span>
-              <span v-else-if="col.value !== 'undefined'" class="text-panel">{{ col.value }}</span>
+              <span v-if="col.value !== 'undefined'" :style="getVersionColor(col.value)">{{ col.value }}</span>
               <span v-else class="text-panel"> - </span>
             </div>
             <countdown
@@ -401,7 +400,7 @@ import {
   openURL
 } from 'quasar'
 
-import { versionNum } from './../../utils/constants.js'
+import { versionNum, labelColors } from './../../utils/constants.js'
 
 function wrapCsvValue (val, formatFn) {
   let formatted = formatFn !== undefined
@@ -691,6 +690,11 @@ export default {
     reorder () {
       this.isNotSticky = true
       this.isGrid = true
+    },
+    getVersionColor (val) {
+      const version = labelColors[`avalanche/${val}`]
+      console.log(version)
+      return 'color:' + version + ';'
     },
     getFormatVersion (val) {
       if (!val) return
