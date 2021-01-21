@@ -234,11 +234,25 @@ async function getValidators (
 
       commit(UPDATE_UI, { doesItConnect: false })
 
-      let { validators, delegators } = response.data.result
-
+      let { validators } = response.data.result
       if (typeof validators === 'undefined' ||
         validators === null) {
         validators = []
+      }
+      let delegators = []
+      if (subnetID === network.defaultSubnetID) {
+        delegators = validators
+          .reduce((a, c) => {
+            a.push.apply(a, c.delegators)
+            return a
+          }, [])
+      } else {
+        const currentValidators = getters.defaultValidators.filter(v => validators.find(val => val.nodeID === v.nodeID))
+        delegators = currentValidators
+          .reduce((a, c) => {
+            a.push.apply(a, c.delegators)
+            return a
+          }, [])
       }
 
       const res = await validatorProcessing(
@@ -248,6 +262,7 @@ async function getValidators (
         isInit,
         getters.peers.peers
       )
+
       if (res.allStake !== getters.stakedAVAX) {
         dispatch(GET_CURRENT_SUPPLY)
       }
@@ -261,14 +276,6 @@ async function getValidators (
         validators: res.validators
       })
 
-      if (!delegators || delegators.length < 1) {
-        delegators = res
-          .validators
-          .reduce((a, c) => {
-            a.push.apply(a, c.delegators)
-            return a
-          }, [])
-      }
       const resDelegators = mapDelegators(delegators)
 
       commit(SET_DELEGATORS, {

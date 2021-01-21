@@ -120,6 +120,7 @@ export default {
       'delegatedStake',
       'validatedStake',
       'delegationsCount',
+      'subnetID',
       'isDefaultSubnetID',
       'pendingValidators',
       'defaultValidators',
@@ -128,7 +129,7 @@ export default {
       'currentCurrency'
     ]),
     validatorsCount: function () {
-      if (this.isDefaultSubnetID) return this.defaultValidators.length
+      if (this.isDefaultSubnetID(this.subnetID)) return this.defaultValidators.length
       return this.validators.length
     },
     delStake: function () {

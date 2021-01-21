@@ -659,7 +659,7 @@ export default {
       return id === this.nodeID
     },
     curentValidators: function () {
-      if (this.isActive && this.isDefaultSubnetID) return this.defaultValidators
+      if (this.isActive && this.isDefaultSubnetID(this.subnetID)) return this.defaultValidators
       if (this.isActive) return this.validators
       return this.pendingValidators
     }
@@ -693,7 +693,6 @@ export default {
     },
     getVersionColor (val) {
       const version = labelColors[`avalanche/${val}`]
-      console.log(version)
       return 'color:' + version + ';'
     },
     getFormatVersion (val) {
