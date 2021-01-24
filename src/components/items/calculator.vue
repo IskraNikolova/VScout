@@ -42,7 +42,7 @@
           suffix="$AVAX"
           color="accent"
           @input="calculate"
-          class="q-pb-xl"
+          class="q-pb-sm"
           :rules="[
             value => (value >= 2000) || 'The minimum amount that a validator must stake is 2,000 AVAX!',
             value => (value <= 3000000) || 'Invalid amount!'
@@ -63,6 +63,23 @@
           :rules="[
             value => (value >= 25) || 'The minimum amount that a delegator must stake is 25 AVAX!',
             value => (value <= 2400000) || 'Invalid amount!'
+          ]"
+        />
+        <q-input
+          :dark="appTheme==='dark'"
+          v-if="isAdvanced && type === 'validator'"
+          outlined
+          type="number"
+          v-model="delegationFee2"
+          label="Delegation Fee"
+          input-class="text-right"
+          suffix="%"
+          color="accent"
+          @input="calculatePotentialReward"
+          class="q-pb-md"
+          :rules="[
+            value => value >= 2 || 'The minimum delegation fee rate is 2%',
+            value => value <= 100 || 'Invalid delegation fee rate'
           ]"
         />
         <q-input
@@ -132,7 +149,7 @@
           color="accent"
         />
         <div class="row">
-          <div class="col-12">
+          <div class="col-9">
             <small style="opacity: 0.5;">{{ stakeTime }} Days Reward </small>
             <div>
               <span>
@@ -141,8 +158,19 @@
                 <span class="text-accent text-medium">{{ getSymbol(currentCurrency) }}</span>{{ getFormat(rewardUsd) }}
             </div>
           </div>
+          <div @click="onAdvanced" v-if="!isAdvanced && type === 'validator'" style="cursor: pointer;">
+            <q-icon name="read_more" /><small> Advanced</small>
+          </div>
         </div>
-        </q-banner>
+
+        <div v-if="isAdvanced && type==='validator'" class="dark-panel q-mt-sm" style="padding:10px;border-radius: 5px;">
+          <div style="text-align: right;"><small>Advanced</small></div>
+          <small style="opacity: 0.5;">Capacity For Delegation</small>
+          <div class="q-mb-sm">{{ capacity }} <span class="text-accent text-medium"> AVAX</span></div>
+          <small style="opacity: 0.5;">Potential Reward From Delegation with {{delegationFee2}}% Fee</small>
+          <div>{{ potentialReward }} <span class="text-accent text-medium"> AVAX</span> <small style="opacity: 0.5;"> /for all period and max capacity/</small></div>
+        </div>
+      </q-banner>
     </q-popup-proxy>
   </q-btn>
 </template>
@@ -155,6 +183,7 @@ import { currencies } from './../../utils/constants.js'
 import {
   reward,
   substractDelegationFee,
+  getDelegationReward,
   getYearlyRewardPercent
 } from './../../modules/reward.js'
 
@@ -166,6 +195,10 @@ import {
   getAvaFromnAva,
   getPriceFromnAvax
 } from './../../utils/avax.js'
+
+import {
+  getRemainingCapacity
+} from './../../utils/stake.js'
 
 const timeStamp = Date.now()
 const formattedFrom = date.formatDate(timeStamp, 'YYYY/MM/DD')
@@ -183,17 +216,21 @@ export default {
       percent: 0,
       stakeTime: 14,
       delegationFee: 2,
+      delegationFee2: 2,
+      isAdvanced: false,
       reward: 0.00,
       rewardAvax: 0.00,
       rewardUsd: 0.00,
       percentReward: 4,
       stakeAmount: 2000,
       stakeAmountDel: 25,
+      potentialReward: 0,
       feeAmount: 0,
       feeAmountnAvax: 0,
       model: { from: formattedFrom, to: formattedTo },
       date: { from: formattedFrom, to: formattedTo },
       type: 'validator',
+      capacity: 0,
       options: [
         {
           label: 'Validator',
@@ -228,6 +265,25 @@ export default {
       if (!val) return
       return currencies[`${val}`].symbol
     },
+    onAdvanced () {
+      this.isAdvanced = true
+      event.stopPropagation()
+      this.capacity = getRemainingCapacity(this.stakeAmount, 0)
+      this.calculatePotentialReward()
+    },
+    calculatePotentialReward () {
+      const rewardNAvax = reward(
+        this.stakeTime,
+        this.capacity,
+        this.currentSupply
+      )
+      const percent = getDelegationReward(
+        rewardNAvax,
+        this.delegationFee2
+      )
+      this.potentialReward = getAvaFromnAva(percent)
+        .toLocaleString()
+    },
     getPercent () {
       const { percent } = getYearlyRewardPercent(
         this.reward,
@@ -239,6 +295,7 @@ export default {
       this.calculate()
     },
     calculate () {
+      this.isAdvanced = false
       const rewardNAvax = reward(
         this.stakeTime,
         this.stakeAmount,
