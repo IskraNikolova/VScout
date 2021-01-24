@@ -168,7 +168,7 @@
           <small style="opacity: 0.5;">Capacity For Delegation</small>
           <div class="q-mb-sm">{{ capacity }} <span class="text-accent text-medium"> AVAX</span></div>
           <small style="opacity: 0.5;">Potential Reward From Delegation with {{delegationFee2}}% Fee</small>
-          <div>{{ potentialReward }} <span class="text-accent text-medium"> AVAX</span> <small style="opacity: 0.5;"> /for all period and max capacity/</small></div>
+          <div>{{ potentialReward }} <span class="text-accent text-medium"> AVAX</span> <small style="opacity: 0.5;"> /for the selected period and max capacity/</small></div>
         </div>
       </q-banner>
     </q-popup-proxy>
