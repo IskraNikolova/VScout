@@ -110,6 +110,7 @@
             class="q-mt-md my-card dark-panel q-pa-md"
             style="border-radius: 10px;"
             v-bind:delegators="delegators"
+            v-bind:fee="validator.delegationFee"
           />
         </div>
       </div>
@@ -225,6 +226,7 @@
       <div class="row q-pa-md">
         <delegations
           v-bind:delegators="delegators"
+          v-bind:fee="validator.delegationFee"
           class="col-12"
         />
       </div>

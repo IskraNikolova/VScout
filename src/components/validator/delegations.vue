@@ -8,15 +8,17 @@
     </div>
     <q-scroll-area style="height: 230px;">
     <div class="row q-pl-sm">
-      <div class="col-8"><span class="text-subtitle2"><small style="opacity: 0.8;">OWNER</small></span></div>
-      <div class="col-4"><span class="text-subtitle2"><small style="opacity: 0.8;">STAKE AMOUNT</small></span></div>
+      <div class="col-6"><span class="text-subtitle2"><small style="opacity: 0.8;">OWNER</small></span></div>
+      <div class="col-3"><span class="text-subtitle2"><small style="opacity: 0.8;">STAKE AMOUNT</small></span></div>
+      <div class="col-3"><span class="text-subtitle2"><small style="opacity: 0.8;">NODE's REWARD</small></span></div>
     </div>
     <q-separator class="q-mb-sm q-pl-sm" dark style="width: 100%;"/>
     <div v-for="(delegation, i) in delegators" :key="i" class="row q-pl-sm" style="min-width: 550px;">
-      <div class="col-8" @click="copyToClipboard(delegationRewardOwner(delegation.rewardOwner))">
-        {{ delegationRewardOwner(delegation.rewardOwner) }}
+      <div class="col-6" @click="copyToClipboard(delegationRewardOwner(delegation.rewardOwner))">
+        {{ getFormatSubstr(delegationRewardOwner(delegation.rewardOwner)) }}
       </div>
-      <div class="col-4">{{ getFormatAva(delegation.stakeAmount) }}<span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span></div>
+      <div class="col-3">{{ getFormatAva(delegation.stakeAmount) }}<span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span></div>
+      <div class="col-3">{{ potentialRewardFromDelegator(delegation.potentialReward) }}<span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span></div>
     </div>
     </q-scroll-area>
   </div>
@@ -28,12 +30,17 @@ import {
 } from 'quasar'
 
 import { getAvaFromnAva } from './../../utils/avax.js'
+import { getDelegationReward } from './../../modules/reward.js'
 
 export default {
   name: 'Delegations',
   props: {
     delegators: {
       type: Array,
+      required: true
+    },
+    fee: {
+      type: String,
       required: true
     }
   },
@@ -49,6 +56,14 @@ export default {
 
       return owner.addresses[0]
     },
+    potentialRewardFromDelegator (amount) {
+      const percent = getDelegationReward(
+        amount,
+        this.fee
+      )
+
+      return getAvaFromnAva(percent).toLocaleString()
+    },
     getLocalString (val) {
       if (!val) return val
       return val.toLocaleString()
@@ -56,6 +71,10 @@ export default {
     getFormatAva (val) {
       if (!val) return 0
       return this.getLocalString(getAvaFromnAva(val))
+    },
+    getFormatSubstr (val) {
+      if (!val) return
+      return `${val.substr(0, 16)}...${val.substr(32)}`
     },
     copyToClipboard (id) {
       if (!id) return

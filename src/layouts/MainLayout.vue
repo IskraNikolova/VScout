@@ -147,6 +147,8 @@
               </div>
             </q-menu>
           </div>
+          <q-btn flat size="sm" icon="nights_stay" v-if="appTheme === 'default'" @click="switchTheme('dark')" />
+          <q-btn flat size="sm" icon="wb_sunny" v-else @click="switchTheme('default')" />
         </q-toolbar>
         <q-toolbar class="background-orange">
           <q-toolbar-title>
