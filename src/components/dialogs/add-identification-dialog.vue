@@ -441,7 +441,7 @@ export default {
         return
       }
       this.closeAddId()
-      this.$router.push('/verify/' + this.nodeIDModel)
+      this.$router.push('/verify/' + this.nodeIDModel.trim())
     },
     copyToClipboard (id) {
       if (!id) return
