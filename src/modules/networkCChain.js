@@ -107,7 +107,6 @@ const executeMethod = async (method, from) => {
         console.log('Transaction hash ' + hash)
       })
       .on('confirmation', (confirmationNumber, receipt) => {
-        console.log(receipt)
         if (confirmationNumber > 0) {
           console.log('Transaction is confirmed! ' + transactionHash)
         }
