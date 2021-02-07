@@ -33,8 +33,8 @@
       </div>
 
       <div class="text-subtitle2 q-pl-sm">
-        <small style="opacity: 0.8;">REMAINING TIME </small>
-        <span v-if="months > 0">
+        <small style="opacity: 0.8;">REMAINING TIME</small>
+        <span  class="on-right"><span v-if="months > 0">
         {{ months }}
         <span class="text-accent"> Months </span>
         </span>
@@ -43,7 +43,7 @@
         <span v-if="months < 1">
         {{ hours }}
         <span class="text-accent"> Hours</span>
-        </span><small class="text-panel"> ~ ({{ getRemainingTimeDays }} days)</small>
+        </span><small class="text-panel"> ~ ({{ getRemainingTimeDays }} days)</small></span>
       </div>
       <div class="q-pl-sm">
         <span class="text-subtitle2">

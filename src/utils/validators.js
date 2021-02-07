@@ -7,7 +7,16 @@ import { _getValidatorById } from './../modules/networkCChain.js'
 
 const t = {
   'https://bit.ly/3q5aMGC': {
-    avatar: '/statics/circle_symbol.svg'
+    avatar: '/statics/circle_symbol.svg',
+    bio: 'Masternodes, Full Nodes, Staking Services',
+    link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
+    website: 'Allnodes'
+  },
+  '/statics/circle_symbol.svg': {
+    avatar: '/statics/circle_symbol.svg',
+    bio: 'Masternodes, Full Nodes, Staking Services',
+    link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
+    website: 'Allnodes'
   }
 }
 
@@ -145,22 +154,30 @@ export async function mapDefaultValidators (
 
     let avatar = ''
     const name = info.name ? info.name : val.nodeID
-    const link = info.link ? info.link : ''
+    let link = ''
+    let bio = ''
+    let website = ''
 
     try {
       avatar = t[`${info.avatarUrl}`].avatar
+      link = t[`${info.avatarUrl}`].link
+      bio = t[`${info.avatarUrl}`].bio
+      website = t[`${info.avatarUrl}`].website
     } catch (err) {
       avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
+      link = info.link ? info.link : ''
+      bio = info.bio ? info.bio : ''
+      website = info.website ? info.website : ''
     }
     val.avatar = avatar
     val.name = name
     val.link = link
+    val.bio = bio
+    val.website = website
 
     return {
       ...val,
-      rating: info.rating,
-      bio: info.bio,
-      website: info.website
+      rating: info.rating
       // continent: peerInfo.continent,
       // country: peerInfo.country,
       // countryCode: peerInfo.countryCode,
@@ -285,16 +302,26 @@ export async function mapValidators (
 
     let avatar = ''
     const name = info.name ? info.name : val.nodeID
-    const link = info.link ? info.link : ''
+    let link = ''
+    let bio = ''
+    let website = ''
 
     try {
       avatar = t[`${info.avatarUrl}`].avatar
+      link = t[`${info.avatarUrl}`].link
+      bio = t[`${info.avatarUrl}`].bio
+      website = t[`${info.avatarUrl}`].website
     } catch (err) {
       avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
+      link = info.link ? info.link : ''
+      bio = info.bio ? info.bio : ''
+      website = info.website ? info.website : ''
     }
     val.avatar = avatar
     val.name = name
     val.link = link
+    val.bio = bio
+    val.website = website
 
     const duration = diff(val.endTime, val.startTime)
 
@@ -302,8 +329,6 @@ export async function mapValidators (
       ...val,
       rating: info.rating,
       duration,
-      bio: info.bio,
-      website: info.website,
       remainingTime,
       delegateStake: delegateStake.toString(),
       totalStakeAmount: totalStakeAmount.toString(),
