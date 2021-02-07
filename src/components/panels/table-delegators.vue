@@ -306,7 +306,6 @@ export default {
     getVisibleColumns (curentDelegators) {
       const columns = this.columns.map(c => c.name)
       if (curentDelegators.find(a => !a.rewardOwner)) {
-        console.log(curentDelegators)
         return columns
           .filter(c =>
             c !== 'rewardOwner' &&
@@ -332,7 +331,6 @@ export default {
     },
     getColor (nodeID) {
       const color = this.intToRGB(this.hashCode(nodeID))
-      console.log(color)
       return color
     },
     hashCode (str) {
