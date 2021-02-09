@@ -13,12 +13,14 @@
           <div class="text-subtitle1">
             $・Current Supply {{ getCurrentSupply(ui.assetInfo.asset.currentSupply, ui.assetInfo.asset.denomination) }} {{ ui.assetInfo.asset.symbol}}
           </div>
-          <div class="text-caption text-grey">
-            - Denomination {{ ui.assetInfo.asset.denomination }}
+          <div class="text-caption ">
+            <span class="text-grey">Denomination:</span> {{ ui.assetInfo.asset.denomination }}
             <br />
-            - Alias {{ ui.assetInfo.asset.alias }}
+            <span class="text-grey">Alias:</span> {{ ui.assetInfo.asset.alias ?  ui.assetInfo.asset.alias : 'None'}}
             <br />
-            -Asset ID {{ ui.assetInfo.asset.id }}
+            <span class="text-grey">Asset ID:</span> {{ ui.assetInfo.asset.id }}
+            <br />
+            <span class="text-grey">Chain ID:</span> {{ ui.assetInfo.asset.chainID }}
           </div>
         </q-card-section>
 
@@ -70,6 +72,7 @@ export default {
       }
 
       if (returnValue) return returnValue.toLocaleString()
+      return 0
     }
   }
 }

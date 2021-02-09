@@ -274,6 +274,11 @@ export const _getValidators = async ({ subnetID, endpoint }) => {
   return response
 }
 
+export const _getCurrentSupply = async ({ subnetID, endpoint }) => {
+  const response = await request(endpoint + c.platformBc, body(c.getCurrentSupply, { subnetID }))
+  return response
+}
+
 export const _getPendingValidators = async ({ subnetID, endpoint }) => {
   const response = await request(endpoint + c.platformBc, body(c.getPendingValidators, { subnetID }))
   return response

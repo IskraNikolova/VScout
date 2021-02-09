@@ -55,6 +55,7 @@ import {
   _getSubnets,
   _getAssetPrice,
   _getNetworkID,
+  _getCurrentSupply,
   _getValidators,
   _getDefValidators,
   _getNetworkName,
@@ -85,9 +86,9 @@ import {
   _subscribeToContractEvents
 } from './../../modules/networkCChain.js'
 
-import {
-  pChain
-} from './../../modules/avalanche.js'
+// import {
+//   pChain
+// } from './../../modules/avalanche.js'
 
 import {
   groupBy,
@@ -645,11 +646,16 @@ async function getAssetsCount (
 async function getCurrentSupply (
   { commit, getters }) {
   try {
-    const currentSupply = await pChain(
-      getters.networkEndpoint,
-      getters.nodeInfo.networkID
-    )
-      .getCurrentSupply()
+    // const currentSupply = await pChain(
+    //   getters.networkEndpoint,
+    //   getters.nodeInfo.networkID
+    // )
+    //   .getCurrentSupply()
+    const subnetID = network.defaultSubnetID
+    const endpoint = getters.networkEndpoint.url
+    let currentSupply = 0
+    const response = await _getCurrentSupply({ subnetID, endpoint })
+    if (response.data && response.data.result) currentSupply = response.data.result.supply
 
     commit(GET_CURRENT_SUPPLY, { currentSupply })
   } catch (err) {

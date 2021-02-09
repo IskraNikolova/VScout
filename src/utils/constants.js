@@ -41,6 +41,7 @@ export const c = {
   getBlockchainStatus: 'platform.getBlockchainStatus',
   getCurrentValidators: 'platform.getCurrentValidators',
   getPendingValidators: 'platform.getPendingValidators',
+  getCurrentSupply: 'platform.getCurrentSupply',
 
   jsonrpc: '2.0',
   contentTypeValue: 'application/json',
@@ -186,7 +187,8 @@ export const labelColors = {
   'avalanche/1.1.2': '#aa7dc9',
   'avalanche/1.1.3': '#4c7273',
   'avalanche/1.1.4': '#5e545e',
-  'avalanche/1.1.5': '#ccc8cc'
+  'avalanche/1.1.5': '#ccc8cc',
+  'avalanche/1.1.6': '#31696b'
 }
 
 export const versionNum = {
@@ -203,5 +205,6 @@ export const versionNum = {
   'avalanche/1.1.2': 10,
   'avalanche/1.1.3': 11,
   'avalanche/1.1.4': 12,
-  'avalanche/1.1.5': 13
+  'avalanche/1.1.5': 13,
+  'avalanche/1.1.6': 14
 }
