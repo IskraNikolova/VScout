@@ -111,7 +111,7 @@ export async function mapDefaultValidators (
   validators,
   defaultValidators,
   isInit) {
-  const validatorsMap = await Promise.all(validators.map(async (val) => {
+  let validatorsMap = await Promise.all(validators.map(async (val) => {
     if (!defaultValidators) defaultValidators = []
     const currentValidator = defaultValidators
       .find(v => v.nodeID === val.nodeID)
@@ -187,6 +187,7 @@ export async function mapDefaultValidators (
     }
   }))
 
+  validatorsMap = validatorsMap.filter(v => v.endTime >= Date.now() / 1000)
   return {
     validators: validatorsMap
   }

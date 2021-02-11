@@ -50,7 +50,8 @@ const mutations = {
     state.assetsCount = assetsCount
   },
   [SET_DELEGATORS]: (state, { delegators }) => {
-    state.delegators = delegators
+    const del = delegators.filter(d => d.endTime > Date.now() / 1000)
+    state.delegators = del
   },
   [SET_VALIDATORS]: (state, { validators }) => {
     state.validators = validators
