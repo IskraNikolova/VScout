@@ -86,9 +86,9 @@ import {
   _subscribeToContractEvents
 } from './../../modules/networkCChain.js'
 
-// import {
-//   pChain
-// } from './../../modules/avalanche.js'
+import {
+  pChain
+} from './../../modules/avalanche.js'
 
 import {
   groupBy,
@@ -104,6 +104,7 @@ async function initApp (
   { dispatch, getters }) {
   try {
     await Promise.all([
+      dispatch(GET_AVAX_PRICE),
       dispatch(INIT_ENDPOINT),
       dispatch(GET_NODE_VERSIONS),
       dispatch(GET_NODE_ID, {}),
@@ -130,13 +131,14 @@ async function initApp (
           subnetID: getters.subnetID,
           isInit: false
         }),
+        dispatch(GET_AVAX_PRICE),
         dispatch(GET_IN_OUT),
         dispatch(GET_HEIGHT, {}),
         dispatch(GET_NODE_INFO, {})
       ])
     } catch (err) {
     }
-  }, 17000)
+  }, 30000)
 }
 
 async function initEndpoint (
@@ -646,17 +648,20 @@ async function getAssetsCount (
 async function getCurrentSupply (
   { commit, getters }) {
   try {
-    // const currentSupply = await pChain(
-    //   getters.networkEndpoint,
-    //   getters.nodeInfo.networkID
-    // )
-    //   .getCurrentSupply()
     const subnetID = network.defaultSubnetID
     const endpoint = getters.networkEndpoint.url
     let currentSupply = 0
     const response = await _getCurrentSupply({ subnetID, endpoint })
-    if (response.data && response.data.result) currentSupply = response.data.result.supply
-
+    if (response.data && response.data.result) {
+      currentSupply = response.data.result.supply
+    } else {
+      const cS = await pChain(
+        getters.networkEndpoint,
+        getters.nodeInfo.networkID
+      )
+        .getCurrentSupply()
+      if (cS) currentSupply = cS
+    }
     commit(GET_CURRENT_SUPPLY, { currentSupply })
   } catch (err) {
     console.error(err)
