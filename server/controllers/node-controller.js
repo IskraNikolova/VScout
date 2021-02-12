@@ -50,8 +50,8 @@ module.exports = {
         fs.writeFileSync('node-info.json', info)
     } catch (err) {
       console.log(err)
-      const data = JSON.stringify(err)
-      fs.writeFileSync('logs.json', data)
+      // const data = JSON.stringify(err)
+      // fs.writeFileSync('logs.json', data)
     }
   },
   peersPost: async (endpoint) => {
@@ -132,8 +132,8 @@ module.exports = {
         fs.writeFileSync('peers.json', info)
     } catch (err) {
       console.log(err)
-      const data = JSON.stringify(err)
-      fs.writeFileSync('logs.json', data)
+      // const data = JSON.stringify(err)
+      // fs.writeFileSync('logs.json', data)
     }
   },
   peer: async (req, res) => {

@@ -19,9 +19,10 @@ module.exports = {
     axios.post(endpoint + '/ext/P', body())
       .then((res) => {
         if (res.data.error) {
-          const error = res.data.error
-          const data = JSON.stringify(error)
-          fs.writeFileSync('logs.json', data)
+          console.log(res)
+          // const error = res.data.error
+          // const data = JSON.stringify(error)
+          // fs.writeFileSync('logs.json', data)
         } else {
           const data = res.data.result
           const validators = JSON.stringify(data)
@@ -29,8 +30,9 @@ module.exports = {
         }
       })
       .catch((err) => {
-        const data = JSON.stringify(err)
-        fs.writeFileSync('logs.json', data)
+        console.log(err)
+        // const data = JSON.stringify(err)
+        // fs.writeFileSync('logs.json', data)
       })
   },
   // GET

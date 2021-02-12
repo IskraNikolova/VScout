@@ -23,22 +23,23 @@ module.exports = {
       const resVal = await axios
         .post(endpoint + '/ext/P', body('platform.getCurrentValidators'))
       if (resVal.data.error) {
-        const error = resVal.data.error
-        const data = JSON.stringify(error)
-        fs.writeFileSync('logs.json', data)
+        // const error = resVal.data.error
+        // const data = JSON.stringify(error)
+        // fs.writeFileSync('logs.json', data)
       }
       const apiValidators = resVal.data.result
 
       const resPVal = await axios
         .post(endpoint + '/ext/P', body('platform.getPendingValidators'))
       if (resPVal.data.error) {
-        const error = resPVal.data.error
-        const data = JSON.stringify(error)
-        fs.writeFileSync('logs.json', data)
+        // const error = resPVal.data.error
+        // const data = JSON.stringify(error)
+        // fs.writeFileSync('logs.json', data)
       }
       const pendingValidators = resPVal.data.result
-
+     
       let peersInJson = fs.readFileSync('peers.json').toString()
+
       if (!peersInJson) peersInJson = {}
       const peers = JSON.parse(peersInJson)
 
@@ -68,8 +69,8 @@ module.exports = {
       fs.writeFileSync('stakeStat.json', stat)
     } catch (err) {
       console.log(err)
-      const data = JSON.stringify(err)
-      fs.writeFileSync('logs.json', data)
+      // const data = JSON.stringify(err)
+      // fs.writeFileSync('logs.json', data)
     }
   },
   validator: (req, res) => {

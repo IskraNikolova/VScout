@@ -14,8 +14,8 @@ module.exports = {
         fs.writeFileSync('price.json', marketData)
       })
       .catch((err) => {
-        const data = JSON.stringify(err)
-        fs.writeFileSync('logs.json', data)
+        // const data = JSON.stringify(err)
+        // fs.writeFileSync('logs.json', data)
       })
   },
   // GET
