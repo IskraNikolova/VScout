@@ -241,6 +241,9 @@
               v-else-if="col.name === 'remainingTime'"
               style="min-width: 180px;"
             />
+            <div v-else-if="col.name === 'startTime' || col.name === 'endTime'">
+             {{ formatDate(new Date(col.value).getTime() / 1000, 'MMMM Do YYYY') }}
+            </div>
             <div v-else v-html="col.value"></div>
           </q-td>
         </q-tr>
@@ -586,7 +589,7 @@ export default {
           align: 'left',
           label: 'START TIME',
           field: row => Number(row.startTime),
-          format: (val, row) => `${this.formatDate(val, 'MMMM Do YYYY')}`,
+          format: (val, row) => `${new Date(val * 1000).toISOString()}`,
           style: 'font-size: 85%;',
           sortable: true,
           headerClasses: 'text-medium'
@@ -597,7 +600,7 @@ export default {
           label: 'END TIME',
           sortable: true,
           field: row => Number(row.endTime),
-          format: (val, row) => `${this.formatDate(val, 'MMMM Do YYYY')}`,
+          format: (val, row) => `${new Date(val * 1000).toISOString()}`,
           style: 'font-size: 85%;',
           headerClasses: 'text-medium'
         },
