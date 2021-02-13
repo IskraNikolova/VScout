@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div style="padding: 1%;">
-      <validator-details />
+      <span v-if="validator && validator.uptime"><validator-details /></span>
       <div class="flex flex-center">
         <img src="~assets/vscoutlogo5.svg" id="logo">
       </div>
