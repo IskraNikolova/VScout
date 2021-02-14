@@ -241,9 +241,6 @@
               v-else-if="col.name === 'remainingTime'"
               style="min-width: 180px;"
             />
-            <div v-else-if="col.name === 'startTime' || col.name === 'endTime'">
-             {{ formatDate(new Date(col.value).getTime() / 1000, 'MMMM Do YYYY') }}
-            </div>
             <div v-else v-html="col.value"></div>
           </q-td>
         </q-tr>
@@ -378,13 +375,13 @@
               <q-card-section class="col-6">
                 <small class="text-panel">Start Time</small>
                 <br />
-                <small>{{ formatDate(props.row.startTime, 'MMMM Do YYYY, h:mm') }}</small>
+                <small>{{ formatDate2(props.row.startTime, 'MMMM Do YYYY, h:mm') }}</small>
               </q-card-section>
               <q-separator vertical/>
               <q-card-section class="col-6">
                 <small class="text-panel">End Time</small>
                 <br />
-                <small>{{ formatDate(props.row.endTime, 'MMMM Do YYYY, h:mm') }}</small>
+                <small>{{ formatDate2(props.row.endTime, 'MMMM Do YYYY, h:mm') }}</small>
               </q-card-section>
             </q-card-section>
           </q-card>
@@ -422,7 +419,7 @@ function wrapCsvValue (val, formatFn) {
   return `"${formatted}"`
 }
 const humanizeDuration = require('humanize-duration')
-import { dateFormat, fromNow } from './../../modules/time.js'
+import { dateFormat, fromNow, date } from './../../modules/time.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
 import { round } from './../../utils/commons.js'
 const { network } = require('./../../modules/config').default
@@ -589,7 +586,7 @@ export default {
           align: 'left',
           label: 'START TIME',
           field: row => Number(row.startTime),
-          format: (val, row) => `${new Date(val * 1000).toISOString()}`,
+          format: (val, row) => this.formatDate(val, 'll'),
           style: 'font-size: 85%;',
           sortable: true,
           headerClasses: 'text-medium'
@@ -600,7 +597,7 @@ export default {
           label: 'END TIME',
           sortable: true,
           field: row => Number(row.endTime),
-          format: (val, row) => `${new Date(val * 1000).toISOString()}`,
+          format: (val, row) => this.formatDate(val, 'll'),
           style: 'font-size: 85%;',
           headerClasses: 'text-medium'
         },
@@ -880,6 +877,9 @@ export default {
       })
     },
     formatDate (time, format) {
+      if (time) return date(time, format)
+    },
+    formatDate2 (time, format) {
       if (time) return dateFormat(time, format)
     }
   }

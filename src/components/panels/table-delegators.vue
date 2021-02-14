@@ -54,6 +54,16 @@
             {label: 'Delegations', value: 'delegators'}
           ]"
         />
+        <q-btn
+          size="sm"
+          outline
+          class="q-ml-sm"
+          color="panel"
+          icon-right="archive"
+          label="Export to csv"
+          no-caps
+          @click="exportTable"
+        />
       </template>
       <template slot="top-left">
         <small><div class="col" style="margin-top: 20px; margin-bottom: 10px;">
@@ -152,7 +162,8 @@
 import { mapGetters } from 'vuex'
 
 import {
-  copyToClipboard
+  copyToClipboard,
+  exportFile
 } from 'quasar'
 
 import { date } from './../../modules/time.js'
@@ -163,6 +174,23 @@ import { getAvaFromnAva } from './../../utils/avax.js'
 import ProgressBarValidateSession from './../progress-bar-validatе-session'
 
 import { UPDATE_UI } from './../../store/ui/types'
+
+function wrapCsvValue (val, formatFn) {
+  let formatted = formatFn !== undefined
+    ? formatFn(val)
+    : val
+  formatted = formatted === undefined || formatted === null
+    ? ''
+    : String(formatted)
+  formatted = formatted.split('"').join('""')
+  /**
+   * Excel accepts \n and \r in strings, but some other CSV parsers do not
+   * Uncomment the next two lines to escape new lines
+   */
+  // .split('\n').join('\\n')
+  // .split('\r').join('\\r')
+  return `"${formatted}"`
+}
 
 export default {
   name: 'TableDelegators',
@@ -210,13 +238,15 @@ export default {
           label: '#',
           align: 'left',
           field: row => row.index,
+          format: (val, row) => val,
           headerClasses: 'text-medium'
         },
         {
           name: 'rewardOwner',
           align: 'left',
           label: 'REWARD OWNER',
-          field: row => this.getRewardOwnerFormat(row.rewardOwner),
+          field: row => row.rewardOwner,
+          format: (val, row) => this.getRewardOwnerFormat(val),
           headerClasses: 'text-medium'
         },
         {
@@ -224,6 +254,7 @@ export default {
           align: 'left',
           label: 'NODE ID',
           field: row => row.nodeID,
+          format: (val, row) => val,
           style: 'font-size: 12px;',
           headerClasses: 'text-medium'
         },
@@ -232,7 +263,7 @@ export default {
           align: 'left',
           label: 'DELEGATED',
           field: row => Number(row.stakeAmount),
-          format: (val, row) => `${this.getFormatReward(row.stakeAmount)}`,
+          format: (val, row) => `${this.getFormatReward(val)}`,
           sortable: true,
           headerClasses: 'text-medium'
         },
@@ -251,7 +282,7 @@ export default {
           align: 'left',
           label: 'START TIME',
           field: row => row.startTime,
-          format: (val, row) => `${this.formatDate(row.startTime, 'll')}`,
+          format: (val, row) => `${this.formatDate(val, 'll')}`,
           style: 'font-size: 13px;',
           sortable: true,
           headerClasses: 'text-medium'
@@ -261,7 +292,7 @@ export default {
           align: 'left',
           label: 'END TIME',
           field: row => row.endTime,
-          format: (val, row) => `${this.formatDate(row.endTime, 'll')}`,
+          format: (val, row) => `${this.formatDate(val, 'll')}`,
           style: 'font-size: 13px;',
           sortable: true,
           headerClasses: 'text-medium'
@@ -270,7 +301,8 @@ export default {
           name: 'progress',
           align: 'left',
           label: 'Progress (%)',
-          field: 'progress',
+          field: row => row.progress,
+          format: (val, row) => val,
           headerClasses: 'text-medium'
         },
         {
@@ -278,6 +310,7 @@ export default {
           align: 'center',
           label: 'COUNTDOWN',
           field: row => row.remainingTime,
+          format: (val, row) => val,
           headerClasses: 'text-medium'
         }
       ],
@@ -317,6 +350,28 @@ export default {
         .filter(c =>
           c !== 'endTime' &&
           c !== 'progress')
+    },
+    exportTable () {
+      const content = [this.columns.map(col => wrapCsvValue(col.label))].concat(
+        this.curentDelegators.map(row => this.columns.map(col => wrapCsvValue(
+          typeof col.field === 'function'
+            ? col.field(row)
+            : row[col.field === undefined ? col.name : col.field],
+          col.format
+        )).join(','))
+      ).join('\r\n')
+      const status = exportFile(
+        'table-export.csv',
+        content,
+        'text/csv'
+      )
+      if (status !== true) {
+        this.$q.notify({
+          message: 'Browser denied file download...',
+          color: 'negative',
+          icon: 'warning'
+        })
+      }
     },
     getDurationL (val) {
       return humanizeDuration(val, {
