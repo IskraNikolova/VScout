@@ -792,6 +792,7 @@ export default {
     },
     turnOffNotification () {
       this.$store.commit(SET_NOTIFICATION_NODE, { node: {} })
+      this.$store.commit(CLEAR_NOTIFICATIONS_LIST)
     },
     isValidatorShow (id) {
       if (!id) return
