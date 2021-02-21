@@ -179,8 +179,14 @@
                 </q-input>
                 </q-card-section>
 
-                <q-separator dark inset />
-
+                <q-separator :dark="appTheme==='dark'" />
+                <p class="row q-ml-md q-mt-md text-panel">Countdown</p>
+                <countdown
+                  style="width: 90%;"
+                  class="row q-ml-md"
+                  v-bind:color="appTheme === 'dark' ? 'white' : 'grey'"
+                  v-bind:countdown="notificationNode.remainingTime"
+                />
                 <q-card-section>
                   <q-list v-for="(notification, i) in notificationsReverse" v-bind:key="i">
                     <q-item :dark="appTheme === 'dark'">
@@ -196,7 +202,7 @@
                     </q-item>
                     <q-separator />
                   </q-list>
-                  <span v-if="notifications.length < 1">No Notifications</span>
+                  <span class="text-panel" v-if="notifications.length < 1">No Notifications</span>
                 </q-card-section>
               </q-card>
             </q-menu>
