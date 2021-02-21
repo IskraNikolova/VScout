@@ -727,6 +727,9 @@ export default {
     }
   },
   watch: {
+    notifications () {
+      this.changeTitle()
+    },
     menuOver (val) {
       setTimeout(() => {
         if (this.listOver) return
@@ -819,6 +822,14 @@ export default {
         this.networkMenu = true
       } else {
         this.networkMenu = false
+      }
+    },
+    changeTitle () {
+      if (this.notifications.length > 0) {
+        const newTitle = '(' + this.notifications.length + ') ' + 'VScout'
+        document.title = newTitle
+      } else {
+        document.title = 'VScout'
       }
     },
     checkSubnetMenu () {
