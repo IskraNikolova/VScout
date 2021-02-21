@@ -153,7 +153,7 @@
           <q-btn flat size="sm" icon="nights_stay" v-if="appTheme === 'default'" @click="switchTheme('dark')" />
           <q-btn flat size="sm" icon="wb_sunny" v-else @click="switchTheme('default')" />
           <q-btn flat size="sm" color="purple" v-if="notificationNode.nodeID">
-            <img :src="notificationNode.avatar" style="width: 25px;border-radius: 5px;">
+            <img :src="notificationNode.avatar" class="avatar2" />
             <q-menu
               v-model="removeNotification"
               transition-show="scale"
