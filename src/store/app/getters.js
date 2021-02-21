@@ -6,6 +6,14 @@ export function defaultValidators (state) {
   return state.defaultValidators
 }
 
+export function notificationNode (state) {
+  return state.notificationNode
+}
+
+export function notifications (state) {
+  return state.notifications
+}
+
 export function blockchains (state) {
   return state.blockchains
 }

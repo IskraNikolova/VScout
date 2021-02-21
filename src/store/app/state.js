@@ -3,6 +3,8 @@ const { network } = require('./../../modules/config').default
 export default function () {
   return {
     theme: 'dark',
+    notificationNode: {},
+    notifications: [],
     peersMap: {},
     inData: {},
     addressBalance: {},

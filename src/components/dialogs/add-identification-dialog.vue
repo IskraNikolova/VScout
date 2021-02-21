@@ -5,7 +5,7 @@
     transition-show="slide-up"
     transition-hide="slide-down"
   >
-    <q-card class="q-pl-xs q-pt-md q-pb-md iden-card panel">
+    <q-card class="q-pl-xs q-pt-md q-pb-md iden-card panel2">
       <q-card-section class="row">
         <q-item class="col-10">
           <q-item-section avatar>

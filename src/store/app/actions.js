@@ -16,6 +16,9 @@ import {
   SUBSCRIBE_TO_EVENT,
   GET_PENDING_STAKING,
   GET_AVAX_PRICE,
+  SET_NOTIFICATION_NODE,
+  CLEAR_NOTIFICATIONS_LIST,
+  ADD_TO_NOTIFICATIONS_LIST,
   SET_DEFAULT_VALIDATORS
 } from './types'
 const COUNTRY_CODE = 'countryCode'
@@ -72,7 +75,8 @@ import {
   mapPendingDelegations,
   mapDefaultValidators,
   mapPendingValidators,
-  validatorProcessing
+  validatorProcessing,
+  compareNotificationNode
 } from './../../utils/validators.js'
 
 const {
@@ -224,6 +228,26 @@ async function getValidators (
       commit(SET_DEFAULT_VALIDATORS, {
         defaultValidators: res.validators
       })
+
+      if (getters.notificationNode.nodeID) {
+        const currentValidator = getters
+          .validatorById(getters.notificationNode.nodeID)
+        let notifications = []
+        if (currentValidator) {
+          notifications = compareNotificationNode(getters.notificationNode, currentValidator)
+          if (notifications.length > 0) commit(SET_NOTIFICATION_NODE, { node: currentValidator })
+        } else {
+          commit(CLEAR_NOTIFICATIONS_LIST)
+          notifications.push({
+            date: Date.now(),
+            type: false,
+            title: 'Expired Validator',
+            icon: 'hourglass_disabled',
+            message: 'The staking time of this node is over.'
+          })
+        }
+        commit(ADD_TO_NOTIFICATIONS_LIST, { notifications })
+      }
     } else {
       const response = await _getValidators({
         subnetID,
@@ -250,7 +274,10 @@ async function getValidators (
             return a
           }, [])
       } else {
-        const currentValidators = getters.defaultValidators.filter(v => validators.find(val => val.nodeID === v.nodeID))
+        const currentValidators = getters
+          .defaultValidators
+          .filter(v => validators.find(val => val.nodeID === v.nodeID))
+
         delegators = currentValidators
           .reduce((a, c) => {
             a.push.apply(a, c.delegators)
@@ -289,6 +316,26 @@ async function getValidators (
         commit(SET_DEFAULT_VALIDATORS, {
           defaultValidators: res.validators
         })
+      }
+      if (getters.notificationNode.nodeID) {
+        const currentValidator = res
+          .validators
+          .find(val => val.nodeID.includes(getters.notificationNode.nodeID))
+        let notifications = []
+        if (currentValidator) {
+          notifications = compareNotificationNode(getters.notificationNode, currentValidator)
+          if (notifications.length > 0) commit(SET_NOTIFICATION_NODE, { node: currentValidator })
+        } else {
+          commit(CLEAR_NOTIFICATIONS_LIST)
+          notifications.push({
+            date: Date.now(),
+            type: false,
+            title: 'Expired Validator',
+            icon: 'hourglass_disabled',
+            message: 'The staking time of this node is over.'
+          })
+        }
+        commit(ADD_TO_NOTIFICATIONS_LIST, { notifications })
       }
     }
     dispatch(GET_PENDING_STAKING, { pendingValidators })

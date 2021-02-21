@@ -107,6 +107,72 @@ export function compare (a, b) {
   return temp[compareStake === 0]
 }
 
+export function compareNotificationNode (oldN, newN) {
+  const msgs = []
+  if (oldN.connected !== newN.connected) {
+    if (newN.connected) {
+      msgs.push({
+        date: Date.now(),
+        type: true,
+        icon: 'power',
+        title: 'Connected',
+        message: 'Node state changed to connected.'
+      })
+    } else {
+      msgs.push({
+        date: Date.now(),
+        type: false,
+        icon: 'power_off',
+        title: 'Disconnected',
+        message: 'Node state changed to disconnected.'
+      })
+    }
+  }
+  const oldUptime = round(oldN.uptime * 100, 1000)
+  const newUptime = round(newN.uptime * 100, 1000)
+  if (oldUptime - newUptime >= 0.1) {
+    msgs.push({
+      date: Date.now(),
+      type: false,
+      icon: 'arrow_circle_down',
+      title: 'Uptime Down',
+      message: `Node UPTIME is decrease from ${oldUptime}% to ${newUptime}%.`
+    })
+  } else if (newUptime - oldUptime >= 0.1) {
+    msgs.push({
+      date: Date.now(),
+      type: true,
+      icon: 'arrow_circle_up',
+      title: 'Uptime Up',
+      message: `Node UPTIME is increase from ${oldUptime}% to ${newUptime}%.`
+    })
+  }
+
+  const oldLength = oldN.delegators ? oldN.delegators.length : 0
+  const newLength = newN.delegators ? newN.delegators.length : 0
+  if (oldLength !== newLength) {
+    if (oldLength > newLength) {
+      msgs.push({
+        date: Date.now(),
+        type: true,
+        icon: 'person_remove',
+        title: `${newLength} Delegations`,
+        message: 'The staking time of one or more delegations is over.'
+      })
+    } else if (oldLength < newLength) {
+      msgs.push({
+        date: Date.now(),
+        type: true,
+        icon: 'person_add',
+        title: `${newLength} Delegations`,
+        message: 'А new delegation has been added.'
+      })
+    }
+  }
+
+  return msgs
+}
+
 export async function mapDefaultValidators (
   validators,
   defaultValidators,

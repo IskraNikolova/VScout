@@ -19,7 +19,10 @@ import {
   UPDATE_VALIDATOR,
   GET_NODE_VERSIONS,
   SET_CURRENT_CURRENCY,
-  SET_DEFAULT_VALIDATORS
+  SET_DEFAULT_VALIDATORS,
+  SET_NOTIFICATION_NODE,
+  ADD_TO_NOTIFICATIONS_LIST,
+  CLEAR_NOTIFICATIONS_LIST
 } from './types'
 
 const mutations = {
@@ -182,6 +185,16 @@ const mutations = {
   },
   [SET_DEFAULT_VALIDATORS]: (state, { defaultValidators }) => {
     state.defaultValidators = defaultValidators
+  },
+  [SET_NOTIFICATION_NODE]: (state, { node }) => {
+    state.notificationNode = node
+  },
+  [ADD_TO_NOTIFICATIONS_LIST]: (state, { notifications }) => {
+    const arr = state.notifications.concat(notifications)
+    state.notifications = arr
+  },
+  [CLEAR_NOTIFICATIONS_LIST]: (state) => {
+    state.notifications = []
   }
 }
 

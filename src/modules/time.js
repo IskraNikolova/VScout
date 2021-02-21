@@ -99,6 +99,10 @@ export const fromNow = (time) => {
   return moment(new Date(Number(time) * 1000), 'YYYYMMDD').fromNow()
 }
 
+export const fromNow2 = (time) => {
+  return moment(new Date(Number(time)), 'YYYYMMDD').fromNow()
+}
+
 export const getWeeks = (s, e) => {
   const start = moment(new Date(s), 'YYYYMMDD')
   const end = moment(new Date(e), 'YYYYMMDD')
