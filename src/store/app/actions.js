@@ -52,7 +52,7 @@ import {
   _getStats,
   _getHeight,
   _getDefPeers,
-  _getPeerInfo,
+  // _getPeerInfo,
   _getDefHeight,
   _validates,
   _getSubnets,
@@ -520,22 +520,22 @@ async function getNodeInfo (
 
 async function getNodePeers (
   { getters, commit, dispatch }, { isIgnore = true }) {
+  const response = await _getDefPeers()
+
+  if (response.error) {
+    dispatch(GET_NODE_PEERS, { isIgnore: false })
+    return
+  }
+
+  const peers = response.data.result
+  commit(GET_NODE_PEERS, { peers })
   if (getters.networkEndpoint.url === network.endpointUrls[0].url && isIgnore) {
-    const response = await _getDefPeers()
-
-    if (response.error) {
-      dispatch(GET_NODE_PEERS, { isIgnore: false })
-      return
-    }
-
-    const peers = response.data.result
     const peersMap = groupBy(peers.peers, COUNTRY_CODE)
     Object.keys(peersMap).map(function (key, index) {
       peersMap[key] = peersMap[key].length
     })
 
     commit(GET_INFO_PEERS, { peersMap })
-    commit(GET_NODE_PEERS, { peers })
   } else {
     try {
       const response = await _getPeers({
@@ -547,7 +547,7 @@ async function getNodePeers (
         return
       }
 
-      let peers = await getInfoPeers(response.data.result.peers)
+      let peers = await getInfoPeers(response.data.result.peers, getters.peers.peers)
 
       if (!peers) peers = []
       const result = {
@@ -568,15 +568,29 @@ async function getNodePeers (
   }
 }
 
-async function getInfoPeers (peers) {
+async function getInfoPeers (peers, info) {
   return await Promise.all(peers.map(async p => {
     try {
       const ip = p.ip.split(':')[0]
-      const res = await _getPeerInfo({ ip })
+      const r = info
+        .find(val => val.ip.includes(ip))
       return {
         ...p,
-        ...res.data
+        ...r
       }
+      // } else {
+      //   const response = await _getDefPeers()
+      //   if (response.error) {
+      //     dispatch(GET_NODE_PEERS, { isIgnore: false })
+      //     return
+      //   }
+      //   const peers = response.data.result
+      //   const res = await _getPeerInfo({ ip })
+      //   return {
+      //     ...p,
+      //     ...res.data
+      //   }
+      // }
     } catch (err) {
       return p
     }

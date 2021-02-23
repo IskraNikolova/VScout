@@ -14,6 +14,12 @@ export function currentSupply (state) {
   return state.currentSupply
 }
 
+export function nonDefvalidatorById (state) {
+  return (id) => state
+    .validators
+    .find(val => val.nodeID.includes(id))
+}
+
 export function nodeHealth (state) {
   return (id) => state.nodeHealth[id]
 }

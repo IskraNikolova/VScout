@@ -10,8 +10,14 @@ import {
 
 import {
   _getTxApi,
-  _getValidator
+  _getValidator,
+  _getValidators
 } from './../../modules/network.js'
+
+const {
+  network
+} = require('./../../modules/config.js')
+  .default
 
 import { getAvatar } from './../../utils/commons.js'
 
@@ -27,40 +33,57 @@ import {
 
 async function setValidator ({ commit, getters }, { id }) {
   try {
-    // let validator = getters.validatorById(id)
-    // if (!validator) {
-    const res = await _getValidator({ id })
-    const validator = res.data
-    const info = await _getValidatorById(id)
-    validator.avatarUrl = info.avatarUrl ? info.avatarUrl : getAvatar(id).monster
-    validator.name = info.name ? info.name : id
-    validator.link = info.link ? info.link : ''
-    validator.bio = info.bio ? info.bio : ''
-    validator.website = info.website ? info.website : ''
-    validator.link = info.link ? info.link : ''
+    let validator = getters.nonDefvalidatorById(id)
+    if (!validator) {
+      const res = await _getValidator({ id })
+      validator = res.data
+      const info = await _getValidatorById(id)
+      validator.avatarUrl = info.avatarUrl ? info.avatarUrl : getAvatar(id).monster
+      validator.name = info.name ? info.name : id
+      validator.link = info.link ? info.link : ''
+      validator.bio = info.bio ? info.bio : ''
+      validator.website = info.website ? info.website : ''
+      validator.link = info.link ? info.link : ''
 
-    const t = {
-      'https://bit.ly/3q5aMGC': {
-        avatar: '/statics/circle_symbol.svg',
-        bio: 'Masternodes, Full Nodes, Staking Services',
-        link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
-        website: 'Allnodes'
-      },
-      '/statics/circle_symbol.svg': {
-        avatar: '/statics/circle_symbol.svg',
-        bio: 'Masternodes, Full Nodes, Staking Services',
-        link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
-        website: 'Allnodes'
+      const t = {
+        'https://bit.ly/3q5aMGC': {
+          avatar: '/statics/circle_symbol.svg',
+          bio: 'Masternodes, Full Nodes, Staking Services',
+          link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
+          website: 'Allnodes'
+        },
+        '/statics/circle_symbol.svg': {
+          avatar: '/statics/circle_symbol.svg',
+          bio: 'Masternodes, Full Nodes, Staking Services',
+          link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
+          website: 'Allnodes'
+        }
+      }
+      const temp = t[`${validator.avatarUrl}`]
+      if (temp) {
+        validator.avatar = temp.avatar
+        validator.bio = temp.bio
+        validator.link = temp.link
+        validator.website = temp.website
+      }
+      const endpoint = getters.networkEndpoint.url
+      if (endpoint !== network.endpointUrls[0].url) {
+        const subnetID = getters.subnetID
+        const response = await _getValidators({
+          subnetID,
+          endpoint
+        })
+
+        if (response.data.error) return
+        const { validators } = response.data.result
+
+        const v = validators
+          .find(val => val.nodeID.includes(id))
+        if (!v) return
+        validator.uptime = v.uptime
+        validator.connected = v.connected
       }
     }
-    const temp = t[`${validator.avatarUrl}`]
-    if (temp) {
-      validator.avatar = temp.avatar
-      validator.bio = temp.bio
-      validator.link = temp.link
-      validator.website = temp.website
-    }
-    // }
     if (validator) commit(SET_VALIDATOR, { validator })
     return true
   } catch (err) {
