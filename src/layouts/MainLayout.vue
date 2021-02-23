@@ -635,6 +635,7 @@ export default {
       drawer: false,
       currency: {},
       allCurrencies: [],
+      stringOptions: [],
       menu: false,
       networkMenu: false,
       subnetsMenu: false,

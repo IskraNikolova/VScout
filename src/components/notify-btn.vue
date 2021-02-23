@@ -65,25 +65,40 @@
     >
     <q-card class="panel2" style="border-left: 0.1px solid #9c929c;">
         <q-card-section>
-        <q-input autofocus bottom-slots v-model="nodeIDN" label="NodeID-..." :dark="appTheme==='dark'">
-            <template v-slot:before>
-            <q-avatar>
-                <q-icon name="notifications" />
-            </q-avatar>
-            </template>
+          <q-item>
+            <q-input autofocus bottom-slots v-model="nodeIDN" label="NodeID-..." :dark="appTheme==='dark'" @input="filterFn" >
+                <template v-slot:before>
+                <q-avatar>
+                  <q-icon name="notifications" />
+                </q-avatar>
+                </template>
 
-            <template v-slot:append>
-            <q-icon v-if="nodeIDN !== ''" name="close" @click="nodeIDN = ''" class="cursor-pointer" />
-            </template>
+                <template v-slot:append>
+                <q-icon v-if="nodeIDN !== ''" name="close" @click="nodeIDN = ''" class="cursor-pointer" />
+                </template>
 
-            <template v-slot:hint>
-            Turn On Notifications
-            </template>
+                <template v-slot:hint>
+                Turn On Notifications
+                </template>
 
-            <template v-slot:after>
-            <q-btn round dense flat icon="send" @click="addNodeIdNotification"/>
-            </template>
-        </q-input>
+                <template v-slot:after>
+                <q-btn round dense flat icon="send" @click="addNodeIdNotification"/>
+                </template>
+            </q-input>
+          </q-item>
+          <q-separator />
+          <q-list style="min-width: 250px;" v-for="(c, i) in nodes" v-bind:key="i">
+            <q-item :dark="appTheme==='dark'">
+              <q-item-section>
+                <q-item-label><small>{{ c }}</small></q-item-label>
+              </q-item-section>
+
+              <q-item-section side top>
+                <q-icon size="xs" name="check_box" v-if="c === nodeIDN" />
+                <q-icon size="xs" name="check_box_outline_blank" v-else @click="nodeIDN=c"/>
+              </q-item-section>
+             </q-item>
+          </q-list>
         </q-card-section>
     </q-card>
     </q-menu>
@@ -105,7 +120,9 @@ export default {
     return {
       removeNotification: false,
       addNotification: false,
-      nodeIDN: ''
+      nodeIDN: '',
+      nodes: [],
+      stringOptions: []
     }
   },
   components: {
@@ -121,13 +138,20 @@ export default {
       'notificationNode',
       'notifications',
       'appTheme',
-      'validatorById'
+      'validatorById',
+      'defaultValidators'
     ]),
     notificationsReverse: function () {
       // todo
       // const result = this.notifications
       return this.notifications // result.reverse()
     }
+  },
+  created () {
+    this.nodes = this.defaultValidators
+      .map(v => v.nodeID)
+    if (!this.nodes) return
+    this.stringOptions = this.nodes
   },
   methods: {
     turnOffNotification () {
@@ -148,6 +172,14 @@ export default {
           message: 'Incorrect Node ID!'
         })
       }
+    },
+    filterFn (update) {
+      if (this.nodeIDN === '') {
+        this.nodes = this.stringOptions
+        return
+      }
+      const needle = this.nodeIDN.toLowerCase()
+      this.nodes = this.stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
     }
   }
 }
