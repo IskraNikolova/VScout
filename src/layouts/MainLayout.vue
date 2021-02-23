@@ -152,94 +152,7 @@
           </div>
           <q-btn flat size="sm" icon="nights_stay" v-if="appTheme === 'default'" @click="switchTheme('dark')" />
           <q-btn flat size="sm" icon="wb_sunny" v-else @click="switchTheme('default')" />
-          <q-btn flat size="sm" color="purple" v-if="notificationNode.nodeID">
-            <img :src="notificationNode.avatar" class="avatar2" />
-            <q-menu
-              v-model="removeNotification"
-              transition-show="scale"
-              transition-hide="scale"
-              :dark="appTheme==='dark'"
-            >
-              <q-card class="panel2" style="border-left: 0.1px solid #9c929c;">
-                <q-card-section>
-                  <q-input readonly bottom-slots v-model="notificationNode.nodeID" :dark="appTheme==='dark'">
-                  <template v-slot:before>
-                    <q-avatar>
-                      <q-icon name="notifications_off" />
-                    </q-avatar>
-                  </template>
-
-                  <template v-slot:hint>
-                    Turn Off Notifications
-                  </template>
-
-                  <template v-slot:after>
-                    <q-btn round dense flat icon="send" @click="turnOffNotification"/>
-                  </template>
-                </q-input>
-                </q-card-section>
-
-                <q-separator :dark="appTheme==='dark'" />
-                <p class="row q-ml-md q-mt-md text-panel">Countdown</p>
-                <countdown
-                  style="width: 90%;"
-                  class="row q-ml-md"
-                  v-bind:color="appTheme === 'dark' ? 'white' : 'grey'"
-                  v-bind:countdown="notificationNode.remainingTime"
-                />
-                <q-card-section>
-                  <q-list v-for="(notification, i) in notificationsReverse" v-bind:key="i">
-                    <q-item :dark="appTheme === 'dark'">
-                      <q-item-section>
-                         <q-item-label>{{ notification.title }}</q-item-label>
-                        <q-item-label caption lines="2">{{ notification.message }}</q-item-label>
-                      </q-item-section>
-
-                      <q-item-section side top>
-                        <q-item-label caption>{{ getTimeFromNow(notification.date) }}</q-item-label>
-                        <q-icon :name="notification.icon" :color="notification.type ? 'positive' : 'negative'" />
-                      </q-item-section>
-                    </q-item>
-                    <q-separator />
-                  </q-list>
-                  <span class="text-panel" v-if="notifications.length < 1">No Notifications</span>
-                </q-card-section>
-              </q-card>
-            </q-menu>
-            <q-badge color="purple" v-if="notifications.length > 0" floating>{{ notifications.length }}</q-badge>
-          </q-btn>
-          <q-btn flat size="sm" color="text-panel" icon="notifications" v-else>
-            <q-menu
-              v-model="addNotification"
-              transition-show="scale"
-              transition-hide="scale"
-              :dark="appTheme==='dark'"
-            >
-            <q-card class="panel2" style="border-left: 0.1px solid #9c929c;">
-              <q-card-section>
-                <q-input autofocus bottom-slots v-model="nodeIDN" label="NodeID-..." :dark="appTheme==='dark'">
-                  <template v-slot:before>
-                    <q-avatar>
-                      <q-icon name="notifications" />
-                    </q-avatar>
-                  </template>
-
-                  <template v-slot:append>
-                    <q-icon v-if="nodeIDN !== ''" name="close" @click="nodeIDN = ''" class="cursor-pointer" />
-                  </template>
-
-                  <template v-slot:hint>
-                    Turn On Notifications
-                  </template>
-
-                  <template v-slot:after>
-                    <q-btn round dense flat icon="send" @click="addNodeIdNotification"/>
-                  </template>
-                </q-input>
-              </q-card-section>
-            </q-card>
-            </q-menu>
-          </q-btn>
+          <notify-btn />
         </q-toolbar>
         <q-toolbar class="background-orange">
           <q-toolbar-title>
@@ -269,13 +182,15 @@
         </q-toolbar>
       </div>
       <!--sm view-->
-      <div class="sm background-orange">
-        <q-toolbar class="background-white">
+      <div class="sm">
+        <q-toolbar class="panel">
           <q-btn
             color="secondary" flat
-            label="Add Identification"
+            icon="perm_identity"
             @click.native="onAddIdentification"
-          />
+          >
+          <tooltip-style v-bind:text="'Add Identification'" />
+          </q-btn>
           <calculator />
           <q-btn
             flat
@@ -283,12 +198,11 @@
             class="text-regular"
           >
           <q-menu>
-            <div class="no-wrap q-pa-md">
-              Switch To Blockchain
-              <q-spinner-dots v-if="blockchains.length < 1" />
-            </div>
-            <q-separator />
-            <list-blockchains />
+              <div
+                style="border-left: 0.1px solid #9c929c;"
+              >
+                <list-blockchains />
+              </div>
             </q-menu>
           </q-btn>
           <q-btn
@@ -297,19 +211,13 @@
             class="text-regular"
           >
           <q-menu>
-            <div class="no-wrap q-pa-md">
-              Switch To Subnet
-              <q-spinner-dots v-if="subnets.length < 1" />
+            <div
+              style="border-left: 0.1px solid #9c929c;"
+            >
+              <list-subnets />
             </div>
-            <q-separator />
-            <list-subnets />
           </q-menu>
           </q-btn>
-          <a
-            id="faq"
-            href="#faqs">
-            FAQ
-          </a>
           <q-btn
             flat
             no-caps
@@ -318,53 +226,58 @@
             class="text-regular"
             id="target-el"
           >
-            <q-menu>
-              <div class="no-wrap q-pa-md text-orange">
-                Networks
+            <q-menu
+              transition-show="scale"
+              transition-hide="scale"
+              :dark="appTheme==='dark'"
+            >
+               <div
+                style="border-left: 0.1px solid #9c929c;"
+              >
+                <switch-endpoint />
               </div>
-              <q-separator />
-              <switch-endpoint />
             </q-menu>
             <tooltip-style v-bind:text="'Connect To Node'" />
           </q-btn>
           <q-btn
             no-caps
             :label="getISO(currentCurrency)"
-            class="text-medium"
-            color="purple"
+            class="text-panel text-medium"
+            flat
             id="target-el"
           >
-            <q-menu
-              anchor="top right"
-              self="top left"
+          <q-menu
+              transition-show="scale"
+              transition-hide="scale"
+              :dark="appTheme==='dark'"
             >
-            <div style="min-width: 250px;">
-                <q-item style="background-color: #32353b;">
-                  <q-item-section class="text-white text-medium">
+              <div style="min-width: 250px;border-left: 0.1px solid #9c929c;" class="panel2">
+                <q-item class="panel">
+                  <q-item-section class="text-medium" :dark="appTheme==='dark'">
                     1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }}
                   </q-item-section>
                 </q-item>
                 <q-separator />
                 <q-item>
-                  <q-input v-model="val" @input="filterFn" label="Search currency" />
+                  <q-input :dark="appTheme==='dark'" v-model="val" @input="filterFn" label="Search currency" />
                 </q-item>
                 <span v-if="allCurrencies.length > 0">
                   <q-list style="min-width: 250px;" v-for="(c, i) in allCurrencies" v-bind:key="i">
-                    <q-item>
+                    <q-item :dark="appTheme==='dark'">
                       <q-item-section>
                         <q-item-label>{{ getISO(c) }}</q-item-label>
-                        <q-item-label caption lines="2">{{ getCurrencyName(c) }}</q-item-label>
+                        <q-item-label caption lines="2" class="text-panel">{{ getCurrencyName(c) }}</q-item-label>
                       </q-item-section>
 
                       <q-item-section side top>
-                        <q-item-label><small class="text-purple text-medium">{{ getSymbol(c) }}</small> {{ currenciesPriceList[`${c}`] }}</q-item-label>
+                        <q-item-label><small class="text-panel text-medium">{{ getSymbol(c) }}</small> {{ currenciesPriceList[`${c}`] }}</q-item-label>
                         <q-icon size="xs" name="check_box" v-if="c === currentCurrency" />
                         <q-icon size="xs" name="check_box_outline_blank" v-else @click="setCurrentCurrency(c)"/>
                       </q-item-section>
                     </q-item>
                     <q-item>
-                      <q-item-section><small class="text-grey">24h High</small> <span style="font-size: 12px;" class="text-medium text-positive">{{ high24h[`${c}`] }}</span></q-item-section>
-                      <q-item-section side top><small class="text-grey">24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
+                      <q-item-section><small>24h High</small> <span style="font-size: 12px;" class="text-medium text-positive">{{ high24h[`${c}`] }}</span></q-item-section>
+                      <q-item-section side top><small>24h Low</small> <span style="font-size: 12px;" class="text-medium text-negative">{{ low24h[`${c}`] }}</span></q-item-section>
                     </q-item>
                     <q-separator />
                   </q-list>
@@ -373,22 +286,40 @@
               </div>
             </q-menu>
           </q-btn>
+          <notify-btn />
         </q-toolbar>
         <q-toolbar>
           <q-toolbar-title style="margin-right: 10%;">
             <img src="~assets/vscoutlogo5.svg" style="width: 200px;">
           </q-toolbar-title>
+          <div class="q-pb-md">
+              <q-bar style="min-width: 420px;">
+                <q-input
+                  outlined
+                  dark
+                  stack-label
+                  color="purple"
+                  style="min-width: 390px;"
+                  placeholder="Search Validator/Blockchain/Subnet/P-address"
+                  clearable v-model="filter"
+                  @keydown.enter.prevent="search"
+                >
+                  <template v-slot:append>
+                    <q-icon name="search" @click="search"/>
+                  </template>
+                </q-input>
+              </q-bar>
+            </div>
         </q-toolbar>
-        <q-toolbar>
+        <q-toolbar v-if="isValidatorShow(nodeID)">
           <div class="row">
-            <div class="col-5 q-pb-md" v-if="isValidatorShow(nodeID)">
+            <div class="col-5 q-pb-md">
               <span>
                 <countdown class="row" v-bind:color="'#ffffff'" v-bind:countdown="getRemainigTime()" />
                 <tooltip-style v-bind:text="'Remaining validation time for ' + nodeID  + ''" />
               </span>
             </div>
-            <div class="col-2" v-if="isValidatorShow(nodeID)"></div>
-            <div class="col-9 q-pb-md" v-else></div>
+            <div class="col-2"></div>
             <div class="col-3 q-pb-md">
               <q-bar style="min-width: 420px;">
                 <q-input
@@ -411,10 +342,13 @@
         </q-toolbar>
       </div>
       <!--lt-sm view-->
-      <div class="lt-sm background-white">
-        <q-toolbar>
-          <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm />
-          <a id="faq2" href="#faqs">FAQ</a>
+      <div class="lt-sm panel">
+        <q-toolbar class="panel">
+          <q-toolbar-title>
+            <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm />
+          </q-toolbar-title>
+          <a id="faq2" class="text-panel" href="#faqs">FAQ</a>
+          <notify-btn />
         </q-toolbar>
         <div class="q-pb-md">
           <span v-if="isValidatorShow(nodeID)">
@@ -636,9 +570,7 @@ import { mapGetters, mapActions } from 'vuex'
 import {
   SET_BALANCE,
   SET_THEME,
-  SET_CURRENT_CURRENCY,
-  SET_NOTIFICATION_NODE,
-  CLEAR_NOTIFICATIONS_LIST
+  SET_CURRENT_CURRENCY
 } from './../store/app/types'
 
 import {
@@ -654,6 +586,7 @@ import { fromNow2 } from './../modules/time.js'
 export default {
   name: 'MainLayout',
   components: {
+    NotifyBtn: () => import('components/notify-btn'),
     Calculator: () => import('components/items/calculator.vue'),
     TooltipStyle: () => import('components/tooltip-style.vue'),
     Countdown: () => import('components/items/countdown.vue'),
@@ -687,19 +620,11 @@ export default {
       'blockchainByID',
       'blockchainByName',
       'subnetByID',
-      'validatorById',
-      'notificationNode',
-      'notifications'
-    ]),
-    notificationsReverse: function () {
-      // todo
-      // const result = this.notifications
-      return this.notifications // result.reverse()
-    }
+      'validatorById'
+    ])
   },
   data () {
     return {
-      nodeIDN: '',
       val: '',
       show: false,
       filter: '',
@@ -714,8 +639,6 @@ export default {
       networkMenu: false,
       subnetsMenu: false,
       blockchainsMenu: false,
-      addNotification: false,
-      removeNotification: false,
       menuOver: false,
       listOver: false,
       networkMenuOver: false,
@@ -735,9 +658,6 @@ export default {
         if (this.listOver) return
         this.debounceFunc(this.checkMenu())
       }, 50)
-    },
-    removeNotification (val) {
-      if (!val) this.$store.commit(CLEAR_NOTIFICATIONS_LIST)
     },
     listOver (val) {
       this.debounceFunc(this.checkMenu())
@@ -777,25 +697,6 @@ export default {
     }),
     getTimeFromNow (time) {
       return fromNow2(time)
-    },
-    addNodeIdNotification () {
-      // todo search from list
-      const node = this.validatorById(this.nodeIDN.trim())
-      if (node) {
-        this.$store.commit(SET_NOTIFICATION_NODE, { node })
-      } else {
-        this.$q.notify({
-          timeout: 5000,
-          color: 'white',
-          position: 'center',
-          textColor: 'orange',
-          message: 'Incorrect Node ID!'
-        })
-      }
-    },
-    turnOffNotification () {
-      this.$store.commit(SET_NOTIFICATION_NODE, { node: {} })
-      this.$store.commit(CLEAR_NOTIFICATIONS_LIST)
     },
     isValidatorShow (id) {
       if (!id) return
