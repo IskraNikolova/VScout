@@ -324,7 +324,7 @@ async function getValidators (
         let notifications = []
         if (currentValidator) {
           notifications = compareNotificationNode(getters.notificationNode, currentValidator)
-          if (notifications.length > 0) commit(SET_NOTIFICATION_NODE, { node: currentValidator })
+          commit(SET_NOTIFICATION_NODE, { node: currentValidator })
         } else {
           commit(CLEAR_NOTIFICATIONS_LIST)
           notifications.push({
