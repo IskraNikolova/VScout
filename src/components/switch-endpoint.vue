@@ -71,8 +71,7 @@ import {
   GET_NODE_ID,
   GET_NODE_INFO,
   GET_NODE_PEERS,
-  GET_BLOCKCHAINS,
-  GET_PENDING_STAKING
+  GET_BLOCKCHAINS
 } from '../store/app/types'
 
 import {
@@ -123,8 +122,7 @@ export default {
       getNodeInfo: GET_NODE_INFO,
       getNodePeers: GET_NODE_PEERS,
       getValidators: GET_STAKING,
-      getBlockchains: GET_BLOCKCHAINS,
-      getPendingValidators: GET_PENDING_STAKING
+      getBlockchains: GET_BLOCKCHAINS
     }),
     onRemoveFromMem (endpoint, event) {
       event.stopImmediatePropagation()
@@ -166,7 +164,6 @@ export default {
         this.getNodePeers({}),
         this.getHeight({ endpoint: endpoint.url }),
         this.getValidators({ endpoint: endpoint.url, subnetID: this.subnetID }),
-        this.getPendingValidators({ endpoint: endpoint.url, subnetID: this.subnetID }),
         this.getBlockchains({ endpoint: endpoint.url }),
         this.getSubnets({ endpoint: endpoint.url })
       ])

@@ -108,6 +108,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { fromNow2 } from './../modules/time.js'
 
 import {
   SET_NOTIFICATION_NODE,
@@ -172,6 +173,9 @@ export default {
           message: 'Incorrect Node ID!'
         })
       }
+    },
+    getTimeFromNow (time) {
+      return fromNow2(time)
     },
     filterFn (update) {
       if (this.nodeIDN === '') {

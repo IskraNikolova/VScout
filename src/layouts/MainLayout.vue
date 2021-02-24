@@ -581,7 +581,6 @@ import { openURL, debounce } from 'quasar'
 
 import { _getTxStatus, _getBalance } from './../modules/network.js'
 import { currencies } from './../utils/constants.js'
-import { fromNow2 } from './../modules/time.js'
 
 export default {
   name: 'MainLayout',
@@ -696,9 +695,6 @@ export default {
       setTheme: SET_THEME,
       setValidator: SET_VALIDATOR
     }),
-    getTimeFromNow (time) {
-      return fromNow2(time)
-    },
     isValidatorShow (id) {
       if (!id) return
       const isVal = this.validatorById(id)
