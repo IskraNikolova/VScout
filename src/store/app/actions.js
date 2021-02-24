@@ -233,10 +233,7 @@ async function getValidators (
         const currentValidator = getters
           .validatorById(getters.notificationNode.nodeID)
         let notifications = []
-        if (currentValidator) {
-          notifications = compareNotificationNode(getters.notificationNode, currentValidator)
-          commit(SET_NOTIFICATION_NODE, { node: currentValidator })
-        } else {
+        if (!currentValidator && Number(getters.nodeInfo.networkID) === 1) {
           commit(CLEAR_NOTIFICATIONS_LIST)
           notifications.push({
             date: Date.now(),
@@ -245,6 +242,9 @@ async function getValidators (
             icon: 'hourglass_disabled',
             message: 'The staking time of this node is over.'
           })
+        } else {
+          notifications = compareNotificationNode(getters.notificationNode, currentValidator)
+          commit(SET_NOTIFICATION_NODE, { node: currentValidator })
         }
         commit(ADD_TO_NOTIFICATIONS_LIST, { notifications })
       }
@@ -322,10 +322,7 @@ async function getValidators (
           .validators
           .find(val => val.nodeID.includes(getters.notificationNode.nodeID))
         let notifications = []
-        if (currentValidator) {
-          notifications = compareNotificationNode(getters.notificationNode, currentValidator)
-          commit(SET_NOTIFICATION_NODE, { node: currentValidator })
-        } else {
+        if (!currentValidator && Number(getters.nodeInfo.networkID) === 1) {
           commit(CLEAR_NOTIFICATIONS_LIST)
           notifications.push({
             date: Date.now(),
@@ -334,6 +331,9 @@ async function getValidators (
             icon: 'hourglass_disabled',
             message: 'The staking time of this node is over.'
           })
+        } else {
+          notifications = compareNotificationNode(getters.notificationNode, currentValidator)
+          commit(SET_NOTIFICATION_NODE, { node: currentValidator })
         }
         commit(ADD_TO_NOTIFICATIONS_LIST, { notifications })
       }
