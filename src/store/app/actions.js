@@ -150,6 +150,10 @@ async function initEndpoint (
   try {
     const endpoint = getters.networkEndpoint
     if (!endpoint.url) throw new Error()
+    if (endpoint.name === 'Avalanche Mainnet') {
+      const endpoint = network.endpointUrls[0]
+      commit(SET_ENDPOINT, { endpoint })
+    }
 
     const response = await _getNodeId({
       endpoint: endpoint.url
