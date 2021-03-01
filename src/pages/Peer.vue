@@ -82,6 +82,7 @@ export default {
     }
   },
   created () {
+    this.visible = true
     this.peer = this.peerById(this.$route.params.id)
     if (this.peer) this.visible = false
   },
@@ -123,6 +124,14 @@ export default {
     peers: {
       handler: function (v) {
         this.peer = this.peerById(this.$route.params.id)
+        if (this.peer) this.visible = false
+      },
+      deep: true,
+      immediate: true
+    },
+    '$route.params.id': {
+      handler: function (id) {
+        this.peer = this.peerById(id)
         if (this.peer) this.visible = false
       },
       deep: true,
