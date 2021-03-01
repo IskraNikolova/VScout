@@ -84,6 +84,13 @@ export function peers (state) {
   return state.peers
 }
 
+export function peerById (state) {
+  return (id) => state
+    .peers
+    .peers
+    .find(val => val.nodeID.includes(id))
+}
+
 export function peersMap (state) {
   return state.peersMap
 }

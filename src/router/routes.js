@@ -44,6 +44,13 @@ const routes = [
     ]
   },
   {
+    path: '/peer',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '/peer/:id', component: () => import('pages/Peer.vue') }
+    ]
+  },
+  {
     path: '/tx',
     component: () => import('layouts/MainLayout.vue'),
     children: [

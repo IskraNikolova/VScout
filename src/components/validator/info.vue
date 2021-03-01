@@ -4,7 +4,7 @@
    class="panel2"
   >
   <q-card-section>
-    <div class="q-mb-md text-medium text-purple">VALIDATOR (NODE)</div>
+    <div class="q-mb-md text-medium text-purple">{{ role }} (NODE)</div>
     <div class="q-pl-sm">
       <span class="text-subtitle2"><small style="opacity: 0.8;">VERSION</small></span>
       <span class="on-right" style="font-size: 15.7px;">{{ version }}</span>
@@ -37,6 +37,10 @@ export default {
       required: false
     },
     version: {
+      type: String,
+      required: false
+    },
+    role: {
       type: String,
       required: false
     },

@@ -619,6 +619,7 @@ export default {
       'blockchainByID',
       'blockchainByName',
       'subnetByID',
+      'peerById',
       'validatorById'
     ])
   },
@@ -793,7 +794,12 @@ export default {
         this.filter = ''
         return
       }
-
+      const peer = this.peerById(this.filter)
+      if (peer) {
+        this.$router.push(`/peer/${this.filter}`)
+        this.filter = ''
+        return
+      }
       const subnet = this.getSubnet(this.filter)
       if (subnet) {
         this.$router.push(`/subnet/${this.filter}`)

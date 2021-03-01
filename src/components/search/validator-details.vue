@@ -53,6 +53,7 @@
         <info
           class="q-mt-md my-card dark-panel"
           style="border-radius: 10px;"
+          v-bind:role="'VALIDATOR'"
           v-bind:version="val.version"
           v-bind:country="val.country"
           v-bind:continent="val.continent"
@@ -194,6 +195,7 @@
       <div class="row" v-if="val.version">
         <info
           flat
+          v-bind:role="'VALIDATOR'"
           v-bind:version="val.version"
           v-bind:country="val.country"
           v-bind:continent="val.continent"
