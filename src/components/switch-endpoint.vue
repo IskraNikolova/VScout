@@ -159,22 +159,27 @@ export default {
     },
     async onSuccess (endpoint) {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })
-      await Promise.all([
-        this.getNodeInfo({}),
-        this.getNodePeers({}),
-        this.getHeight({ endpoint: endpoint.url }),
-        this.getValidators({ endpoint: endpoint.url, subnetID: this.subnetID }),
-        this.getBlockchains({ endpoint: endpoint.url }),
-        this.getSubnets({ endpoint: endpoint.url })
-      ])
-      this.$q.notify({
-        textColor: 'black',
-        color: 'white',
-        message: `Connected to ${endpoint.name} (${endpoint.url})`,
-        position: 'top',
-        timeout: 2000,
-        icon: 'done'
-      })
+      try {
+        await Promise.all([
+          this.getNodeInfo({}),
+          this.getNodePeers({}),
+          this.getHeight({ endpoint: endpoint.url }),
+          this.getValidators({ endpoint: endpoint.url, subnetID: this.subnetID }),
+          this.getBlockchains({ endpoint: endpoint.url }),
+          this.getSubnets({ endpoint: endpoint.url })
+        ])
+        this.$q.notify({
+          textColor: 'black',
+          color: 'white',
+          message: `Connected to ${endpoint.name} (${endpoint.url})`,
+          position: 'top',
+          timeout: 2000,
+          icon: 'done'
+        })
+      } catch (err) {
+        console.log(err)
+        this.onError()
+      }
     },
     onError (message) {
       this.$store.commit(UPDATE_UI, { doesItConnect: false })

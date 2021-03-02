@@ -15,7 +15,6 @@ import {
   GET_NODE_VERSIONS,
   SUBSCRIBE_TO_EVENT,
   GET_PENDING_STAKING,
-  GET_AVAX_PRICE,
   SET_NOTIFICATION_NODE,
   CLEAR_NOTIFICATIONS_LIST,
   ADD_TO_NOTIFICATIONS_LIST,
@@ -32,6 +31,7 @@ import {
   SET_PENDING_VALIDATORS,
   SET_PENDING_DELEGATORS,
   GET_NODE_HEALTH,
+  GET_AVAX_PRICE,
   GET_ASSETS_BY_BLOCKCHAINS
 } from './../access/types'
 
@@ -524,24 +524,24 @@ async function getNodeInfo (
 
 async function getNodePeers (
   { getters, commit, dispatch }, { isIgnore = true }) {
-  const response = await _getDefPeers()
+  try {
+    const response = await _getDefPeers()
 
-  if (response.error) {
-    dispatch(GET_NODE_PEERS, { isIgnore: false })
-    return
-  }
+    if (response.error) {
+      dispatch(GET_NODE_PEERS, { isIgnore: false })
+      return
+    }
 
-  const peers = response.data.result
-  commit(GET_NODE_PEERS, { peers })
-  if (getters.networkEndpoint.url === network.endpointUrls[0].url && isIgnore) {
-    const peersMap = groupBy(peers.peers, COUNTRY_CODE)
-    Object.keys(peersMap).map(function (key, index) {
-      peersMap[key] = peersMap[key].length
-    })
+    const peers = response.data.result
+    commit(GET_NODE_PEERS, { peers })
+    if (getters.networkEndpoint.url === network.endpointUrls[0].url && isIgnore) {
+      const peersMap = groupBy(peers.peers, COUNTRY_CODE)
+      Object.keys(peersMap).map(function (key, index) {
+        peersMap[key] = peersMap[key].length
+      })
 
-    commit(GET_INFO_PEERS, { peersMap })
-  } else {
-    try {
+      commit(GET_INFO_PEERS, { peersMap })
+    } else {
       const response = await _getPeers({
         endpoint: getters.networkEndpoint.url
       })
@@ -566,9 +566,9 @@ async function getNodePeers (
       })
 
       commit(GET_INFO_PEERS, { peersMap })
-    } catch (err) {
-      console.log(err)
     }
+  } catch (err) {
+    console.log(err)
   }
 }
 

@@ -15,6 +15,12 @@ export default function () {
     assetsCount: 0,
     validators: [],
     delegators: [],
-    validator: {}
+    validator: {},
+    currentCurrency: 'usd',
+    currenciesPriceList: {},
+    high_24h: {},
+    low_24h: {},
+    price_change_24h: {},
+    price_change_24h_percentage: {}
   }
 }

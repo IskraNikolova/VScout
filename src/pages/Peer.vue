@@ -7,7 +7,7 @@
           <q-item class="col-9">
             <avatar v-bind:avatar="getAvatarM(peer)" style="cursor:pointer;" />
             <q-item-section>
-              <name v-bind:name="'Peer'" v-bind:nodeID="nodeID" v-bind:link="''" />
+              <name v-bind:name="'NODE'" v-bind:nodeID="nodeID" v-bind:link="''" />
             </q-item-section>
           </q-item>
         </div>
@@ -16,7 +16,7 @@
           <info
             class="q-mt-md my-card dark-panel"
             style="border-radius: 10px;"
-            v-bind:role="'NON-VALIDATOR'"
+            v-bind:role="'PEER'"
             v-bind:version="version"
             v-bind:country="country"
             v-bind:continent="continent"

@@ -118,7 +118,7 @@
               <div style="min-width: 250px;border-left: 0.1px solid #9c929c;" class="panel2" @mouseover="listOver=true" @mouseleave="listOver=false">
                 <q-item class="panel">
                   <q-item-section class="text-medium" :dark="appTheme==='dark'">
-                    1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }}
+                    1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ getValue() }}
                   </q-item-section>
                 </q-item>
                 <q-separator />
@@ -254,7 +254,7 @@
               <div style="min-width: 250px;border-left: 0.1px solid #9c929c;" class="panel2">
                 <q-item class="panel">
                   <q-item-section class="text-medium" :dark="appTheme==='dark'">
-                    1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }}
+                    1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ getValue() }}
                   </q-item-section>
                 </q-item>
                 <q-separator />
@@ -489,7 +489,7 @@
               <q-dialog v-model="isC" transition-show="rotate" transition-hide="rotate">
                 <q-card>
                   <q-card-section class="text-purple text-medium">
-                    1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ currenciesPriceList[`${currentCurrency}`] }}
+                    1.00 AVAX = {{ getSymbol(currentCurrency) }} {{ getValue() }}
                   </q-card-section>
 
                   <q-card-section class="q-pt-none">
@@ -590,15 +590,6 @@ export default {
     ListBlockchains: () => import('components/list-blockchains.vue'),
     AddIdentificationDialog: () => import('components/dialogs/add-identification-dialog.vue')
   },
-  created () {
-    this.allCurrencies = Object.keys(this.currenciesPriceList)
-    if (!this.allCurrencies) return
-    this.currency = {
-      label: `${this.getISO('usd')} - ${this.getISO('usd')} ${this.currenciesPriceList.usd}`,
-      value: 'usd'
-    }
-    this.stringOptions = Object.keys(this.currenciesPriceList)
-  },
   computed: {
     ...mapGetters([
       'nodeID',
@@ -647,6 +638,19 @@ export default {
     }
   },
   watch: {
+    currenciesPriceList: {
+      handler: function (v) {
+        this.allCurrencies = Object.keys(this.currenciesPriceList)
+        if (!this.allCurrencies) return
+        this.currency = {
+          label: `${this.getISO('usd')} - ${this.getISO('usd')} ${this.currenciesPriceList.usd}`,
+          value: 'usd'
+        }
+        this.stringOptions = Object.keys(this.currenciesPriceList)
+      },
+      deep: true,
+      immediate: true
+    },
     notifications () {
       this.changeTitle()
     },
@@ -691,6 +695,10 @@ export default {
     ...mapActions({
       setTheme: SET_THEME
     }),
+    getValue () {
+      if (!this.currenciesPriceList || !this.currentCurrency) return 0
+      return this.currenciesPriceList[`${this.currentCurrency}`]
+    },
     isValidatorShow (id) {
       if (!id) return
       const isVal = this.validatorById(id)

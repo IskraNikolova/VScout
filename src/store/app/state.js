@@ -15,7 +15,6 @@ export default function () {
     stakedAVAX: 0,
     validatedStake: 0,
     delegatedStake: 0,
-    endpointsMemory: [],
     defaultValidators: [],
     isBlockchainView: true,
     subnetID: network.defaultSubnetID,
@@ -25,12 +24,6 @@ export default function () {
       networkID: '',
       networkName: '',
       nodeVersion: 'avalanche/'
-    },
-    currentCurrency: 'usd',
-    currenciesPriceList: {},
-    high_24h: {},
-    low_24h: {},
-    price_change_24h: {},
-    price_change_24h_percentage: {}
+    }
   }
 }

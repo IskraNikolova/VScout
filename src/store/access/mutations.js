@@ -11,6 +11,7 @@ import {
   SET_DELEGATORS,
   SET_VALIDATORS,
   SET_VALIDATOR,
+  GET_AVAX_PRICE,
   SET_PENDING_VALIDATORS,
   SET_PENDING_DELEGATORS,
   SET_ASSETS_COUNT
@@ -22,6 +23,16 @@ const mutations = {
   },
   [GET_TX_AVM]: (state, { txAVM }) => {
     state.txAVM = txAVM
+  },
+  [GET_AVAX_PRICE]: (state, { avaxPrice }) => {
+    const currentPrice = avaxPrice.current_price
+    const high24h = avaxPrice.high_24h
+    const low24h = avaxPrice.low_24h
+    state.currenciesPriceList = currentPrice
+    state.high_24h = high24h
+    state.low_24h = low24h
+    state.price_change_24h = avaxPrice.price_change_24h_in_currency
+    state.price_change_24h_percentage = avaxPrice.price_change_percentage_24h_in_currency
   },
   [GET_HEIGHT]: (state, { height }) => {
     state.height = height

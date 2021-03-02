@@ -12,7 +12,6 @@ import {
   SET_SUBNET_ID,
   GET_NODE_INFO,
   GET_NODE_PEERS,
-  GET_AVAX_PRICE,
   GET_INFO_PEERS,
   SET_STAKED_AVAX,
   GET_BLOCKCHAINS,
@@ -121,16 +120,6 @@ const mutations = {
   },
   [SET_CURRENT_CURRENCY]: (state, { currentCurrency }) => {
     state.currentCurrency = currentCurrency
-  },
-  [GET_AVAX_PRICE]: (state, { avaxPrice }) => {
-    const currentPrice = avaxPrice.current_price
-    const high24h = avaxPrice.high_24h
-    const low24h = avaxPrice.low_24h
-    state.currenciesPriceList = currentPrice
-    state.high_24h = high24h
-    state.low_24h = low24h
-    state.price_change_24h = avaxPrice.price_change_24h_in_currency
-    state.price_change_24h_percentage = avaxPrice.price_change_percentage_24h_in_currency
   },
   [GET_NODE_VERSIONS]: (state, { nodesVersions }) => {
     state.nodesVersions = nodesVersions
