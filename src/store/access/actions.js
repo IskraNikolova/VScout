@@ -34,6 +34,7 @@ import {
 async function setValidator ({ commit, getters }, { id }) {
   try {
     let validator = getters.nonDefvalidatorById(id)
+    if (!validator) validator = getters.validatorById(id)
     if (!validator) {
       const res = await _getValidator({ id })
       validator = res.data

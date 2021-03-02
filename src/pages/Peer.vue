@@ -82,6 +82,11 @@ export default {
     }
   },
   created () {
+    const validator = this.validatorById(this.$route.params.id)
+    if (validator) {
+      this.$router.push(`/validator/${this.$route.params.id}`)
+      return
+    }
     this.visible = true
     this.peer = this.peerById(this.$route.params.id)
     if (this.peer) this.visible = false
@@ -89,7 +94,9 @@ export default {
   computed: {
     ...mapGetters([
       'peerById',
-      'peers'
+      'peers',
+      'validatorById',
+      'defaultValidators'
     ]),
     country: function () {
       if (!this.peer) return ''
@@ -125,6 +132,16 @@ export default {
       handler: function (v) {
         this.peer = this.peerById(this.$route.params.id)
         if (this.peer) this.visible = false
+      },
+      deep: true,
+      immediate: true
+    },
+    defaultValidators: {
+      handler: function (v) {
+        const validator = this.validatorById(this.$route.params.id)
+        if (validator) {
+          this.$router.push(`/validator/${this.$route.params.id}`)
+        }
       },
       deep: true,
       immediate: true

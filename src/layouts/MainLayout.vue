@@ -573,10 +573,6 @@ import {
   SET_CURRENT_CURRENCY
 } from './../store/app/types'
 
-import {
-  SET_VALIDATOR
-} from './../store/access/types'
-
 import { openURL, debounce } from 'quasar'
 
 import { _getTxStatus, _getBalance } from './../modules/network.js'
@@ -620,7 +616,7 @@ export default {
       'blockchainByName',
       'subnetByID',
       'peerById',
-      'validatorById'
+      'nonDefvalidatorById'
     ])
   },
   data () {
@@ -693,8 +689,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      setTheme: SET_THEME,
-      setValidator: SET_VALIDATOR
+      setTheme: SET_THEME
     }),
     isValidatorShow (id) {
       if (!id) return
@@ -788,7 +783,8 @@ export default {
     },
     async search () {
       if (!this.filter || this.filter === 'undefined') return
-      const validator = await this.setValidator({ id: this.filter })
+      let validator = this.validatorById(this.filter)
+      if (!validator) validator = this.nonDefvalidatorById(this.filter)
       if (validator) {
         this.$router.push(`/validator/${this.filter}`)
         this.filter = ''
