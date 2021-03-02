@@ -5,7 +5,6 @@ export default function () {
     theme: 'dark',
     notificationNode: {},
     notifications: [],
-    peersMap: {},
     inData: {},
     addressBalance: {},
     nodeID: '',
@@ -19,7 +18,6 @@ export default function () {
     isBlockchainView: true,
     subnetID: network.defaultSubnetID,
     networkEndpoint: network.endpointUrls[0],
-    peers: {},
     nodeInfo: {
       networkID: '',
       networkName: '',

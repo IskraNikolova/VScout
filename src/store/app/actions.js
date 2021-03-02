@@ -5,10 +5,8 @@ import {
   GET_NODE_ID,
   GET_SUBNETS,
   GET_NODE_INFO,
-  GET_NODE_PEERS,
   GET_STAKING,
   INIT_ENDPOINT,
-  GET_INFO_PEERS,
   SET_STAKED_AVAX,
   GET_BLOCKCHAINS,
   UPDATE_VALIDATOR,
@@ -20,7 +18,6 @@ import {
   ADD_TO_NOTIFICATIONS_LIST,
   SET_DEFAULT_VALIDATORS
 } from './types'
-const COUNTRY_CODE = 'countryCode'
 
 import {
   GET_HEIGHT,
@@ -47,12 +44,9 @@ import {
 import {
   _health,
   _getDefInfo,
-  _getPeers,
   _getNodeId,
   _getStats,
   _getHeight,
-  _getDefPeers,
-  // _getPeerInfo,
   _getDefHeight,
   _validates,
   _getSubnets,
@@ -95,7 +89,6 @@ import {
 } from './../../modules/avalanche.js'
 
 import {
-  groupBy,
   round
 } from './../../utils/commons.js'
 
@@ -522,85 +515,6 @@ async function getNodeInfo (
   }
 }
 
-async function getNodePeers (
-  { getters, commit, dispatch }, { isIgnore = true }) {
-  try {
-    const response = await _getDefPeers()
-
-    if (response.error) {
-      dispatch(GET_NODE_PEERS, { isIgnore: false })
-      return
-    }
-
-    const peers = response.data.result
-    commit(GET_NODE_PEERS, { peers })
-    if (getters.networkEndpoint.url === network.endpointUrls[0].url && isIgnore) {
-      const peersMap = groupBy(peers.peers, COUNTRY_CODE)
-      Object.keys(peersMap).map(function (key, index) {
-        peersMap[key] = peersMap[key].length
-      })
-
-      commit(GET_INFO_PEERS, { peersMap })
-    } else {
-      const response = await _getPeers({
-        endpoint: getters.networkEndpoint.url
-      })
-
-      if (response.data.error) {
-        commit(UPDATE_UI, { doesItConnect: true })
-        return
-      }
-
-      let peers = await getInfoPeers(response.data.result.peers, getters.peers.peers)
-
-      if (!peers) peers = []
-      const result = {
-        numPeers: peers.length,
-        peers
-      }
-      commit(GET_NODE_PEERS, { peers: result })
-
-      const peersMap = groupBy(peers, COUNTRY_CODE)
-      Object.keys(peersMap).map(function (key, index) {
-        peersMap[key] = peersMap[key].length
-      })
-
-      commit(GET_INFO_PEERS, { peersMap })
-    }
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-async function getInfoPeers (peers, info) {
-  return await Promise.all(peers.map(async p => {
-    try {
-      const ip = p.ip.split(':')[0]
-      const r = info
-        .find(val => val.ip.includes(ip))
-      return {
-        ...p,
-        ...r
-      }
-      // } else {
-      //   const response = await _getDefPeers()
-      //   if (response.error) {
-      //     dispatch(GET_NODE_PEERS, { isIgnore: false })
-      //     return
-      //   }
-      //   const peers = response.data.result
-      //   const res = await _getPeerInfo({ ip })
-      //   return {
-      //     ...p,
-      //     ...res.data
-      //   }
-      // }
-    } catch (err) {
-      return p
-    }
-  }))
-}
-
 function getAvaxPrice (
   { commit }) {
   _getAssetPrice('AVAX')
@@ -767,7 +681,6 @@ export default {
   [GET_IN_OUT]: getStakeStats,
   [GET_SUBNETS]: getSubnets,
   [GET_NODE_INFO]: getNodeInfo,
-  [GET_NODE_PEERS]: getNodePeers,
   [INIT_ENDPOINT]: initEndpoint,
   [GET_STAKING]: getValidators,
   [GET_AVAX_PRICE]: getAvaxPrice,

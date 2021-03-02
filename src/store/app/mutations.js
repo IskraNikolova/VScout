@@ -11,8 +11,6 @@ import {
   SET_BALANCE,
   SET_SUBNET_ID,
   GET_NODE_INFO,
-  GET_NODE_PEERS,
-  GET_INFO_PEERS,
   SET_STAKED_AVAX,
   GET_BLOCKCHAINS,
   UPDATE_VALIDATOR,
@@ -138,12 +136,6 @@ const mutations = {
   },
   [GET_NODE_INFO]: (state, { nodeInfo }) => {
     state.nodeInfo = nodeInfo
-  },
-  [GET_NODE_PEERS]: (state, { peers }) => {
-    state.peers = peers
-  },
-  [GET_INFO_PEERS]: (state, { peersMap }) => {
-    state.peersMap = peersMap
   },
   [UPDATE_VALIDATOR]: (state, { validator }) => {
     const validators = state.defaultValidators

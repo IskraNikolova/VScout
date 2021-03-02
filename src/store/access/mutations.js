@@ -12,6 +12,8 @@ import {
   SET_VALIDATORS,
   SET_VALIDATOR,
   GET_AVAX_PRICE,
+  GET_NODE_PEERS,
+  GET_INFO_PEERS,
   SET_PENDING_VALIDATORS,
   SET_PENDING_DELEGATORS,
   SET_ASSETS_COUNT
@@ -33,6 +35,12 @@ const mutations = {
     state.low_24h = low24h
     state.price_change_24h = avaxPrice.price_change_24h_in_currency
     state.price_change_24h_percentage = avaxPrice.price_change_percentage_24h_in_currency
+  },
+  [GET_NODE_PEERS]: (state, { peers }) => {
+    state.peers = peers
+  },
+  [GET_INFO_PEERS]: (state, { peersMap }) => {
+    state.peersMap = peersMap
   },
   [GET_HEIGHT]: (state, { height }) => {
     state.height = height

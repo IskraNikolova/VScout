@@ -83,3 +83,18 @@ export function changePercentage24h (state) {
 export function currentCurrency (state) {
   return state.currentCurrency
 }
+
+export function peers (state) {
+  return state.peers
+}
+
+export function peerById (state) {
+  return (id) => state
+    .peers
+    .peers
+    .find(val => val.nodeID.includes(id))
+}
+
+export function peersMap (state) {
+  return state.peersMap
+}

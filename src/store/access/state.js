@@ -16,6 +16,8 @@ export default function () {
     validators: [],
     delegators: [],
     validator: {},
+    peers: {},
+    peersMap: {},
     currentCurrency: 'usd',
     currenciesPriceList: {},
     high_24h: {},

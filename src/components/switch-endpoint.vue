@@ -70,7 +70,6 @@ import {
   GET_SUBNETS,
   GET_NODE_ID,
   GET_NODE_INFO,
-  GET_NODE_PEERS,
   GET_BLOCKCHAINS
 } from '../store/app/types'
 
@@ -79,7 +78,8 @@ import {
 } from '../store/ui/types'
 
 import {
-  GET_HEIGHT
+  GET_HEIGHT,
+  GET_NODE_PEERS
 } from '../store/access/types'
 
 import {
