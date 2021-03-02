@@ -78,12 +78,12 @@ import {
 } from '../store/ui/types'
 
 import {
-  GET_HEIGHT,
-  GET_NODE_PEERS
+  GET_HEIGHT
 } from '../store/access/types'
 
 import {
   SET_ENDPOINT,
+  GET_NODE_PEERS,
   SET_ENDPOINTS_MEMORY,
   REMOVE_ENDPOINTS_MEMORY
 } from '../store/memory/types'

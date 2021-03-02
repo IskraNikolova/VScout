@@ -84,17 +84,12 @@ export function currentCurrency (state) {
   return state.currentCurrency
 }
 
-export function peers (state) {
-  return state.peers
-}
-
-export function peerById (state) {
+export function validatorById (state) {
   return (id) => state
-    .peers
-    .peers
+    .defaultValidators
     .find(val => val.nodeID.includes(id))
 }
 
-export function peersMap (state) {
-  return state.peersMap
+export function defaultValidators (state) {
+  return state.defaultValidators
 }

@@ -14,7 +14,6 @@ export default function () {
     stakedAVAX: 0,
     validatedStake: 0,
     delegatedStake: 0,
-    defaultValidators: [],
     isBlockchainView: true,
     subnetID: network.defaultSubnetID,
     networkEndpoint: network.endpointUrls[0],

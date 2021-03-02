@@ -6,16 +6,18 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-// import { resetState } from '../store'
 
 import {
   INIT_APP
 } from './store/app/types'
 
 import {
-  GET_NODE_PEERS,
   SET_NETWORK_STATUS
 } from './store/access/types'
+
+import {
+  GET_NODE_PEERS
+} from './store/memory/types'
 
 export default {
   name: 'App',

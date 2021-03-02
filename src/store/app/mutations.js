@@ -16,7 +16,6 @@ import {
   UPDATE_VALIDATOR,
   GET_NODE_VERSIONS,
   SET_CURRENT_CURRENCY,
-  SET_DEFAULT_VALIDATORS,
   SET_NOTIFICATION_NODE,
   ADD_TO_NOTIFICATIONS_LIST,
   CLEAR_NOTIFICATIONS_LIST
@@ -163,9 +162,6 @@ const mutations = {
   },
   [SET_SUBNET_ID]: (state, { subnetID }) => {
     state.subnetID = subnetID
-  },
-  [SET_DEFAULT_VALIDATORS]: (state, { defaultValidators }) => {
-    state.defaultValidators = defaultValidators
   },
   [SET_NOTIFICATION_NODE]: (state, { node }) => {
     state.notificationNode = node

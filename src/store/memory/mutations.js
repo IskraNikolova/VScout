@@ -5,10 +5,18 @@ import {
   SET_CURRENT_SUBNET,
   SET_ENDPOINTS_MEMORY,
   SET_CURRENT_BLOCKCHAIN,
+  GET_NODE_PEERS,
+  GET_INFO_PEERS,
   REMOVE_ENDPOINTS_MEMORY
 } from './types'
 
 const mutations = {
+  [GET_NODE_PEERS]: (state, { peers }) => {
+    state.peers = peers
+  },
+  [GET_INFO_PEERS]: (state, { peersMap }) => {
+    state.peersMap = peersMap
+  },
   [SET_ENDPOINT]: (state, { endpoint }) => {
     state.networkEndpoint = endpoint
   },

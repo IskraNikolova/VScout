@@ -2,10 +2,6 @@ const {
   network
 } = require('./../../modules/config').default
 
-export function defaultValidators (state) {
-  return state.defaultValidators
-}
-
 export function notificationNode (state) {
   return state.notificationNode
 }
@@ -82,10 +78,4 @@ export function nodeInfo (state) {
 
 export function inData (state) {
   return state.inData
-}
-
-export function validatorById (state) {
-  return (id) => state
-    .defaultValidators
-    .find(val => val.nodeID.includes(id))
 }
