@@ -26,6 +26,9 @@ const mutations = {
     state.txAVM = txAVM
   },
   [SET_DEFAULT_VALIDATORS]: (state, { defaultValidators }) => {
+    // let result
+    // if (defaultValidators) result = defaultValidators.map(a => Object.assign({}, a, { delegators: a.delegators ? a.delegators.length : 0 }))
+    // console.log(result)
     state.defaultValidators = defaultValidators
   },
   [GET_AVAX_PRICE]: (state, { avaxPrice }) => {
