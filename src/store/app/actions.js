@@ -13,6 +13,7 @@ import {
   GET_NODE_VERSIONS,
   SUBSCRIBE_TO_EVENT,
   GET_PENDING_STAKING,
+  SET_POTENTIAL_REWARD,
   SET_NOTIFICATION_NODE,
   CLEAR_NOTIFICATIONS_LIST,
   ADD_TO_NOTIFICATIONS_LIST
@@ -96,6 +97,7 @@ import {
   labelColors,
   versionNum
 } from './../../utils/constants.js'
+import BigNumber from 'bignumber.js'
 
 async function initApp (
   { dispatch, getters }) {
@@ -169,6 +171,7 @@ async function getValidators (
   }) {
   try {
     let pendingValidators = null
+    let potentialRewardT = new BigNumber(0)
     if (
       endpoint === network.endpointUrls[0].url &&
       isIgnore &&
@@ -210,14 +213,21 @@ async function getValidators (
       })
 
       const {
-        delegators
+        delegators,
+        potentialReward
       } = mapDelegators(validators.delegators)
+
+      potentialRewardT = BigNumber
+        .sum(potentialRewardT, potentialReward)
 
       const res = await mapDefaultValidators(
         validators.validators,
         getters.defaultValidators,
         isInit
       )
+
+      potentialRewardT = BigNumber
+        .sum(potentialRewardT, res.potentialReward)
 
       commit(SET_VALIDATORS, { validators: res.validators })
       commit(SET_DELEGATORS, { delegators })
@@ -290,6 +300,9 @@ async function getValidators (
         getters.peers.peers
       )
 
+      potentialRewardT = BigNumber
+        .sum(potentialRewardT, res.potentialReward)
+
       if (res.allStake !== getters.stakedAVAX) {
         dispatch(GET_CURRENT_SUPPLY)
       }
@@ -303,11 +316,14 @@ async function getValidators (
         validators: res.validators
       })
 
-      const resDelegators = mapDelegators(delegators)
+      const delInfo = mapDelegators(delegators)
 
       commit(SET_DELEGATORS, {
-        delegators: resDelegators.delegators
+        delegators: delInfo.delegators
       })
+
+      potentialRewardT = BigNumber
+        .sum(potentialRewardT, delInfo.potentialReward)
 
       if (getters.isDefaultSubnetID(subnetID)) {
         commit(SET_DEFAULT_VALIDATORS, {
@@ -335,7 +351,8 @@ async function getValidators (
         commit(ADD_TO_NOTIFICATIONS_LIST, { notifications })
       }
     }
-    dispatch(GET_PENDING_STAKING, { pendingValidators })
+
+    dispatch(GET_PENDING_STAKING, { pendingValidators, potentialReward: potentialRewardT })
   } catch (err) {
     console.log(err)
   }
@@ -359,7 +376,8 @@ async function getPValidators (
   {
     subnetID = getters.subnetID,
     endpoint = getters.networkEndpoint.url,
-    pendingValidators
+    pendingValidators,
+    potentialReward
   }) {
   let response = pendingValidators
   if (!pendingValidators) {
@@ -375,7 +393,8 @@ async function getPValidators (
   if (typeof validators === 'undefined' ||
       validators === null) validators = []
 
-  commit(SET_PENDING_DELEGATORS, { delegators: mapPendingDelegations(delegators) })
+  const mapPDelInfo = mapPendingDelegations(delegators)
+  commit(SET_PENDING_DELEGATORS, { delegators: mapPDelInfo.pendingDelegations })
 
   const val = mapPendingValidators(
     validators,
@@ -383,8 +402,20 @@ async function getPValidators (
   )
 
   commit(SET_PENDING_VALIDATORS, {
-    validators: val
+    validators: val.pendingValidators
   })
+
+  if (val.potentialReward > 0) {
+    potentialReward = BigNumber
+      .sum(potentialReward, val.potentialReward)
+  }
+
+  if (mapPDelInfo.potentialReward > 0) {
+    potentialReward = BigNumber
+      .sum(potentialReward, mapPDelInfo.potentialReward)
+  }
+
+  commit(SET_POTENTIAL_REWARD, { potentialReward })
 }
 
 async function getHeight (

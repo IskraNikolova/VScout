@@ -16,6 +16,7 @@ import {
   UPDATE_VALIDATOR,
   GET_NODE_VERSIONS,
   SET_CURRENT_CURRENCY,
+  SET_POTENTIAL_REWARD,
   SET_NOTIFICATION_NODE,
   ADD_TO_NOTIFICATIONS_LIST,
   CLEAR_NOTIFICATIONS_LIST
@@ -165,6 +166,9 @@ const mutations = {
   },
   [SET_NOTIFICATION_NODE]: (state, { node }) => {
     state.notificationNode = node
+  },
+  [SET_POTENTIAL_REWARD]: (state, { potentialReward }) => {
+    state.potentialReward = potentialReward
   },
   [ADD_TO_NOTIFICATIONS_LIST]: (state, { notifications }) => {
     const arr = state.notifications.concat(notifications)

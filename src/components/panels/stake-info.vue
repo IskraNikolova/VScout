@@ -18,7 +18,7 @@
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
-        <div class="q-pb-md text-medium label-title">STAKING RATIO</div>
+        <div class="q-pb-md text-medium label-title">STAKING RATIO <q-icon name="info" size="xs" color="secondary"><tooltip-style v-bind:text="'Staking ratio displays the percentage of AVAX staked out of the realtime total supply'" /></q-icon></div>
         <div>
           <span class="text-panel label-title">
             {{ stakingRatio }}
@@ -65,16 +65,21 @@ import {
 export default {
   name: 'StakeInfo',
   components: {
-    AnimatedNumber
+    AnimatedNumber,
+    TooltipStyle: () => import('components/tooltip-style')
   },
   computed: {
     ...mapGetters([
       'currentSupply',
-      'stakedAVAX'
+      'stakedAVAX',
+      'potentialReward'
     ]),
     stakingRatio: function () {
       let ratio = new BigNumber(this.stakedAVAX)
-      ratio = ratio.dividedBy(this.currentSupply)
+      const cS = new BigNumber(this.currentSupply)
+      const pR = new BigNumber(this.potentialReward)
+      const totalSupply = cS.minus(pR)
+      ratio = ratio.dividedBy(totalSupply)
       ratio = ratio.multipliedBy(100)
       return round(ratio.toNumber(), 100)
     },
@@ -90,6 +95,9 @@ export default {
       const currentSupply = this.currentSupply.toString()
       const currentSupplyAvax = Math.round(getAvaFromnAva(Number(currentSupply)))
       return currentSupplyAvax
+    },
+    takeFormatAvax (val) {
+      return Math.round(getAvaFromnAva(Number(val))).toLocaleString()
     },
     format (val) {
       if (val === 'undefined') return 0

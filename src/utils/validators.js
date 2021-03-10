@@ -5,19 +5,16 @@ import { getRemainingCapacity } from './stake.js'
 import { countDownCounter, diff } from './../modules/time.js'
 import { _getValidatorById } from './../modules/networkCChain.js'
 
+const allNodesInfo = {
+  avatar: '/statics/circle_symbol.svg',
+  bio: 'Masternodes, Full Nodes, Staking Services',
+  link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
+  website: 'Allnodes'
+}
+
 const t = {
-  'https://bit.ly/3q5aMGC': {
-    avatar: '/statics/circle_symbol.svg',
-    bio: 'Masternodes, Full Nodes, Staking Services',
-    link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
-    website: 'Allnodes'
-  },
-  '/statics/circle_symbol.svg': {
-    avatar: '/statics/circle_symbol.svg',
-    bio: 'Masternodes, Full Nodes, Staking Services',
-    link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
-    website: 'Allnodes'
-  }
+  'https://bit.ly/3q5aMGC': { ...allNodesInfo },
+  '/statics/circle_symbol.svg': { ...allNodesInfo }
 }
 
 /**
@@ -38,7 +35,8 @@ export async function validatorProcessing (
       allStake: 0,
       validatedStake: 0,
       delegatedStake: 0,
-      validators: []
+      validators: [],
+      potentialReward: new BigNumber(0)
     }
   }
 
@@ -53,7 +51,8 @@ export async function validatorProcessing (
   const {
     validatorsMap,
     validatedStake,
-    delegatedStake
+    delegatedStake,
+    potentialReward
   } = data
 
   // get all staked AVAX
@@ -65,17 +64,6 @@ export async function validatorProcessing (
     v.percent = getPercent(v.totalStakeAmount, allStake)
     return v
   })
-
-  // let delegators = []
-  // validatorsMap.forEach((val) => {
-  //   if (!val.delegators) return
-
-  //   delegators
-  //     .push(...mapDelegators(val.delegators))
-  // })
-  // delegators = delegators.map((d, i) => {
-  //   return { ...d, index: i + 1 }
-  // })
 
   // sort validators by total stake and duration
   validatorsResult = validatorsResult.sort(compare)
@@ -92,6 +80,7 @@ export async function validatorProcessing (
     allStake,
     validatedStake,
     delegatedStake,
+    potentialReward,
     validators: result
   }
 }
@@ -177,7 +166,11 @@ export async function mapDefaultValidators (
   validators,
   defaultValidators,
   isInit) {
+  let potentialReward = new BigNumber(0)
   const validatorsMap = await Promise.all(validators.map(async (val) => {
+    potentialReward = BigNumber
+      .sum(potentialReward, val.potentialReward)
+
     if (!defaultValidators) defaultValidators = []
     const currentValidator = defaultValidators
       .find(v => v.nodeID === val.nodeID)
@@ -248,7 +241,8 @@ export async function mapDefaultValidators (
   }))
 
   return {
-    validators: validatorsMap
+    validators: validatorsMap,
+    potentialReward
   }
 }
 
@@ -260,6 +254,7 @@ export async function mapValidators (
   peers = []) {
   let validatedStake = new BigNumber(0)
   let delegatedStake = new BigNumber(0)
+  let potentialReward = new BigNumber(0)
 
   const validatorsMap = await Promise.all(validators.map(async (val) => {
     if (!defaultValidators) defaultValidators = []
@@ -334,6 +329,8 @@ export async function mapValidators (
 
     validatedStake = BigNumber
       .sum(validatedStake, val.stakeAmount)
+    potentialReward = BigNumber
+      .sum(potentialReward, val.potentialReward)
 
     let currentDelegators = val.delegators
     if (!currentDelegators && del) {
@@ -408,7 +405,8 @@ export async function mapValidators (
   return {
     validatorsMap,
     validatedStake,
-    delegatedStake
+    delegatedStake,
+    potentialReward
   }
 }
 
@@ -416,15 +414,16 @@ export function mapPendingValidators (
   validators,
   defaultValidators) {
   if (!validators) return []
-
-  return validators.map((val) => {
+  let potentialReward = new BigNumber(0)
+  const pendingValidators = validators.map((val) => {
     let currentValidator = {}
     if (val.weight) {
       currentValidator = defaultValidators
         .find(v => v.nodeID === val.nodeID)
       val.stakeAmount = currentValidator.stakeAmount
     }
-
+    potentialReward = BigNumber
+      .sum(potentialReward, val.potentialReward)
     const countDownCounterRes = countDownCounter(val.endTime)
     const remainingTime = countDownCounterRes
       .countdown
@@ -448,24 +447,35 @@ export function mapPendingValidators (
       isMinimumAmountForStake
     }
   })
+  return {
+    pendingValidators,
+    potentialReward
+  }
 }
 
 export function mapPendingDelegations (
   delegations) {
   if (!delegations) return []
 
-  return delegations.map((val) => {
+  let potentialReward = new BigNumber(0)
+  const pendingDelegations = delegations.map((val) => {
     const countDownCounterRes = countDownCounter(val.endTime)
     const remainingTime = countDownCounterRes
       .countdown
     const duration = diff(val.endTime, val.startTime)
-
+    potentialReward = BigNumber
+      .sum(potentialReward, val.potentialReward)
     return {
       ...val,
       duration,
       remainingTime
     }
   })
+
+  return {
+    pendingDelegations,
+    potentialReward
+  }
 }
 
 export function getDelegatorDetails (delegators) {
@@ -495,7 +505,11 @@ export function getDelegatorDetails (delegators) {
 export function mapDelegators (delegators) {
   if (!delegators) return []
 
+  let potentialReward = new BigNumber(0)
   const result = delegators.map((delegator, i) => {
+    potentialReward = BigNumber
+      .sum(potentialReward, delegator.potentialReward)
+
     const { avatar } = getAvatar(
       delegator
         .rewardOwner
@@ -515,7 +529,8 @@ export function mapDelegators (delegators) {
   })
 
   return {
-    delegators: result
+    delegators: result,
+    potentialReward
   }
 }
 

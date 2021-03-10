@@ -72,6 +72,11 @@ export function addressBalance (state) {
   return state.addressBalance
 }
 
+export function potentialReward (state) {
+  if (!state.potentialReward) return 0
+  return state.potentialReward.toString()
+}
+
 export function nodeInfo (state) {
   return state.nodeInfo
 }
