@@ -46,17 +46,17 @@ module.exports = {
       const {
         allStake,
         validators,
-        delegators,
+        // delegators,
         validatedStake,
         delegatedStake
       } = utils.mapValidators(apiValidators.validators, peers.peers)
 
       const response = {
         allStake,
-        validators: {
-          validators,
-          delegators
-        },
+        validators, // : {
+          // validators,
+          // delegators
+        // },
         pendingValidators,
         validatedStake,
         delegatedStake

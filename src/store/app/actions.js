@@ -177,7 +177,10 @@ async function getValidators (
       isIgnore &&
       subnetID === network.defaultSubnetID
     ) {
+      // GET validators from server
       const response = await _getDefValidators()
+
+      // GET validators from node API when server response error
       if (response.error) {
         dispatch(GET_STAKING, {
           subnetID,
@@ -189,12 +192,14 @@ async function getValidators (
         return null
       }
 
+      // GET pending validators from response
       pendingValidators = {
         data: {
           result: response.pendingValidators
         }
       }
 
+      // GET info all info from response
       const {
         allStake,
         validators,
@@ -202,26 +207,36 @@ async function getValidators (
         delegatedStake
       } = response
 
+      // GET current supply
       if (allStake !== getters.stakedAVAX) {
         dispatch(GET_CURRENT_SUPPLY)
       }
 
+      // commit staking data
       commit(SET_STAKED_AVAX, {
         all: allStake,
         validatedStake,
         delegatedStake
       })
 
+      // GET mapped delagations and potential reward for them
+      const del = validators
+        .reduce((a, c) => {
+          a.push.apply(a, c.delegators)
+          return a
+        }, [])
       const {
         delegators,
         potentialReward
-      } = mapDelegators(validators.delegators)
+      } = mapDelegators(del)
 
       potentialRewardT = BigNumber
         .sum(potentialRewardT, potentialReward)
 
+      // GET mapped validators
       const res = await mapDefaultValidators(
-        validators.validators,
+        // validators.validators,
+        validators,
         getters.defaultValidators,
         isInit
       )
@@ -229,6 +244,7 @@ async function getValidators (
       potentialRewardT = BigNumber
         .sum(potentialRewardT, res.potentialReward)
 
+      // Commit data
       commit(SET_VALIDATORS, { validators: res.validators })
       commit(SET_DELEGATORS, { delegators })
 
@@ -236,6 +252,7 @@ async function getValidators (
         defaultValidators: res.validators
       })
 
+      // Check for new notifications
       if (getters.notificationNode.nodeID) {
         const currentValidator = getters
           .validatorById(getters.notificationNode.nodeID)
@@ -351,7 +368,7 @@ async function getValidators (
         commit(ADD_TO_NOTIFICATIONS_LIST, { notifications })
       }
     }
-
+    // Commited pending validators
     dispatch(GET_PENDING_STAKING, { pendingValidators, potentialReward: potentialRewardT })
   } catch (err) {
     console.log(err)

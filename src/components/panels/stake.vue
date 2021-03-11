@@ -15,7 +15,7 @@
               :duration="3000"
             />
           </span>
-          <span class="label-title2"> <small > ACTIVE</small></span>
+          <span class="label-title2"> <small> ACTIVE</small></span>
         </div>
         <small>
           <span class="label-title text-panel">

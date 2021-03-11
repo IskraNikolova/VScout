@@ -189,6 +189,13 @@ export default {
         //   field: row => `${row.ip}`,
         //   headerClasses: 'text-medium'
         // },
+        // {
+        //   name: 'pip',
+        //   align: 'left',
+        //   label: 'PUBLIC IP',
+        //   field: row => `${row.publicIP}`,
+        //   headerClasses: 'text-medium'
+        // },
         {
           name: 'validator',
           align: 'left',
