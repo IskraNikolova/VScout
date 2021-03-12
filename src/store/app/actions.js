@@ -235,7 +235,6 @@ async function getValidators (
 
       // GET mapped validators
       const res = await mapDefaultValidators(
-        // validators.validators,
         validators,
         getters.defaultValidators,
         isInit

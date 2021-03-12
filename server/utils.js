@@ -7,7 +7,6 @@ module.exports = {
   mapValidators: (validators, peers) => {
     let validatedStake = new BigNumber(0)
     let delegatedStake = new BigNumber(0)
-    // const delegators = []
 
     const validatorsMap = validators.map((val) => {
       validatedStake = BigNumber
@@ -23,11 +22,7 @@ module.exports = {
         val.lastReceived = peer.lastReceived
         val.lastSent = peer.lastSent
       }
-  
-      // let currentDelegators = val.delegators
-      // delegators.push.apply(delegators, currentDelegators)
 
-      // const props = getDelegatorDetails(currentDelegators)
       const props = getDelegatorDetails(val.delegators)
       const delegateStake = props.delegateStake
       delegatedStake = BigNumber.sum(delegatedStake, delegateStake)
@@ -58,7 +53,6 @@ module.exports = {
         remainingCapacity,
         isMinimumAmountForStake,
         delegatePotentialReward
-        // delegators: currentDelegators
       }
     })
 
@@ -70,7 +64,6 @@ module.exports = {
 
     return {
       ...result
-      // delegators
     }
   },
   getStakingStats: (validators) => { 

@@ -46,17 +46,13 @@ module.exports = {
       const {
         allStake,
         validators,
-        // delegators,
         validatedStake,
         delegatedStake
       } = utils.mapValidators(apiValidators.validators, peers.peers)
 
       const response = {
         allStake,
-        validators, // : {
-          // validators,
-          // delegators
-        // },
+        validators,
         pendingValidators,
         validatedStake,
         delegatedStake
@@ -81,7 +77,7 @@ module.exports = {
         res.end()
       }
       try {
-        const validators = JSON.parse(data).validators.validators
+        const validators = JSON.parse(data).validators
         const validator = validators.find(v => v.nodeID === id)
         res.status(200).send(validator)
         res.end()
