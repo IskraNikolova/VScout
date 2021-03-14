@@ -182,6 +182,27 @@ export default {
           field: row => `${row.nodeID}`,
           headerClasses: 'text-medium'
         },
+        {
+          name: 'version',
+          align: 'left',
+          label: 'VERSION',
+          field: row => row.version,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'location',
+          align: 'left',
+          label: 'LOCATION',
+          field: row => row.country,
+          headerClasses: 'text-medium'
+        },
+        {
+          name: 'lastSent',
+          align: 'left',
+          label: 'LAST SENT',
+          field: row => this.dateFormat(row.lastSent),
+          headerClasses: 'text-medium'
+        },
         // {
         //   name: 'ip',
         //   align: 'left',
@@ -222,27 +243,6 @@ export default {
           align: 'left',
           label: 'UPTIME',
           field: row => row.uptime,
-          headerClasses: 'text-medium'
-        },
-        {
-          name: 'version',
-          align: 'left',
-          label: 'VERSION',
-          field: row => row.version,
-          headerClasses: 'text-medium'
-        },
-        {
-          name: 'location',
-          align: 'left',
-          label: 'LOCATION',
-          field: row => row.country,
-          headerClasses: 'text-medium'
-        },
-        {
-          name: 'lastSent',
-          align: 'left',
-          label: 'LAST SENT',
-          field: row => this.dateFormat(row.lastSent),
           headerClasses: 'text-medium'
         }
       ]

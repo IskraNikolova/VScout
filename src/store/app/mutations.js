@@ -1,7 +1,6 @@
 const BigNumber = require('bignumber.js')
 
 import { VMDict } from './../../utils/constants.js'
-import { clean } from './../../utils/commons.js'
 
 import {
   SET_THEME,
@@ -13,7 +12,6 @@ import {
   GET_NODE_INFO,
   SET_STAKED_AVAX,
   GET_BLOCKCHAINS,
-  UPDATE_VALIDATOR,
   GET_NODE_VERSIONS,
   SET_CURRENT_CURRENCY,
   SET_POTENTIAL_REWARD,
@@ -136,17 +134,6 @@ const mutations = {
   },
   [GET_NODE_INFO]: (state, { nodeInfo }) => {
     state.nodeInfo = nodeInfo
-  },
-  [UPDATE_VALIDATOR]: (state, { validator }) => {
-    const validators = state.defaultValidators
-    if (!validators) return
-    const currentValidator = validators
-      .find(val => val.nodeID.includes(validator.nodeID))
-    if (!currentValidator) return
-    const newVal = clean(validator)
-    const index = state.validators.indexOf(currentValidator)
-    if (index < 0) return
-    state.validators[index] = { ...currentValidator, ...newVal }
   },
   [SET_STAKED_AVAX]: (state, { all, validatedStake, delegatedStake }) => {
     state.stakedAVAX = all

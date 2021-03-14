@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { clean } from './../../utils/commons.js'
 
 import {
   SET_CODE,
@@ -12,6 +13,7 @@ import {
   SET_VALIDATORS,
   SET_VALIDATOR,
   GET_AVAX_PRICE,
+  UPDATE_VALIDATOR,
   SET_DEFAULT_VALIDATORS,
   SET_PENDING_VALIDATORS,
   SET_PENDING_DELEGATORS,
@@ -30,6 +32,17 @@ const mutations = {
     // if (defaultValidators) result = defaultValidators.map(a => Object.assign({}, a, { delegators: a.delegators ? a.delegators.length : 0 }))
     // console.log(result)
     state.defaultValidators = defaultValidators
+  },
+  [UPDATE_VALIDATOR]: (state, { validator }) => {
+    const validators = state.defaultValidators
+    if (!validators) return
+    const currentValidator = validators
+      .find(val => val.nodeID.includes(validator.nodeID))
+    if (!currentValidator) return
+    const newVal = clean(validator)
+    const index = state.validators.indexOf(currentValidator)
+    if (index < 0) return
+    state.validators[index] = { ...currentValidator, ...newVal }
   },
   [GET_AVAX_PRICE]: (state, { avaxPrice }) => {
     const currentPrice = avaxPrice.current_price
