@@ -91,7 +91,6 @@ export default {
   },
   methods: {
     getCurrentSupply () {
-      console.log(this.currentSupply.toString())
       const currentSupply = this.currentSupply.toString()
       const currentSupplyAvax = Math.round(getAvaFromnAva(Number(currentSupply)))
       return currentSupplyAvax
