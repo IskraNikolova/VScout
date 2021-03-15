@@ -1,6 +1,7 @@
 const axios = require('axios')
   .default
 const fs = require('fs')
+const BigNumber = require('bignumber.js')
 
 const utils = require('../utils.js')
 
@@ -37,7 +38,7 @@ module.exports = {
         // fs.writeFileSync('logs.json', data)
       }
       const pendingValidators = resPVal.data.result
-     
+
       let peersInJson = fs.readFileSync('peers.json').toString()
 
       if (!peersInJson) peersInJson = {}
@@ -47,6 +48,7 @@ module.exports = {
         allStake,
         validators,
         validatedStake,
+        potentialReward,
         delegatedStake
       } = utils.mapValidators(apiValidators.validators, peers.peers)
 
@@ -57,6 +59,24 @@ module.exports = {
         validatedStake,
         delegatedStake
       }
+
+      let currentSupply = new BigNumber(0)
+      const resCSupply = await axios
+        .post(endpoint + '/ext/P', body('platform.getCurrentSupply'))
+
+      if (!resCSupply.data.error) {
+        const s = resCSupply.data.result.supply ? resCSupply.data.result.supply : 0
+        currentSupply = BigNumber(s)
+      }
+
+      const totalSupply = currentSupply.minus(potentialReward)
+
+      const supply = JSON.stringify({
+        currentSupply: currentSupply.toString(),
+        totalSupply: totalSupply.toString()
+      })
+      fs.writeFileSync('supply.json', supply)
+
       const data = JSON.stringify(response)
       fs.writeFileSync('validators.json', data)
       

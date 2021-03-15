@@ -1,6 +1,5 @@
-import BigNumber from 'bignumber.js'
-
-const { network } = require('./../../modules/config').default
+const { network } = require('./../../modules/config')
+  .default
 
 export default function () {
   return {
@@ -15,7 +14,6 @@ export default function () {
     blockchains: [],
     stakedAVAX: 0,
     validatedStake: 0,
-    potentialReward: new BigNumber(0),
     delegatedStake: 0,
     isBlockchainView: true,
     subnetID: network.defaultSubnetID,

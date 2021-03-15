@@ -12,7 +12,6 @@ import {
   GET_NODE_VERSIONS,
   SUBSCRIBE_TO_EVENT,
   GET_PENDING_STAKING,
-  SET_POTENTIAL_REWARD,
   SET_NOTIFICATION_NODE,
   CLEAR_NOTIFICATIONS_LIST,
   ADD_TO_NOTIFICATIONS_LIST
@@ -20,7 +19,7 @@ import {
 
 import {
   GET_HEIGHT,
-  GET_CURRENT_SUPPLY,
+  GET_SUPPLY,
   SET_ASSETS_COUNT,
   SET_VALIDATORS,
   SET_DELEGATORS,
@@ -53,6 +52,7 @@ import {
   _getSubnets,
   _getAssetPrice,
   _getNetworkID,
+  _getSupply,
   _getCurrentSupply,
   _getValidators,
   _getDefValidators,
@@ -97,7 +97,6 @@ import {
   labelColors,
   versionNum
 } from './../../utils/constants.js'
-import BigNumber from 'bignumber.js'
 
 async function initApp (
   { dispatch, getters }) {
@@ -112,7 +111,7 @@ async function initApp (
       dispatch(GET_SUBNETS, {}),
       dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(GET_HEIGHT, {}),
-      dispatch(GET_CURRENT_SUPPLY),
+      dispatch(GET_SUPPLY),
       _initializeNetwork(),
       dispatch(GET_STAKING, {
         subnetID: getters.subnetID
@@ -171,7 +170,6 @@ async function getValidators (
   }) {
   try {
     let pendingValidators = null
-    let potentialRewardT = new BigNumber(0)
     if (
       endpoint === network.endpointUrls[0].url &&
       isIgnore &&
@@ -209,7 +207,7 @@ async function getValidators (
 
       // GET current supply
       if (allStake !== getters.stakedAVAX) {
-        dispatch(GET_CURRENT_SUPPLY)
+        dispatch(GET_SUPPLY)
       }
 
       // commit staking data
@@ -219,19 +217,15 @@ async function getValidators (
         delegatedStake
       })
 
-      // GET mapped delagations and potential reward for them
+      // GET mapped delagations
       const del = validators
         .reduce((a, c) => {
           a.push.apply(a, c.delegators)
           return a
         }, [])
       const {
-        delegators,
-        potentialReward
+        delegators
       } = mapDelegators(del)
-
-      potentialRewardT = BigNumber
-        .sum(potentialRewardT, potentialReward)
 
       // GET mapped validators
       const res = await mapDefaultValidators(
@@ -239,9 +233,6 @@ async function getValidators (
         getters.defaultValidators,
         isInit
       )
-
-      potentialRewardT = BigNumber
-        .sum(potentialRewardT, res.potentialReward)
 
       // Commit data
       commit(SET_VALIDATORS, { validators: res.validators })
@@ -316,11 +307,8 @@ async function getValidators (
         getters.peers.peers
       )
 
-      potentialRewardT = BigNumber
-        .sum(potentialRewardT, res.potentialReward)
-
       if (res.allStake !== getters.stakedAVAX) {
-        dispatch(GET_CURRENT_SUPPLY)
+        dispatch(GET_SUPPLY)
       }
       commit(SET_STAKED_AVAX, {
         all: res.allStake,
@@ -337,9 +325,6 @@ async function getValidators (
       commit(SET_DELEGATORS, {
         delegators: delInfo.delegators
       })
-
-      potentialRewardT = BigNumber
-        .sum(potentialRewardT, delInfo.potentialReward)
 
       if (getters.isDefaultSubnetID(subnetID)) {
         commit(SET_DEFAULT_VALIDATORS, {
@@ -368,7 +353,7 @@ async function getValidators (
       }
     }
     // Commited pending validators
-    dispatch(GET_PENDING_STAKING, { pendingValidators, potentialReward: potentialRewardT })
+    dispatch(GET_PENDING_STAKING, { pendingValidators })
   } catch (err) {
     console.log(err)
   }
@@ -392,8 +377,7 @@ async function getPValidators (
   {
     subnetID = getters.subnetID,
     endpoint = getters.networkEndpoint.url,
-    pendingValidators,
-    potentialReward
+    pendingValidators
   }) {
   let response = pendingValidators
   if (!pendingValidators) {
@@ -420,18 +404,6 @@ async function getPValidators (
   commit(SET_PENDING_VALIDATORS, {
     validators: val.pendingValidators
   })
-
-  if (val.potentialReward > 0) {
-    potentialReward = BigNumber
-      .sum(potentialReward, val.potentialReward)
-  }
-
-  if (mapPDelInfo.potentialReward > 0) {
-    potentialReward = BigNumber
-      .sum(potentialReward, mapPDelInfo.potentialReward)
-  }
-
-  commit(SET_POTENTIAL_REWARD, { potentialReward })
 }
 
 async function getHeight (
@@ -671,24 +643,33 @@ async function getAssetsCount (
   commit(SET_ASSETS_COUNT, { assetsCount })
 }
 
-async function getCurrentSupply (
+async function getSupply (
   { commit, getters }) {
   try {
     const subnetID = network.defaultSubnetID
     const endpoint = getters.networkEndpoint.url
     let currentSupply = 0
-    const response = await _getCurrentSupply({ subnetID, endpoint })
-    if (response.data && response.data.result) {
-      currentSupply = response.data.result.supply
+    let totalSupply = 0
+    let response = await _getSupply()
+    if (!response) {
+      response = await _getCurrentSupply({ subnetID, endpoint })
+      if (response.data && response.data.result) {
+        currentSupply = response.data.result.supply
+      } else {
+        const cS = await pChain(
+          getters.networkEndpoint,
+          getters.nodeInfo.networkID
+        )
+          .getCurrentSupply()
+        if (cS) currentSupply = cS
+      }
+      totalSupply = currentSupply
     } else {
-      const cS = await pChain(
-        getters.networkEndpoint,
-        getters.nodeInfo.networkID
-      )
-        .getCurrentSupply()
-      if (cS) currentSupply = cS
+      currentSupply = response.currentSupply
+      totalSupply = response.totalSupply
     }
-    commit(GET_CURRENT_SUPPLY, { currentSupply })
+
+    commit(GET_SUPPLY, { currentSupply, totalSupply })
   } catch (err) {
     console.error(err)
   }
@@ -734,7 +715,7 @@ export default {
   [GET_NODE_HEALTH]: getNodeHealth,
   [GET_NODE_VERSIONS]: getNodeVersions,
   [GET_BLOCKCHAINS]: getBlockchains,
-  [GET_CURRENT_SUPPLY]: getCurrentSupply,
+  [GET_SUPPLY]: getSupply,
   [GET_PENDING_STAKING]: getPValidators,
   [SUBSCRIBE_TO_EVENT]: subscribeToEvents,
   [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsCount

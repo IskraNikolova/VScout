@@ -6,7 +6,7 @@ import {
   GET_TX_AVM,
   GET_HEIGHT,
   SET_TX_HASH_EVM,
-  GET_CURRENT_SUPPLY,
+  GET_SUPPLY,
   SET_NETWORK_STATUS,
   GET_NODE_HEALTH,
   SET_DELEGATORS,
@@ -60,9 +60,12 @@ const mutations = {
   [SET_TX_HASH_EVM]: (state, { txHash }) => {
     state.txHash = txHash
   },
-  [GET_CURRENT_SUPPLY]: (state, { currentSupply }) => {
+  [GET_SUPPLY]: (state, { currentSupply, totalSupply }) => {
     if (!currentSupply) return
     state.currentSupply = currentSupply
+
+    if (!totalSupply) return
+    state.totalSupply = totalSupply
   },
   [SET_NETWORK_STATUS]: (state, { hasNetworkConnection }) => {
     state.hasNetworkConnection = hasNetworkConnection

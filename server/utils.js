@@ -7,10 +7,14 @@ module.exports = {
   mapValidators: (validators, peers) => {
     let validatedStake = new BigNumber(0)
     let delegatedStake = new BigNumber(0)
+    let potentialReward = new BigNumber(0)
 
     const validatorsMap = validators.map((val) => {
       validatedStake = BigNumber
         .sum(validatedStake, val.stakeAmount)
+
+      potentialReward = BigNumber
+        .sum(potentialReward, val.potentialReward)
       
       const peer = peers
         .find(p => p.nodeID === val.nodeID)
@@ -63,7 +67,8 @@ module.exports = {
     })
 
     return {
-      ...result
+      ...result,
+      potentialReward
     }
   },
   getStakingStats: (validators) => { 

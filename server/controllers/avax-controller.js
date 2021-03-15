@@ -35,6 +35,22 @@ module.exports = {
       }
     })
   },
+  supply: (req, res) => {
+    fs.readFile('supply.json', (err, data) => {
+      if (err) {
+        res.status(400).send(err)
+        res.end()
+      }
+      try {
+        const supply = JSON.parse(data)
+        res.status(200).send(supply)
+        res.end()
+      } catch (err) {
+        res.status(400).send(err)
+        res.end()
+      }
+    })
+  },
   baseUrl: () => {
     return '/api/market_data'
   }

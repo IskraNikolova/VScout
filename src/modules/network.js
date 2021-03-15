@@ -42,6 +42,19 @@ export const _getNodeVersions = async () => {
   }
 }
 
+export const _getSupply = async () => {
+  try {
+    const req = await axios
+      .get(server + 'api/market_data/supply')
+
+    if (!req.data) return 0
+
+    return req.data
+  } catch (err) {
+    return 0
+  }
+}
+
 export const _getTxApi = async (id) => {
   try {
     const req = await axios

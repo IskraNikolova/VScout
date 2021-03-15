@@ -35,8 +35,7 @@ export async function validatorProcessing (
       allStake: 0,
       validatedStake: 0,
       delegatedStake: 0,
-      validators: [],
-      potentialReward: new BigNumber(0)
+      validators: []
     }
   }
 
@@ -51,8 +50,7 @@ export async function validatorProcessing (
   const {
     validatorsMap,
     validatedStake,
-    delegatedStake,
-    potentialReward
+    delegatedStake
   } = data
 
   // get all staked AVAX
@@ -80,7 +78,6 @@ export async function validatorProcessing (
     allStake,
     validatedStake,
     delegatedStake,
-    potentialReward,
     validators: result
   }
 }
@@ -166,11 +163,7 @@ export async function mapDefaultValidators (
   validators,
   defaultValidators,
   isInit) {
-  let potentialReward = new BigNumber(0)
   const validatorsMap = await Promise.all(validators.map(async (val) => {
-    potentialReward = BigNumber
-      .sum(potentialReward, val.potentialReward)
-
     if (!defaultValidators) defaultValidators = []
     const currentValidator = defaultValidators
       .find(v => v.nodeID === val.nodeID)
@@ -241,8 +234,7 @@ export async function mapDefaultValidators (
   }))
 
   return {
-    validators: validatorsMap,
-    potentialReward
+    validators: validatorsMap
   }
 }
 
@@ -254,7 +246,6 @@ export async function mapValidators (
   peers = []) {
   let validatedStake = new BigNumber(0)
   let delegatedStake = new BigNumber(0)
-  let potentialReward = new BigNumber(0)
 
   const validatorsMap = await Promise.all(validators.map(async (val) => {
     if (!defaultValidators) defaultValidators = []
@@ -329,8 +320,6 @@ export async function mapValidators (
 
     validatedStake = BigNumber
       .sum(validatedStake, val.stakeAmount)
-    potentialReward = BigNumber
-      .sum(potentialReward, val.potentialReward)
 
     let currentDelegators = val.delegators
     if (!currentDelegators && del) {
@@ -341,7 +330,6 @@ export async function mapValidators (
     const props = getDelegatorDetails(currentDelegators)
     const delegateStake = props.delegateStake
     delegatedStake = BigNumber.sum(delegatedStake, delegateStake)
-    const delegatePotentialReward = props.potentialReward
 
     const countDownCounterRes = countDownCounter(val.endTime)
     const remainingTime = countDownCounterRes.countdown
@@ -391,7 +379,6 @@ export async function mapValidators (
       totalStakeAmount: totalStakeAmount.toString(),
       remainingCapacity,
       isMinimumAmountForStake,
-      delegatePotentialReward,
       delegators: currentDelegators,
       continent: peerInfo.continent,
       country: peerInfo.country,
@@ -405,8 +392,7 @@ export async function mapValidators (
   return {
     validatorsMap,
     validatedStake,
-    delegatedStake,
-    potentialReward
+    delegatedStake
   }
 }
 
@@ -414,7 +400,6 @@ export function mapPendingValidators (
   validators,
   defaultValidators) {
   if (!validators) return []
-  let potentialReward = new BigNumber(0)
   const pendingValidators = validators.map((val) => {
     let currentValidator = {}
     if (val.weight) {
@@ -422,8 +407,7 @@ export function mapPendingValidators (
         .find(v => v.nodeID === val.nodeID)
       val.stakeAmount = currentValidator.stakeAmount
     }
-    potentialReward = BigNumber
-      .sum(potentialReward, val.potentialReward)
+
     const countDownCounterRes = countDownCounter(val.endTime)
     const remainingTime = countDownCounterRes
       .countdown
@@ -448,8 +432,7 @@ export function mapPendingValidators (
     }
   })
   return {
-    pendingValidators,
-    potentialReward
+    pendingValidators
   }
 }
 
@@ -457,14 +440,12 @@ export function mapPendingDelegations (
   delegations) {
   if (!delegations) return []
 
-  let potentialReward = new BigNumber(0)
   const pendingDelegations = delegations.map((val) => {
     const countDownCounterRes = countDownCounter(val.endTime)
     const remainingTime = countDownCounterRes
       .countdown
     const duration = diff(val.endTime, val.startTime)
-    potentialReward = BigNumber
-      .sum(potentialReward, val.potentialReward)
+
     return {
       ...val,
       duration,
@@ -473,16 +454,14 @@ export function mapPendingDelegations (
   })
 
   return {
-    pendingDelegations,
-    potentialReward
+    pendingDelegations
   }
 }
 
 export function getDelegatorDetails (delegators) {
   if (!delegators) {
     return {
-      delegateStake: 0,
-      potentialReward: 0
+      delegateStake: 0
     }
   }
 
@@ -491,25 +470,15 @@ export function getDelegatorDetails (delegators) {
       return BigNumber.sum(a, b.stakeAmount)
     }, 0.0)
 
-  const potentialReward = delegators
-    .reduce((a, b) => {
-      return BigNumber.sum(a, b.potentialReward)
-    }, 0.0)
-
   return {
-    delegateStake,
-    potentialReward
+    delegateStake
   }
 }
 
 export function mapDelegators (delegators) {
   if (!delegators) return []
 
-  let potentialReward = new BigNumber(0)
   const result = delegators.map((delegator, i) => {
-    potentialReward = BigNumber
-      .sum(potentialReward, delegator.potentialReward)
-
     const { avatar } = getAvatar(
       delegator
         .rewardOwner
@@ -529,8 +498,7 @@ export function mapDelegators (delegators) {
   })
 
   return {
-    delegators: result,
-    potentialReward
+    delegators: result
   }
 }
 

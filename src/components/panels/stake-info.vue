@@ -71,14 +71,13 @@ export default {
   computed: {
     ...mapGetters([
       'currentSupply',
+      'totalSupply',
       'stakedAVAX',
       'potentialReward'
     ]),
     stakingRatio: function () {
       let ratio = new BigNumber(this.stakedAVAX)
-      const cS = new BigNumber(this.currentSupply)
-      const pR = new BigNumber(this.potentialReward)
-      const totalSupply = cS.minus(pR)
+      const totalSupply = new BigNumber(this.totalSupply)
       ratio = ratio.dividedBy(totalSupply)
       ratio = ratio.multipliedBy(100)
       return round(ratio.toNumber(), 100)
@@ -92,6 +91,7 @@ export default {
   },
   methods: {
     getCurrentSupply () {
+      console.log(this.currentSupply.toString())
       const currentSupply = this.currentSupply.toString()
       const currentSupplyAvax = Math.round(getAvaFromnAva(Number(currentSupply)))
       return currentSupplyAvax

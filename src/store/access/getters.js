@@ -14,6 +14,10 @@ export function currentSupply (state) {
   return state.currentSupply
 }
 
+export function totalSupply (state) {
+  return state.totalSupply
+}
+
 export function nonDefvalidatorById (state) {
   return (id) => state
     .validators
