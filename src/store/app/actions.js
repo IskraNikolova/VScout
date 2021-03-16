@@ -360,7 +360,7 @@ async function getValidators (
 }
 
 async function getStakeStats (
-  { commit, getters, dispatch }) {
+  { commit }) {
   const response = await _getStats()
 
   if (typeof response === 'undefined' ||

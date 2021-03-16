@@ -10,7 +10,7 @@
               :duration="3000"
             /> /
             <animated-number
-              :value="delegationsCount"
+              :value="delsCount"
               :formatValue="format"
               :duration="3000"
             />
@@ -20,13 +20,13 @@
         <small>
           <span class="label-title text-panel">
             <animated-number
-              :value="pendingValidators.length"
+              :value="pValsLength"
               :formatValue="format"
               :duration="3000"
             />
           /
           <animated-number
-            :value="pendingDelegators.length"
+            :value="pDelsLength"
             :formatValue="format"
             :duration="3000"
           /> </span> <span class="label-title2"> <small> PENDING</small></span>
@@ -131,6 +131,15 @@ export default {
     validatorsCount: function () {
       if (this.isDefaultSubnetID(this.subnetID)) return this.defaultValidators.length
       return this.validators.length
+    },
+    pValsLength: function () {
+      return this.pendingValidators.length
+    },
+    pDelsLength: function () {
+      return this.pendingDelegators.length
+    },
+    delsCount: function () {
+      return this.delegationsCount
     },
     delStake: function () {
       if (!this.delegatedStake) return 0
