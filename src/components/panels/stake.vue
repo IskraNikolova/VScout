@@ -119,7 +119,7 @@ export default {
       'validators',
       'delegatedStake',
       'validatedStake',
-      'delegationsCount',
+      'delegators',
       'subnetID',
       'isDefaultSubnetID',
       'pendingValidators',
@@ -139,7 +139,7 @@ export default {
       return this.pendingDelegators.length
     },
     delsCount: function () {
-      return this.delegationsCount
+      return this.delegators.length
     },
     delStake: function () {
       if (!this.delegatedStake) return 0

@@ -1,5 +1,6 @@
 const moment = require('moment')
 const BigNumber = require('bignumber.js')
+const { getAvatar } = require('./commons.js')
 
 const CAPACITY = 5
 
@@ -28,6 +29,7 @@ module.exports = {
       }
 
       const props = getDelegatorDetails(val.delegators)
+      val.delegators = mapDelegators(val.delegators)
       const delegateStake = props.delegateStake
       delegatedStake = BigNumber.sum(delegatedStake, delegateStake)
       const delegatePotentialReward = props.potentialReward
@@ -276,6 +278,31 @@ function process ({
       delegatedStake,
       validators: result
     }
+}
+
+function mapDelegators (delegators) {
+  if (!delegators) return []
+
+  const result = delegators.map((delegator, i) => {
+    const { avatar } = getAvatar(
+      delegator
+        .rewardOwner
+        .addresses[0]
+    )
+    const countDownCounterRes = countDownCounter(delegator.endTime)
+    const remainingTime = countDownCounterRes
+      .countdown
+    const duration = diff(delegator.endTime, delegator.startTime)
+    return {
+      ...delegator,
+      remainingTime,
+      duration,
+      avatar,
+      index: i + 1
+    }
+  })
+
+  return result
 }
 
 function substract24Hours()  {

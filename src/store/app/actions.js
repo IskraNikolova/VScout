@@ -218,14 +218,14 @@ async function getValidators (
       })
 
       // GET mapped delagations
-      const del = validators
+      const delegators = validators
         .reduce((a, c) => {
           a.push.apply(a, c.delegators)
           return a
         }, [])
-      const {
-        delegators
-      } = mapDelegators(del)
+      // const {
+      //   delegators
+      // } = mapDelegators(del)
 
       // GET mapped validators
       const res = await mapDefaultValidators(
@@ -545,7 +545,7 @@ function getAvaxPrice (
 }
 
 async function getNodeVersions (
-  { commit, getters }) {
+  { commit }) {
   try {
     const { stakeInfo } = await _getNodeVersions()
     let allCount = 0
