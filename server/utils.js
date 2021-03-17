@@ -9,6 +9,7 @@ module.exports = {
     let validatedStake = new BigNumber(0)
     let delegatedStake = new BigNumber(0)
     let potentialReward = new BigNumber(0)
+    let delegatorsMap = {}
 
     const validatorsMap = validators.map((val) => {
       validatedStake = BigNumber
@@ -29,7 +30,8 @@ module.exports = {
       }
 
       const props = getDelegatorDetails(val.delegators)
-      val.delegators = mapDelegators(val.delegators)
+      delegatorsMap[val.nodeID] = mapDelegators(val.delegators)
+      val.delegators = val.delegators ? val.delegators.length : 0
       const delegateStake = props.delegateStake
       delegatedStake = BigNumber.sum(delegatedStake, delegateStake)
       const delegatePotentialReward = props.potentialReward
@@ -70,10 +72,11 @@ module.exports = {
 
     return {
       ...result,
+      delegatorsMap,
       potentialReward
     }
   },
-  getStakingStats: (validators) => { 
+  getStakingStats: (validators, delegators) => { 
     const hours24Ago = substract24Hours()
     const next24Hours = add24Hours()
     const days7Ago = substract7Days()
@@ -220,10 +223,10 @@ module.exports = {
 
       temp.month.incomeVal[Number(val.startTime) >= Number(monthAgo)](val)
       temp.month.outcomeVal[Number(val.endTime) <= Number(nextMonth)](val)
-      const delegators = val.delegators
-      if (delegators) {
-        for (let j = 0; j < delegators.length; j++) {
-          const del = delegators[j]
+      const dels = delegators[val.nodeID]
+      if (dels) {
+        for (let j = 0; j < dels.length; j++) {
+          const del = dels[j]
           temp.hours.incomeDel[Number(del.startTime) >= Number(hours24Ago)](del)
           temp.hours.outcomeDel[Number(del.endTime) <= Number(next24Hours)](del)
   

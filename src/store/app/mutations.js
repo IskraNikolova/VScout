@@ -11,6 +11,7 @@ import {
   SET_SUBNET_ID,
   GET_NODE_INFO,
   SET_STAKED_AVAX,
+  SET_DEFAULT_VALIDATORS,
   GET_BLOCKCHAINS,
   GET_NODE_VERSIONS,
   SET_CURRENT_CURRENCY,
@@ -112,6 +113,9 @@ const mutations = {
     }
 
     state.inData = result
+  },
+  [SET_DEFAULT_VALIDATORS]: (state, { defaultValidators }) => {
+    state.defaultValidators = defaultValidators
   },
   [SET_CURRENT_CURRENCY]: (state, { currentCurrency }) => {
     state.currentCurrency = currentCurrency

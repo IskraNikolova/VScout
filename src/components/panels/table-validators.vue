@@ -737,7 +737,8 @@ export default {
     },
     getDelators (val) {
       if (!val) return 0
-      return val.length
+      else if (Array.isArray(val)) return val.length
+      return val
     },
     exportTable () {
       const content = [this.columns.map(col => wrapCsvValue(col.label))].concat(

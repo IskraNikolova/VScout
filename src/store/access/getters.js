@@ -60,10 +60,6 @@ export function delegators (state) {
   return state.delegators
 }
 
-export function delegationsCount (state) {
-  return state.delegators.length
-}
-
 export function currenciesPriceList (state) {
   return state.currenciesPriceList
 }
@@ -86,14 +82,4 @@ export function changePercentage24h (state) {
 
 export function currentCurrency (state) {
   return state.currentCurrency
-}
-
-export function validatorById (state) {
-  return (id) => state
-    .defaultValidators
-    .find(val => val.nodeID.includes(id))
-}
-
-export function defaultValidators (state) {
-  return state.defaultValidators
 }

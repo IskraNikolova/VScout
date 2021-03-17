@@ -26,7 +26,7 @@ const t = {
 */
 export async function validatorProcessing (
   validators,
-  delegatorsD,
+  // delegatorsD,
   defaultValidators,
   isInit,
   peers) {
@@ -41,7 +41,7 @@ export async function validatorProcessing (
 
   const data = await mapValidators(
     validators,
-    delegatorsD,
+    // delegatorsD,
     defaultValidators,
     isInit,
     peers
@@ -240,7 +240,7 @@ export async function mapDefaultValidators (
 
 export async function mapValidators (
   validators,
-  del,
+  // del,
   defaultValidators,
   isInit,
   peers = []) {
@@ -321,13 +321,13 @@ export async function mapValidators (
     validatedStake = BigNumber
       .sum(validatedStake, val.stakeAmount)
 
-    let currentDelegators = val.delegators
-    if (!currentDelegators && del) {
-      currentDelegators = del
-        .filter(d => d.nodeID === val.nodeID)
-    }
+    // const currentDelegators = val.delegators
+    // if (!currentDelegators && del) {
+    //   currentDelegators = del
+    //     .filter(d => d.nodeID === val.nodeID)
+    // }
 
-    const props = getDelegatorDetails(currentDelegators)
+    const props = getDelegatorDetails(val.delegators)
     const delegateStake = props.delegateStake
     delegatedStake = BigNumber.sum(delegatedStake, delegateStake)
 
@@ -369,7 +369,7 @@ export async function mapValidators (
     val.website = website
 
     const duration = diff(val.endTime, val.startTime)
-
+    val.delegators = val.delegators ? val.delegators.length : 0
     return {
       ...val,
       rating: info.rating,
@@ -379,7 +379,7 @@ export async function mapValidators (
       totalStakeAmount: totalStakeAmount.toString(),
       remainingCapacity,
       isMinimumAmountForStake,
-      delegators: currentDelegators,
+      // delegators: currentDelegators,
       continent: peerInfo.continent,
       country: peerInfo.country,
       countryCode: peerInfo.countryCode,
@@ -497,9 +497,7 @@ export function mapDelegators (delegators) {
     }
   })
 
-  return {
-    delegators: result
-  }
+  return result
 }
 
 function cumulativeStake (currentValidators) {

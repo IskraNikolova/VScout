@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import { c } from './../utils/constants'
 const { network } = require('./config').default
-const server = 'https://vscout.io/dev/'
+const server = 'http://localhost:5000/' // 'https://vscout.io/dev/'
 
 let id = 1
 axios.defaults.headers[c.contentTypeHeader] = c.contentTypeValue
@@ -197,6 +197,18 @@ export const _getDefValidators = async () => {
   try {
     const req = await axios
       .get(server + 'api/validators')
+    return req.data
+  } catch (err) {
+    return {
+      error: err.message
+    }
+  }
+}
+
+export const _getDefDelegators = async () => {
+  try {
+    const req = await axios
+      .get(server + 'api/validators/delegators')
     return req.data
   } catch (err) {
     return {

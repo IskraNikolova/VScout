@@ -10,11 +10,11 @@ import {
   SET_NETWORK_STATUS,
   GET_NODE_HEALTH,
   SET_DELEGATORS,
+  SET_DELEGATORS_COUNT,
   SET_VALIDATORS,
   SET_VALIDATOR,
   GET_AVAX_PRICE,
   UPDATE_VALIDATOR,
-  SET_DEFAULT_VALIDATORS,
   SET_PENDING_VALIDATORS,
   SET_PENDING_DELEGATORS,
   SET_ASSETS_COUNT
@@ -26,12 +26,6 @@ const mutations = {
   },
   [GET_TX_AVM]: (state, { txAVM }) => {
     state.txAVM = txAVM
-  },
-  [SET_DEFAULT_VALIDATORS]: (state, { defaultValidators }) => {
-    // let result
-    // if (defaultValidators) result = defaultValidators.map(a => Object.assign({}, a, { delegators: a.delegators ? a.delegators.length : 0 }))
-    // console.log(result)
-    state.defaultValidators = defaultValidators
   },
   [UPDATE_VALIDATOR]: (state, { validator }) => {
     const validators = state.defaultValidators
@@ -85,6 +79,9 @@ const mutations = {
   },
   [SET_DELEGATORS]: (state, { delegators }) => {
     state.delegators = delegators
+  },
+  [SET_DELEGATORS_COUNT]: (state, { delegatorsCount }) => {
+    state.delegatorsCount = delegatorsCount
   },
   [SET_VALIDATORS]: (state, { validators }) => {
     state.validators = validators

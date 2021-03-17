@@ -256,7 +256,8 @@ export default {
     ]),
     delegatorsCount: function () {
       if (!this.validator.delegators) return 0
-      return this.validator.delegators.length
+      else if (Array.isArray(this.validator.delegators)) return this.validator.delegators.length
+      return this.validator.delegators
     },
     startDate: function () {
       return date(this.validator.startTime)

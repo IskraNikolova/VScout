@@ -331,7 +331,7 @@ export default {
       'pendingDelegators'
     ]),
     curentDelegators: function () {
-      if (this.isActive) return this.delegators
+      if (this.isActive) return [].concat.apply([], Object.values(this.delegators))
       return this.pendingDelegators
     }
   },

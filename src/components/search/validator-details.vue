@@ -110,7 +110,7 @@
           <delegations
             class="q-mt-md my-card dark-panel q-pa-md"
             style="border-radius: 10px;"
-            v-bind:delegators="delegators"
+            v-bind:delegators="delegatorsL"
             v-bind:fee="validator.delegationFee"
           />
         </div>
@@ -227,7 +227,7 @@
       <q-separator />
       <div class="row q-pa-md">
         <delegations
-          v-bind:delegators="delegators"
+          v-bind:delegators="delegatorsL"
           v-bind:fee="validator.delegationFee"
           class="col-12"
         />
@@ -307,11 +307,14 @@ export default {
   computed: {
     ...mapGetters([
       'validator',
-      'validatorById'
+      'validatorById',
+      'delegators'
     ]),
-    delegators: function () {
+    delegatorsL: function () {
       if (!this.val.delegators) return []
-      return this.val.delegators
+      if (Array.isArray(this.val.delegators)) return this.val.delegators
+      console.log(this.delegators)
+      return this.delegators[this.val.nodeID]
     },
     delegateStake: function () {
       if (!this.val.delegateStake) return ''
@@ -362,7 +365,11 @@ export default {
   methods: {
     getValidator () {
       if (this.id) {
-        return this.validatorById(this.id)
+        const v = this.validatorById(this.id)
+        if (Array.isArrayv.delegators) return v
+        const delegators = this.delegators[v.nodeID]
+        v.delegators = delegators
+        return v
       }
       return this.validator
     },

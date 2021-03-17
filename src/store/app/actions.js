@@ -13,6 +13,7 @@ import {
   SUBSCRIBE_TO_EVENT,
   GET_PENDING_STAKING,
   SET_NOTIFICATION_NODE,
+  SET_DEFAULT_VALIDATORS,
   CLEAR_NOTIFICATIONS_LIST,
   ADD_TO_NOTIFICATIONS_LIST
 } from './types'
@@ -23,9 +24,9 @@ import {
   SET_ASSETS_COUNT,
   SET_VALIDATORS,
   SET_DELEGATORS,
+  SET_DELEGATORS_COUNT,
   SET_PENDING_VALIDATORS,
   SET_PENDING_DELEGATORS,
-  SET_DEFAULT_VALIDATORS,
   GET_NODE_HEALTH,
   UPDATE_VALIDATOR,
   GET_AVAX_PRICE,
@@ -56,6 +57,7 @@ import {
   _getCurrentSupply,
   _getValidators,
   _getDefValidators,
+  _getDefDelegators,
   _getNetworkName,
   _getNodeVersion,
   _getBlockchains,
@@ -218,12 +220,14 @@ async function getValidators (
       })
 
       // GET mapped delagations
-      const delegators = validators
-        .reduce((a, c) => {
-          a.push.apply(a, c.delegators)
-          return a
-        }, [])
-      // const {
+      const delegators = await _getDefDelegators()
+
+      // const del = validators
+      //   .reduce((a, c) => {
+      //     a.push.apply(a, c.delegators)
+      //     return a
+      //   }, [])
+      // // const {
       //   delegators
       // } = mapDelegators(del)
 
@@ -237,6 +241,9 @@ async function getValidators (
       // Commit data
       commit(SET_VALIDATORS, { validators: res.validators })
       commit(SET_DELEGATORS, { delegators })
+
+      const delC = [].concat.apply([], Object.values(delegators))
+      commit(SET_DELEGATORS_COUNT, { delegators: delC.length })
 
       commit(SET_DEFAULT_VALIDATORS, {
         defaultValidators: res.validators
@@ -280,32 +287,40 @@ async function getValidators (
         validators === null) {
         validators = []
       }
-      let delegators = []
+      const delegators = {}
+      let currentValidators = []
       if (subnetID === network.defaultSubnetID) {
-        delegators = validators
-          .reduce((a, c) => {
-            a.push.apply(a, c.delegators)
-            return a
-          }, [])
+        currentValidators = validators
       } else {
-        const currentValidators = getters
+        currentValidators = getters
           .defaultValidators
           .filter(v => validators.find(val => val.nodeID === v.nodeID))
-
-        delegators = currentValidators
-          .reduce((a, c) => {
-            a.push.apply(a, c.delegators)
-            return a
-          }, [])
       }
+
+      for (let i = 0; i < currentValidators.length; i++) {
+        let d = currentValidators[i].delegators
+        d = mapDelegators(d)
+        const id = currentValidators[i].nodeID
+        delegators[`${id}`] = d
+      }
+
+      const delArray = [].concat.apply([], Object.values(delegators))
+
+      commit(SET_DELEGATORS, { delegators })
+
+      commit(SET_DELEGATORS_COUNT, { delegatorsCount: delArray.length })
 
       const res = await validatorProcessing(
         validators,
-        delegators,
+        // delArray,
         getters.defaultValidators,
         isInit,
         getters.peers.peers
       )
+
+      commit(SET_VALIDATORS, {
+        validators: res.validators
+      })
 
       if (res.allStake !== getters.stakedAVAX) {
         dispatch(GET_SUPPLY)
@@ -314,16 +329,6 @@ async function getValidators (
         all: res.allStake,
         validatedStake: res.validatedStake,
         delegatedStake: res.delegatedStake
-      })
-
-      commit(SET_VALIDATORS, {
-        validators: res.validators
-      })
-
-      const delInfo = mapDelegators(delegators)
-
-      commit(SET_DELEGATORS, {
-        delegators: delInfo.delegators
       })
 
       if (getters.isDefaultSubnetID(subnetID)) {

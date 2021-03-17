@@ -16,7 +16,6 @@ export default function () {
     assetsCount: 0,
     validators: [],
     delegators: [],
-    defaultValidators: [],
     validator: {},
     currentCurrency: 'usd',
     currenciesPriceList: {},

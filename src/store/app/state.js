@@ -4,6 +4,7 @@ const { network } = require('./../../modules/config')
 export default function () {
   return {
     theme: 'dark',
+    defaultValidators: [],
     notificationNode: {},
     notifications: [],
     inData: {},
