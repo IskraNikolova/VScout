@@ -35,8 +35,9 @@ import {
 
 async function setValidator ({ commit, getters }, { id }) {
   try {
-    let validator = getters.nonDefvalidatorById(id)
-    if (!validator) validator = getters.validatorById(id)
+    const v = getters.nonDefvalidatorById(id)
+    let validator = v
+    // if (!validator) validator = getters.validatorById(id)
     if (!validator) {
       const res = await _getValidator({ id })
       validator = res.data
@@ -86,8 +87,12 @@ async function setValidator ({ commit, getters }, { id }) {
         validator.uptime = v.uptime
         validator.connected = v.connected
       }
+    } else {
+      const delegators = getters.delegators[validator.nodeID]
+      validator.delegators = delegators
     }
-    if (validator) commit(SET_VALIDATOR, { validator })
+
+    commit(SET_VALIDATOR, { validator })
     return true
   } catch (err) {
     return false

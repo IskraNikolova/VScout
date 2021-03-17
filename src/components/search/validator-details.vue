@@ -313,7 +313,6 @@ export default {
     delegatorsL: function () {
       if (!this.val.delegators) return []
       if (Array.isArray(this.val.delegators)) return this.val.delegators
-      console.log(this.delegators)
       return this.delegators[this.val.nodeID]
     },
     delegateStake: function () {
