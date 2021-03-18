@@ -13,10 +13,7 @@ const vuexLocal = new VuexPersistence({
   storage: window.localStorage,
   reducer: (state) => {
     const persistState = { ...state }
-    if (state.app.validators ||
-      state.app.currentCurrency ||
-      state.app.peers ||
-      state.access.peers) delete persistState.app
+    if (state.app.validators || state.app.currentCurrency) delete persistState.app
     // delete persistState.app
     // don't persist UI and App state
     delete persistState.ui
