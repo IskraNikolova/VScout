@@ -35,66 +35,68 @@ import {
 
 async function setValidator ({ commit, getters }, { id }) {
   try {
-    let val = getters.nonDefvalidatorById(id)
-    if (!val) val = getters.validatorById(id)
+    // let val = getters.nonDefvalidatorById(id)
+    // if (!val) val = getters.validatorById(id)
 
-    if (!val) {
-      const res = await _getValidator({ id })
-      val = res.data
-      const info = await _getValidatorById(id)
-      val.avatarUrl = info.avatarUrl ? info.avatarUrl : getAvatar(id).monster
-      val.name = info.name ? info.name : id
-      val.link = info.link ? info.link : ''
-      val.bio = info.bio ? info.bio : ''
-      val.website = info.website ? info.website : ''
-      val.link = info.link ? info.link : ''
+    // if (!val) {
+    const res = await _getValidator({ id })
+    const val = res.data
+    const info = await _getValidatorById(id)
+    val.avatarUrl = info.avatarUrl ? info.avatarUrl : getAvatar(id).monster
+    val.name = info.name ? info.name : id
+    val.link = info.link ? info.link : ''
+    val.bio = info.bio ? info.bio : ''
+    val.website = info.website ? info.website : ''
+    val.link = info.link ? info.link : ''
 
-      const t = {
-        'https://bit.ly/3q5aMGC': {
-          avatar: '/statics/circle_symbol.svg',
-          bio: 'Masternodes, Full Nodes, Staking Services',
-          link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
-          website: 'Allnodes'
-        },
-        '/statics/circle_symbol.svg': {
-          avatar: '/statics/circle_symbol.svg',
-          bio: 'Masternodes, Full Nodes, Staking Services',
-          link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
-          website: 'Allnodes'
-        }
-      }
-      const temp = t[`${val.avatarUrl}`]
-      if (temp) {
-        val.avatar = temp.avatar
-        val.bio = temp.bio
-        val.link = temp.link
-        val.website = temp.website
-      }
-      const endpoint = getters.networkEndpoint.url
-      if (endpoint !== network.endpointUrls[0].url) {
-        const subnetID = getters.subnetID
-        const response = await _getValidators({
-          subnetID,
-          endpoint
-        })
-
-        if (response.data.error) return
-        const { validators } = response.data.result
-
-        const v = validators
-          .find(val => val.nodeID.includes(id))
-        if (!v) return
-        val.uptime = v.uptime
-        val.connected = v.connected
+    const t = {
+      'https://bit.ly/3q5aMGC': {
+        avatar: '/statics/circle_symbol.svg',
+        bio: 'Masternodes, Full Nodes, Staking Services',
+        link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
+        website: 'Allnodes'
+      },
+      '/statics/circle_symbol.svg': {
+        avatar: '/statics/circle_symbol.svg',
+        bio: 'Masternodes, Full Nodes, Staking Services',
+        link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
+        website: 'Allnodes'
       }
     }
-
-    const validator = { ...val }
-    if (!Array.isArray(validator.delegators)) {
-      const delegators = getters.delegators[validator.nodeID]
-      validator.delegators = delegators
+    const temp = t[`${val.avatarUrl}`]
+    if (temp) {
+      val.avatar = temp.avatar
+      val.bio = temp.bio
+      val.link = temp.link
+      val.website = temp.website
     }
-    commit(SET_VALIDATOR, { validator })
+    const endpoint = getters.networkEndpoint.url
+    if (endpoint !== network.endpointUrls[0].url) {
+      const subnetID = getters.subnetID
+      const response = await _getValidators({
+        subnetID,
+        endpoint
+      })
+
+      if (response.data.error) return
+      const { validators } = response.data.result
+
+      const v = validators
+        .find(val => val.nodeID.includes(id))
+      if (!v) return
+      val.uptime = v.uptime
+      val.connected = v.connected
+    }
+    // }
+
+    // const validator = { ...val }
+    // if (!Array.isArray(validator.delegators)) {
+    //   const delegators = getters.delegators[validator.nodeID]
+    //   validator.delegators = delegators
+    // }
+    const validator = getters.nonDefvalidatorById(id)
+    if (validator) val.uptime = validator.uptime
+    commit(SET_VALIDATOR, { validator: val })
     return true
   } catch (err) {
     return false
