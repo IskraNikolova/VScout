@@ -132,8 +132,8 @@ export function compareNotificationNode (oldN, newN) {
     })
   }
 
-  const oldLength = oldN.delegators ? oldN.delegators.length : 0
-  const newLength = newN.delegators ? newN.delegators.length : 0
+  const oldLength = oldN.delegators ? oldN.delegators : 0
+  const newLength = newN.delegators ? newN.delegators : 0
   if (oldLength !== newLength) {
     if (oldLength > newLength) {
       msgs.push({
