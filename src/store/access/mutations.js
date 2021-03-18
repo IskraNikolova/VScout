@@ -10,7 +10,6 @@ import {
   SET_NETWORK_STATUS,
   GET_NODE_HEALTH,
   SET_DELEGATORS,
-  SET_DELEGATORS_COUNT,
   SET_VALIDATORS,
   SET_VALIDATOR,
   GET_AVAX_PRICE,
@@ -78,10 +77,9 @@ const mutations = {
     state.assetsCount = assetsCount
   },
   [SET_DELEGATORS]: (state, { delegators }) => {
+    const delC = [].concat.apply([], Object.values(delegators))
+    state.delegatorsCount = delC
     state.delegators = delegators
-  },
-  [SET_DELEGATORS_COUNT]: (state, { delegatorsCount }) => {
-    state.delegatorsCount = delegatorsCount
   },
   [SET_VALIDATORS]: (state, { validators }) => {
     state.validators = validators

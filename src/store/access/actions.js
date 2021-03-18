@@ -35,19 +35,19 @@ import {
 
 async function setValidator ({ commit, getters }, { id }) {
   try {
-    const v = getters.nonDefvalidatorById(id)
-    let validator = v
-    // if (!validator) validator = getters.validatorById(id)
-    if (!validator) {
+    let val = getters.nonDefvalidatorById(id)
+    if (!val) val = getters.validatorById(id)
+
+    if (!val) {
       const res = await _getValidator({ id })
-      validator = res.data
+      val = res.data
       const info = await _getValidatorById(id)
-      validator.avatarUrl = info.avatarUrl ? info.avatarUrl : getAvatar(id).monster
-      validator.name = info.name ? info.name : id
-      validator.link = info.link ? info.link : ''
-      validator.bio = info.bio ? info.bio : ''
-      validator.website = info.website ? info.website : ''
-      validator.link = info.link ? info.link : ''
+      val.avatarUrl = info.avatarUrl ? info.avatarUrl : getAvatar(id).monster
+      val.name = info.name ? info.name : id
+      val.link = info.link ? info.link : ''
+      val.bio = info.bio ? info.bio : ''
+      val.website = info.website ? info.website : ''
+      val.link = info.link ? info.link : ''
 
       const t = {
         'https://bit.ly/3q5aMGC': {
@@ -63,12 +63,12 @@ async function setValidator ({ commit, getters }, { id }) {
           website: 'Allnodes'
         }
       }
-      const temp = t[`${validator.avatarUrl}`]
+      const temp = t[`${val.avatarUrl}`]
       if (temp) {
-        validator.avatar = temp.avatar
-        validator.bio = temp.bio
-        validator.link = temp.link
-        validator.website = temp.website
+        val.avatar = temp.avatar
+        val.bio = temp.bio
+        val.link = temp.link
+        val.website = temp.website
       }
       const endpoint = getters.networkEndpoint.url
       if (endpoint !== network.endpointUrls[0].url) {
@@ -84,14 +84,16 @@ async function setValidator ({ commit, getters }, { id }) {
         const v = validators
           .find(val => val.nodeID.includes(id))
         if (!v) return
-        validator.uptime = v.uptime
-        validator.connected = v.connected
+        val.uptime = v.uptime
+        val.connected = v.connected
       }
-    } else {
+    }
+
+    const validator = { ...val }
+    if (!Array.isArray(validator.delegators)) {
       const delegators = getters.delegators[validator.nodeID]
       validator.delegators = delegators
     }
-
     commit(SET_VALIDATOR, { validator })
     return true
   } catch (err) {

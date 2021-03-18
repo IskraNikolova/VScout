@@ -26,7 +26,6 @@ const t = {
 */
 export async function validatorProcessing (
   validators,
-  // delegatorsD,
   defaultValidators,
   isInit,
   peers) {
@@ -41,7 +40,6 @@ export async function validatorProcessing (
 
   const data = await mapValidators(
     validators,
-    // delegatorsD,
     defaultValidators,
     isInit,
     peers
@@ -240,7 +238,6 @@ export async function mapDefaultValidators (
 
 export async function mapValidators (
   validators,
-  // del,
   defaultValidators,
   isInit,
   peers = []) {
@@ -321,12 +318,6 @@ export async function mapValidators (
     validatedStake = BigNumber
       .sum(validatedStake, val.stakeAmount)
 
-    // const currentDelegators = val.delegators
-    // if (!currentDelegators && del) {
-    //   currentDelegators = del
-    //     .filter(d => d.nodeID === val.nodeID)
-    // }
-
     const props = getDelegatorDetails(val.delegators)
     const delegateStake = props.delegateStake
     delegatedStake = BigNumber.sum(delegatedStake, delegateStake)
@@ -379,7 +370,6 @@ export async function mapValidators (
       totalStakeAmount: totalStakeAmount.toString(),
       remainingCapacity,
       isMinimumAmountForStake,
-      // delegators: currentDelegators,
       continent: peerInfo.continent,
       country: peerInfo.country,
       countryCode: peerInfo.countryCode,
