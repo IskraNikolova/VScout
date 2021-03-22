@@ -401,10 +401,6 @@ export default {
 }
 </script>
 <style scoped>
- #logo {
-  width: 190vw;
-  max-width: 190px;
- }
  #verify-card:hover {
    background: #aa7dc9;
    color: white;

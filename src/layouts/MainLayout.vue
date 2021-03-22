@@ -154,9 +154,9 @@
           <q-btn flat size="sm" icon="wb_sunny" v-else @click="switchTheme('default')" />
           <notify-btn />
         </q-toolbar>
-        <q-toolbar class="background-orange">
+        <q-toolbar class="dark-panel">
           <q-toolbar-title>
-            <img src="~assets/vscout-logo-full.svg" class="q-pt-xs" style="width: 160px;">
+            <img src="~assets/vscout-logo-full.svg" class="q-pt-xs" style="width: 150px;">
           </q-toolbar-title>
           <span v-if="isValidatorShow(nodeID)" style="min-width: 300px;margin-right: 15%;">
             <countdown class="row" v-bind:color="'#ffffff'" v-bind:textColor="'white'" v-bind:countdown="getRemainigTime()" />
@@ -345,7 +345,7 @@
       <div class="lt-sm panel">
         <q-toolbar class="panel">
           <q-toolbar-title>
-            <img src="~assets/vscout-logo-full.svg" style="width: 75px;" class="q-pt-xs">
+            <img src="~assets/vscout-logo-full.svg" style="width: 75px;" class="q-pt-md">
           </q-toolbar-title>
           <a id="faq2" class="text-panel" href="#faqs">FAQ</a>
           <notify-btn />

@@ -124,10 +124,6 @@ export default {
 </script>
 
 <style scoped>
- #logo {
-  width: 190vw;
-  max-width: 190px;
- }
  .label-title {
   font-size: max(0.7vw, 12px);
  }
