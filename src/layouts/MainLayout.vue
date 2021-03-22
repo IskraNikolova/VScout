@@ -290,7 +290,7 @@
         </q-toolbar>
         <q-toolbar>
           <q-toolbar-title style="margin-right: 10%;">
-            <img src="~assets/vscout-logo-full.svg" style="width: 200px;">
+            <img src="~assets/vscout-logo-full.svg" style="width: 150px;">
           </q-toolbar-title>
           <div class="q-pb-md">
               <q-bar style="min-width: 420px;">
@@ -345,10 +345,11 @@
       <div class="lt-sm panel">
         <q-toolbar class="panel">
           <q-toolbar-title>
-            <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm />
+            <img src="~assets/vscout-logo-full.svg" style="width: 75px;" class="q-pt-xs">
           </q-toolbar-title>
           <a id="faq2" class="text-panel" href="#faqs">FAQ</a>
           <notify-btn />
+          <q-btn flat @click="drawer=!drawer" round dense icon="menu" sm />
         </q-toolbar>
         <div class="q-pb-md">
           <span v-if="isValidatorShow(nodeID)">
@@ -360,12 +361,7 @@
           </span>
         </div>
         <div class="background-orange q-pb-md">
-          <div class="row">
-            <div class="col-6 q-pl-md">
-              <img src="~assets/vscout-logo-full.svg" style="width: 150px;">
-            </div>
-          </div>
-          <q-bar class="q-pb-sm">
+          <q-bar class="q-pb-sm q-pt-sm">
             <q-input
               outlined
               dark
