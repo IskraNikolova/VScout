@@ -3,7 +3,7 @@
     <div style="padding: 1%;">
       <span v-if="validator && validator.uptime"><validator-details /></span>
       <div class="flex flex-center">
-        <img src="~assets/vscoutlogo5.svg" id="logo">
+        <img src="~assets/vscout-logo-full.svg" id="logo">
       </div>
       <div class="flex flex-center q-mt-xl text-white">
         Made with ❤️ for builders everywhere.

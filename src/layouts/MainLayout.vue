@@ -156,7 +156,7 @@
         </q-toolbar>
         <q-toolbar class="background-orange">
           <q-toolbar-title>
-            <img src="~assets/vscoutlogo5.svg" style="width: 200px;">
+            <img src="~assets/vscout-logo-full.svg" class="q-pt-xs" style="width: 160px;">
           </q-toolbar-title>
           <span v-if="isValidatorShow(nodeID)" style="min-width: 300px;margin-right: 15%;">
             <countdown class="row" v-bind:color="'#ffffff'" v-bind:textColor="'white'" v-bind:countdown="getRemainigTime()" />
@@ -290,7 +290,7 @@
         </q-toolbar>
         <q-toolbar>
           <q-toolbar-title style="margin-right: 10%;">
-            <img src="~assets/vscoutlogo5.svg" style="width: 200px;">
+            <img src="~assets/vscout-logo-full.svg" style="width: 200px;">
           </q-toolbar-title>
           <div class="q-pb-md">
               <q-bar style="min-width: 420px;">
@@ -362,7 +362,7 @@
         <div class="background-orange q-pb-md">
           <div class="row">
             <div class="col-6 q-pl-md">
-              <img src="~assets/vscoutlogo5.svg" style="width: 150px;">
+              <img src="~assets/vscout-logo-full.svg" style="width: 150px;">
             </div>
           </div>
           <q-bar class="q-pb-sm">

@@ -192,7 +192,7 @@
         </q-card>
       </q-dialog>
       <div class="flex flex-center q-pt-xl">
-        <img src="~assets/vscoutlogo5.svg" id="logo">
+        <img src="~assets/vscout-logo-full.svg" id="logo">
       </div>
       <div class="flex flex-center q-mt-xl text-white q-pb-xl">
         Made with ❤️ for builders everywhere.
