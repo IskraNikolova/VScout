@@ -59,7 +59,7 @@
         </q-inner-loading>
       </div>
       <div class="flex flex-center">
-        <img src="~assets/vscout-logo-full.svg" id="logo">
+        <img src="~assets/vscout-logo-full-grey.svg" id="logo">
       </div>
       <div class="flex flex-center q-mt-xl text-white">
         Made with ❤️ for builders everywhere.

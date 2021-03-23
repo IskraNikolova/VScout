@@ -156,7 +156,7 @@
         </q-toolbar>
         <q-toolbar class="dark-panel">
           <q-toolbar-title>
-            <img src="~assets/vscout-logo-full.svg" class="q-pt-xs" style="width: 150px;">
+            <img src="~assets/vscout-logo-full.svg" class="q-pt-xs" style="width: 120px;">
           </q-toolbar-title>
           <span v-if="isValidatorShow(nodeID)" style="min-width: 300px;margin-right: 15%;">
             <countdown class="row" v-bind:color="'#ffffff'" v-bind:textColor="'white'" v-bind:countdown="getRemainigTime()" />
