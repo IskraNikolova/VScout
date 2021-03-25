@@ -72,32 +72,33 @@ module.exports = {
             const ip = p[i].ip.split(':')[0]
             if (!ip) return
             const currentPeer = json[`${ip}`]
-            if(!currentPeer ||
-              !currentPeer.countryCode) {
+            if(!currentPeer) {
             // Api call
             let response = {}
             try {
               response = await axios
-                .get('https://api.ipgeolocation.io/ipgeo?apiKey=509cdf0b76c7401c9f684d7fff36ce42&ip=' + ip)
-
+                .get('https://api.ipgeolocation.io/ipgeo?apiKey=53e4b434d4cd496195935332befc9a83&ip=' + ip)
               const info = response.data
               if (!info) info = {
                 'country_code2': '',
                 'continent_name': '',
-                'country_name': ''
+                'country_name': '',
+                isp: ''
               }
               // add to json
               json[`${ip}`] = {
                 countryCode: info['country_code2'],
                 continent: info['continent_name'],
-                country: info['country_name']
+                country: info['country_name'],
+                isp: info.isp
               }
               // add to new peers
               newPeers.push({
                 ...p[i],
                 countryCode: info['country_code2'],
                 continent: info['continent_name'],
-                country: info['country_name']
+                country: info['country_name'],
+                isp: info.isp
               })
             }
             catch (err) {
@@ -105,7 +106,8 @@ module.exports = {
                 ...p[i],
                 countryCode: '',
                 continent: '',
-                country: ''
+                country: '',
+                isp: ''
               })
             }
             } else {
@@ -113,7 +115,8 @@ module.exports = {
                 ...p[i],
                 countryCode: currentPeer.countryCode,
                 continent: currentPeer.continent,
-                country: currentPeer.country
+                country: currentPeer.country,
+                isp: currentPeer.isp
               })
             }
           } catch (err) {
@@ -156,14 +159,15 @@ module.exports = {
     } catch (err) {
       try {
         const response = await axios
-          .get('https://api.ipgeolocation.io/ipgeo?apiKey=509cdf0b76c7401c9f684d7fff36ce42&ip=' + ip)
+          .get('https://api.ipgeolocation.io/ipgeo?apiKey=53e4b434d4cd496195935332befc9a83&ip=' + ip)
         if (!response.data) {
           throw new Error('Empty response')
         }
         const result = {
           countryCode: response.data['country_code2'],
           continent: response.data['continent_name'],
-          country: response.data['country_name']
+          country: response.data['country_name'],
+          isp: response.data.isp
         }
         res.status(200).send(result)
         res.end()
