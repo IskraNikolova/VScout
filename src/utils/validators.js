@@ -254,6 +254,7 @@ export async function mapValidators (
       continent: '',
       country: '',
       countryCode: '',
+      isp: '',
       version: '',
       lastReceived: '',
       lastSent: ''
@@ -262,6 +263,7 @@ export async function mapValidators (
     if (currentValidator && currentValidator.version) {
       peerInfo.continent = currentValidator.continent
       peerInfo.country = currentValidator.country
+      peerInfo.isp = currentValidator.isp
       peerInfo.countryCode = currentValidator.countryCode
       peerInfo.version = currentValidator.version
       peerInfo.lastReceived = currentValidator.lastReceived
@@ -273,6 +275,7 @@ export async function mapValidators (
     if (peer) {
       peerInfo.continent = peer.continent
       peerInfo.country = peer.country
+      peerInfo.isp = peer.isp
       peerInfo.countryCode = peer.countryCode
       peerInfo.version = peer.version
       peerInfo.lastReceived = peer.lastReceived
@@ -372,6 +375,7 @@ export async function mapValidators (
       isMinimumAmountForStake,
       continent: peerInfo.continent,
       country: peerInfo.country,
+      isp: peerInfo.isp,
       countryCode: peerInfo.countryCode,
       version: peerInfo.version,
       lastReceived: peerInfo.lastReceived,

@@ -23,6 +23,7 @@ module.exports = {
   
       if (peer) {
         val.country = peer.country
+        val.isp = peer.isp
         val.countryCode = peer.countryCode
         val.version = peer.version
         val.lastReceived = peer.lastReceived

@@ -203,6 +203,13 @@ export default {
           field: row => this.dateFormat(row.lastSent),
           headerClasses: 'text-medium'
         },
+        {
+          name: 'isp',
+          align: 'left',
+          label: 'ISP',
+          field: row => `${row.isp}`,
+          headerClasses: 'text-medium'
+        },
         // {
         //   name: 'ip',
         //   align: 'left',
