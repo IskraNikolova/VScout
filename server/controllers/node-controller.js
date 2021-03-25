@@ -72,7 +72,8 @@ module.exports = {
             const ip = p[i].ip.split(':')[0]
             if (!ip) return
             const currentPeer = json[`${ip}`]
-            if(!currentPeer) {
+            if(!currentPeer ||
+              !currentPeer['country_code2']) {
             // Api call
             let response = {}
             try {
