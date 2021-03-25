@@ -1,4 +1,6 @@
 const axios = require('axios').default
+require('dotenv').config()
+const KEY = process.env.KEY
 const fs = require('fs')
 
 let id = 1
@@ -77,7 +79,7 @@ module.exports = {
             let response = {}
             try {
               response = await axios
-                .get('https://api.ipgeolocation.io/ipgeo?apiKey=53e4b434d4cd496195935332befc9a83&ip=' + ip)
+                .get(`https://api.ipgeolocation.io/ipgeo?apiKey=5${KEY}&ip=${ip}`)
               const info = response.data
               if (!info) info = {
                 'country_code2': '',
@@ -159,7 +161,7 @@ module.exports = {
     } catch (err) {
       try {
         const response = await axios
-          .get('https://api.ipgeolocation.io/ipgeo?apiKey=53e4b434d4cd496195935332befc9a83&ip=' + ip)
+        .get(`https://api.ipgeolocation.io/ipgeo?apiKey=5${KEY}&ip=${ip}`)
         if (!response.data) {
           throw new Error('Empty response')
         }

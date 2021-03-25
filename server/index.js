@@ -10,20 +10,12 @@ require('./config/routes')(app)
 
 app.listen(config.port, () => console.log(`Server start on port ${config.port}`))
 
-const endpoints = [
-  'https://api.avax.network:443',
-  'http://135.181.93.94:9650'
-]
-let index = 0
-let endpoint = endpoints[index]
-
 setInterval(() => {
   controllers.avax.avaxPrice()
 }, 8000)
 
+const endpoint = 'http://135.181.93.94:9650'
 setInterval(() => {
-  index = 1 // (index + 1) % 2
-  endpoint = endpoints[index]
   controllers.platform.blockHeight(endpoint)
   controllers.validators.validators(endpoint)
   controllers.node.info(endpoint)
