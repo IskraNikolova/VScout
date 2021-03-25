@@ -203,20 +203,20 @@ export default {
           field: row => this.dateFormat(row.lastSent),
           headerClasses: 'text-medium'
         },
-        {
-          name: 'ip',
-          align: 'left',
-          label: 'IP',
-          field: row => `${row.ip}`,
-          headerClasses: 'text-medium'
-        },
-        {
-          name: 'pip',
-          align: 'left',
-          label: 'PUBLIC IP',
-          field: row => `${row.publicIP}`,
-          headerClasses: 'text-medium'
-        },
+        // {
+        //   name: 'ip',
+        //   align: 'left',
+        //   label: 'IP',
+        //   field: row => `${row.ip}`,
+        //   headerClasses: 'text-medium'
+        // },
+        // {
+        //   name: 'pip',
+        //   align: 'left',
+        //   label: 'PUBLIC IP',
+        //   field: row => `${row.publicIP}`,
+        //   headerClasses: 'text-medium'
+        // },
         {
           name: 'validator',
           align: 'left',
