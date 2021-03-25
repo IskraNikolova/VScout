@@ -266,7 +266,6 @@ export default {
       dialog: false,
       preview: false,
       isValidCode: false,
-      getPreview: false,
       isPaidSuccess: false
     }
   },

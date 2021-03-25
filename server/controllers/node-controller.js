@@ -73,40 +73,40 @@ module.exports = {
             if (!ip) return
             const currentPeer = json[`${ip}`]
             if(!currentPeer) {
-              // Api call
-              let response = {}
-              try {
-                response = await axios
-                  .get('https://api.ipgeolocationapi.com/geolocate/' + ip)
+            // Api call
+            let response = {}
+            try {
+              response = await axios
+                .get('https://api.ipgeolocation.io/ipgeo?apiKey=509cdf0b76c7401c9f684d7fff36ce42&ip=' + ip)
 
-                const info = response.data
-                if (!info) info = {
-                  alpha2: '',
-                  continent: '',
-                  name: ''
-                }
-                // add to json
-                json[`${ip}`] = {
-                  countryCode: info.alpha2,
-                  continent: info.continent,
-                  country: info.name
-                }
-                // add to new peers
-                newPeers.push({
-                  ...p[i],
-                  countryCode: info.alpha2,
-                  continent: info.continent,
-                  country: info.name
-                })
+              const info = response.data
+              if (!info) info = {
+                'country_code2': '',
+                'continent_name': '',
+                'country_name': ''
               }
-              catch (err) {
-                newPeers.push({
-                  ...p[i],
-                  countryCode: '',
-                  continent: '',
-                  country: ''
-                })
+              // add to json
+              json[`${ip}`] = {
+                countryCode: info['country_code2'],
+                continent: info['continent_name'],
+                country: info['country_name']
               }
+              // add to new peers
+              newPeers.push({
+                ...p[i],
+                countryCode: info['country_code2'],
+                continent: info['continent_name'],
+                country: info['country_name']
+              })
+            }
+            catch (err) {
+              newPeers.push({
+                ...p[i],
+                countryCode: '',
+                continent: '',
+                country: ''
+              })
+            }
             } else {
               newPeers.push({
                 ...p[i],
@@ -155,14 +155,14 @@ module.exports = {
     } catch (err) {
       try {
         const response = await axios
-          .get('https://api.ipgeolocationapi.com/geolocate/' + ip)
+          .get('https://api.ipgeolocation.io/ipgeo?apiKey=509cdf0b76c7401c9f684d7fff36ce42&ip=' + ip)
         if (!response.data) {
           throw new Error('Empty response')
         }
         const result = {
-          countryCode: response.data.alpha2,
-          continent: response.data.continent,
-          country: response.data.name
+          countryCode: response.data['country_code2'],
+          continent: response.data['continent_name'],
+          country: response.data['country_name']
         }
         res.status(200).send(result)
         res.end()
