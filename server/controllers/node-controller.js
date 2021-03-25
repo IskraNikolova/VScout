@@ -74,12 +74,12 @@ module.exports = {
             const ip = p[i].ip.split(':')[0]
             if (!ip) return
             const currentPeer = json[`${ip}`]
-            if(!currentPeer) {
+            if(!currentPeer || !currentPeer.countryCode) {
             // Api call
             let response = {}
             try {
               response = await axios
-                .get(`https://api.ipgeolocation.io/ipgeo?apiKey=5${KEY}&ip=${ip}`)
+                .get(`https://api.ipgeolocation.io/ipgeo?apiKey=${KEY}&ip=${ip}`)
               const info = response.data
               if (!info) info = {
                 'country_code2': '',
@@ -161,7 +161,7 @@ module.exports = {
     } catch (err) {
       try {
         const response = await axios
-        .get(`https://api.ipgeolocation.io/ipgeo?apiKey=5${KEY}&ip=${ip}`)
+        .get(`https://api.ipgeolocation.io/ipgeo?apiKey=${KEY}&ip=${ip}`)
         if (!response.data) {
           throw new Error('Empty response')
         }
