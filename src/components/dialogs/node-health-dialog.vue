@@ -43,12 +43,7 @@
         </q-item>
         <q-item :dark="appTheme==='dark'">
           <q-item-section>
-            <span>Network Validators Heartbeat</span>
-            <div class="q-pt-md">
-              <small>Heartbeat: </small>
-              <span class="text-panel">{{ heartbeat }}</span>
-              <tooltip-style v-bind:text="'Heartbeat is the unix timestamp of the last time the network handled a message.'" />
-            </div>
+            <span class="q-mb-md">Network</span>
             <div>
               <small>Duration: </small>
               <span class="text-panel">{{ duration }}</span>
@@ -67,12 +62,7 @@
           </q-item-section>
           <q-separator vertical :dark="appTheme==='dark'" />
           <q-item-section class="q-pl-md">
-            <span class="q-mb-md">Chains Default Bootstrapped</span>
-            <div>
-              <small>Error: </small>
-              <span class="text-negative" v-if="error">{{ error }}</span>
-              <span class="text-negative" v-else> --- </span>
-            </div>
+            <span class="q-mb-md">Router</span>
              <div>
               <small>Duration: </small>
               <span class="text-panel">{{ duration2 }}</span>
@@ -147,8 +137,8 @@
           <q-item-section>
             <span>P-Chain</span>
               <div>
-                <small>Percent Connected: </small> <span class="text-panel">{{ getPercent(p.message.percentConnected) }}</span> %
-                <q-linear-progress stripe size="15px" :value="p.message.percentConnected" color="purple">
+                <small>Percent Connected: </small> <span class="text-panel">{{ getPercent(p.message) }}</span> %
+                <q-linear-progress stripe size="15px" :value="getPercentL(p.message)" color="purple">
                 </q-linear-progress>
               </div>
             <div v-if="p.error">
@@ -229,28 +219,6 @@ export default {
         return false
       }
     },
-    error: function () {
-      try {
-        const error = this.nodeHealthInfo
-          .checks['chains.default.bootstrapped']
-          .error
-          .message
-        return error
-      } catch (err) {
-        return ''
-      }
-    },
-    heartbeat: function () {
-      try {
-        const h = this.nodeHealthInfo
-          .checks['network.validators.heartbeat']
-          .message
-          .heartbeat
-        return datePickerFormat(h)
-      } catch (err) {
-        return ''
-      }
-    },
     c: function () {
       try {
         const res = this.nodeHealthInfo
@@ -284,7 +252,8 @@ export default {
     duration: function () {
       try {
         const h = this.nodeHealthInfo
-          .checks['network.validators.heartbeat']
+          .checks
+          .network
           .duration
         return h
       } catch (err) {
@@ -294,7 +263,8 @@ export default {
     timeOfFirstFailure: function () {
       try {
         const h = this.nodeHealthInfo
-          .checks['network.validators.heartbeat']
+          .checks
+          .network
           .timeOfFirstFailure
         return datePickerFormat(h)
       } catch (err) {
@@ -304,7 +274,8 @@ export default {
     contiguousFailures: function () {
       try {
         const h = this.nodeHealthInfo
-          .checks['network.validators.heartbeat']
+          .checks
+          .network
           .contiguousFailures
         return h
       } catch (err) {
@@ -314,7 +285,8 @@ export default {
     duration2: function () {
       try {
         const h = this.nodeHealthInfo
-          .checks['chains.default.bootstrapped']
+          .checks
+          .router
           .duration
         return h
       } catch (err) {
@@ -324,7 +296,8 @@ export default {
     timeOfFirstFailure2: function () {
       try {
         const h = this.nodeHealthInfo
-          .checks['chains.default.bootstrapped']
+          .checks
+          .router
           .timeOfFirstFailure
         return datePickerFormat(h)
       } catch (err) {
@@ -334,7 +307,8 @@ export default {
     contiguousFailures2: function () {
       try {
         const h = this.nodeHealthInfo
-          .checks['chains.default.bootstrapped']
+          .checks
+          .router
           .contiguousFailures
         return h
       } catch (err) {
@@ -347,9 +321,14 @@ export default {
       open: OPEN_NODE_HEALTH,
       close: CLOSE_NODE_HEALTH
     }),
-    getPercent (val) {
-      if (!val) return
-      return round(val * 100, 1000)
+    getPercent (p) {
+      if (!p || !p.vm) return
+      const percent = p.vm.percentConnected
+      return round(percent * 100, 1000)
+    },
+    getPercentL (p) {
+      if (!p || !p.vm) return
+      return p.vm.percentConnected
     },
     getUpTime (val) {
       if (!val) return
