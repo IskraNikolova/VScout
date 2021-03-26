@@ -14,11 +14,14 @@ import {
   mapGetters
 } from 'vuex'
 
+import Stake from './stake.vue'
+import Stats from './stats.vue'
+
 export default {
   name: 'WrapStake',
   components: {
-    Stake: () => import('components/panels/stake.vue'),
-    Stats: () => import('components/panels/stats.vue')
+    Stake,
+    Stats
   },
   computed: {
     ...mapGetters([

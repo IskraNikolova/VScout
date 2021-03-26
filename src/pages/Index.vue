@@ -52,12 +52,7 @@
       <div class="flex flex-center q-mt-xl">
         <faqs id="faqs"/>
       </div>
-      <div class="flex flex-center">
-        <img src="~assets/vscout-logo-full-grey.svg" id="logo">
-      </div>
-      <div class="flex flex-center q-mt-xl text-white">
-        Made with ❤️ for builders everywhere.
-      </div>
+      <footer-logo />
     </div>
   </q-page>
 </template>
@@ -81,14 +76,15 @@ export default {
   name: 'PageIndex',
   components: {
     MapChart,
-    NodeVersionChart: () => import('components/node-version-chart.vue'),
     Node: () => import('components/panels/node.vue'),
-    Network: () => import('components/panels/network.vue'),
-    WrapMarket: () => import('components/panels/wrap-market.vue'),
-    WrapStake: () => import('components/panels/wrap-stake.vue'),
-    Error: () => import('components/panels/error.vue'),
-    TableValidators: () => import('components/panels/table-validators.vue'),
     Faqs: () => import('components/panels/faqs.vue'),
+    Error: () => import('components/panels/error.vue'),
+    Network: () => import('components/panels/network.vue'),
+    WrapStake: () => import('components/panels/wrap-stake.vue'),
+    WrapMarket: () => import('components/panels/wrap-market.vue'),
+    FooterLogo: () => import('components/panels/footer-logo.vue'),
+    NodeVersionChart: () => import('components/node-version-chart.vue'),
+    TableValidators: () => import('components/panels/table-validators.vue'),
     TableDelegators: () => import('components/panels/table-delegators.vue')
   },
   computed: {

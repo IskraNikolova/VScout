@@ -2,12 +2,7 @@
   <q-page>
     <div style="padding: 1%;">
       <span v-if="validator && validator.uptime"><validator-details /></span>
-      <div class="flex flex-center">
-        <img src="~assets/vscout-logo-full-grey.svg" id="logo">
-      </div>
-      <div class="flex flex-center q-mt-xl text-white">
-        Made with ❤️ for builders everywhere.
-      </div>
+      <footer-logo />
     </div>
   </q-page>
 </template>
@@ -22,6 +17,7 @@ import {
 export default {
   name: 'PageValidator',
   components: {
+    FooterLogo: () => import('components/panels/footer-logo.vue'),
     ValidatorDetails: () => import('components/search/validator-details.vue')
   },
   computed: {

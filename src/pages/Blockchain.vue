@@ -8,12 +8,7 @@
       >
         <blockchain-details class="q-pr-md"/>
       </q-card>
-      <div class="flex flex-center">
-        <img src="~assets/vscout-logo-full-grey.svg" id="logo">
-      </div>
-      <div class="flex flex-center q-mt-xl text-white">
-        Made with ❤️ for builders everywhere.
-      </div>
+      <footer-logo />
     </div>
   </q-page>
 </template>
@@ -23,7 +18,8 @@
 export default {
   name: 'PageBlockchain',
   components: {
-    BlockchainDetails: () => import('components/search/blockchain-details.vue')
+    BlockchainDetails: () => import('components/search/blockchain-details.vue'),
+    FooterLogo: () => import('components/panels/footer-logo.vue')
   }
 }
 </script>

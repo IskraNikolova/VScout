@@ -14,11 +14,14 @@ import {
   mapGetters
 } from 'vuex'
 
+import MarketData from './market-data.vue'
+import StakeInfo from './stake-info.vue'
+
 export default {
   name: 'WrapMarket',
   components: {
-    MarketData: () => import('components/panels/market-data.vue'),
-    StakeInfo: () => import('components/panels/stake-info.vue')
+    MarketData,
+    StakeInfo
   },
   computed: {
     ...mapGetters([

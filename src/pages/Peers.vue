@@ -4,38 +4,66 @@
       <div>
         <span class="text-h6 q-pl-sm q-mb-xl text-white">{{ getPeersLength }} Peers Connected with</span> <span class="text-medium text-purple"> {{ getNodeFormat(nodeID) }}</span>
       </div>
-      <div class="row q-pl-xs q-pt-md">
-      <div class="col-2 text-purple">
-        <div v-for="p in keys1" v-bind:key="p">
-          <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(statics[`${p}`].code[0]) + '.png'" id="logo-s"/>
-          <span v-if="p !== 'undefined'"><span>  {{ p }}</span>
-          <span class="text-medium text-white"> {{ statics[`${p}`].count }}</span></span>
+      <div class="row q-pl-xs q-pt-md q-pb-md gt-sm">
+        <div class="col-2 text-purple">
+          <div v-for="p in keys1" v-bind:key="p">
+            <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(statics[`${p}`].code[0]) + '.png'" id="logo-s"/>
+            <span v-if="p !== 'undefined'"><span>  {{ p }}</span>
+            <span class="text-medium text-white"> {{ statics[`${p}`].count }}</span></span>
+          </div>
+        </div>
+        <div class="8 q-mt-xl" style="width: 65%;height: 350px;">
+          <MapChart
+            style="z-index: 30;"
+            :countryData="peersMap"
+            highColor="#aa7dc9"
+            defaultCountryFillColor="#ffffff"
+            legendBoxShadowCss="0px 0px 15px #fff"
+            :showLegend="true"
+            :currencyAdd="false"
+            :showEmptyValue="true"
+          /></div>
+        <div class="col-2 text-purple">
+          <div v-for="p in keys2" v-bind:key="p">
+            <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(statics[`${p}`].code[0]) + '.png'" id="logo-s"/>
+            <span v-if="p !== 'undefined'">  {{ p }}</span>
+            <span v-if="p !== 'undefined'" class="text-medium text-white"> {{ statics[`${p}`].count }}</span>
+          </div>
         </div>
       </div>
-      <div class="8 q-mt-xl" style="width: 65%;height: 350px;"><MapChart
-        style="z-index: 30;"
-        :countryData="peersMap"
-        highColor="#aa7dc9"
-        defaultCountryFillColor="#ffffff"
-        legendBoxShadowCss="0px 0px 15px #fff"
-        :showLegend="true"
-        :currencyAdd="false"
-        :showEmptyValue="true"
-      /></div>
-      <div class="col-2 text-purple">
-        <div v-for="p in keys2" v-bind:key="p">
-          <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(statics[`${p}`].code[0]) + '.png'" id="logo-s"/>
-          <span v-if="p !== 'undefined'">  {{ p }}</span>
-          <span v-if="p !== 'undefined'" class="text-medium text-white"> {{ statics[`${p}`].count }}</span>
+      <div class="row q-pl-md q-pt-md lt-md">
+        <div class="col-6 text-purple">
+          <div v-for="p in keys1" v-bind:key="p">
+            <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(statics[`${p}`].code[0]) + '.png'" id="logo-s"/>
+            <span v-if="p !== 'undefined'"><span>  {{ p }}</span>
+            <span class="text-medium text-white"> {{ statics[`${p}`].count }}</span></span>
+          </div>
+        </div>
+        <div class="col-6 text-purple">
+          <div v-for="p in keys2" v-bind:key="p">
+            <img v-if="p !== 'undefined'" :src="'./statics/flag/' + getCode(statics[`${p}`].code[0]) + '.png'" id="logo-s"/>
+            <span v-if="p !== 'undefined'">  {{ p }}</span>
+            <span v-if="p !== 'undefined'" class="text-medium text-white"> {{ statics[`${p}`].count }}</span>
+          </div>
         </div>
       </div>
+      <div class="lt-md q-pl-xl" style="width: 65%;height: 350px;">
+          <MapChart
+            style="z-index: 30;"
+            :countryData="peersMap"
+            highColor="#aa7dc9"
+            defaultCountryFillColor="#ffffff"
+            legendBoxShadowCss="0px 0px 15px #fff"
+            :showLegend="true"
+            :currencyAdd="false"
+            :showEmptyValue="true"
+          />
       </div>
       <q-card
-        class="q-pb-md q-mt-sm panel2"
+        class="q-pb-md panel2"
         id="custom-card"
         style="min-height: 400px;"
       >
-        <!--<div class="text-h7 q-pl-md q-pt-md"><q-icon name="info" color="grey" /> "Uptime" shows the stat from the perspective of the connected endpoint.</div>-->
         <q-table
           flat
           :data="peersView"
@@ -102,13 +130,8 @@
             </q-tr>
             </template>
         </q-table>
-        </q-card>
-      <div class="flex flex-center">
-        <img src="~assets/vscout-logo-full-grey.svg" id="logo">
-      </div>
-      <div class="flex flex-center q-mt-xl text-white">
-        Made with ❤️ for builders everywhere.
-      </div>
+      </q-card>
+      <footer-logo />
     </div>
   </q-page>
 </template>
@@ -150,7 +173,8 @@ function wrapCsvValue (val, formatFn) {
 export default {
   name: 'PagePeers',
   components: {
-    MapChart
+    MapChart,
+    FooterLogo: () => import('components/panels/footer-logo.vue')
   },
   watch: {
     validators: function () {

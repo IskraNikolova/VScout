@@ -191,12 +191,7 @@
           </q-card-section>
         </q-card>
       </q-dialog>
-      <div class="flex flex-center q-pt-xl">
-        <img src="~assets/vscout-logo-full-grey.svg" id="logo">
-      </div>
-      <div class="flex flex-center q-mt-xl text-white q-pb-xl">
-        Made with ❤️ for builders everywhere.
-      </div>
+     <footer-logo />
     </div>
   </q-page>
 </template>
@@ -229,6 +224,9 @@ import { verify } from './../modules/avalanche.js'
 
 export default {
   name: 'PageVerifyValidator',
+  components: {
+    FooterLogo: () => import('components/panels/footer-logo.vue')
+  },
   data () {
     return {
       signature: '',

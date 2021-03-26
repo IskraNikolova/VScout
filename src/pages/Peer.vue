@@ -58,12 +58,7 @@
           <q-spinner-gears size="100px" color="purple" />
         </q-inner-loading>
       </div>
-      <div class="flex flex-center">
-        <img src="~assets/vscout-logo-full-grey.svg" id="logo">
-      </div>
-      <div class="flex flex-center q-mt-xl text-white">
-        Made with ❤️ for builders everywhere.
-      </div>
+      <footer-logo />
     </div>
   </q-page>
 </template>
@@ -156,6 +151,7 @@ export default {
     }
   },
   components: {
+    FooterLogo: () => import('components/panels/footer-logo.vue'),
     Avatar: () => import('components/validator/avatar.vue'),
     Name: () => import('components/validator/name.vue'),
     Info: () => import('components/validator/info.vue')
