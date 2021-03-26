@@ -165,7 +165,7 @@
           <q-bar>
             <q-input
               outlined
-              dark
+              :dark="appTheme==='dark'"
               stack-label
               color="purple"
               autofocus

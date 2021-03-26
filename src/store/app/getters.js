@@ -14,6 +14,10 @@ export function blockchains (state) {
   return state.blockchains
 }
 
+export function currentCurrency (state) {
+  return state.currentCurrency
+}
+
 export function blockchainByID (state) {
   return (id) => state
     .blockchains

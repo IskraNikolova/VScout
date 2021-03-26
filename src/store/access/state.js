@@ -17,7 +17,6 @@ export default function () {
     validators: [],
     delegators: [],
     validator: {},
-    currentCurrency: 'usd',
     currenciesPriceList: {},
     high_24h: {},
     low_24h: {},

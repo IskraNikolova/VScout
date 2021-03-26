@@ -19,6 +19,7 @@ export default function () {
     isBlockchainView: true,
     subnetID: network.defaultSubnetID,
     networkEndpoint: network.endpointUrls[0],
+    currentCurrency: 'usd',
     nodeInfo: {
       networkID: '',
       networkName: '',

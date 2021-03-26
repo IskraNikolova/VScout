@@ -231,7 +231,7 @@
               <small v-else class="text-negative">DISCONNECTED</small>
             </div>
             <div v-else-if="col.name === 'version'">
-              <span v-if="col.value !== 'undefined'" :style="getVersionColor(col.value)">{{ col.value }}</span>
+              <q-badge v-if="col.value !== 'undefined'" :style="getVersionColor(col.value)"><span style="color: #000000">{{ col.value }}</span></q-badge>
               <span v-else class="text-panel"> - </span>
             </div>
             <countdown
@@ -446,17 +446,17 @@ export default {
       }
     },
     isNotSticky: function (val) {
-      if (val) this.tableClass = 'panel2 shadow-3'
+      if (val) this.tableClass = 'panel2'
       else {
-        if (this.appTheme === 'default') this.tableClass = 'panel2 shadow-3 sticky-header-table-light'
-        else this.tableClass = 'panel2 shadow-3 sticky-header-table-dark'
+        if (this.appTheme === 'default') this.tableClass = 'panel2 sticky-header-table-light'
+        else this.tableClass = 'panel2 sticky-header-table-dark'
       }
     },
     appTheme: function (val) {
-      if (val === 'default' && this.isNotSticky) this.tableClass = 'panel2 shadow-3'
-      else if (val === 'default' && !this.isNotSticky) this.tableClass = 'panel2 shadow-3 sticky-header-table-light'
-      else if (val === 'dark' && this.isNotSticky) this.tableClass = 'panel2 shadow-3'
-      else this.tableClass = 'panel2 shadow-3 sticky-header-table-dark'
+      if (val === 'default' && this.isNotSticky) this.tableClass = 'panel2'
+      else if (val === 'default' && !this.isNotSticky) this.tableClass = 'panel2 sticky-header-table-light'
+      else if (val === 'dark' && this.isNotSticky) this.tableClass = 'panel2'
+      else this.tableClass = 'panel2 sticky-header-table-dark'
     }
   },
   data () {
@@ -631,7 +631,7 @@ export default {
       visibleColumns: [],
       textStickyPositive: 'Sticky header',
       textStickyNegative: 'Remove a sticky header',
-      tableClass: 'panel2 shadow-3'
+      tableClass: 'panel2'
     }
   },
   created () {
@@ -693,7 +693,7 @@ export default {
     },
     getVersionColor (val) {
       const version = labelColors[`avalanche/${val}`]
-      return 'color:' + version + ';'
+      return 'background-color:' + version + ';'
     },
     getFormatVersion (val) {
       if (!val) return

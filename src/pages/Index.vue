@@ -21,18 +21,20 @@
             </span>
           </div>
           <div class="q-pb-md q-pt-md text-medium text-white label-title">PEERS</div>
-          <div @click="$router.push('/peers/' + nodeID)"><MapChart
-            style="z-index: 30;"
-            :countryData="peersMap"
-            highColor="#aa7dc9"
-            defaultCountryFillColor="#ffffff"
-            legendBoxShadowCss="0px 0px 15px #fff"
-            :showLegend="true"
-            :currencyAdd="false"
-            :showEmptyValue="false"
-          /></div>
+          <div @click="$router.push('/peers/' + nodeID)">
+            <MapChart
+              style="z-index: 30;"
+              :countryData="peersMap"
+              highColor="#aa7dc9"
+              defaultCountryFillColor="#ffffff"
+              legendBoxShadowCss="0px 0px 15px #fff"
+              :showLegend="true"
+              :currencyAdd="false"
+              :showEmptyValue="false"
+            />
+          </div>
         </div>
-        <q-separator class="q-mt-sm q-mb-sm" />
+        <q-separator class="q-mt-md q-mb-sm" />
         <div class="q-pl-sm q-pb-sm q-pt-md text-medium text-white label-title">VERSION DISTRIBUTION</div>
         <div style="max-width: 250px!important;"><node-version-chart /></div>
       </div>
