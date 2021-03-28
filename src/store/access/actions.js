@@ -62,9 +62,9 @@ async function setValidator ({ commit, getters }, { id }) {
     const temp = t[`${val.avatarUrl}`]
     if (temp) {
       val.avatar = temp.avatar
-      val.bio = temp.bio
-      val.link = temp.link
-      val.website = temp.website
+      val.bio = val.bio ? val.bio : temp.bio
+      val.link = val.link ? val.link : temp.link
+      val.website = val.website ? val.website : temp.website
     }
     const endpoint = getters.networkEndpoint.url
     if (endpoint !== network.endpointUrls[0].url) {

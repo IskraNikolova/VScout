@@ -5,16 +5,19 @@ import { getRemainingCapacity } from './stake.js'
 import { countDownCounter, diff } from './../modules/time.js'
 import { _getValidatorById } from './../modules/networkCChain.js'
 
-const allNodesInfo = {
-  avatar: '/statics/circle_symbol.svg',
-  bio: 'Masternodes, Full Nodes, Staking Services',
-  link: 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
-  website: 'Allnodes'
+const allNodesInfo = (data) => {
+  return {
+    avatar: '/statics/circle_symbol.svg',
+    bio: data.bio ? data.bio : 'Masternodes, Full Nodes, Staking Services',
+    link: data.link ? data.link : 'https://www.allnodes.com/?utm_source=vscout&utm_medium=validator-list',
+    website: data.website ? data.website : 'Allnodes'
+  }
 }
-
-const t = {
-  'https://bit.ly/3q5aMGC': { ...allNodesInfo },
-  '/statics/circle_symbol.svg': { ...allNodesInfo }
+const t = (data) => {
+  return {
+    'https://bit.ly/3q5aMGC': { ...allNodesInfo(data) },
+    '/statics/circle_symbol.svg': { ...allNodesInfo(data) }
+  }
 }
 
 /**
@@ -209,10 +212,10 @@ export async function mapDefaultValidators (
     let website = ''
 
     try {
-      avatar = t[`${info.avatarUrl}`].avatar
-      link = t[`${info.avatarUrl}`].link
-      bio = t[`${info.avatarUrl}`].bio
-      website = t[`${info.avatarUrl}`].website
+      avatar = t[`${info.avatarUrl}`](info).avatar
+      link = t[`${info.avatarUrl}`](info).link
+      bio = t[`${info.avatarUrl}`](info).bio
+      website = t[`${info.avatarUrl}`](info).website
     } catch (err) {
       avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
       link = info.link ? info.link : ''
@@ -346,10 +349,10 @@ export async function mapValidators (
     let website = ''
 
     try {
-      avatar = t[`${info.avatarUrl}`].avatar
-      link = t[`${info.avatarUrl}`].link
-      bio = t[`${info.avatarUrl}`].bio
-      website = t[`${info.avatarUrl}`].website
+      avatar = t[`${info.avatarUrl}`](info).avatar
+      link = t[`${info.avatarUrl}`](info).link
+      bio = t[`${info.avatarUrl}`](info).bio
+      website = t[`${info.avatarUrl}`](info).website
     } catch (err) {
       avatar = info.avatarUrl ? info.avatarUrl : getAvatar(val.nodeID).monster
       link = info.link ? info.link : ''
