@@ -24,21 +24,21 @@
             @mouseover="listOver=true"
             @mouseleave="listOver=false"
           >
-            <q-item class="panel2" v-if="statsMode!=='24H'" clickable v-close-popup @click="statsMode='24H'">
+            <q-item class="panel2" v-if="statsMode!=='24h'" clickable v-close-popup @click="statsMode='24h'">
             <q-item-section>
-              <small class="text-panel">24H</small>
+              <small class="text-panel">24h</small>
             </q-item-section>
             </q-item>
             <q-separator color="panel2" />
-            <q-item class="panel2" v-if="statsMode!=='WEEK'" clickable v-close-popup @click="statsMode='WEEK'">
+            <q-item class="panel2" v-if="statsMode!=='WEEK'" clickable v-close-popup @click="statsMode='a week'">
             <q-item-section>
-              <small class="text-panel">WEEK</small>
+              <small class="text-panel">a week</small>
             </q-item-section>
             </q-item>
             <q-separator color="panel2" />
-            <q-item class="panel2" v-if="statsMode!=='MONTH'" clickable v-close-popup @click="statsMode='MONTH'">
+            <q-item class="panel2" v-if="statsMode!=='MONTH'" clickable v-close-popup @click="statsMode='a month'">
             <q-item-section>
-              <small class="text-panel">MONTH</small>
+              <small class="text-panel">a month</small>
             </q-item-section>
             </q-item>
           </q-list>
@@ -212,7 +212,7 @@ export default {
       statOver: false,
       statMenu: false,
       listOver: false,
-      statsMode: '24H',
+      statsMode: '24h',
       incomingValidators: 0,
       outcomingValidators: 0,
       incomingDelegations: 0,
@@ -235,21 +235,21 @@ export default {
       return `${round(value, 100).toLocaleString()}`
     },
     refreshData (val) {
-      if (val === '24H') {
+      if (val === '24h') {
         this.incomingValidators = this.incomingValidatorsHours
         this.outcomingValidators = this.outcomingValidatorsHours
         this.incomingDelegations = this.incomingDelegationsHours
         this.outcomingDelegations = this.outcomingDelegationsHours
         this.incomingStake = this.incomingStakeHours
         this.outcomingStake = this.outcomingStakeHours
-      } else if (val === 'WEEK') {
+      } else if (val === 'a week') {
         this.incomingValidators = this.incomingValidatorsDays
         this.outcomingValidators = this.outcomingValidatorsDays
         this.incomingDelegations = this.incomingDelegationsDays
         this.outcomingDelegations = this.outcomingDelegationsDays
         this.incomingStake = this.incomingStakeDays
         this.outcomingStake = this.outcomingStakeDays
-      } else if (val === 'MONTH') {
+      } else if (val === 'a month') {
         this.incomingValidators = this.incomingValidatorsMonth
         this.outcomingValidators = this.outcomingValidatorsMonth
         this.incomingDelegations = this.incomingDelegationsMonth

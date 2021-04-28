@@ -89,16 +89,16 @@
               no-caps
               label="Smart Digital Assets"
             >
-              <div class="q-pa-md">
-                <q-input v-model="search" label="Search..." @input="onSearch"/>
+              <div class="q-pa-md panel">
+                <q-input :dark="appTheme==='dark'" v-model="search" label="Search..." @input="onSearch"/>
               </div>
-              <q-item v-if="assetSearch" clickable v-close-popup @click="onOpenAssetInfo(assetSearch)">
+              <q-item  class="panel" v-if="assetSearch" clickable v-close-popup @click="onOpenAssetInfo(assetSearch)">
                 <q-item-section avatar>
                   <q-badge color="accent">{{ assetSearch.symbol }}</q-badge>
                 </q-item-section>
                 <q-item-section>{{ assetSearch.name }}</q-item-section>
               </q-item>
-              <q-infinite-scroll @load="onLoad" :offset="250">
+              <q-infinite-scroll @load="onLoad" :offset="250" class="panel">
                 <div v-for="(asset, index) in items" :key="index" class="caption">
                   <q-item clickable v-close-popup style="max-width: 200px;" @click="onOpenAssetInfo(asset)">
                     <q-item-section avatar>
@@ -201,6 +201,7 @@ export default {
   computed: {
     ...mapGetters([
       'height',
+      'appTheme',
       'assetsCount',
       'currentSubnet',
       'isBlockchainView',

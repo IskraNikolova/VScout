@@ -1,6 +1,6 @@
 <template>
     <q-dialog v-model="ui.assetInfo.isOpen" persistent>
-      <q-card class="my-card">
+      <q-card class="my-card panel">
         <q-card-section>
           <div class="row no-wrap items-center">
             <div class="col text-h6 ellipsis">
@@ -24,16 +24,16 @@
           </div>
         </q-card-section>
 
-        <q-separator />
+        <q-separator :dark="appTheme==='dark'"/>
 
         <q-card-actions align="right">
           <q-btn
-            flat color="orange"
+            flat
             @click="toUrl(ui.assetInfo.asset.id)"
             no-caps
             label="Asset Genesis"
           />
-          <q-btn @click="close()" color="orange" flat icon="close" />
+          <q-btn @click="close()" flat icon="close" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -52,7 +52,8 @@ export default {
   name: 'AssetInfoDialog',
   computed: {
     ...mapGetters([
-      'ui'
+      'ui',
+      'appTheme'
     ])
   },
   methods: {
