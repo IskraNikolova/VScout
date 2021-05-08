@@ -167,7 +167,7 @@
             <div v-else-if="col.name === 'validator'" class="row">
               <div
                 style="cursor:pointer;margin-left: -25px;"
-                @click="props.expand = !props.expand" v-html="getFormatValidator(col.value)">
+                @click="props.expand = !props.expand" v-html="col.value">
               </div>
             </div>
             <div v-else-if="col.name === 'rank'">
@@ -833,11 +833,11 @@ export default {
       if (!val) return
       return `${val.substr(0, 20)}...${val.substr(28)}`
     },
-    getFormatValidator (val) {
-      if (!val) return
-      if (val.length > 29) return `${val.substr(0, 20)}...${val.substr(28)}`
-      return val
-    },
+    // getFormatValidator (val) {
+    //   if (!val) return
+    //   if (val.length > 32) return `${val.substr(0, 20)}...${val.substr(28)}`
+    //   return val
+    // },
     onClick (link, id) {
       if (link) openURL(link)
       else this.$router.push('/validator/' + id)
