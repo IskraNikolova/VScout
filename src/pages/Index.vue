@@ -102,6 +102,9 @@ export default {
       'networkEndpoint'
     ])
   },
+  created () {
+    this.showNotif()
+  },
   data () {
     return {
       price: null
@@ -115,6 +118,19 @@ export default {
       await this.getValidators({
         subnetID: network.defaultSubnetID,
         endpoint: this.networkEndpoint.url
+      })
+    },
+    showNotif () {
+      this.$q.notify({
+        message: ' Dear users, the currently displayed uptime might show discrepancies due to the latest VScout update. The issue should be resolved within 24 hours. Thank you for your patience!',
+        color: 'info',
+        icon: 'info',
+        position: 'top',
+        timeout: 20500,
+        classes: 'glossy',
+        actions: [
+          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
+        ]
       })
     }
   }
