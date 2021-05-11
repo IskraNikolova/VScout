@@ -122,7 +122,7 @@ export default {
     },
     showNotif () {
       this.$q.notify({
-        message: ' Dear users, the currently displayed uptime might show discrepancies due to the latest VScout update. The issue should be resolved within 24 hours. Thank you for your patience!',
+        message: 'Dear users, the currently displayed uptime might show discrepancies due to the latest VScout update. The issue should be resolved shortly as the node catches up. Thank you for your patience!',
         color: 'info',
         icon: 'info',
         position: 'top',
