@@ -1,5 +1,17 @@
 <template>
   <q-page>
+    <div v-if="isNotify" class="q-pa-md q-gutter-sm">
+      <q-banner inline-actions rounded class="bg-info glossy text-white">
+        <template v-slot:avatar>
+        <q-icon name="info" size="lg"/>
+        </template>
+        Dear users, the currently displayed uptime might show discrepancies due to the latest VScout update. The issue should be resolved shortly as the node catches up. Thank you for your patience!
+
+        <template v-slot:action>
+          <q-btn flat label="Dismiss" @click="dismiss" />
+        </template>
+      </q-banner>
+    </div>
     <error class="q-pr-sm" />
     <div class="row q-pt-sm q-pr-sm">
       <div class="col-md-2 col-xs-12">
@@ -107,7 +119,8 @@ export default {
   },
   data () {
     return {
-      price: null
+      price: null,
+      isNotify: true
     }
   },
   methods: {
@@ -120,18 +133,8 @@ export default {
         endpoint: this.networkEndpoint.url
       })
     },
-    showNotif () {
-      this.$q.notify({
-        message: 'Dear users, the currently displayed uptime might show discrepancies due to the latest VScout update. The issue should be resolved shortly as the node catches up. Thank you for your patience!',
-        color: 'info',
-        icon: 'info',
-        position: 'top',
-        timeout: 20500,
-        classes: 'glossy',
-        actions: [
-          { label: 'Dismiss', color: 'white', handler: () => { /* ... */ } }
-        ]
-      })
+    dismiss () {
+      this.isNotify = false
     }
   }
 }
