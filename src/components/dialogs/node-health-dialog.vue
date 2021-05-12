@@ -338,7 +338,7 @@ export default {
       return datePickerFormat(val)
     },
     getColorUptime (val) {
-      if (val >= 6) return 'positive'
+      if (val >= 60) return 'positive'
       return 'negative'
     }
   }

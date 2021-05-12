@@ -119,7 +119,7 @@ export function compareNotificationNode (oldN, newN) {
       type: false,
       icon: 'arrow_circle_down',
       title: 'Uptime Down',
-      message: `Node UPTIME is decrease from ${oldUptime}% to ${newUptime}%.`
+      message: `Node UPTIME decreased from ${oldUptime}% to ${newUptime}%.`
     })
   } else if (newUptime - oldUptime >= 0.1) {
     msgs.push({
@@ -127,7 +127,7 @@ export function compareNotificationNode (oldN, newN) {
       type: true,
       icon: 'arrow_circle_up',
       title: 'Uptime Up',
-      message: `Node UPTIME is increase from ${oldUptime}% to ${newUptime}%.`
+      message: `Node UPTIME increased from ${oldUptime}% to ${newUptime}%.`
     })
   }
 
