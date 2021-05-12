@@ -699,7 +699,8 @@ export default {
       if (!id) return
       const isVal = this.validatorById(id)
       if (isVal) {
-        return id !== 'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj'
+        return id !== 'NodeID-6yEnkZJBUW3snaeEeJHPBuhtmXroCvZFv'
+        // return id !== 'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj'
       }
       return false
     },
