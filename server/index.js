@@ -14,7 +14,7 @@ setInterval(() => {
   controllers.avax.avaxPrice()
 }, 8000)
 
-const endpoint = 'http://135.181.93.94:9650'
+const endpoint = 'http://78.47.30.91:9650' // 'http://135.181.93.94:9650'
 setInterval(() => {
   controllers.platform.blockHeight(endpoint)
   controllers.validators.validators(endpoint)
