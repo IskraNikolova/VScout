@@ -93,6 +93,20 @@ export const _getPeerInfo = async ({ ip }) => {
   }
 }
 
+export const _getNodeUptime = async (nodeID) => {
+  try {
+    const req = await axios
+      .post(server + 'api/validators/uptime', { nodeID })
+
+    if (!req.data) {
+      throw new Error()
+    }
+    return req
+  } catch (err) {
+    return null
+  }
+}
+
 export const _getValidator = async ({ id }) => {
   try {
     const req = await axios

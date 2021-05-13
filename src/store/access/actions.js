@@ -11,13 +11,14 @@ import {
 import {
   _getTxApi,
   _getValidator,
-  _getValidators
+  // _getValidators,
+  _getNodeUptime
 } from './../../modules/network.js'
 
-const {
-  network
-} = require('./../../modules/config.js')
-  .default
+// const {
+//   network
+// } = require('./../../modules/config.js')
+//   .default
 
 import {
   getAvatar
@@ -44,6 +45,9 @@ async function setValidator ({ commit, getters }, { id }) {
     val.bio = info.bio ? info.bio : ''
     val.website = info.website ? info.website : ''
     val.link = info.link ? info.link : ''
+    const response = await _getNodeUptime(id)
+    if (response.data.error) val.uptimes = []
+    val.uptimes = response.data
 
     const t = {
       'https://bit.ly/3q5aMGC': {
@@ -66,26 +70,26 @@ async function setValidator ({ commit, getters }, { id }) {
       val.link = val.link ? val.link : temp.link
       val.website = val.website ? val.website : temp.website
     }
-    const endpoint = getters.networkEndpoint.url
-    if (endpoint !== network.endpointUrls[0].url) {
-      const subnetID = getters.subnetID
-      const response = await _getValidators({
-        subnetID,
-        endpoint
-      })
+    // const endpoint = getters.networkEndpoint.url
+    // if (endpoint !== network.endpointUrls[0].url) {
+    //   const subnetID = getters.subnetID
+    //   const response = await _getValidators({
+    //     subnetID,
+    //     endpoint
+    //   })
 
-      if (response.data.error) return
-      const { validators } = response.data.result
+    //   if (response.data.error) return
+    //   const { validators } = response.data.result
 
-      const v = validators
-        .find(val => val.nodeID.includes(id))
-      if (!v) return
-      val.uptime = v.uptime
-      val.connected = v.connected
-    }
+    //   const v = validators
+    //     .find(val => val.nodeID.includes(id))
+    //   if (!v) return
+    //   val.uptime = v.uptime
+    //   val.connected = v.connected
+    // }
 
-    const validator = getters.nonDefvalidatorById(id)
-    if (validator) val.uptime = validator.uptime
+    // const validator = getters.nonDefvalidatorById(id)
+    // if (validator) val.uptime = validator.uptime
     commit(SET_VALIDATOR, { validator: val })
     return true
   } catch (err) {

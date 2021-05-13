@@ -12,19 +12,6 @@
           </q-item-section>
         </q-item>
         <div class="col-3 q-pt-sm">
-          <span class="text-subtitle2 q-mr-xs"><small style="opacity: 0.8;">UPTIME</small></span>
-          <q-badge :color="getColorUptime(val.uptime)" class="text-medium q-ml-xs" style="font-size: 16px;padding: 7px">
-            <span style="margin: auto;">{{ getUpTime(val.uptime) }}%</span>
-          </q-badge>
-          <div class="q-mt-xs">
-            <span class="text-subtitle2 q-mr-xs q-mt-sm"><small style="opacity: 0.8;">STATE</small></span>
-            <small class="q-pl-xs text-positive" v-if="state">CONNECTED</small>
-            <small class="q-pl-xs text-negative" v-else>
-              DISCONNECTED
-              <q-icon name="info" @click="onClick('https://docs.avax.network/learn/platform-overview/staking#why-is-my-uptime-low')"/>
-              <tooltip-style v-bind:text="'This is only one node’s point of view. Read more...'" />
-            </small>
-          </div>
           <span class="text-subtitle2"><small style="opacity: 0.8;">NETWORK SHARE</small></span>
           <span class="q-pl-xs" v-if="val.percent !== 'NaN'">
             {{ val.percent }}<span class="text-accent text-medium"> %</span>
@@ -48,57 +35,66 @@
         <span v-if="isEnav(getBio()) && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
         <span v-if="isEnav(getBio()) && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
       </div>
-      <div class="row" v-if="val.version">
-        <div class="col-12">
-        <info
-          class="q-mt-md my-card dark-panel"
-          style="border-radius: 10px;"
-          v-bind:role="'VALIDATOR'"
-          v-bind:version="val.version"
-          v-bind:country="val.country"
-          v-bind:isp="val.isp"
-          v-bind:countryCode="val.countryCode"
-          v-bind:lastReceived="val.lastReceived"
-          v-bind:lastSent="val.lastSent"
-        />
+      <div class="row">
+        <div class="col-6" v-if="val.version">
+          <div class="q-mr-md"><info
+            class="q-mt-md my-card dark-panel"
+            style="border-radius: 10px;"
+            v-bind:role="'VALIDATOR'"
+            v-bind:version="val.version"
+            v-bind:country="val.country"
+            v-bind:isp="val.isp"
+            v-bind:countryCode="val.countryCode"
+            v-bind:lastReceived="val.lastReceived"
+            v-bind:lastSent="val.lastSent"
+          /></div>
+        </div>
+        <div class="col-6">
+         <uptime
+           class="q-mt-md my-card dark-panel"
+           style="border-radius: 10px;"
+           v-bind:state="state"
+           v-bind:uptime="val.uptime"
+           v-bind:uptimes="val.uptimes"
+         />
         </div>
       </div>
       <div class="row">
         <div class="col-6">
           <div class="q-mr-md">
-          <stake
-            class="q-mt-md my-card dark-panel"
-            style="border-radius: 10px;"
-            v-bind:stakeAmount="stakeAmount"
-            v-bind:delegateStake="delegateStake"
-            v-bind:txID="txID"
-            v-bind:totalStakeAmount="totalStakeAmount"
-          />
-          <delegate
-            class="q-mt-md my-card dark-panel"
-            style="border-radius: 10px;"
-            v-bind:validator="val"
-          />
-          <div class="q-mt-md q-pa-md my-card dark-panel"
-          style="border-radius: 10px;">
-            <div class="q-mb-sm">Progress (%)</div>
-            <progress-bar-validate-session
-              v-bind:startTime="startTime"
-              v-bind:endTime="endTime"
+            <stake
+              class="q-mt-md my-card dark-panel"
+              style="border-radius: 10px;"
+              v-bind:stakeAmount="stakeAmount"
+              v-bind:delegateStake="delegateStake"
+              v-bind:txID="txID"
+              v-bind:totalStakeAmount="totalStakeAmount"
             />
-            <div class="row">
-              <div class="col-6">
-                <small class="text-bold">Start Time</small>
-                <br />
-                <small>{{ formatDate(startTime) }}</small>
-              </div>
-              <div class="col-6" style="text-align: right;">
-                <small class="text-bold">End Time</small>
-                <br />
-                <small>{{ formatDate(endTime) }}</small>
+            <delegate
+              class="q-mt-md my-card dark-panel"
+              style="border-radius: 10px;"
+              v-bind:validator="val"
+            />
+            <div class="q-mt-md q-pa-md my-card dark-panel"
+            style="border-radius: 10px;">
+              <div class="q-mb-sm">Progress (%)</div>
+              <progress-bar-validate-session
+                v-bind:startTime="startTime"
+                v-bind:endTime="endTime"
+              />
+              <div class="row">
+                <div class="col-6">
+                  <small class="text-bold">Start Time</small>
+                  <br />
+                  <small>{{ formatDate(startTime) }}</small>
+                </div>
+                <div class="col-6" style="text-align: right;">
+                  <small class="text-bold">End Time</small>
+                  <br />
+                  <small>{{ formatDate(endTime) }}</small>
+                </div>
               </div>
             </div>
-          </div>
           </div>
         </div>
         <div class="col-6">
@@ -137,44 +133,6 @@
             v-bind:link="getLink()"
           />
           <owner v-bind:owner="rewardOwner" v-if="rewardOwner"/>
-          <q-separator class="q-mt-md q-mb-md"/>
-          <q-item-label>
-            <div>
-            <span v-if="val.uptime > 0">
-            <span class="text-subtitle2">
-              <small style="opacity: 0.8;">UPTIME</small>
-            </span>
-            <span class="q-pl-xs">
-              <q-badge :color="getColorUptime(val.uptime)">
-                {{ getUpTime(val.uptime) }} %
-              </q-badge>
-            </span>
-            <div class="q-mt-xs">
-              <span class="text-subtitle2"><small style="opacity: 0.8;">STATE</small></span>
-              <small class="q-pl-xs text-positive" v-if="state">CONNECTED</small>
-              <small class="q-pl-xs text-negative" v-else>
-                DISCONNECTED
-                <q-icon name="info" @click="onClick('https://docs.avax.network/learn/platform-overview/staking#why-is-my-uptime-low')"/>
-                <tooltip-style v-bind:text="'This is only one node’s point of view. Read more...'" />
-              </small>
-            </div>
-            </span>
-            <span class="text-subtitle2">
-              <small style="opacity: 0.8;">STAKED BY</small>
-            </span>
-            <span class="q-pl-xs">
-              {{ stakedBy(startTime) }}
-            </span>
-            <br />
-            <span class="text-subtitle2">
-              <small style="opacity: 0.8;">NETWORK SHARE</small>
-            </span>
-            <span class="q-pl-xs" v-if="val.percent !== 'NaN'">
-              {{ val.percent }}
-              <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;"> %</span>
-            </span>
-          </div>
-          </q-item-label>
         </q-item-section>
       </q-item>
       <q-separator v-if="getBio()"/>
@@ -191,6 +149,14 @@
         <span v-if="isEnav(getBio()) && !more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"> read more...</span>
         <span v-if="isEnav(getBio()) && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
       </div>
+      <q-separator />
+        <uptime
+           class="q-mt-md my-card dark-panel"
+           style="border-radius: 10px;"
+           v-bind:state="state"
+           v-bind:uptime="val.uptime"
+           v-bind:uptimes="val.uptimes"
+         />
       <q-separator v-if="val.version"/>
       <div class="row" v-if="val.version">
         <info
@@ -276,16 +242,15 @@ import {
   _getPastRatingEvents
 } from './../../modules/networkCChain.js'
 
-import { round } from './../../utils/commons.js'
 const humanizeDuration = require('humanize-duration')
 
 export default {
   name: 'ValidatorDetails',
   components: {
-    TooltipStyle: () => import('components/tooltip-style.vue'),
     Name: () => import('components/validator/name.vue'),
     Rank: () => import('components/validator/rank.vue'),
     Info: () => import('components/validator/info.vue'),
+    Uptime: () => import('components/validator/uptime.vue'),
     Stake: () => import('components/validator/stake.vue'),
     Delegate: () => import('components/validator/delegate.vue'),
     Delegations: () => import('components/validator/delegations.vue'),
@@ -413,14 +378,6 @@ export default {
     async getRating () {
       const events = await _getPastRatingEvents(this.val.nodeID)
       console.log(events)
-    },
-    getUpTime (val) {
-      if (!val) return 0
-      return round(val * 100, 1000)
-    },
-    getColorUptime (val) {
-      if (val >= 0.6) return 'positive'
-      return 'negative'
     },
     formatDate (time) {
       if (!time) return
