@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div v-if="isNotify" class="q-pa-md q-gutter-sm">
+    <!--<div v-if="isNotify" class="q-pa-md q-gutter-sm">
       <q-banner inline-actions rounded class="bg-info glossy text-white">
         <template v-slot:avatar>
         <q-icon name="info" size="lg"/>
@@ -11,7 +11,7 @@
           <q-btn flat label="Dismiss" @click="dismiss" />
         </template>
       </q-banner>
-    </div>
+    </div>-->
     <error class="q-pr-sm" />
     <div class="row q-pt-sm q-pr-sm">
       <div class="col-md-2 col-xs-12">
@@ -113,9 +113,6 @@ export default {
       'peersMap',
       'networkEndpoint'
     ])
-  },
-  created () {
-    this.showNotif()
   },
   data () {
     return {
