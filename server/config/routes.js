@@ -6,6 +6,7 @@ module.exports = app => {
   app.get(controllers.validators.baseUrl() + '/delegators', controllers.validators.delegations)
   app.post(controllers.validators.baseUrl() , controllers.validators.validator)
   app.get(controllers.validators.baseUrl() + '/stats', controllers.validators.stats)
+  app.post(controllers.validators.baseUrl() + '/uptime', controllers.validators.getUptimeByNodeID)
   app.get(controllers.validators.baseUrl() + '/versions', controllers.validators.nodeVersions)
   app.get(controllers.node.baseUrl() + '/info', controllers.node.nodeInfo)
   app.get(controllers.node.baseUrl() + '/peers', controllers.node.peers)

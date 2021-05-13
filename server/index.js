@@ -15,9 +15,22 @@ setInterval(() => {
 }, 8000)
 
 const endpoint = 'http://135.181.93.94:9650'
+
 setInterval(() => {
   controllers.platform.blockHeight(endpoint)
   controllers.validators.validators(endpoint)
   controllers.node.info(endpoint)
   controllers.node.peersPost(endpoint)
 }, 20000)
+
+let index = 0
+controllers.validators.getUptimes(index)
+
+setInterval(() => {
+  try {
+    controllers.validators.getUptimes(index)
+    const { validators } = require('validators.json')
+    index = (index + 10) % validators.length
+  } catch (err) {
+  }
+}, 300000)

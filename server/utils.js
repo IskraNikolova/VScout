@@ -1,6 +1,20 @@
 const moment = require('moment')
 const BigNumber = require('bignumber.js')
 const { getAvatar } = require('./commons.js')
+const axios = require('axios')
+  .default
+
+let id = 0
+const body = (method) => {
+  return {
+    jsonrpc: '2.0',
+    method,
+    params : {},
+    id: id++
+  }
+}
+
+const fs = require('fs')
 
 const CAPACITY = 5
 
@@ -52,7 +66,21 @@ module.exports = {
         .isMinimumAmountForStake
   
       const duration = diff(val.endTime, val.startTime)
-  
+
+      let uptimes = fs
+        .readFileSync('uptime.json')
+        .toString()
+
+      if (uptimes) {
+        let up = JSON.parse(uptimes)[val.nodeID]
+        if (!up) return
+        let all = up.reduce((a, b) => {
+          return a + Number(b.uptime)
+        }, 0.0)
+
+        val.uptime = (all / up.length).toFixed(3)
+      }
+
       return {
         ...val,
         duration,
@@ -246,6 +274,75 @@ module.exports = {
       incomingDel,
       outcomingDel
     }
+  },
+  getObserervers: async (i) => {
+    let index = 0 + i
+    let stop = 0
+
+    try {
+      let obsArray = await getObserversArray()
+
+      let ex = obsArray.length
+      if (ex >= 12) return obsArray
+
+      let peersInJson = fs.readFileSync('peers.json')
+        .toString()
+
+      if (!peersInJson) peersInJson = {}
+      const peers = JSON.parse(peersInJson)
+        .peers
+
+      while (stop <= 12 - ex) {
+        try {
+          if (obsArray.find(obj => obj.nodeID === peers[i].nodeID)) continue
+          
+          const endpoint = 'http://' + peers[index].ip.split(':')[0] + ':9650'
+          const response = await axios
+            .post(endpoint + '/ext/P', body('platform.getHeight'))
+
+          if (response.data.error) {
+            index++
+            continue
+          }
+  
+          const height = response.data.result
+
+          if (height) {
+            obsArray.push({
+              endpoint,
+              nodeID: peers[index].nodeID
+            })
+          }
+        } catch (err) {
+        } finally {
+          index++
+          stop++
+        }
+      }
+
+      fs.writeFileSync(
+        'observers.json',
+        JSON.stringify({ observers: obsArray })
+      )
+      return obsArray
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}
+
+async function getObserversArray () {
+  try {
+    let obs = fs
+    .readFileSync('observers.json')
+    .toString()
+
+    if (!obs) return []
+    let observers = JSON.parse(obs)
+      .observers
+    return observers
+  } catch (err) {
+    return []
   }
 }
 

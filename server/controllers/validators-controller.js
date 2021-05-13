@@ -111,6 +111,68 @@ module.exports = {
     }
   },
   // GET
+  getUptimeByNodeID: (req, res) => {
+    const nodeID = req.body.nodeID
+    fs.readFile('uptime.json', (err, data) => {
+      if (err) {
+        res.status(400).send(err)
+        res.end()
+      }
+      try {
+        const uptimes = JSON.parse(data)
+        const result = uptimes[nodeID]
+        res.status(200).send(result)
+        res.end()
+      } catch (err) {
+        res.status(400).send(err)
+        res.end()
+      }
+    })
+  },
+  getUptimes: async (i) => {
+    try {
+      const observers = await utils.getObserervers(i)
+      let length = 0
+      if (observers) length = observers.length
+
+      let uptimes = {}
+      for (let i = 0; i < length; i++) {
+        try {
+          const endpoint = observers[i]
+            .endpoint
+
+          const response = await axios
+            .post(endpoint + '/ext/P', body('platform.getCurrentValidators'))
+  
+          if (response.data.error) {
+            continue
+          }
+  
+          const { validators } = response.data.result
+          validators.forEach(v => {
+            let obj = {
+              endpoint,
+              uptime: v.uptime,
+              observer: observers[i].nodeID
+            }
+            if (!uptimes[v.nodeID]) uptimes[v.nodeID] = []
+           uptimes[v.nodeID].push(obj)
+          })
+        } catch (err) {
+          console.log(err)
+          let obsArray = observers.filter(o => o.nodeID !== observers[i].nodeID)
+          fs.writeFileSync(
+            'observers.json',
+            JSON.stringify({ observers: obsArray })
+          )
+        }
+      }
+      const u = JSON.stringify(uptimes)
+      fs.writeFileSync('uptime.json', u)
+    } catch (err) {
+      console.log(err)
+    }
+  },
   staking: (req, res) => {
     fs.readFile('validators.json', (err, data) => {
       if (err) {
