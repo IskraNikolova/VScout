@@ -18,6 +18,8 @@ const fs = require('fs')
 
 const CAPACITY = 5
 
+const uptimes = require('./uptime.json')
+
 module.exports = {
   mapValidators: (validators, peers) => {
     let validatedStake = new BigNumber(0)
@@ -67,18 +69,17 @@ module.exports = {
   
       const duration = diff(val.endTime, val.startTime)
 
-      let uptimes = fs
-        .readFileSync('uptime.json')
-        .toString()
-
       if (uptimes) {
-        let up = JSON.parse(uptimes)[val.nodeID]
-        if (!up) return
-        let all = up.reduce((a, b) => {
-          return a + Number(b.uptime)
-        }, 0.0)
-
-        val.uptime = (all / up.length).toFixed(3)
+        try {
+          let up = JSON.parse(uptimes)[val.nodeID]
+          if (!up) return
+          let all = up.reduce((a, b) => {
+            return a + Number(b.uptime)
+          }, 0.0)
+  
+          val.uptime = (all / up.length).toFixed(3)
+        } catch (err) {
+        }
       }
 
       return {

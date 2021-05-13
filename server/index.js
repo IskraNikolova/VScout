@@ -21,10 +21,9 @@ setInterval(() => {
   controllers.validators.validators(endpoint)
   controllers.node.info(endpoint)
   controllers.node.peersPost(endpoint)
-}, 20000)
+}, 30000)
 
 let index = 0
-
 setInterval(() => {
   try {
     controllers.validators.getUptimes(index)
@@ -32,4 +31,4 @@ setInterval(() => {
     index = (index + 10) % validators.length
   } catch (err) {
   }
-}, 500000)
+}, 400000)
