@@ -13,6 +13,7 @@
         <span class="text-negative text-medium" v-else>
             DISCONNECTED
             <q-icon name="info" @click="onClick('https://docs.avax.network/learn/platform-overview/staking#why-is-my-uptime-low')"/>
+            <tooltip-style v-bind:text="'Why is my uptime low? Read more...'" />
         </span>
         </div>
     </div>
@@ -27,7 +28,7 @@
         <div class="q-pl-sm q-pt-sm">
           <span class="text-subtitle2"><small style="opacity: 0.8;">PEERS RESPONSE</small></span>
           <span class="q-pl-sm" v-for="(u, i) in uptimes" v-bind:key="i" style="font-size: 13px;">
-            <q-badge :color="getColorUptime(u.uptime)" style="font-size: 14px;padding: 5px;cursor: pointer;margin-bottom: 8px;">
+            <q-badge @click="onSeeObserver(u.observer)" :color="getColorUptime(u.uptime)" style="font-size: 14px;padding: 5px;cursor: pointer;margin-bottom: 8px;">
               <span style="margin: auto;">{{ getUpTime(u.uptime) }} %</span>
             </q-badge>
             <tooltip-style v-bind:text="'Observed by ' + u.observer" />
@@ -74,6 +75,9 @@ export default {
         openURL(link)
       } catch (err) {
       }
+    },
+    onSeeObserver (id) {
+      this.$router.push(`/validator/${id}`)
     },
     getUpTime (val) {
       if (!val) return 0
