@@ -5,16 +5,16 @@
   >
   <q-card-section>
     <div class="row">
-    <div class="q-mb-md text-medium text-purple col-9">
-      RESPONSE
-    </div>
-    <div class="col-auto">
-      <span class="text-accent text-medium" v-if="state">CONNECTED</span>
-      <span class="text-negative text-medium" v-else>
-        DISCONNECTED
-        <q-icon name="info" @click="onClick('https://docs.avax.network/learn/platform-overview/staking#why-is-my-uptime-low')"/>
-      </span>
-    </div>
+        <div class="q-mb-md text-medium text-purple col-9">
+        RESPONSE
+        </div>
+        <div class="col-auto">
+        <span class="text-accent text-medium" v-if="state">CONNECTED</span>
+        <span class="text-negative text-medium" v-else>
+            DISCONNECTED
+            <q-icon name="info" @click="onClick('https://docs.avax.network/learn/platform-overview/staking#why-is-my-uptime-low')"/>
+        </span>
+        </div>
     </div>
     <div class="row">
       <div class="col-12">
@@ -27,7 +27,7 @@
         <div class="q-pl-sm q-pt-sm">
           <span class="text-subtitle2"><small style="opacity: 0.8;">PEERS RESPONSE</small></span>
           <span class="q-pl-sm" v-for="(u, i) in uptimes" v-bind:key="i" style="font-size: 13px;">
-            <q-badge :color="getColorUptime(u.uptime)" style="font-size: 14px;padding: 5px;cursor: pointer;">
+            <q-badge :color="getColorUptime(u.uptime)" style="font-size: 14px;padding: 5px;cursor: pointer;margin-bottom: 8px;">
               <span style="margin: auto;">{{ getUpTime(u.uptime) }} %</span>
             </q-badge>
             <tooltip-style v-bind:text="'Observed by ' + u.observer" />

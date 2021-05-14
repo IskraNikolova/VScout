@@ -16,7 +16,7 @@ const body = (method) => {
     id: id++
   }
 }
-
+let test = 0
 module.exports = {
   // POST
   validators: async (endpoint) => {
@@ -95,6 +95,9 @@ module.exports = {
   },
   validator: async (req, res) => {
     const id = req.body.id
+    console.log(id)
+    console.log(test)
+    test++
     try {
       const data = await fs.readFileSync('validators.json').toString()
       const validators = JSON.parse(data).validators
@@ -106,6 +109,7 @@ module.exports = {
       res.status(200).send(validator)
       res.end()
     } catch (err) {
+      console.log(err)
       res.status(400).send(err)
       res.end()
     }

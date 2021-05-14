@@ -246,7 +246,7 @@ export async function mapValidators (
 
   const validatorsMap = await Promise.all(validators.map(async (val) => {
     if (!defaultValidators) defaultValidators = []
-
+    let uptime = val.uptime
     const currentValidator = defaultValidators
       .find(v => v.nodeID === val.nodeID)
 
@@ -284,6 +284,7 @@ export async function mapValidators (
 
     let info = {}
     if (currentValidator) {
+      uptime = currentValidator.uptime
       info = {
         name: currentValidator.name,
         link: currentValidator.link,
@@ -366,6 +367,7 @@ export async function mapValidators (
     val.delegators = val.delegators ? val.delegators.length : 0
     return {
       ...val,
+      uptime,
       rating: info.rating,
       duration,
       remainingTime,

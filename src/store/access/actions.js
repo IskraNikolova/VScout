@@ -34,20 +34,25 @@ import {
   _outputSearch
 } from './../../modules/transactions.js'
 
-async function setValidator ({ commit, getters }, { id }) {
+async function setValidator ({ commit }, { id }) {
   try {
-    const res = await _getValidator({ id })
-    const val = res.data
-    const info = await _getValidatorById(id)
+    const response = await Promise.all([
+      _getValidator({ id }),
+      _getValidatorById(id),
+      _getNodeUptime(id)
+    ])
+
+    const val = response[0].data
+    const info = response[1]
     val.avatarUrl = info.avatarUrl ? info.avatarUrl : getAvatar(id).monster
     val.name = info.name ? info.name : id
     val.link = info.link ? info.link : ''
     val.bio = info.bio ? info.bio : ''
     val.website = info.website ? info.website : ''
     val.link = info.link ? info.link : ''
-    const response = await _getNodeUptime(id)
-    if (response.data.error) val.uptimes = []
-    val.uptimes = response.data
+    const uptimes = response[2]
+    if (uptimes.data.error) val.uptimes = []
+    val.uptimes = uptimes.data
 
     const t = {
       'https://bit.ly/3q5aMGC': {
@@ -93,6 +98,7 @@ async function setValidator ({ commit, getters }, { id }) {
     commit(SET_VALIDATOR, { validator: val })
     return true
   } catch (err) {
+    console.log(err)
     return false
   }
 }

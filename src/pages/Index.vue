@@ -116,8 +116,8 @@ export default {
   },
   data () {
     return {
-      price: null,
-      isNotify: true
+      price: null
+      // isNotify: true
     }
   },
   methods: {
@@ -129,10 +129,10 @@ export default {
         subnetID: network.defaultSubnetID,
         endpoint: this.networkEndpoint.url
       })
-    },
-    dismiss () {
-      this.isNotify = false
     }
+    // dismiss () {
+    //   this.isNotify = false
+    // }
   }
 }
 </script>

@@ -28,6 +28,7 @@ export default {
   watch: {
     '$route.params.id': {
       handler: async function (id) {
+        if (!id) return
         await this.setValidator({ id })
       },
       deep: true,
