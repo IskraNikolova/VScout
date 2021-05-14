@@ -113,7 +113,6 @@ export const _getValidator = async ({ id }) => {
       .post(server + 'api/validators', { id })
 
     if (!req.data) {
-      console.log(req)
       throw new Error()
     }
     return req
