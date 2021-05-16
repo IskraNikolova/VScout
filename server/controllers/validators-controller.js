@@ -130,9 +130,9 @@ module.exports = {
       }
     })
   },
-  getUptimes: async (i) => {
+  getUptimes: async (j) => {
     try {
-      const observers = await utils.getObserervers(i)
+      const observers = await utils.getObserervers(j)
       let length = 0
       if (observers) length = observers.length
 
@@ -157,10 +157,9 @@ module.exports = {
               observer: observers[i].nodeID
             }
             if (!uptimes[v.nodeID]) uptimes[v.nodeID] = []
-           uptimes[v.nodeID].push(obj)
+            uptimes[v.nodeID].push(obj)
           })
         } catch (err) {
-          console.log(err)
           let obsArray = observers.filter(o => o.nodeID !== observers[i].nodeID)
           fs.writeFileSync(
             'observers.json',
