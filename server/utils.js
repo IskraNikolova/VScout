@@ -24,7 +24,13 @@ module.exports = {
     let delegatedStake = new BigNumber(0)
     let potentialReward = new BigNumber(0)
     let delegatorsMap = {}
-    const uptimes = require('./uptime.json')
+    let uptimes = ''
+    try {
+      uptimes = fs.readFileSync('uptime.json').toString()
+      uptimes = JSON.parse(uptimes)  
+    } catch (err) {
+    }
+
     const validatorsMap = validators.map((val) => {
       validatedStake = BigNumber
         .sum(validatedStake, val.stakeAmount)
@@ -67,18 +73,15 @@ module.exports = {
   
       const duration = diff(val.endTime, val.startTime)
 
+      let up = uptimes[val.nodeID]
 
-      try {
-        let up = uptimes[val.nodeID]
-        if (!up) return
+      if (up) {
         let all = up.reduce((a, b) => {
           return a + Number(b.uptime)
         }, 0.0)
-
-        val.uptime = (all / up.length).toFixed(3)
-      } catch (err) {
+  
+        val.uptime = (all / up.length).toFixed(3)  
       }
-
       return {
         ...val,
         duration,
@@ -278,7 +281,7 @@ module.exports = {
     let stop = 0
 
     try {
-      let obsArray = await getObserversArray()
+      let obsArray = getObserversArray()
 
       let ex = obsArray.length
       if (ex >= 12) return obsArray
@@ -287,41 +290,41 @@ module.exports = {
         .toString()
 
       if (!peersInJson) peersInJson = {}
-      const peers = JSON.parse(peersInJson)
+      let peers = JSON.parse(peersInJson)
         .peers
 
+      peers = peers.filter(p => p.up)
+      peers = peers.filter(p => !obsArray.find(o => o.nodeID === p.nodeID))
+
       while (stop <= 12 - ex) {
+        index++
         try {
-          if (obsArray.find(obj => obj.nodeID === peers[i].nodeID)) continue
-          
           const endpoint = 'http://' + peers[index].ip.split(':')[0] + ':9650'
+
           const response = await axios
-            .post(endpoint + '/ext/P', body('platform.getHeight'))
+            .post(endpoint + '/ext/P', body('platform.getMinStake'))
 
-          if (response.data.error) {
-            index++
-            continue
-          }
-  
-          const height = response.data.result
-
-          if (height) {
+          if (!response.data.error) {
+            stop++
+            // const currentValidator = fs.readFileSync('validators.json').toString()
+            // currentValidator = JSON.parse(currentValidator)
+            //   .validators
+            //   .find(v => v.nodeID === peers[index].nodeID)
             obsArray.push({
               endpoint,
               nodeID: peers[index].nodeID
             })
+            
+            fs.writeFileSync(
+              'observers.json',
+              JSON.stringify({ observers: obsArray })
+            )
           }
         } catch (err) {
-        } finally {
-          index++
-          stop++
+          console.log(err)
         }
       }
 
-      fs.writeFileSync(
-        'observers.json',
-        JSON.stringify({ observers: obsArray })
-      )
       return obsArray
     } catch (err) {
       console.log(err)
@@ -329,7 +332,7 @@ module.exports = {
   }
 }
 
-async function getObserversArray () {
+function getObserversArray () {
   try {
     let obs = fs
     .readFileSync('observers.json')
