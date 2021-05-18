@@ -284,6 +284,7 @@ module.exports = {
       let obsArray = getObserversArray()
 
       let ex = obsArray.length
+
       if (ex >= 12) return obsArray
 
       let peersInJson = fs.readFileSync('peers.json')
@@ -306,19 +307,21 @@ module.exports = {
 
           if (!response.data.error) {
             stop++
-            // const currentValidator = fs.readFileSync('validators.json').toString()
-            // currentValidator = JSON.parse(currentValidator)
-            //   .validators
-            //   .find(v => v.nodeID === peers[index].nodeID)
-            obsArray.push({
-              endpoint,
-              nodeID: peers[index].nodeID
-            })
+            let currentValidator = fs.readFileSync('validators.json').toString()
+            currentValidator = JSON.parse(currentValidator)
+              .validators
+              .find(v => v.nodeID === peers[index].nodeID)
+            if (currentValidator) {
+              obsArray.push({
+                endpoint,
+                nodeID: currentValidator.nodeID
+              })
             
-            fs.writeFileSync(
-              'observers.json',
-              JSON.stringify({ observers: obsArray })
-            )
+              fs.writeFileSync(
+                'observers.json',
+                JSON.stringify({ observers: obsArray })
+              )
+            }
           }
         } catch (err) {
           console.log(err)

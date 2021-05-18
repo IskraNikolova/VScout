@@ -136,30 +136,44 @@ module.exports = {
       let length = 0
       if (observers) length = observers.length
 
-      let uptimes = {}
+      let validatorsJ = fs
+        .readFileSync('validators.json')
+        .toString()
+
+      validatorsJ = JSON.parse(validatorsJ)
+        .validators
+
+      let uptimes = new Object()
       for (let i = 0; i < length; i++) {
         try {
           const endpoint = observers[i]
             .endpoint
 
-          const response = await axios
-            .post(endpoint + '/ext/P', body('platform.getCurrentValidators'))
+          let cV = validatorsJ
+            .find(v => v.nodeID === observers[i].nodeID)
+          if (cV) {
+            const response = await axios
+              .post(endpoint + '/ext/P', body('platform.getCurrentValidators'))
   
-          if (response.data.error) {
-            continue
-          }
-  
-          const { validators } = response.data.result
-          validators.forEach(v => {
-            let obj = {
-              endpoint,
-              uptime: v.uptime,
-              observer: observers[i].nodeID
+            if (response.data.error) {
+              continue
             }
-            if (!uptimes[v.nodeID]) uptimes[v.nodeID] = []
-            uptimes[v.nodeID].push(obj)
-          })
+  
+            const { validators } = response.data.result
+
+            validators.forEach(v => {
+              let obj = {
+                endpoint,
+                uptime: v.uptime,
+                observer: observers[i].nodeID
+              }
+              
+              if (!uptimes[v.nodeID]) uptimes[v.nodeID] = []
+              uptimes[v.nodeID].push(obj)
+            })
+          }
         } catch (err) {
+          console.log(err)
           let obsArray = observers.filter(o => o.nodeID !== observers[i].nodeID)
           fs.writeFileSync(
             'observers.json',
@@ -167,6 +181,9 @@ module.exports = {
           )
         }
       }
+      
+      if (Object.keys(uptimes).length === 0) return
+
       const u = JSON.stringify(uptimes)
       fs.writeFileSync('uptime.json', u)
     } catch (err) {

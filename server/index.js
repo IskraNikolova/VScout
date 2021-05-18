@@ -1,5 +1,6 @@
 const env = process.env.NODE_ENV || 'development'
 const controllers = require('./controllers')
+const fs = require('fs')
 
 const config = require('./config/config')[env]
 
@@ -24,11 +25,16 @@ setInterval(() => {
 }, 30000)
 
 let index = 0
+controllers.validators.getUptimes(index)
+
 setInterval(() => {
   try {
+    let validators = fs.readFileSync('validators.json').toString()
+    validators = JSON.parse(validators)
+      .validators
     controllers.validators.getUptimes(index)
-    const { validators } = require('validators.json')
     index = (index + 10) % validators.length
   } catch (err) {
+    console.log(err)
   }
 }, 400000)
