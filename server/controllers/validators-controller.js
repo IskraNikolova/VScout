@@ -182,7 +182,7 @@ module.exports = {
         }
       }
       
-      if (Object.keys(uptimes).length === 0) return
+      if (Object.keys(uptimes).length === 0 && uptimes.constructor === Object) return
 
       const u = JSON.stringify(uptimes)
       fs.writeFileSync('uptime.json', u)
