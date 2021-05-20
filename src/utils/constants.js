@@ -174,7 +174,7 @@ export const currencies = {
 }
 
 export const labelColors = {
-  offline: '#000000',
+  offline: '#ffffff',
   'avalanche/1.0.0': '#041421',
   'avalanche/1.0.1': '#31696b',
   'avalanche/1.0.2': '#4c7273',
@@ -200,7 +200,8 @@ export const labelColors = {
   'avalanche/1.4.1': '#634875',
   'avalanche/1.4.2': '#aa7dc9',
   'avalanche/1.4.3': '#8f8894',
-  'avalanche/1.4.4': '#4c7273'
+  'avalanche/1.4.4': '#4c7273',
+  'avalanche/1.4.5': '#5e545e'
 }
 
 export const versionNum = {
@@ -230,5 +231,6 @@ export const versionNum = {
   'avalanche/1.4.1': 23,
   'avalanche/1.4.2': 24,
   'avalanche/1.4.3': 25,
-  'avalanche/1.4.4': 26
+  'avalanche/1.4.4': 26,
+  'avalanche/1.4.5': 27
 }
