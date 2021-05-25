@@ -542,7 +542,7 @@ async function getNodeVersions (
       let { version, nodeCount, stakeAmount } = info
       stakeAmount = round(stakeAmount, 1000)
       let color = labelColors[`${version}`]
-      if (!color) color = '#ffffff'
+      if (!color) color = '#31696b'
       allCount += Number(nodeCount)
       const stake = getAvaFromnAva(stakeAmount)
       nodesVersions.push({ version, count: nodeCount, stake, color })
