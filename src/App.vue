@@ -11,13 +11,13 @@ import {
   INIT_APP
 } from './store/app/types'
 
-import {
-  SET_NETWORK_STATUS
-} from './store/access/types'
+// import {
+//   SET_NETWORK_STATUS
+// } from './store/access/types'
 
-import {
-  GET_NODE_PEERS
-} from './store/memory/types'
+// import {
+//   GET_NODE_PEERS
+// } from './store/memory/types'
 
 export default {
   name: 'App',
@@ -39,13 +39,13 @@ export default {
   async created () {
     try {
       document.querySelector('html').dataset.theme = this.appTheme
-      await this.initApp()
-      this.$store.dispatch(GET_NODE_PEERS, {})
-      setInterval(() => {
-        this.$store.commit(SET_NETWORK_STATUS, {
-          hasNetworkConnection: window.navigator.onLine
-        })
-      }, 10000)
+      // await this.initApp()
+      // this.$store.dispatch(GET_NODE_PEERS, {})
+      // setInterval(() => {
+      //   this.$store.commit(SET_NETWORK_STATUS, {
+      //     hasNetworkConnection: window.navigator.onLine
+      //   })
+      // }, 10000)
     } catch (err) {
       console.log(err.message)
     }
