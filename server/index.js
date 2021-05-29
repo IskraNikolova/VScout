@@ -20,7 +20,7 @@ let i = 0
 let endpoint = endpoints[i]
 
 setInterval(() => {
-  i = (index + 1) % 3
+  i = (i + 1) % 3
   controllers.platform.blockHeight(endpoint)
   controllers.validators.validators(endpoint)
   controllers.node.info(endpoint)
