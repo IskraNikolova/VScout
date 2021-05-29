@@ -2,7 +2,7 @@
   <q-card
     class="q-pt-md q-pl-xl q-pr-xs q-ml-xs q-pb-md panel2" id="custom-card" >
     <div class="row">
-      <div class="col-md-3 col-xs-10">
+      <!--<div class="col-md-3 col-xs-10">
         <div v-if="isValidatorShow(nodeID)" style="cursor: pointer;" @click="copyToClipboard(nodeID)">
           <div class="q-pb-md text-medium label-title">NODE - VALIDATOR</div>
           <div class="text-h7 text-panel q-pb-md q-pt-xs text-title1">{{ formatNodeID }}</div>
@@ -16,10 +16,20 @@
           <q-btn :color="color" no-caps outline size="sm" label="Check Health" @click="onOpenHealth"/>
           <node-health-dialog ref="nodeHealthDialog" v-bind:validator="validatorById(nodeID) ? validatorById(nodeID) : {}"/>
         </div>
+      </div>-->
+      <div class="col-md-3 col-xs-10">
+      <div>
+        <div class="q-pb-md text-medium label-title">NODE</div>
+        <div class="text-h7 text-panel q-pb-md q-pt-xs text-title1">{{ formatNodeID }}</div>
+      </div>
+      <div class="q-pt-md">
+        <q-btn :color="color" no-caps outline size="sm" label="Check Health" @click="onOpenHealth"/>
+        <node-health-dialog ref="nodeHealthDialog" v-bind:validator="validatorById(nodeID) ? validatorById(nodeID) : {}"/>
+      </div>
       </div>
       <div class="col-1 q-pt-md icon">
-        <img src="~assets/ribbon.svg" v-if="isValidatorShow(nodeID)" id="logo2" />
-        <img src="~assets/node1.svg" v-else id="logo2">
+        <!--<img src="~assets/ribbon.svg" v-if="isValidatorShow(nodeID)" id="logo2" />-->
+        <img src="~assets/node1.svg" id="logo2">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md" />
       <div class="col-md-3 col-xs-10">
@@ -71,7 +81,7 @@ import {
 export default {
   name: 'Node',
   components: {
-    TooltipStyle: () => import('components/tooltip-style'),
+    // TooltipStyle: () => import('components/tooltip-style'),
     NodeHealthDialog: () => import('components/dialogs/node-health-dialog'),
     AnimatedNumber
   },
