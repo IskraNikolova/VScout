@@ -119,7 +119,7 @@ export default {
     },
     formatNodeID: function () {
       if (!this.nodeID) return
-      return `${this.nodeID.substr(0, 22)}...${this.nodeID.substr(32)}`
+      return '' // `${this.nodeID.substr(0, 22)}...${this.nodeID.substr(32)}`
     }
   },
   methods: {
