@@ -15,12 +15,11 @@ setInterval(() => {
   controllers.avax.avaxPrice()
 }, 8000)
 
-const endpoints = ['http://13.49.176.164:9650', 'http://64.227.66.171:9650', 'http://54.38.241.53:9650'] // 'http://135.181.144.201:9650'
-let i = 0
+const endpoint = 'http://135.181.144.201:9650'
+// let i = 0
 
 setInterval(() => {
-  i = (i + 1) % 3
-  let endpoint = endpoints[i]
+  // i = (i + 1) % 3
   controllers.platform.blockHeight(endpoint)
   controllers.validators.validators(endpoint)
   controllers.node.info(endpoint)
