@@ -51,7 +51,7 @@ async function setValidator ({ commit }, { id }) {
     val.website = info.website ? info.website : ''
     val.link = info.link ? info.link : ''
     const uptimes = response[2]
-    console.log(uptimes)
+
     if (!uptimes) val.uptimes = []
     else val.uptimes = uptimes.data
 
