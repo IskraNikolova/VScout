@@ -620,7 +620,8 @@ async function getBlockchains (
 
   commit(GET_BLOCKCHAINS, { blockchains })
   if (!getters.currentBlockchain.id) {
-    commit(SET_CURRENT_BLOCKCHAIN, { blockchain: blockchains[0] })
+    const xChain = blockchains.find(b => b.name === 'X-Chain')
+    commit(SET_CURRENT_BLOCKCHAIN, { blockchain: xChain })
   }
 }
 

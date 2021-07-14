@@ -140,7 +140,8 @@ export default {
     },
     delsCount: function () {
       if (this.isDefaultSubnetID(this.subnetID)) return this.delegationsCount
-      return this.delegators.length
+      if (this.delegators) return this.delegators.length
+      return 0
     },
     delStake: function () {
       if (!this.delegatedStake) return 0
