@@ -156,6 +156,7 @@
             />
             <q-card-actions align="right" class="col-4">
               <q-btn flat no-caps label="Verify" @click="verifySign(validator.nodeID, signature)"/>
+              <!--<q-btn flat no-caps label="Verify" @click="test(validator.nodeID)"/>-->
             </q-card-actions>
           </q-card-actions>
           <div v-else-if="isSearchSuccess && !isSuccessSend">
@@ -278,7 +279,6 @@ export default {
           this.onFailed('Verification Failed!')
         }
       } catch (err) {
-        console.log(err)
         this.onFailed('Verification Failed! Try again later!')
       }
     },

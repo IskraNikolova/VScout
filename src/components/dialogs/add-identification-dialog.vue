@@ -132,6 +132,7 @@
               hint="Your verifaction code."
             />
           </div>
+          <!--<q-btn label="test" @click="test"/>-->
           <q-btn flat size="sm" color="negative" label="No code?" @click="onVerifyNodeID" style="height: 35px;" class="q-ml-sm"/>
           <q-space />
           <q-btn label="Preview Your Page" no-caps rounded @click="prev" color="secondary" style="height: 35px;margin-top: 23px;margin-right: 5px;"/>
@@ -348,6 +349,10 @@ export default {
         this.onFailed(`Something Wrong! ${err.message}`)
       }
     },
+    // async test () {
+    //   const vC = await _isValidCode(this.vCode, this.nodeIDModel.trim())
+    //   console.log(vC)
+    // },
     async onSubmit () {
       if (!this.link && !this.name && !this.avatar && !this.bio && !this.website) {
         this.error = 'Empty fields!'
