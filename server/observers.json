@@ -1,10 +1,6 @@
 {
     "observers": [
         {
-            "endpoint": "http://3.21.65.250:9650",
-            "nodeID": "NodeID-4SKqUpxSU4KQAWNeYxYJ4onJ5aoKghwRW"
-        },
-        {
             "endpoint": "http://164.90.171.252:9650",
             "nodeID": "NodeID-H5Zenq1QsBskZxn1S2bninPBsPFngTDWV"
         },
