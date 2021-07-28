@@ -1,6 +1,14 @@
 {
     "observers": [
         {
+            "endpoint": "http://188.165.204.63:9650",
+            "nodeID": "NodeID-5uewSYxTzpwtnc3WZDfKR8ctigEVX9mcX"
+        },
+        {
+            "endpoint": "http://174.138.5.49:9650",
+            "nodeID": "NodeID-GeV4CQdyssPRbVSKhHhnpRonksmYrqq5m"
+        },
+        {
             "endpoint": "http://46.101.62.46:9650",
             "nodeID": "NodeID-4sEiAXz3Y3q47eow83EfiGsm3qEbnrwRy"
         },
@@ -9,16 +17,8 @@
             "nodeID": "NodeID-C7YyYDva6rvbpY5GEu2Su653eLBNt49TA"
         },
         {
-            "endpoint": "http://8.210.31.188:9650",
-            "nodeID": "NodeID-Ks2QuvfxFHgPKBj3DU29ZymUAEyRkD8up"
-        },
-        {
             "endpoint": "http://167.86.117.4:9650",
             "nodeID": "NodeID-NnAsVicsRyACVH1NzdiWgpTbBx1KaPMhN"
-        },
-        {
-            "endpoint": "http://206.189.134.153:9650",
-            "nodeID": "NodeID-6kz7EnbREtv8cRVxYULHV6NyK3j3pyK5H"
         },
         {
             "endpoint": "http://212.156.174.182:9650",
