@@ -13,6 +13,10 @@
             "nodeID": "NodeID-Ks2QuvfxFHgPKBj3DU29ZymUAEyRkD8up"
         },
         {
+            "endpoint": "http://167.86.117.4:9650",
+            "nodeID": "NodeID-NnAsVicsRyACVH1NzdiWgpTbBx1KaPMhN"
+        },
+        {
             "endpoint": "http://206.189.134.153:9650",
             "nodeID": "NodeID-6kz7EnbREtv8cRVxYULHV6NyK3j3pyK5H"
         },
