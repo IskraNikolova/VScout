@@ -23,6 +23,10 @@
         {
             "endpoint": "http://212.156.174.182:9650",
             "nodeID": "NodeID-NttxKRpGqA8Min3fWcPaJyQEVRjUGx55d"
+        },
+        {
+            "endpoint": "http://206.189.134.153:9650",
+            "nodeID": "NodeID-6kz7EnbREtv8cRVxYULHV6NyK3j3pyK5H"
         }
     ]
 }
