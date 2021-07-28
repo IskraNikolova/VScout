@@ -285,7 +285,7 @@ module.exports = {
 
       let ex = obsArray.length
 
-      if (ex >= 32) return obsArray
+      if (ex >= 4) return obsArray
 
       let peersInJson = fs.readFileSync('peers.json')
         .toString()
@@ -297,7 +297,7 @@ module.exports = {
       peers = peers.filter(p => p.up)
       peers = peers.filter(p => !obsArray.find(o => o.nodeID === p.nodeID))
 
-      while (stop <= 32 - ex) {
+      while (stop <= 12 - ex) {
         index++
         try {
           const endpoint = 'http://' + peers[index].ip.split(':')[0] + ':9650'
