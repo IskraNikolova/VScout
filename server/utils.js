@@ -278,14 +278,12 @@ module.exports = {
   },
   getObserervers: async (i) => {
     let index = 0 + i
-    let stop = 0
 
     try {
       let obsArray = getObserversArray()
 
       let ex = obsArray.length
-
-      if (ex >= 8) return obsArray
+      if (ex >= 24) return obsArray
 
       let peersInJson = fs.readFileSync('peers.json')
         .toString()
@@ -297,20 +295,21 @@ module.exports = {
       peers = peers.filter(p => p.up)
       peers = peers.filter(p => !obsArray.find(o => o.nodeID === p.nodeID))
 
-      while (stop <= 12 - ex) {
+      do {
         index++
         try {
           const endpoint = 'http://' + peers[index].ip.split(':')[0] + ':9650'
 
           const response = await axios
-            .post(endpoint + '/ext/P', body('platform.getMinStake'))
+            .post(endpoint + '/ext/P', body('platform.getCurrentSupply'))
 
           if (!response.data.error) {
-            stop++
             let currentValidator = fs.readFileSync('validators.json').toString()
+
             currentValidator = JSON.parse(currentValidator)
               .validators
               .find(v => v.nodeID === peers[index].nodeID)
+
             if (currentValidator) {
               obsArray.push({
                 endpoint,
@@ -322,11 +321,13 @@ module.exports = {
                 JSON.stringify({ observers: obsArray })
               )
             }
+            obsArray = getObserversArray()
+
+            ex = obsArray.length
           }
         } catch (err) {
-          console.log(err)
         }
-      }
+      } while (ex < 24)
 
       return obsArray
     } catch (err) {

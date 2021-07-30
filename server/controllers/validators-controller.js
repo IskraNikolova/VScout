@@ -173,7 +173,6 @@ module.exports = {
             })
           }
         } catch (err) {
-          console.log(err)
           let obsArray = observers.filter(o => o.nodeID !== observers[i].nodeID)
           fs.writeFileSync(
             'observers.json',
@@ -187,7 +186,6 @@ module.exports = {
       const u = JSON.stringify(uptimes)
       fs.writeFileSync('uptime.json', u)
     } catch (err) {
-      console.log(err)
     }
   },
   staking: (req, res) => {
