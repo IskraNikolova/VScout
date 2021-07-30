@@ -207,5 +207,5 @@ export const versionNum = {
   'avalanche/1.4.10': 32,
   'avalanche/1.4.11': 33,
   'avalanche/1.4.12': 34,
-  'avalanche/1.5.0': 34
+  'avalanche/1.5.0': 35
 }
