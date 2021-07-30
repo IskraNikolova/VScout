@@ -283,7 +283,7 @@ module.exports = {
       let obsArray = getObserversArray()
 
       let ex = obsArray.length
-      if (ex >= 24) return obsArray
+      if (ex >= 2) return obsArray
 
       let peersInJson = fs.readFileSync('peers.json')
         .toString()
@@ -293,7 +293,7 @@ module.exports = {
         .peers
 
       peers = peers.filter(p => p.up)
-      peers = peers.filter(p => !obsArray.find(o => o.nodeID === p.nodeID))
+      peers = peers.filter(p => obsArray.find(o => o.nodeID !== p.nodeID))
 
       do {
         index++
@@ -304,7 +304,9 @@ module.exports = {
             .post(endpoint + '/ext/P', body('platform.getCurrentSupply'))
 
           if (!response.data.error) {
-            let currentValidator = fs.readFileSync('validators.json').toString()
+            let currentValidator = fs
+              .readFileSync('validators.json')
+              .toString()
 
             currentValidator = JSON.parse(currentValidator)
               .validators
@@ -343,8 +345,20 @@ function getObserversArray () {
     .toString()
 
     if (!obs) return []
+
     let observers = JSON.parse(obs)
       .observers
+
+    let o = observers
+      .filter((v, i, a) => a.findIndex(t => (t.nodeID === v.nodeID)) === i)
+
+    if (observers.length > o.length) {
+      fs.writeFileSync(
+        'observers.json',
+        JSON.stringify({ observers: o })
+      )  
+    }
+
     return observers
   } catch (err) {
     return []
