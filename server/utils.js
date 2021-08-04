@@ -283,7 +283,8 @@ module.exports = {
       let obsArray = getObserversArray()
 
       let ex = obsArray.length
-      if (ex >= 2) return obsArray
+      
+      if (ex >= 24) return obsArray
 
       let peersInJson = fs.readFileSync('peers.json')
         .toString()
@@ -293,7 +294,9 @@ module.exports = {
         .peers
 
       peers = peers.filter(p => p.up)
-      peers = peers.filter(p => obsArray.find(o => o.nodeID !== p.nodeID))
+
+      const ob = obsArray.map(o => o.nodeID)
+      peers = peers.filter(val => !ob.includes(val.nodeID))
 
       do {
         index++
