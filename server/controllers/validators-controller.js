@@ -133,6 +133,7 @@ module.exports = {
   getUptimes: async (j) => {
     try {
       const observers = await utils.getObserervers(j)
+
       let length = 0
       if (observers) length = observers.length
 
@@ -186,6 +187,7 @@ module.exports = {
       const u = JSON.stringify(uptimes)
       fs.writeFileSync('uptime.json', u)
     } catch (err) {
+      console.log(err)
     }
   },
   staking: (req, res) => {

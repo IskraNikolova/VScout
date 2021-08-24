@@ -284,7 +284,7 @@ module.exports = {
 
       let ex = obsArray.length
       
-      if (ex >= 33) return obsArray
+      if (ex >= 10) return obsArray
 
       let peersInJson = fs.readFileSync('peers.json')
         .toString()
@@ -332,7 +332,7 @@ module.exports = {
           }
         } catch (err) {
         }
-      } while (ex < 33)
+      } while (ex < 10)
 
       return obsArray
     } catch (err) {

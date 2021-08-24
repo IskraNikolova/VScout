@@ -5,6 +5,7 @@ const fs = require('fs')
 const config = require('./config/config')[env]
 
 let app = require('express')()
+
 require('./config/express')(app)
 
 require('./config/routes')(app)
