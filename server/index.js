@@ -25,7 +25,7 @@ setInterval(() => {
   controllers.validators.validators(endpoint)
   controllers.node.info(endpoint)
   controllers.node.peersPost(endpoint)
-}, 20000)
+}, 30000)
 
 let index = 0
 controllers.validators.getUptimes(index)
