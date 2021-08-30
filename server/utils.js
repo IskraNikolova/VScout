@@ -287,7 +287,7 @@ module.exports = {
       obsArray = obsArray
       .filter(p => p.nodeID !== "NodeID-8JYJVijgzBsSTK5EUsXitrMEYNGkqeba5")
 
-      if (ex >= 15) return obsArray
+      if (ex >= 14) return obsArray
 
       let peersInJson = fs.readFileSync('peers.json')
         .toString()
@@ -336,7 +336,7 @@ module.exports = {
           }
         } catch (err) {
         }
-      } while (ex < 15)
+      } while (ex < 14)
 
       return obsArray
     } catch (err) {
