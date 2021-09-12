@@ -1,5 +1,6 @@
 const env = process.env.NODE_ENV || 'development'
 const controllers = require('./controllers')
+const { setObserervers, getObserversArray } = require('./utils')
 const fs = require('fs')
 
 const config = require('./config/config')[env]
@@ -17,10 +18,8 @@ setInterval(() => {
 }, 8000)
 
 const endpoint = 'http://135.181.144.201:9650'
-// let i = 0
 
 setInterval(() => {
-  // i = (i + 1) % 3
   controllers.platform.blockHeight(endpoint)
   controllers.validators.validators(endpoint)
   controllers.node.info(endpoint)
@@ -28,16 +27,30 @@ setInterval(() => {
 }, 30000)
 
 let index = 0
-controllers.validators.getUptimes(index)
+let inProcess = false
+
+let obs = getObserversArray()
+controllers.validators.getUptimes(obs)
 
 setInterval(() => {
   try {
-    let validators = fs.readFileSync('validators.json').toString()
+    let validators = fs
+      .readFileSync('validators.json')
+      .toString()
+
     validators = JSON.parse(validators)
       .validators
-    controllers.validators.getUptimes(index)
-    index = (index + 10) % validators.length
+
+    obs = getObserversArray()
+    controllers.validators.getUptimes(obs)
+
+    if (!inProcess) {
+      inProcess = true
+      setObserervers(index, obs)
+      index = (index + 10) % validators.length
+      inProcess = false
+    }
   } catch (err) {
     console.log(err)
   }
-}, 400000)
+}, 100000)

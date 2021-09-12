@@ -130,10 +130,8 @@ module.exports = {
       }
     })
   },
-  getUptimes: async (j) => {
+  getUptimes: async (observers) => {
     try {
-      const observers = await utils.getObserervers(j)
-
       let length = 0
       if (observers) length = observers.length
 

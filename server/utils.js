@@ -276,35 +276,25 @@ module.exports = {
       outcomingDel
     }
   },
-  getObserervers: async (i) => {
+  setObserervers: async (i, obsArray) => {
     let index = 0 + i
 
     try {
-      let obsArray = getObserversArray()
-
-      let ex = obsArray.length
-
-      obsArray = obsArray
-      .filter(p => p.nodeID !== "NodeID-8JYJVijgzBsSTK5EUsXitrMEYNGkqeba5")
-
-      if (ex >= 10) return obsArray
-
+      if (obsArray.length >= 33) return
+      
       let peersInJson = fs.readFileSync('peers.json')
         .toString()
-
       if (!peersInJson) peersInJson = {}
       let peers = JSON.parse(peersInJson)
-        .peers
-
-      peers = peers.filter(p => p.up)
 
       const ob = obsArray.map(o => o.nodeID)
       peers = peers
+        .peers
         .filter(val => !ob.includes(val.nodeID))
-
+      
+      let m = 0
       do {
         index++
-        try {
           const endpoint = 'http://' + peers[index].ip.split(':')[0] + ':9650'
 
           const response = await axios
@@ -329,46 +319,39 @@ module.exports = {
                 'observers.json',
                 JSON.stringify({ observers: obsArray })
               )
+              m++
             }
-            obsArray = getObserversArray()
-
-            ex = obsArray.length
           }
-        } catch (err) {
-        }
-      } while (ex < 10)
-
-      return obsArray
+      } while (m < 33)
     } catch (err) {
       console.log(err)
     }
-  }
-}
-
-function getObserversArray () {
-  try {
-    let obs = fs
-    .readFileSync('observers.json')
-    .toString()
-
-    if (!obs) return []
-
-    let observers = JSON.parse(obs)
-      .observers
-
-    let o = observers
-      .filter((v, i, a) => a.findIndex(t => (t.nodeID === v.nodeID)) === i)
-
-    if (observers.length > o.length) {
-      fs.writeFileSync(
-        'observers.json',
-        JSON.stringify({ observers: o })
-      )  
+  },
+  getObserversArray: () => {
+    try {
+      let obs = fs
+      .readFileSync('observers.json')
+      .toString()
+  
+      if (!obs) return []
+  
+      let observers = JSON.parse(obs)
+        .observers
+  
+      let o = observers
+        .filter((v, i, a) => a.findIndex(t => (t.nodeID === v.nodeID)) === i)
+        .filter(p => p.nodeID !== "NodeID-8JYJVijgzBsSTK5EUsXitrMEYNGkqeba5")
+  
+      if (observers.length > o.length) {
+        fs.writeFileSync(
+          'observers.json',
+          JSON.stringify({ observers: o })
+        )  
+      }
+      return observers
+    } catch (err) {
+      return []
     }
-
-    return observers
-  } catch (err) {
-    return []
   }
 }
 
