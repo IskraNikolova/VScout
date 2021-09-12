@@ -223,7 +223,7 @@ module.exports = {
   nodeVersions: async (req, res) => {
     try {
       const result = await axios
-        .get('https://explorerapi.avax.network/validators')
+        .get('https://peerinfo.avax.network/peerinfo')
       res.status(200).send(result.data)
       res.end()
     } catch (err) {
