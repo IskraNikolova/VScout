@@ -309,7 +309,7 @@ module.exports = {
               .validators
               .find(v => v.nodeID === peers[index].nodeID)
 
-            if (currentValidator && currentValidator.connected) {
+            if (currentValidator && currentValidator.connected == 'true') {
               obsArray.push({
                 endpoint,
                 nodeID: currentValidator.nodeID
@@ -337,10 +337,25 @@ module.exports = {
   
       let observers = JSON.parse(obs)
         .observers
-  
+
+      let validators = fs
+        .readFileSync('validators.json')
+        .toString()
+
+      const currentValidators = JSON.parse(validators)
+        .validators
+        .filter(v => v)
+        .filter(function (a) {
+          return observers.includes(a)
+        })
+        .filter(v => v.connected == 'false')
+      
       let o = observers
         .filter((v, i, a) => a.findIndex(t => (t.nodeID === v.nodeID)) === i)
-        .filter(p => p.nodeID !== "NodeID-F7UksjFUcAq3wJuedHrM8q2YSE1verbaL")
+        .filter(o => o)
+        .filter(function (a) {
+          return !currentValidators.includes(a)
+        })
   
       if (observers.length > o.length) {
         fs.writeFileSync(
