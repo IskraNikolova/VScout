@@ -309,7 +309,7 @@ module.exports = {
               .validators
               .find(v => v.nodeID === peers[index].nodeID)
 
-            if (currentValidator && currentValidator.connected == 'true') {
+            if (currentValidator && currentValidator.connected) {
               obsArray.push({
                 endpoint,
                 nodeID: currentValidator.nodeID
@@ -329,34 +329,36 @@ module.exports = {
   },
   getObserversArray: () => {
     try {
-      let obs = fs
+      const obs = fs
       .readFileSync('observers.json')
       .toString()
   
       if (!obs) return []
   
-      let observers = JSON.parse(obs)
+      const observers = JSON.parse(obs)
         .observers
 
-      let validators = fs
+      const validators = fs
         .readFileSync('validators.json')
         .toString()
 
+      const m = observers.map(a => a.nodeID)
       const currentValidators = JSON.parse(validators)
-        .validators
-        .filter(v => v)
-        .filter(function (a) {
-          return observers.includes(a)
-        })
-        .filter(v => v.connected == 'false')
-      
-      let o = observers
+          .validators
+          .filter(v => v)
+          .filter(function (a) {
+            return m.includes(a.nodeID)
+          })
+          .filter(v => v.connected)
+  
+      const v = currentValidators.map(a => a.nodeID)
+      const o = observers
         .filter((v, i, a) => a.findIndex(t => (t.nodeID === v.nodeID)) === i)
         .filter(o => o)
         .filter(function (a) {
-          return !currentValidators.includes(a)
+          return v.includes(a.nodeID)
         })
-  
+
       if (observers.length > o.length) {
         fs.writeFileSync(
           'observers.json',
