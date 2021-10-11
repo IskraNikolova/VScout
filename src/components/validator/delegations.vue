@@ -62,11 +62,11 @@ export default {
         this.fee
       )
 
-      return getAvaFromnAva(percent).toLocaleString()
+      return getAvaFromnAva(percent).toLocaleString('en-IN', { maximumSignificantDigits: 5 })
     },
     getLocalString (val) {
       if (!val) return val
-      return val.toLocaleString()
+      return val.toLocaleString('en-IN', { maximumSignificantDigits: 5, minimumSignificantDigits: 5 })
     },
     getFormatAva (val) {
       if (!val) return 0
