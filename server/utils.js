@@ -350,6 +350,7 @@ module.exports = {
             return m.includes(a.nodeID)
           })
           .filter(v => v.connected)
+          .filter(v => Number(v.uptime) >= 0.8)
   
       const v = currentValidators.map(a => a.nodeID)
       const o = observers
