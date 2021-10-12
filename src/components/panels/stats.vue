@@ -24,21 +24,21 @@
             @mouseover="listOver=true"
             @mouseleave="listOver=false"
           >
-            <q-item class="panel2" v-if="statsMode!=='24h'" clickable v-close-popup @click="statsMode='24h'">
+            <q-item class="panel2" v-if="statsMode!==hours" clickable v-close-popup @click="statsMode=hours">
             <q-item-section>
-              <small class="text-panel">24h</small>
+              <small class="text-panel">{{ hours }}</small>
             </q-item-section>
             </q-item>
             <q-separator color="panel2" />
-            <q-item class="panel2" v-if="statsMode!=='WEEK'" clickable v-close-popup @click="statsMode='a week'">
+            <q-item class="panel2" v-if="statsMode!==week" clickable v-close-popup @click="statsMode=week">
             <q-item-section>
-              <small class="text-panel">a week</small>
+              <small class="text-panel">{{ week }}</small>
             </q-item-section>
             </q-item>
             <q-separator color="panel2" />
-            <q-item class="panel2" v-if="statsMode!=='MONTH'" clickable v-close-popup @click="statsMode='a month'">
+            <q-item class="panel2" v-if="statsMode!==month" clickable v-close-popup @click="statsMode=month">
             <q-item-section>
-              <small class="text-panel">a month</small>
+              <small class="text-panel">{{ month }}</small>
             </q-item-section>
             </q-item>
           </q-list>
@@ -101,6 +101,10 @@ import {
 import {
   round
 } from './../../utils/commons.js'
+
+const HOURS = '24H'
+const WEEK = 'A WEEK'
+const MONTH = 'A MONTH'
 
 export default {
   name: 'Stats',
@@ -209,10 +213,13 @@ export default {
   },
   data () {
     return {
+      hours: HOURS,
+      week: WEEK,
+      month: MONTH,
       statOver: false,
       statMenu: false,
       listOver: false,
-      statsMode: '24h',
+      statsMode: HOURS,
       incomingValidators: 0,
       outcomingValidators: 0,
       incomingDelegations: 0,
@@ -235,21 +242,21 @@ export default {
       return `${round(value, 100).toLocaleString()}`
     },
     refreshData (val) {
-      if (val === '24h') {
+      if (val === HOURS) {
         this.incomingValidators = this.incomingValidatorsHours
         this.outcomingValidators = this.outcomingValidatorsHours
         this.incomingDelegations = this.incomingDelegationsHours
         this.outcomingDelegations = this.outcomingDelegationsHours
         this.incomingStake = this.incomingStakeHours
         this.outcomingStake = this.outcomingStakeHours
-      } else if (val === 'a week') {
+      } else if (val === WEEK) {
         this.incomingValidators = this.incomingValidatorsDays
         this.outcomingValidators = this.outcomingValidatorsDays
         this.incomingDelegations = this.incomingDelegationsDays
         this.outcomingDelegations = this.outcomingDelegationsDays
         this.incomingStake = this.incomingStakeDays
         this.outcomingStake = this.outcomingStakeDays
-      } else if (val === 'a month') {
+      } else if (val === MONTH) {
         this.incomingValidators = this.incomingValidatorsMonth
         this.outcomingValidators = this.outcomingValidatorsMonth
         this.incomingDelegations = this.incomingDelegationsMonth
