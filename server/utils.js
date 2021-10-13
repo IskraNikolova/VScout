@@ -359,6 +359,7 @@ module.exports = {
         .filter(function (a) {
           return v.includes(a.nodeID)
         })
+        .filter(p => p.nodeID !== "NodeID-4D2iXb4KkgDa36PivB8pQhDKBPhRSAckH")
 
       if (observers.length > o.length) {
         fs.writeFileSync(
