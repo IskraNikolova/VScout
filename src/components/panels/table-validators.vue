@@ -819,7 +819,8 @@ export default {
       return round(Number(val), 1000)
     },
     getColorUptime (val) {
-      if (val >= 0.6) return 'positive'
+      if (val >= 0.83) return 'positive'
+      else if (val >= 0.8) return 'warning'
       return 'negative'
     },
     getFormatReward (val) {
