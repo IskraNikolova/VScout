@@ -335,6 +335,7 @@ export default {
           this.onFailed('Verification Transaction Failed! Expired Transaction. ')
           return
         }
+
         const isReceiveFunds = _verifyReceiveFundsTx(
           { admin: this.admin, outputs }
         )
@@ -342,6 +343,7 @@ export default {
           this.onSubmit()
           this.dialog = false
           this.isPaidSuccess = true
+          // todo write to store for access
         } else {
           this.onFailed('Verification Transaction Failed!')
         }
