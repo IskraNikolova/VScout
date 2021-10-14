@@ -66,7 +66,7 @@ export default {
     },
     getLocalString (val) {
       if (!val) return val
-      return val.toLocaleString('en-IN', { maximumSignificantDigits: 5, minimumSignificantDigits: 5 })
+      return val.toLocaleString('en-IN', { maximumSignificantDigits: 5, minimumSignificantDigits: 3 })
     },
     getFormatAva (val) {
       if (!val) return 0
