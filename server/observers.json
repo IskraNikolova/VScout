@@ -1,16 +1,136 @@
 {
     "observers": [
         {
-            "endpoint": "http://51.210.244.2:9650",
-            "nodeID": "NodeID-C7YyYDva6rvbpY5GEu2Su653eLBNt49TA"
+            "endpoint": "http://192.248.150.181:9650",
+            "nodeID": "NodeID-2yC7fWX                                                                                                             23kGjCd7ytqGzQQcRJf7xaj1N1"
         },
         {
-            "endpoint": "http://65.21.146.5:9650",
-            "nodeID": "NodeID-6yEnkZJBUW3snaeEeJHPBuhtmXroCvZFv"
+            "endpoint": "http://95.179.238.219:9650",
+            "nodeID": "                                                                                                             NodeID-4vpFnpqPxKhjRe8WdfejxnrHxFc5AV6cs"
         },
         {
-            "endpoint": "http://95.217.107.96:9650",
-            "nodeID": "NodeID-3bmwLQ9qCknkDUsGHFj7CwNccgwU7sN4A"
+            "endpoint": "http://3.67.41.105:9650",
+            "nodeID": "NodeID-FDY8EGJB8MAoQT9UYfU9zAPcohzanA87m"
+        },
+        {
+            "endpoint": "http://45.77.                                                                                                             241.91:9650",
+            "nodeID": "NodeID-H8eZ2xwjXoFUoo5kLCF7rFgMEGaqfVfQS"
+        },
+        {
+            "endpoint": "h                                                                                                             ttp://157.245.141.28:9650",
+            "nodeID": "NodeID-BvpPGydG4inQCbkwRZ3nPMp1zAGToUTxz"
+        },
+        {
+            "endpoint": "http://95.179.189.243:9650",
+            "nodeID": "NodeID-6UMb71Emubx62ZEsNBPhhu                                                                                                             EzZdqgGpKZY"
+        },
+        {
+            "endpoint": "http://157.90.247.106:9650",
+            "nodeID": "NodeID-EGD868AR                                                                                                             pCgfRUQzrvt4oVDxncByCoTnF"
+        },
+        {
+            "endpoint": "http://139.180.213.59:9650",
+            "nodeID": "N                                                                                                             odeID-LSoyHgtuX8UGyfz5ydHePK1aXXpSEakUZ"
+        },
+        {
+            "endpoint": "http://207.148.66.186:965                                                                                                             0",
+            "nodeID": "NodeID-Ns1eDN3K9HTnavgiBQhtpzRxUCxJ55Xhc"
+        },
+        {
+            "endpoint": "http://45.7                                                                                                             7.174.52:9650",
+            "nodeID": "NodeID-MXNBsr8xSHE9CKfmyzvBYyEzxAbLuHTAn"
+        },
+        {
+            "endpoint": "http://188.213.173.78:9650",
+            "nodeID": "NodeID-duaNgYtghtCRzj2rkiRDDs51BPX8CCjn"
+        },
+        {
+            "endpoint": "http://46.101.231.180:9650",
+            "nodeID": "NodeID-5RuEXmu7SJpf8bwuY17Up                                                                                                             MpoEsGZRWnuj"
+        },
+        {
+            "endpoint": "http://207.148.69.20:9650",
+            "nodeID": "NodeID-2jnJ9jJr                                                                                                             W2EULmCCNnZz88HHCAQYo1Bja"
+        },
+        {
+            "endpoint": "http://144.172.67.39:9650",
+            "nodeID": "No                                                                                                             deID-2sspVTzGYqTkeiQeBsdFKv57gWpLg6Efg"
+        },
+        {
+            "endpoint": "http://100.16.171.253:9650                                                                                                             ",
+            "nodeID": "NodeID-4WXSGK6dYs65hn6Wp6EN6d5UspifqAeFk"
+        },
+        {
+            "endpoint": "http://3.11.                                                                                                             124.216:9650",
+            "nodeID": "NodeID-HpEw7munmgQtTNd8PWqp8T4GNU738Jvc2"
+        },
+        {
+            "endpoint": "                                                                                                             http://65.21.182.140:9650",
+            "nodeID": "NodeID-6tFZuxRu7t4SGkWuAiNvUJy9pMTsZt4sC"
+        },
+        {
+            "endpoint": "http://216.128.178.236:9650",
+            "nodeID": "NodeID-6MCi7uQTLG9RwVSYFL2SF                                                                                                             KmbbpqxsuEpF"
+        },
+        {
+            "endpoint": "http://151.115.50.95:9650",
+            "nodeID": "NodeID-EJ1f5ijm                                                                                                             2SbDmaGCu1bnZBeGFB9ZLdP4L"
+        },
+        {
+            "endpoint": "http://45.63.109.254:9650",
+            "nodeID": "No                                                                                                             deID-B49Vq3zktk6KS9U1P7Buio1hNJ7biy5FF"
+        },
+        {
+            "endpoint": "http://54.185.157.234:9650                                                                                                             ",
+            "nodeID": "NodeID-2Qx9y6mrt15ZswsCyZEggS3psDjs8DApv"
+        },
+        {
+            "endpoint": "http://18.21                                                                                                             7.151.240:9650",
+            "nodeID": "NodeID-CVXpUPtPZnsEM4mSnJbctBpL6Sgj1rCRt"
+        },
+        {
+            "endpoint": "http://135.181.154.51:9650",
+            "nodeID": "NodeID-3dQycjBfoGBrSV678nU6xnNpv5hu8GqTt                                                                                                             "
+        },
+        {
+            "endpoint": "http://78.141.221.149:9650",
+            "nodeID": "NodeID-FfRKiU9BpTzMx2KGmrN                                                                                                             4YyiwftTAXZ6FH"
+        },
+        {
+            "endpoint": "http://94.16.107.252:9650",
+            "nodeID": "NodeID-GhUSE8                                                                                                             wcdouEgd3xeCvmYhmevkdNetfXk"
+        },
+        {
+            "endpoint": "http://96.41.32.51:9650",
+            "nodeID": "No                                                                                                             deID-C5WaHmSLJ9j4Ps6N7P16vzWtm5X8yY7ix"
+        },
+        {
+            "endpoint": "http://193.70.38.228:9650",
+            "nodeID": "NodeID-GJHshSu4Q1YKXQmYQ2fYmgvbtD7GGzFi3"
+        },
+        {
+            "endpoint": "http://66.94.                                                                                                             102.253:9650",
+            "nodeID": "NodeID-8WKPcVBorUVBonxuo9FbxQcG5zvMf3qdW"
+        },
+        {
+            "endpoint": "                                                                                                             http://161.97.156.86:9650",
+            "nodeID": "NodeID-8JYJVijgzBsSTK5EUsXitrMEYNGkqeba5"
+        },
+        {
+            "endpoint": "http://213.193.121.210:9650",
+            "nodeID": "NodeID-MfkSRdYakY7uqgoMcQs9f                                                                                                             9nKeCrohbJfG"
+        },
+        {
+            "endpoint": "http://104.244.79.2:9650",
+            "nodeID": "NodeID-GWYLdPsTq                                                                                                             D9seL9whcTdCT8nQxh5QQ4gi"
+        },
+        {
+            "endpoint": "http://155.138.144.72:9650",
+            "nodeID": "No                                                                                                             deID-AmU8nFkwt1RpfvCvF6Hf3vrPZF1sfwaTw"
+        },
+        {
+            "endpoint": "http://34.72.138.193:9650",
+            "nodeID": "NodeID-E14zCEsVh4oxzcWUVrs7kFGA8ffrhYvNn"
         }
     ]
 }
