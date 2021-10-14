@@ -1,1 +1,16 @@
-{"observers":[{"endpoint":"http://174.138.5.49:9650","nodeID":"NodeID-GeV4CQdyssPRbVSKhHhnpRonksmYrqq5m"},{"endpoint":"http://46.101.62.46:9650","nodeID":"NodeID-4sEiAXz3Y3q47eow83EfiGsm3qEbnrwRy"},{"endpoint":"http://51.210.244.2:9650","nodeID":"NodeID-C7YyYDva6rvbpY5GEu2Su653eLBNt49TA"},{"endpoint":"http://212.156.174.182:9650","nodeID":"NodeID-NttxKRpGqA8Min3fWcPaJyQEVRjUGx55d"},{"endpoint":"http://206.189.134.153:9650","nodeID":"NodeID-6kz7EnbREtv8cRVxYULHV6NyK3j3pyK5H"},{"endpoint":"http://161.97.88.89:9650","nodeID":"NodeID-KJy9iVdZn8spiKtXm1ATgQDpi34xJf8un"},{"endpoint":"http://65.21.146.5:9650","nodeID":"NodeID-6yEnkZJBUW3snaeEeJHPBuhtmXroCvZFv"},{"endpoint":"http://95.217.107.96:9650","nodeID":"NodeID-3bmwLQ9qCknkDUsGHFj7CwNccgwU7sN4A"}]}
+{
+    "observers": [
+        {
+            "endpoint": "http://51.210.244.2:9650",
+            "nodeID": "NodeID-C7YyYDva6rvbpY5GEu2Su653eLBNt49TA"
+        },
+        {
+            "endpoint": "http://65.21.146.5:9650",
+            "nodeID": "NodeID-6yEnkZJBUW3snaeEeJHPBuhtmXroCvZFv"
+        },
+        {
+            "endpoint": "http://95.217.107.96:9650",
+            "nodeID": "NodeID-3bmwLQ9qCknkDUsGHFj7CwNccgwU7sN4A"
+        }
+    ]
+}
