@@ -15,7 +15,7 @@
     <error class="q-pr-sm" />
     <div class="row q-pt-sm q-pl-xs lt-lg">
       <div class="col-md-2 col-xs-12">
-        <div class="q-pt-md q-pl-xl">
+        <div class="q-pt-md q-pl-md">
           <div class="q-pb-md text-medium text-white label-title">NETWORK</div>
           <div style="text-transform: uppercase;font-size: max(1.1vw, 12px);" class="text-purple">
             {{ nodeInfo.networkName }}
@@ -34,7 +34,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-3 col-xs-12">
+      <div class="col-md-3 col-xs-12 q-pl-md">
         <div class="q-pb-md q-pt-md text-medium text-white label-title">PEERS</div>
           <div class="q-mr-lg" @click="$router.push('/peers/' + nodeID)">
             <MapChart
