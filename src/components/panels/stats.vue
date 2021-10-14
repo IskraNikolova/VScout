@@ -103,8 +103,8 @@ import {
 } from './../../utils/commons.js'
 
 const HOURS = '24H'
-const WEEK = 'A WEEK'
-const MONTH = 'A MONTH'
+const WEEK = 'WEEK'
+const MONTH = 'MONTH'
 
 export default {
   name: 'Stats',
