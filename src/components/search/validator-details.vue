@@ -37,17 +37,19 @@
       </div>
       <div class="row">
         <div class="col-6" v-if="val.version">
-          <div class="q-mr-md"><info
-            class="q-mt-md my-card dark-panel"
-            style="border-radius: 10px;"
-            v-bind:role="'VALIDATOR'"
-            v-bind:version="val.version"
-            v-bind:country="val.country"
-            v-bind:isp="val.isp"
-            v-bind:countryCode="val.countryCode"
-            v-bind:lastReceived="val.lastReceived"
-            v-bind:lastSent="val.lastSent"
-          /></div>
+          <div class="q-mr-md">
+            <info
+              class="q-mt-md my-card dark-panel"
+              style="border-radius: 10px;"
+              v-bind:role="'VALIDATOR'"
+              v-bind:version="val.version"
+              v-bind:country="val.country"
+              v-bind:isp="val.isp"
+              v-bind:countryCode="val.countryCode"
+              v-bind:lastReceived="val.lastReceived"
+              v-bind:lastSent="val.lastSent"
+            />
+          </div>
         </div>
         <div v-else  class="col-6">
           <div class="q-mr-md">

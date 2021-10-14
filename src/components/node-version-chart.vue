@@ -1,7 +1,12 @@
 <template>
   <div class="q-mt-md">
-     <div class="q-pl-xl text-panel"><small><q-icon name="info" /><i> S - STAKE (AVAX) | C - COUNT</i></small></div>
-    <canvas id="pie" style="position:relative;height:35vh; width:15vw;max-height: 400px;min-width: 210px;"></canvas>
+    <div class="q-pl-lg q-pb-xs text-panel"><small><q-icon name="info" /><i> C - COUNT (NODES) </i></small></div>
+    <div class="q-pl-sm">
+      <canvas
+        :id="id"
+        :style="'position:relative;height:' + height + 'vh; width:' + width + 'vw;max-height: ' + maxHeight + 'px;min-width: ' + minWidth + 'px;min-height:' + minHeight + 'px;max-width:' + maxWidth">
+      </canvas>
+    </div>
   </div>
 </template>
 
@@ -37,6 +42,36 @@ export default {
       chart: null
     }
   },
+  props: {
+    id: {
+      type: String,
+      required: true
+    },
+    height: {
+      type: Number,
+      required: true
+    },
+    width: {
+      type: Number,
+      required: true
+    },
+    maxHeight: {
+      type: Number,
+      required: true
+    },
+    minHeight: {
+      type: Number,
+      required: true
+    },
+    maxWidth: {
+      type: Number,
+      required: true
+    },
+    minWidth: {
+      type: Number,
+      required: true
+    }
+  },
   methods: {
     ...mapActions({
       getNodeVersions: GET_NODE_VERSIONS
@@ -53,10 +88,9 @@ export default {
       }
       return `${Math.round(stake.dividedBy(1000))} K`
     },
-    start () {
-      const el = document.getElementById('pie')
-      if (el === null) return
-      const ctx = el.getContext('2d')
+    start (bar) {
+      if (bar === null) return
+      const ctx = bar.getContext('2d')
       const dataArray = this.nodesVersions.map(d => Number(d.count))
       const labels = this.nodesVersions
         .filter(d => d.count > 0 || d.stake !== '0')
@@ -78,18 +112,17 @@ export default {
           },
           responsive: false,
           tooltips: {
-            backgroundColor: 'rgba(255, 255, 255)',
-            titleFontColor: '#000',
-            bodyFontColor: '#000',
-            bodyFontSize: 14,
+            backgroundColor: 'rgba(50, 53, 59)',
+            titleFontColor: '#fff',
+            bodyFontColor: '#fff',
+            bodyFontSize: 12,
             callbacks: {
               label: (tooltipItem, data) => {
                 const dataV = data.datasets[0].data[tooltipItem.index]
                 const item = this.nodesVersions[tooltipItem.index]
                 if (!item) return ''
-                const stake = item.stake
                 const percent = this.getPercent(dataV, this.nodesVersions.all)
-                const label = round(percent, 100) + '%  S: ' + this.getFormatStake(stake) + ' | C: ' + dataV
+                const label = round(percent, 100) + '%  C: ' + dataV
                 return label
               }
             }
@@ -97,18 +130,19 @@ export default {
         }
       })
     },
-    getChart () {
+    getChart (bar) {
       try {
-        this.start()
+        this.start(bar)
       } catch (err) {
-        setTimeout(() => {
-          this.start()
-        }, 5000)
+        // setTimeout(() => {
+        //   this.start()
+        // }, 5000)
       }
     }
   },
   mounted () {
-    this.getChart()
+    const bar = document.getElementById(this.id)
+    this.getChart(bar)
   }
 }
 </script>

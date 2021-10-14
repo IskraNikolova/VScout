@@ -223,7 +223,7 @@
             </div>
             <div v-else-if="col.name === 'uptime'">
               <q-badge :color="getColorUptime(col.value)" outline class="text-medium" style="min-width: 57px;">
-                <span style="margin: auto;">{{ getUpTime(col.value) }} %</span>
+                <span style="margin: auto;">{{ getRound(col.value * 100) }} %</span>
               </q-badge>
             </div>
             <div v-else-if="col.name === 'connected'">
@@ -256,7 +256,7 @@
             <span class="absolute absolute-top-right q-mt-xs q-mr-md">
               <small class="q-mr-xs">Uptime</small>
               <q-badge :color="getColorUptime(props.row.uptime)" >
-                {{ getUpTime(props.row.uptime) }} %
+                {{ getRound(props.row.uptime * 100) }} %
               </q-badge>
             </span>
             <q-item>
@@ -340,7 +340,7 @@
             <q-card-section>
                 <span>
                   <span class="text-panel q-mt-md">Fee</span>
-                  {{ getRound(Number(props.row.delegationFee)) }} %
+                  {{ getRound(props.row.delegationFee) }} %
                 </span>
                 <br />
               <span>
@@ -810,13 +810,9 @@ export default {
       }
       return temp[isMinimumAmountForStake && remainingCapacity > 25]
     },
-    getUpTime (val) {
-      if (!val) return 0
-      return round(val * 100, 1000)
-    },
     getRound (val) {
       if (!val) return 0
-      return round(Number(val), 1000)
+      return round(val, 1000)
     },
     getColorUptime (val) {
       if (val > 0.9) return 'positive'
@@ -834,11 +830,6 @@ export default {
       if (!val) return
       return `${val.substr(0, 20)}...${val.substr(28)}`
     },
-    // getFormatValidator (val) {
-    //   if (!val) return
-    //   if (val.length > 32) return `${val.substr(0, 20)}...${val.substr(28)}`
-    //   return val
-    // },
     onClick (link, id) {
       if (link) openURL(link)
       else this.$router.push('/validator/' + id)

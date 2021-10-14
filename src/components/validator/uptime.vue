@@ -81,7 +81,7 @@ export default {
     },
     getUpTime (val) {
       if (!val) return 0
-      return round(val * 100, 2)
+      return round(val * 100, 1000)
     },
     getColorUptime (val) {
       if (val > 0.9) return 'positive'

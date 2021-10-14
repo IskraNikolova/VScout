@@ -53,7 +53,7 @@ export function groupBy (xs, key) {
 
 export function round (num, prec) {
   const multiplier = Math.pow(prec, 1 || 0)
-  return Math.round((num + Number.EPSILON) * multiplier) / multiplier
+  return Math.round((Number(num) + Number.EPSILON) * multiplier) / multiplier
 }
 
 export function getChartLabel (interval, key) {
