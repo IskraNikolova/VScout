@@ -33,7 +33,7 @@
             "nodeID": "NodeID-LSoyHgtuX8UGyfz5ydHePK1aXXpSEakUZ"
         },
         {
-            "endpoint": "http://207.148.66.186:965                                                                                                             0",
+            "endpoint": "http://207.148.66.186:9650",
             "nodeID": "NodeID-Ns1eDN3K9HTnavgiBQhtpzRxUCxJ55Xhc"
         },
         {
@@ -46,7 +46,7 @@
         },
         {
             "endpoint": "http://46.101.231.180:9650",
-            "nodeID": "NodeID-5RuEXmu7SJpf8bwuY17Up                                                                                                             MpoEsGZRWnuj"
+            "nodeID": "NodeID-5RuEXmu7SJpf8bwuY17UpMpoEsGZRWnuj"
         },
         {
             "endpoint": "http://207.148.69.20:9650",
@@ -57,7 +57,7 @@
             "nodeID": "NodeID-2sspVTzGYqTkeiQeBsdFKv57gWpLg6Efg"
         },
         {
-            "endpoint": "http://100.16.171.253:9650                                                                                                             ",
+            "endpoint": "http://100.16.171.253:9650",
             "nodeID": "NodeID-4WXSGK6dYs65hn6Wp6EN6d5UspifqAeFk"
         },
         {
@@ -70,7 +70,7 @@
         },
         {
             "endpoint": "http://216.128.178.236:9650",
-            "nodeID": "NodeID-6MCi7uQTLG9RwVSYFL2SF                                                                                                             KmbbpqxsuEpF"
+            "nodeID": "NodeID-6MCi7uQTLG9RwVSYFL2SFKmbbpqxsuEpF"
         },
         {
             "endpoint": "http://151.115.50.95:9650",
