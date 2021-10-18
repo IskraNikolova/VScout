@@ -359,7 +359,7 @@ module.exports = {
         .filter(function (a) {
           return v.includes(a.nodeID)
         })
-        .filter(p => p.nodeID !== "NodeID-6yEnkZJBUW3snaeEeJHPBuhtmXroCvZFv")
+        .filter(p => p.nodeID !== "NodeID-GhyESkMqmZgpRqaYe2s4k2DJ7ZkpK34YJ")
 
       if (observers.length > o.length) {
         fs.writeFileSync(
