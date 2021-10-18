@@ -16,14 +16,14 @@ const body = (method, params = {}) => {
   }
 }
 
-export const _getAssetsCount = async () => {
+export const _getAssets = async () => {
   try {
     const req = await axios
       .get(network.explorerApiBaseUrl + c.listAssests)
 
-    if (!req.data.count) return 0
+    if (!req.data) return
 
-    return req.data.count
+    return req.data
   } catch (err) {
     return 0
   }

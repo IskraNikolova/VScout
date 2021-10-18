@@ -12,7 +12,7 @@
           <div class="q-pb-md text-medium label-title">NODE</div>
           <div class="text-h7 text-panel q-pb-md q-pt-xs text-title1">{{ formatNodeID }}</div>
         </div>
-        <div class="q-pt-md">
+        <div v-if="nodeHealthInfo" class="q-pt-md">
           <q-btn :color="color" no-caps outline size="sm" label="Check Health" @click="onOpenHealth"/>
           <node-health-dialog ref="nodeHealthDialog" v-bind:validator="validatorById(nodeID) ? validatorById(nodeID) : {}"/>
         </div>
@@ -24,7 +24,7 @@
       <q-separator class="q-mt-md q-mb-md lt-md" />
       <div class="col-md-3 col-xs-10">
         <div class="q-pb-md text-medium label-title">PEER CONNECTIONS</div>
-        <div class="q-pb-md" style="font-size: max(0.8vw, 12px);">
+        <div class="q-pb-md" style="font-size: max(0.8vw, 12px);" v-if="peersLength > 0">
          <small>Connected with</small>
          <div class="text-panel">
             <animated-number
@@ -33,6 +33,12 @@
               :duration="3000"
             />
          </div>
+        </div>
+        <div v-else>
+           <q-spinner-dots
+            color="primary"
+            size="2em"
+          />
         </div>
         <q-btn outline label="Peers" no-caps size="sm" @click="$router.push('/peers/' + nodeID)" />
       </div>

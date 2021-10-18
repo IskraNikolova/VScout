@@ -3,6 +3,7 @@ const { network } = require('./../../modules/config')
 
 export default function () {
   return {
+    assets: [],
     theme: 'dark',
     defaultValidators: [],
     notificationNode: {},

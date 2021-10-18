@@ -1,6 +1,7 @@
 import {
   INIT_APP,
   SET_THEME,
+  SET_ASSETS,
   GET_IN_OUT,
   GET_NODE_ID,
   GET_SUBNETS,
@@ -61,7 +62,7 @@ import {
   _getNodeVersion,
   _getBlockchains,
   _getNodeVersions,
-  _getAssetsCount,
+  _getAssets,
   _getBlockchainStatus,
   _getPendingValidators
 } from './../../modules/network.js'
@@ -627,8 +628,9 @@ async function getBlockchains (
 
 async function getAssetsCount (
   { commit }) {
-  const assetsCount = await _getAssetsCount()
-  commit(SET_ASSETS_COUNT, { assetsCount })
+  const { count, assets } = await _getAssets()
+  commit(SET_ASSETS_COUNT, { assetsCount: count })
+  commit(SET_ASSETS, { assets })
 }
 
 async function getSupply (

@@ -82,7 +82,7 @@
                 />
               </span><span> on X-Chain</span>
             </div>
-          <div class="q-pt-xs">
+          <div class="q-pt-xs" v-if="items.length > 0">
             <q-btn-dropdown
               outline
               size="sm"
@@ -90,29 +90,16 @@
               label="Smart Digital Assets"
             >
               <div class="q-pa-md panel">
-                <q-input :dark="appTheme==='dark'" v-model="search" label="Search..." @input="onSearch"/>
+                <q-input :dark="appTheme==='dark'" v-model="search" label="Search..." @input="filterfn"/>
               </div>
-              <q-item  class="panel" v-if="assetSearch" clickable v-close-popup @click="onOpenAssetInfo(assetSearch)">
-                <q-item-section avatar>
-                  <q-badge color="accent">{{ assetSearch.symbol }}</q-badge>
-                </q-item-section>
-                <q-item-section>{{ assetSearch.name }}</q-item-section>
-              </q-item>
-              <q-infinite-scroll @load="onLoad" :offset="250" class="panel">
-                <div v-for="(asset, index) in items" :key="index" class="caption">
-                  <q-item clickable v-close-popup style="max-width: 200px;" @click="onOpenAssetInfo(asset)">
-                    <q-item-section avatar>
-                      <q-badge color="accent">{{ asset.symbol }}</q-badge>
-                    </q-item-section>
-                   <q-item-section>{{ asset.name }}</q-item-section>
-                  </q-item>
-                </div>
-                <template v-slot:loading>
-                  <div class="row justify-center q-my-md">
-                    <q-spinner-dots color="primary" size="40px" />
-                  </div>
-                </template>
-              </q-infinite-scroll>
+              <div v-for="(asset, index) in items" :key="index" class="caption panel">
+                <q-item clickable v-close-popup style="max-width: 350px;" @click="onOpenAssetInfo(asset)">
+                  <q-item-section avatar>
+                    <q-badge color="accent">{{ asset.symbol }}</q-badge>
+                  </q-item-section>
+                  <q-item-section>{{ asset.name }}</q-item-section>
+                </q-item>
+              </div>
             </q-btn-dropdown>
             <asset-info-dialog ref="assetDialog"/>
           </div>
@@ -155,7 +142,7 @@ import { mapGetters } from 'vuex'
 import AnimatedNumber from 'animated-number-vue'
 
 import {
-  _getAssetById,
+  // _getAssetById,
   _getAssetsWithOffset
 } from './../../modules/network'
 
@@ -193,14 +180,19 @@ export default {
       assetSearch: null
     }
   },
-  async created () {
+  watch: {
+    assets: function (val) {
+      this.items = this.assets.slice(0, 500)
+    }
+  },
+  created () {
     if (!this.assetsCount) return
-    const assets = await _getAssetsWithOffset(0)
-    this.items = assets
+    this.items = this.assets.slice(0, 500)
   },
   computed: {
     ...mapGetters([
       'height',
+      'assets',
       'appTheme',
       'assetsCount',
       'currentSubnet',
@@ -210,34 +202,14 @@ export default {
     ])
   },
   methods: {
-    async onSearch () {
+    filterfn () {
       const filter = this.search.toLowerCase()
-      if (!filter) {
-        const assets = await _getAssetsWithOffset(0)
-        this.items = assets
-        return
-      }
-
-      let result = this.filter(filter)
-      if (result) return
-
-      result = await _getAssetById(filter)
-      if (!result || !this.search) {
-        this.assetSearch = null
-      }
-      this.assetSearch = result
-    },
-    filter (filter) {
-      const result = this.items.filter(
+      const result = this.assets.filter(
         a => a.name.toLowerCase().includes(filter) ||
         a.alias.toLowerCase().includes(filter) ||
         a.symbol.toLowerCase().includes(filter)
       )
-      if (result.length > 0) {
-        this.items = result
-        return true
-      }
-      return false
+      this.items = result
     },
     format (value) {
       return `${Math.round(value)}`
@@ -259,6 +231,7 @@ export default {
       if (this.items.length < 99) done()
 
       const assets = await _getAssetsWithOffset(index * 100)
+      if (!assets) return
       const filter = this.search.toLowerCase()
       if (this.items) {
         this.items = this.items.concat(assets)

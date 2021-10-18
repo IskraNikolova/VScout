@@ -1,11 +1,11 @@
 export const c = {
   // enpoints
   cChainWs: 'ext/C/ws',
-  listAssests: 'x/assets?offset=0&limit=1',
+  listAssests: 'x/assets',
   nodeVersions: 'validators',
   getTxApi: (id) => `x/transactions/${id}`,
   assestById: (id) => `x/assets/${id}`,
-  assetsWithOffset: (offset) => `x/assets?&offset=${offset}&limit=100`,
+  assetsWithOffset: (offset) => `x/assets?offset=${offset}&limit=100`,
 
   // INFO API
   info: 'ext/info',

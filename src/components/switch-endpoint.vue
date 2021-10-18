@@ -140,8 +140,16 @@ export default {
         endpoint = { name: 'Custom', url: endpoint, urlView: endpoint }
       }
 
-      const response = await _getNodeId({ endpoint: endpoint.url })
-      if (response.data.error) {
+      let response = await _getNodeId({ endpoint: endpoint.url })
+      if (response.data.error.code === -32601) {
+        response = {
+          data: {
+            result: {
+              nodeID: ''
+            }
+          }
+        }
+      } else if (response.data.error) {
         const msg = `${response.data.error.message} with ${endpoint.name} - ${endpoint.url}`
         this.onError(msg)
         return
@@ -158,6 +166,7 @@ export default {
       await this.onSuccess(endpoint)
     },
     async onSuccess (endpoint) {
+      console.log(endpoint)
       this.$store.commit(UPDATE_UI, { doesItConnect: false })
       try {
         await Promise.all([

@@ -10,6 +10,10 @@ export function notifications (state) {
   return state.notifications
 }
 
+export function assets (state) {
+  return state.assets
+}
+
 export function blockchains (state) {
   return state.blockchains
 }

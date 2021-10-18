@@ -4,6 +4,7 @@ import { VMDict } from './../../utils/constants.js'
 
 import {
   SET_THEME,
+  SET_ASSETS,
   GET_IN_OUT,
   GET_NODE_ID,
   GET_SUBNETS,
@@ -114,6 +115,9 @@ const mutations = {
 
     state.inData = result
   },
+  [SET_ASSETS]: (state, { assets }) => {
+    state.assets = assets
+  },
   [SET_DEFAULT_VALIDATORS]: (state, { defaultValidators }) => {
     state.defaultValidators = defaultValidators
   },
@@ -145,9 +149,15 @@ const mutations = {
   },
   [GET_BLOCKCHAINS]: (state, { blockchains }) => {
     blockchains = blockchains.map(b => {
-      b.vmName = VMDict[b.vmID].name
-      b.vmDocumentation = VMDict[b.vmID].documentation
-      return b
+      try {
+        b.vmName = VMDict[b.vmID].name
+        b.vmDocumentation = VMDict[b.vmID].documentation
+        return b
+      } catch (err) {
+        b.vmName = ''
+        b.vmDocumentation = ''
+        return b
+      }
     })
     state.blockchains = blockchains
   },

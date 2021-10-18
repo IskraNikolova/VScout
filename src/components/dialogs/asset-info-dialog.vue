@@ -8,7 +8,6 @@
             </div>
           </div>
         </q-card-section>
-
         <q-card-section class="q-pt-none">
           <div class="text-subtitle1">
             $・Current Supply {{ getCurrentSupply(ui.assetInfo.asset.currentSupply, ui.assetInfo.asset.denomination) }} {{ ui.assetInfo.asset.symbol}}
