@@ -15,8 +15,8 @@ export default {
     coinApiBase: 'https://rest.coinapi.io/v1/assets/',
     endpointUrls: [
       { name: 'Avalanche Mainnet', url: 'https://vscout.io/vscout-api/', urlView: '' },
-      { name: 'Localhost', url: 'http://127.0.0.1:9650/', urlView: 'http://127.0.0.1:9650/' },
-      { name: 'Fuji Testnet', url: 'https://api.avax-test.network:443/', urlView: 'https://api.avax-test.network:443/' }
+      { name: 'Localhost', url: 'http://127.0.0.1:9650/', urlView: 'http://127.0.0.1:9650/' }
+      // { name: 'Fuji Testnet', url: 'https://api.avax-test.network:443/', urlView: 'https://api.avax-test.network:443/' }
     ]
   }
 }
