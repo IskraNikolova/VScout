@@ -14,6 +14,14 @@ const body = (method) => {
   }
 }
 
+const filterList = [
+  'NodeID-GhyESkMqmZgpRqaYe2s4k2DJ7ZkpK34YJ',
+  'NodeID-75NKV3fzWi9GdA45pMs35gkQHgSLXYXs1',
+  'NodeID-3dQycjBfoGBrSV678nU6xnNpv5hu8GqTt',
+  'NodeID-6tFZuxRu7t4SGkWuAiNvUJy9pMTsZt4sC',
+  'NodeID-6yEnkZJBUW3snaeEeJHPBuhtmXroCvZFv'
+]
+
 const fs = require('fs')
 
 const CAPACITY = 5
@@ -359,7 +367,9 @@ module.exports = {
         .filter(function (a) {
           return v.includes(a.nodeID)
         })
-        .filter(p => p.nodeID !== "NodeID-GhyESkMqmZgpRqaYe2s4k2DJ7ZkpK34YJ")
+        .filter(function (a) {
+          return !filterList.includes(a.nodeID)
+        })
 
       if (observers.length > o.length) {
         fs.writeFileSync(
