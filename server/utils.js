@@ -21,7 +21,8 @@ const filterList = [
   'NodeID-6tFZuxRu7t4SGkWuAiNvUJy9pMTsZt4sC',
   'NodeID-6yEnkZJBUW3snaeEeJHPBuhtmXroCvZFv',
   'NodeID-FDY8EGJB8MAoQT9UYfU9zAPcohzanA87m',
-  'NodeID-4D2iXb4KkgDa36PivB8pQhDKBPhRSAckH'
+  'NodeID-4D2iXb4KkgDa36PivB8pQhDKBPhRSAckH',
+  'NodeID-P4UEDR5osP5aq8khjjGwiyVthAHYt1ArP'
 ]
 
 const fs = require('fs')
