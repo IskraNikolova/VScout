@@ -19,7 +19,7 @@ module.exports = {
   info: async (endpoint) => {
     try {
         const resH = await axios
-          .post(endpoint + '/ext/health', body('health.getLiveness'))
+          .post(endpoint + '/ext/health', body('health.health'))
         if (resH.data.error) {
           throw new Error(resH.data.error)
         }
