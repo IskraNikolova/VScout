@@ -36,8 +36,8 @@
         <span v-if="isEnav(getBio()) && more" style="font-style: italic;color:#588da8;cursor:pointer;" @click="more=!more"><q-icon name="expand_less" /></span>
       </div>
       <div class="row">
-        <div class="col-6" v-if="val.version">
-          <div class="q-mr-md">
+        <div class="col-6">
+          <div class="q-mr-md" v-if="val.version">
             <info
               class="q-mt-md my-card dark-panel"
               style="border-radius: 10px;"
@@ -50,8 +50,43 @@
               v-bind:lastSent="val.lastSent"
             />
           </div>
+          <div class="q-mr-md">
+            <stake
+              class="q-mt-md my-card dark-panel"
+              style="border-radius: 10px;"
+              v-bind:stakeAmount="stakeAmount"
+              v-bind:delegateStake="delegateStake"
+              v-bind:txID="txID"
+              v-bind:totalStakeAmount="totalStakeAmount"
+            />
+            <delegate
+              class="q-mt-md my-card dark-panel"
+              style="border-radius: 10px;"
+              v-bind:validator="val"
+            />
+          </div>
+          <div class="q-mt-md q-pa-md q-mr-md my-card dark-panel"
+              style="border-radius: 10px;">
+              <div class="q-mb-sm">Progress (%)</div>
+              <progress-bar-validate-session
+                v-bind:startTime="startTime"
+                v-bind:endTime="endTime"
+              />
+              <div class="row">
+                <div class="col-6">
+                  <small class="text-bold">Start Time</small>
+                  <br />
+                  <small>{{ formatDate(startTime) }}</small>
+                </div>
+                <div class="col-6" style="text-align: right;">
+                  <small class="text-bold">End Time</small>
+                  <br />
+                  <small>{{ formatDate(endTime) }}</small>
+                </div>
+              </div>
+          </div>
         </div>
-        <div v-else  class="col-6">
+        <!--<div v-else  class="col-6">
           <div class="q-mr-md">
           <div class="q-mt-md q-pa-md my-card dark-panel"
               style="border-radius: 10px;">
@@ -74,7 +109,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div>-->
         <div class="col-6">
          <uptime
            class="q-mt-md my-card dark-panel"
@@ -83,47 +118,6 @@
            v-bind:uptime="val.uptime"
            v-bind:uptimes="val.uptimes"
          />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          <div class="q-mr-md">
-            <stake
-              class="q-mt-md my-card dark-panel"
-              style="border-radius: 10px;"
-              v-bind:stakeAmount="stakeAmount"
-              v-bind:delegateStake="delegateStake"
-              v-bind:txID="txID"
-              v-bind:totalStakeAmount="totalStakeAmount"
-            />
-            <delegate
-              class="q-mt-md my-card dark-panel"
-              style="border-radius: 10px;"
-              v-bind:validator="val"
-            />
-            <div v-if="val.version" class="q-mt-md q-pa-md my-card dark-panel"
-              style="border-radius: 10px;">
-              <div class="q-mb-sm">Progress (%)</div>
-              <progress-bar-validate-session
-                v-bind:startTime="startTime"
-                v-bind:endTime="endTime"
-              />
-              <div class="row">
-                <div class="col-6">
-                  <small class="text-bold">Start Time</small>
-                  <br />
-                  <small>{{ formatDate(startTime) }}</small>
-                </div>
-                <div class="col-6" style="text-align: right;">
-                  <small class="text-bold">End Time</small>
-                  <br />
-                  <small>{{ formatDate(endTime) }}</small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-6">
           <reward
             class="q-mt-md my-card dark-panel"
             style="border-radius: 10px;"

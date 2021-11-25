@@ -6,7 +6,7 @@
       <span style="font-size: 18px;">{{ delegatorsCount }} </span>
       DELEGATIONS
     </div>
-    <q-scroll-area style="height: 230px;">
+    <q-scroll-area style="height: 330px;">
     <div class="row q-pl-sm">
       <div class="col-6"><span class="text-subtitle2"><small style="opacity: 0.8;">OWNER</small></span></div>
       <div class="col-3"><span class="text-subtitle2"><small style="opacity: 0.8;">STAKE AMOUNT</small></span></div>

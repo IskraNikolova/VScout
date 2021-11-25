@@ -16,10 +16,10 @@
           <img class="on-right" :src="'./statics/flag/' + countryCode.toLowerCase() + '.png'" id="logo-s" />
           <span class="on-right" style="font-size: 14px;">{{ country }}</span>
         </div>
-        <div class="q-pl-sm">
+        <!--<div class="q-pl-sm">
           <span class="text-subtitle2"><small style="opacity: 0.8;">ISP</small></span>
           <span class="on-right" style="font-size: 15.7px;">{{ isp }}</span>
-        </div>
+        </div>-->
       </div>
       <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="q-pl-sm">
