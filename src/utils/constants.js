@@ -175,16 +175,6 @@ export const currencies = {
 
 export const labelColors = {
   offline: '#ffffff',
-  'avalanche/1.4.7': '#FBCEB1',
-  'avalanche/1.4.8': '#ed9c68',
-  'avalanche/1.4.9': '#31696b',
-  'avalanche/1.4.10': '#f5b5f5',
-  'avalanche/1.4.11': '#ffffff',
-  'avalanche/1.4.12': '#4c7273',
-  'avalanche/1.5.0': '#634875',
-  'avalanche/1.5.1': '#6c5b78',
-  'avalanche/1.5.2': '#8f8894',
-  'avalanche/1.5.3': '#A6D6D6',
   'avalanche/1.6.0': '#eebf8a',
   'avalanche/1.6.1': '#8BEEC9',
   'avalanche/1.6.2': '#94F7B2',
@@ -192,27 +182,21 @@ export const labelColors = {
   'avalanche/1.6.4': '#e3d8eb',
   'avalanche/1.6.5': '#31696b',
   'avalanche/1.7.0': '#a263c7',
-  'avalanche/1.7.1': '#ffffff'
+  'avalanche/1.7.1': '#ffffff',
+  'avalanche/1.7.2': '#c7f0e9',
+  'avalanche/1.7.3': '#e3dff0'
 }
 
 export const versionNum = {
   offline: 0,
-  'avalanche/1.4.7': 1,
-  'avalanche/1.4.8': 2,
-  'avalanche/1.4.9': 3,
-  'avalanche/1.4.10': 4,
-  'avalanche/1.4.11': 5,
-  'avalanche/1.4.12': 6,
-  'avalanche/1.5.0': 7,
-  'avalanche/1.5.1': 8,
-  'avalanche/1.5.2': 9,
-  'avalanche/1.5.3': 10,
-  'avalanche/1.6.0': 11,
-  'avalanche/1.6.1': 12,
-  'avalanche/1.6.2': 13,
-  'avalanche/1.6.3': 14,
-  'avalanche/1.6.4': 15,
-  'avalanche/1.6.5': 16,
-  'avalanche/1.7.0': 17,
-  'avalanche/1.7.1': 18
+  'avalanche/1.6.0': 1,
+  'avalanche/1.6.1': 2,
+  'avalanche/1.6.2': 3,
+  'avalanche/1.6.3': 4,
+  'avalanche/1.6.4': 5,
+  'avalanche/1.6.5': 6,
+  'avalanche/1.7.0': 7,
+  'avalanche/1.7.1': 8,
+  'avalanche/1.7.2': 9,
+  'avalanche/1.7.3': 10
 }
