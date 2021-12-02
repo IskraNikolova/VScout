@@ -29,6 +29,7 @@ import {
   copyToClipboard
 } from 'quasar'
 
+import { round } from './../../utils/commons.js'
 import { getAvaFromnAva } from './../../utils/avax.js'
 import { getDelegationReward } from './../../modules/reward.js'
 
@@ -70,7 +71,9 @@ export default {
     },
     getFormatAva (val) {
       if (!val) return 0
-      return this.getLocalString(getAvaFromnAva(val))
+      const avax = getAvaFromnAva(val)
+      return round(avax, 1000)
+        .toLocaleString()
     },
     getFormatSubstr (val) {
       if (!val) return
