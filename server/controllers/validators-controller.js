@@ -155,6 +155,11 @@ module.exports = {
               .post(endpoint + '/ext/P', body('platform.getCurrentValidators'))
   
             if (response.data.error) {
+              let obsArray = observers.filter(o => o.nodeID !== observers[i].nodeID)
+              fs.writeFileSync(
+                'observers.json',
+                JSON.stringify({ observers: obsArray })
+              )
               continue
             }
   
