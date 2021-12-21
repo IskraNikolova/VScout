@@ -22,18 +22,7 @@ const filterList = [
   'NodeID-6yEnkZJBUW3snaeEeJHPBuhtmXroCvZFv',
   'NodeID-FDY8EGJB8MAoQT9UYfU9zAPcohzanA87m',
   'NodeID-4D2iXb4KkgDa36PivB8pQhDKBPhRSAckH',
-  'NodeID-P4UEDR5osP5aq8khjjGwiyVthAHYt1ArP',
-  //'NodeID-PdBZNUBq424GRWRu8iS7ttux59fozsnwz',
-  //'NodeID-4hc2YhrQ1ujHqT3DK8mxgKk2DvZn1oJAH',
-  //'NodeID-6TLeB4US2vTN6iqmnNQyEzHi3ikKYQ4bC',
-  //'NodeID-QJjeG8nPfVUfViygcghv4duamQD9dXaD',
-  //'NodeID-NmxRpj685tSUWBKYvJ8dJ73fA9ktaQh8o',
-  //'NodeID-FrGprQGPVu4x4sb9L42TNGU7q7ooAXEoE',
-  //'NodeID-8Q6Nc26d8frCWxFJa6CKyKUv6kBXatm5x',
-  //'NodeID-JRnavz3JguySwKciiuQ4S5i9VjrEqc7Nq',
-  //'NodeID-3DyUWkRptB3CRUVHk39Ni6Dpr6QvGWXwA',
-  //'NodeID-6biB22M9yY6jfRUeKHvLvz7dyVVZ2XYNy',
-  //'NodeID-C4tiJ3LyiWnnHmYG1CjGyxRWsRXTW4jYz'
+  'NodeID-P4UEDR5osP5aq8khjjGwiyVthAHYt1ArP'
 ]
 
 const fs = require('fs')
@@ -382,7 +371,7 @@ module.exports = {
       const numOfPeers = peers.numPeers
 
       observers = observers
-        .filter(i => i.numPeers >= numOfPeers - 70)
+        .filter(i => i.numPeers >= numOfPeers - 100)
       fs.writeFileSync(
         'observers.json',
         JSON.stringify({ observers })
