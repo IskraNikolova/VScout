@@ -29,10 +29,12 @@ setInterval(() => {
 let index = 0
 let inProcess = false
 
-let obs = getObserversArray()
-controllers.validators.getUptimes(obs)
+setTimeout(async () => {
+  let obs = await getObserversArray()
+  controllers.validators.getUptimes(obs)
+}, 10)
 
-setInterval(() => {
+setInterval(async () => {
   try {
     let validators = fs
       .readFileSync('validators.json')
@@ -41,7 +43,7 @@ setInterval(() => {
     validators = JSON.parse(validators)
       .validators
 
-    obs = getObserversArray()
+    obs = await getObserversArray()
     controllers.validators.getUptimes(obs)
 
     if (!inProcess) {
