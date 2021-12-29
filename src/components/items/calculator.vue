@@ -163,8 +163,8 @@
             <q-icon name="read_more" /><small> Advanced</small>
           </div>
         </div>
-        <q-separator dark class="q-mt-md q-mb-md"/>
-        <div class="row">
+        <q-separator dark class="q-mt-md q-mb-md" v-if="type === 'validator'" />
+        <div class="row" v-if="type === 'validator'">
           <div class="col-4">
             <small style="opacity: 0.5;">Daily</small>
             <div>
