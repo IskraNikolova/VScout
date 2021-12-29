@@ -174,7 +174,7 @@ export const currencies = {
 }
 
 export const labelColors = {
-  offline: '#ffffff',
+  offline: '#e6e6e6',
   'avalanche/1.6.0': '#eebf8a',
   'avalanche/1.6.1': '#8BEEC9',
   'avalanche/1.6.2': '#94F7B2',

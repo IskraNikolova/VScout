@@ -7,8 +7,8 @@
     label="calculator"
     @click="openCalculator"
   >
-    <q-popup-proxy>
-        <q-banner class="q-pa-md panel" dense style="width: 370px;">
+    <q-popup-proxy :breakpoint="1024">
+      <q-banner class="q-pa-md panel" dense style="width: 370px;">
         <div class="row">
           <div class="col-6 text-medium">Reward Calculator</div>
           <div class="col-6" style="text-align: right;">
@@ -148,6 +148,7 @@
           label-color="white"
           color="accent"
         />
+        <div class="dark-panel q-pt-sm q-pb-sm q-pl-sm q-pr-sm">
         <div class="row">
           <div class="col-9">
             <small style="opacity: 0.5;">{{ stakeTime }} Days Reward </small>
@@ -155,14 +156,41 @@
               <span>
                 {{ getFormat(rewardAvax) }}
               </span>  <span class="text-accent text-medium">AVAX</span> |
-                <span class="text-accent text-medium">{{ getSymbol(currentCurrency) }}</span>{{ getFormat(rewardUsd) }}
+                <span class="text-accent text-medium">{{ getSymbol(currentCurrency) }} </span>{{ getFormat(rewardUsd) }}
             </div>
           </div>
           <div @click="onAdvanced" v-if="!isAdvanced && type === 'validator'" style="cursor: pointer;">
             <q-icon name="read_more" /><small> Advanced</small>
           </div>
         </div>
-
+        <q-separator dark class="q-mt-md q-mb-md"/>
+        <div class="row">
+          <div class="col-4">
+            <small style="opacity: 0.5;">Daily</small>
+            <div>
+              <span>
+                {{ getFormat(daily) }}
+              </span>  <span class="text-accent text-medium">AVAX</span>
+            </div>
+          </div>
+            <div class="col-4">
+            <small style="opacity: 0.5;">Monthly</small>
+            <div>
+              <span>
+                {{ getFormat(monthly) }}
+              </span>  <span class="text-accent text-medium">AVAX</span>
+            </div>
+          </div>
+            <div class="col-4">
+            <small style="opacity: 0.5;">Yearly</small>
+            <div>
+              <span>
+                {{ getFormat(yearly) }}
+              </span>  <span class="text-accent text-medium">AVAX</span>
+            </div>
+          </div>
+        </div>
+        </div>
         <div v-if="isAdvanced && type==='validator'" class="dark-panel q-mt-sm" style="padding:10px;border-radius: 5px;">
           <div style="text-align: right;"><small>Advanced</small></div>
           <small style="opacity: 0.5;">Capacity For Delegation</small>
@@ -182,6 +210,7 @@ import { currencies } from './../../utils/constants.js'
 
 import {
   reward,
+  statsRew,
   substractDelegationFee,
   getDelegationReward,
   getYearlyRewardPercent
@@ -214,6 +243,9 @@ export default {
   data () {
     return {
       percent: 0,
+      daily: 0,
+      monthly: 0,
+      yearly: 0,
       stakeTime: 14,
       delegationFee: 2,
       delegationFee2: 2,
@@ -303,8 +335,17 @@ export default {
       )
 
       this.reward = rewardNAvax
+      const { daily, monthly, yearly } = statsRew(rewardNAvax, this.stakeTime)
+
+      this.daily = getAvaFromnAva(daily)
+      this.monthly = getAvaFromnAva(monthly)
+      this.yearly = getAvaFromnAva(yearly)
+
       this.rewardAvax = getAvaFromnAva(rewardNAvax)
-      this.rewardUsd = getPriceFromnAvax(rewardNAvax, this.currenciesPriceList[`${this.currentCurrency}`])
+      this.rewardUsd = getPriceFromnAvax(
+        rewardNAvax,
+        this.currenciesPriceList[`${this.currentCurrency}`]
+      )
       this.getPercent()
     },
     calculateDel () {
@@ -324,14 +365,18 @@ export default {
 
       this.reward = rewardNAvax
       this.rewardAvax = getAvaFromnAva(rewardNAvax)
-      this.rewardUsd = getPriceFromnAvax(rewardNAvax, this.currenciesPriceList[`${this.currentCurrency}`])
+      this.rewardUsd = getPriceFromnAvax(
+        rewardNAvax,
+        this.currenciesPriceList[`${this.currentCurrency}`]
+      )
       this.getPercent()
     },
     getFormat (val) {
       return round(val, 100).toLocaleString()
     },
     getCurrentSupplyLable () {
-      const currentSupply = this.currentSupply.toString()
+      const currentSupply = this.currentSupply
+        .toString()
       const currentSupplyAvax = Math.round(getAvaFromnAva(Number(currentSupply)))
       return Math.round(currentSupplyAvax / 1000000)
     },

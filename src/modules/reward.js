@@ -55,6 +55,15 @@ export const reward = (stakeTime, stakedAmount, currentSupplyBig) => {
   return rewardRes.toNumber()
 }
 
+export const statsRew = (amount, duration) => {
+  const reward = new BigNumber(amount)
+  const daily = reward.dividedBy(duration)
+  const yearly = daily.multipliedBy(new BigNumber(365))
+  const monthly = yearly.dividedBy(new BigNumber(12))
+
+  return { daily, monthly, yearly }
+}
+
 export const getYearlyRewardPercent = (reward, stakeTime, stakedAmount) => {
   const rewardRes = new BigNumber(reward)
 
