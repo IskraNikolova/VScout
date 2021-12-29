@@ -26,7 +26,7 @@ setInterval(() => {
   controllers.node.peersPost(endpoint)
 }, 30000)
 
-let index = 400
+let index = 600
 let inProcess = false
 
 let obs = getObserversArray()
@@ -58,4 +58,4 @@ setInterval(() => {
   } catch (err) {
     console.log(err)
   }
-}, 10000)
+}, 100000)
