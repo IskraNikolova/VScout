@@ -26,15 +26,18 @@ setInterval(() => {
   controllers.node.peersPost(endpoint)
 }, 30000)
 
-let index = 0
+let index = 400
 let inProcess = false
 
-setTimeout(async () => {
-  let obs = await getObserversArray()
-  controllers.validators.getUptimes(obs)
-}, 10)
+let obs = getObserversArray()
+controllers.validators.getUptimes(obs)
 
-setInterval(async () => {
+// setTimeout(async () => {
+//   let obs = await getObserversArray()
+//   controllers.validators.getUptimes(obs)
+// }, 10)
+
+setInterval(() => {
   try {
     let validators = fs
       .readFileSync('validators.json')
@@ -43,7 +46,7 @@ setInterval(async () => {
     validators = JSON.parse(validators)
       .validators
 
-    obs = await getObserversArray()
+    obs = getObserversArray()
     controllers.validators.getUptimes(obs)
 
     if (!inProcess) {
@@ -55,4 +58,4 @@ setInterval(async () => {
   } catch (err) {
     console.log(err)
   }
-}, 100000)
+}, 10000)

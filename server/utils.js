@@ -338,7 +338,7 @@ module.exports = {
       console.log(err)
     }
   },
-  getObserversArray: async () => {
+  getObserversArray: () => {
     try {
       const obs = fs
       .readFileSync('observers.json')
@@ -349,33 +349,33 @@ module.exports = {
       let observers = JSON.parse(obs)
         .observers
       
-      for (let i = 0; i < observers.length; i++) {
-        const endpoint = observers[i].endpoint
-        const response = await axios
-          .post(endpoint + '/ext/health', body('health.health'))
+      // for (let i = 0; i < observers.length; i++) {
+      //   const endpoint = observers[i].endpoint
+      //   const response = await axios
+      //     .post(endpoint + '/ext/health', body('health.health'))
 
-        if (!response.data.error) {
-          let { checks } = response.data.result
-          let numPeers = checks
-            .network
-            .message
-            .connectedPeers
-          observers[i].numPeers = numPeers
-        }
-      }
+      //   if (!response.data.error) {
+      //     let { checks } = response.data.result
+      //     let numPeers = checks
+      //       .network
+      //       .message
+      //       .connectedPeers
+      //     observers[i].numPeers = numPeers
+      //   }
+      // }
  
-      let peersInJson = fs.readFileSync('peers.json')
-        .toString()
-      if (!peersInJson) peersInJson = {}
-      const peers = JSON.parse(peersInJson)
-      const numOfPeers = peers.numPeers
+      // let peersInJson = fs.readFileSync('peers.json')
+      //   .toString()
+      // if (!peersInJson) peersInJson = {}
+      // const peers = JSON.parse(peersInJson)
+      // const numOfPeers = peers.numPeers
 
-      observers = observers
-        .filter(i => i.numPeers >= numOfPeers - 100)
-      fs.writeFileSync(
-        'observers.json',
-        JSON.stringify({ observers })
-      )
+      // observers = observers
+      //   .filter(i => i.numPeers >= numOfPeers - 100)
+      // fs.writeFileSync(
+      //   'observers.json',
+      //   JSON.stringify({ observers })
+      // )
 
       const validators = fs
         .readFileSync('validators.json')
