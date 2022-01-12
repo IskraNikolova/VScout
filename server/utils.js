@@ -22,7 +22,13 @@ const filterList = [
   'NodeID-6yEnkZJBUW3snaeEeJHPBuhtmXroCvZFv',
   'NodeID-FDY8EGJB8MAoQT9UYfU9zAPcohzanA87m',
   'NodeID-4D2iXb4KkgDa36PivB8pQhDKBPhRSAckH',
-  'NodeID-P4UEDR5osP5aq8khjjGwiyVthAHYt1ArP'
+  'NodeID-P4UEDR5osP5aq8khjjGwiyVthAHYt1ArP',
+  'NodeID-Nwr26Q5CPcRfSHQKgQ5y3ayVPgjziWkkT',
+  'NodeID-KJPAz45LozvjN23iXHih1jGikZ1u2ZrNj',
+  'NodeID-6FSSZuuLEZ4sHJZGfpY4Wuz8M3qnK6ec5',
+  'NodeID-9dhM1zG3atcKhiwhjRHZEEsvYBNM9wj6',
+  'NodeID-NbJexKdcMyN1E1GYH1ra58jP61dZpt1wu',
+  'NodeID-JSKsSxV74dyp94CvBKqEKUcEEKBXyNbge'
 ]
 
 const fs = require('fs')
@@ -389,7 +395,7 @@ module.exports = {
             return m.includes(a.nodeID)
           })
           .filter(v => v.connected)
-          .filter(v => Number(v.uptime) >= 0.8)
+          .filter(v => Number(v.uptime) >= 0.9)
   
       const v = currentValidators.map(a => a.nodeID)
       const o = observers
