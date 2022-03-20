@@ -696,12 +696,12 @@ export default {
       return this.currenciesPriceList[`${this.currentCurrency}`]
     },
     isValidatorShow (id) {
-      if (!id) return
-      const isVal = this.validatorById(id)
-      if (isVal) {
-        return id !== 'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj'
-      }
-      return false
+      // if (!id) return
+      // const isVal = this.validatorById(id)
+      // if (isVal) {
+      //  return id !== 'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj'
+      // }
+      // return false
     },
     switchTheme (theme) {
       if (!theme) return
