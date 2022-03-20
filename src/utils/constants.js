@@ -189,6 +189,7 @@ export const labelColors = {
   'avalanche/1.7.5': '#94F7B2',
   'avalanche/1.7.6': '#31696b',
   'avalanche/1.7.7': '#93E3D5',
+  'avalanche/1.7.8': '#e3d8eb',
   'avalanche/1.8.0': '#93E3D5'
 }
 
@@ -208,5 +209,6 @@ export const versionNum = {
   'avalanche/1.7.5': 12,
   'avalanche/1.7.6': 13,
   'avalanche/1.7.7': 14,
-  'avalanche/1.8.0': 15
+  'avalanche/1.7.8': 15,
+  'avalanche/1.8.0': 16
 }
