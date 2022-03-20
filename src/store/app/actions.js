@@ -107,7 +107,7 @@ async function initApp (
       dispatch(GET_AVAX_PRICE),
       dispatch(INIT_ENDPOINT),
       dispatch(GET_NODE_VERSIONS),
-      dispatch(GET_NODE_ID, {}),
+      // dispatch(GET_NODE_ID, {}),
       dispatch(GET_NODE_INFO, {}),
       dispatch(GET_BLOCKCHAINS, {}),
       dispatch(GET_SUBNETS, {}),
@@ -135,6 +135,7 @@ async function initApp (
         dispatch(GET_IN_OUT),
         dispatch(GET_HEIGHT, {}),
         dispatch(GET_NODE_INFO, {})
+        // dispatch(GET_NODE_ID, {})
       ])
     } catch (err) {
     }
@@ -455,6 +456,7 @@ async function getSubnets (
 
 async function getNodeId (
   { getters, commit }) {
+  console.log(getters.networkEndpoint.url)
   const response = await _getNodeId({
     endpoint: getters.networkEndpoint.url
   })
@@ -468,6 +470,7 @@ async function getNodeId (
 
   commit(UPDATE_UI, { doesItConnect: false })
   const nodeID = response.data.result.nodeID
+  console.log(response.data.result.nodeID)
   commit(GET_NODE_ID, { nodeID })
 }
 
@@ -486,6 +489,9 @@ async function getNodeInfo (
       networkName: response.data.result.networkName,
       nodeVersion: response.data.result.version
     }
+
+    const nodeID = response.data.result.nodeID
+    commit(GET_NODE_ID, { nodeID })
 
     commit(GET_NODE_HEALTH, {
       nodeID: getters.nodeID,

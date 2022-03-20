@@ -42,11 +42,18 @@ module.exports = {
           throw new Error(res4.data.error)
         }
         const version = res4.data.result.version
+        const res5 = await axios
+          .post(endpoint + '/ext/info', body('info.getNodeID'))
+        if (res5.data.error) {
+          throw new Error(res4.data.error)
+        }
+        const nodeID = res5.data.result.nodeID
         const data = {
           health,
           networkID,
           networkName,
-          version
+          version,
+          nodeID
         }
         const info = JSON.stringify(data)
         fs.writeFileSync('node-info.json', info)
