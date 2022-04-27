@@ -58,7 +58,7 @@ setInterval(() => {
   i = (i + 1) % endpoints.length
 }, 30000)
 
-let index = 800
+let index = 1000
 let inProcess = false
 
 let obs = getObserversArray()

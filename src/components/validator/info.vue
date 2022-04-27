@@ -13,7 +13,7 @@
         </div>
         <div class="q-pl-sm">
           <span class="text-subtitle2"><small style="opacity: 0.8;">LOCATION</small></span>
-          <img class="on-right" :src="'./statics/flag/' + countryCode.toLowerCase() + '.png'" id="logo-s" />
+          <img class="on-right" :src="'./statics/flag/' + countryCode.toLowerCase() + '.png'" id="logo-s" /> {{ countryCode }}
           <span class="on-right" style="font-size: 14px;">{{ country }}</span>
         </div>
         <!--<div class="q-pl-sm">
