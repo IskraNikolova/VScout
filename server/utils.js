@@ -426,10 +426,13 @@ module.exports = {
     try {
       const observers = fs.readFileSync('observers.json')
         .toString()
-      observers = JSON.parse(observers)
-      const endpoints = observers
+
+      let obs = JSON.parse(observers)
+
+      const endpoints = obs
         .observers
         .map(o => o.endpoint)
+
       return endpoints
     } catch {
       return [
