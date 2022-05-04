@@ -308,10 +308,12 @@ module.exports = {
       const peers = resultPeers
         .peers
         .filter(val => !ob.includes(val.nodeID))
-      
+      // console.log(peers)
+      // console.log(index)
       let m = 0
       do {
         index++
+        if (peers[index]) {
           const endpoint = 'http://' + peers[index].ip.split(':')[0] + ':9650'
 
           const response = await axios
@@ -339,6 +341,7 @@ module.exports = {
               m++
             }
           }
+        }
       } while (m < 33)
     } catch (err) {
       console.log(err)
@@ -418,7 +421,44 @@ module.exports = {
     } catch (err) {
       return []
     }
-  }
+  },
+  getEndpoints: (() => {
+    try {
+      const observers = fs.readFileSync('observers.json')
+        .toString()
+      observers = JSON.parse(observers)
+      const endpoints = observers
+        .observers
+        .map(o => o.endpoint)
+      return endpoints
+    } catch {
+      return [
+        "http://165.173.18.156:9650",
+        "http://176.31.46.82:9650",                                                                                
+        "http://159.223.20.105:9650",
+        "http://95.217.30.65:9650",
+        "http://52.29.68.225:9650",
+        "http://45.79.106.211:9650",
+        "http://34.221.201.229:9650",
+        "http://3.237.24.223:9650",
+        "http://3.71.10.60:9650",
+        "http://161.97.135.216:9650",
+        "http://216.128.178.236:9650",
+        "http://192.248.176.62:9650",
+        "http://15.228.60.175:9650",
+        "http:/173.249.43.37:9650",
+        "http://95.216.102.220:9650",
+        "http://129.213.160.219:9650",
+        "http://51.91.29.9:9650",
+        "http://3.65.232.148:9650",
+        "http://3.71.10.60:9650",
+        "http://54.93.65.56:9650",
+        "http://3.124.4.29:9650",
+        "http://168.119.226.163:9650",
+        "http://3.237.24.223:9650"
+      ]
+    }
+  })
 }
 
 function process ({
