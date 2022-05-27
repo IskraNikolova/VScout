@@ -13,32 +13,29 @@ require('./config/routes')(app)
 
 app.listen(config.port, () => console.log(`Server start on port ${config.port}`))
 
-setInterval(() => {
-  controllers.avax.avaxPrice()
-}, 8000)
+// const endpoint = 'http://135.181.144.201:9650'
+// const endpoint =  'http://165.173.18.156:9650'
 
-//const endpoint = 'http://135.181.144.201:9650'
-const endpoint =  'http://165.173.18.156:9650'
-
-// let endpoints = getEndpoints()
+let endpoints = getEndpoints()
 
 let i = 0
 setInterval(() => {
-  // const endpoint = endpoints[i]
+  const endpoint = endpoints[i]
+  controllers.avax.avaxPrice()
   controllers.platform.blockHeight(endpoint)
   controllers.validators.validators(endpoint)
   controllers.node.info(endpoint)
   controllers.node.peersPost(endpoint)
 
-  // if (i >= endpoints.length) {
-  //   endpoints = getEndpoints()
-  //   i = 0
-  // } else {
-  //   i++
-  // }
-}, 3000)
+  if (i >= endpoints.length) {
+    endpoints = getEndpoints()
+    i = 0
+  } else {
+    i++
+  }
+}, 30000)
 
-let index = 100
+let index = 500
 let inProcess = false
 
 let obs = getObserversArray()
@@ -66,4 +63,4 @@ setInterval(() => {
   } catch (err) {
     console.log(err)
   }
-}, 1000)
+}, 100000)
