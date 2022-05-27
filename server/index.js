@@ -19,7 +19,7 @@ setInterval(() => {
 
 //const endpoint = 'http://135.181.144.201:9650'
 
-const endpoints = getEndpoints()
+let endpoints = getEndpoints()
 
 let i = 0
 setInterval(() => {
