@@ -37,7 +37,7 @@ setInterval(() => {
   }
 }, 30000)
 
-let index = 400
+let index = 1000
 let inProcess = false
 
 let obs = getObserversArray()
