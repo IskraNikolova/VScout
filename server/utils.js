@@ -304,22 +304,24 @@ module.exports = {
       if (!peersInJson) peersInJson = {}
       let resultPeers = JSON.parse(peersInJson)
 
-      const ob = obsArray.map(o => o.nodeID)
+      // const ob = obsArray.map(o => o.nodeID)
       const peers = resultPeers
         .peers
-        .filter(val => !ob.includes(val.nodeID))
+        // .filter(val => !ob.includes(val.nodeID))
       // console.log(peers)
       // console.log(index)
       let m = 0
       do {
         index++
+        console.log(index)
         if (peers[index]) {
           const endpoint = 'http://' + peers[index].ip.split(':')[0] + ':9650'
+          console.log(endpoint)
 
           const response = await axios
-            .post(endpoint + '/ext/P', body('platform.getCurrentSupply'))
-
-          if (!response.data.error) {
+            .post(endpoint + '/ext/P', body('platform.getHeight'))
+          console.log(response, 1234)
+          if (response.data.result) {
             let currentValidator = fs
               .readFileSync('validators.json')
               .toString()
@@ -344,7 +346,8 @@ module.exports = {
         }
       } while (m < 33)
     } catch (err) {
-      console.log(err)
+      console.log('error')
+      // console.log(err)
     }
   },
   getObserversArray: () => {
@@ -397,8 +400,8 @@ module.exports = {
           .filter(function (a) {
             return m.includes(a.nodeID)
           })
-          .filter(v => v.connected)
-          .filter(v => Number(v.uptime) >= 0.9)
+          // .filter(v => v.connected)
+          // .filter(v => Number(v.uptime) >= 0.9)
   
       const v = currentValidators.map(a => a.nodeID)
       const o = observers

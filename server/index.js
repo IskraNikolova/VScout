@@ -18,29 +18,31 @@ setInterval(() => {
 }, 8000)
 
 //const endpoint = 'http://135.181.144.201:9650'
+const endpoint =  'http://165.173.18.156:9650'
 
-let endpoints = getEndpoints()
+// let endpoints = getEndpoints()
 
 let i = 0
 setInterval(() => {
-  const endpoint = endpoints[i]
+  // const endpoint = endpoints[i]
   controllers.platform.blockHeight(endpoint)
   controllers.validators.validators(endpoint)
   controllers.node.info(endpoint)
   controllers.node.peersPost(endpoint)
 
-  if (i >= endpoints.length) {
-    endpoints = getEndpoints()
-    i = 0
-  } else {
-    i++
-  }
-}, 30000)
+  // if (i >= endpoints.length) {
+  //   endpoints = getEndpoints()
+  //   i = 0
+  // } else {
+  //   i++
+  // }
+}, 3000)
 
-let index = 1000
+let index = 100
 let inProcess = false
 
 let obs = getObserversArray()
+setObserervers(index, obs)
 controllers.validators.getUptimes(obs)
 
 setInterval(() => {
@@ -64,4 +66,4 @@ setInterval(() => {
   } catch (err) {
     console.log(err)
   }
-}, 100000)
+}, 1000)
