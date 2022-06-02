@@ -316,11 +316,10 @@ module.exports = {
         console.log(index)
         if (peers[index]) {
           const endpoint = 'http://' + peers[index].ip.split(':')[0] + ':9650'
-          console.log(endpoint)
 
           const response = await axios
             .post(endpoint + '/ext/P', body('platform.getHeight'))
-          console.log(response, 1234)
+
           if (response.data.result) {
             let currentValidator = fs
               .readFileSync('validators.json')
