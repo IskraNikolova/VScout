@@ -22,8 +22,10 @@ let i = 0
 // setInterval(() => {
   //const endpoint = endpoints[i]
   controllers.avax.avaxPrice()
-  controllers.platform.blockHeight(endpoint)
-  // controllers.validators.validators(endpoint)
+  console.log('hello')
+  // controllers.platform.blockHeight(endpoint)
+  controllers.validators.validators(endpoint)
+  console.log('hello2')
   // controllers.node.info(endpoint)
   // controllers.node.peersPost(endpoint)
 
