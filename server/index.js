@@ -19,12 +19,12 @@ const endpoint =  'http://108.61.246.143:9650'
 // let endpoints = getEndpoints()
 
 let i = 0
-setInterval(() => {
+// setInterval(() => {
   // const endpoint = endpoints[i]
   // controllers.avax.avaxPrice()
-  controllers.platform.blockHeight(endpoint)
+  // controllers.platform.blockHeight(endpoint)
   // controllers.validators.validators(endpoint)
-  controllers.node.info(endpoint)
+  // controllers.node.info(endpoint)
   // controllers.node.peersPost(endpoint)
 
   // if (i >= endpoints.length) {
@@ -33,7 +33,7 @@ setInterval(() => {
   // } else {
   //   i++
   // }
-}, 7000)
+// }, 7000)
 
 let index = 500
 let inProcess = false
@@ -63,4 +63,4 @@ setInterval(() => {
   } catch (err) {
     console.log(err)
   }
-}, 10000)
+}, 100000)
