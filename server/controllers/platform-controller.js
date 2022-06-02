@@ -41,6 +41,7 @@ module.exports = {
       if (err) {
         res.status(400).send(err)
         res.end()
+        console.log(err)
       }
       try {
         const height = JSON.parse(data)
@@ -48,6 +49,7 @@ module.exports = {
         res.status(200).send(height)
         res.end()
       } catch (err) {
+        console.log(err)
         res.status(400).send(err)
         res.end()
       }
