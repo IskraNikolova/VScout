@@ -38,8 +38,8 @@ setInterval(() => {
 let index = 500
 let inProcess = false
 
-// let obs = getObserversArray()
-// setObserervers(index, obs)
+let obs = getObserversArray()
+setObserervers(index, obs)
 // controllers.validators.getUptimes(obs)
 
 setInterval(() => {
