@@ -17,6 +17,10 @@ app.listen(config.port, () => console.log(`Server start on port ${config.port}`)
 const endpoint =  'http://108.61.246.143:9650'
 
 // let endpoints = getEndpoints()
+fs.writeFileSync(
+  'observers.json',
+  JSON.stringify({ observers: [] })
+)  
 
 let i = 0
 setInterval(() => {
