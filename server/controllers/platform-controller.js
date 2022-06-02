@@ -18,6 +18,7 @@ module.exports = {
   blockHeight: (endpoint) => {
     axios.post(endpoint + '/ext/P', body())
       .then((res) => {
+        console.log(res)
         if (res.data.error) {
           console.log(res)
           // const error = res.data.error
