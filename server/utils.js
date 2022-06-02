@@ -313,7 +313,6 @@ module.exports = {
       let m = 0
       do {
         index++
-        console.log(index)
         if (peers[index]) {
           const endpoint = 'http://' + peers[index].ip.split(':')[0] + ':9650'
 
