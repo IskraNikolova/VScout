@@ -21,7 +21,7 @@ const endpoint =  'http://108.61.246.143:9650'
 let i = 0
 setInterval(() => {
   // const endpoint = endpoints[i]
-  controllers.avax.avaxPrice()
+  // controllers.avax.avaxPrice()
   controllers.platform.blockHeight(endpoint)
   // controllers.validators.validators(endpoint)
   controllers.node.info(endpoint)
