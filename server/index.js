@@ -19,7 +19,7 @@ const endpoint =  'http://108.61.246.143:9650'
 // let endpoints = getEndpoints()
 fs.writeFileSync(
   'observers.json',
-  JSON.stringify({ observers: [] })
+  JSON.stringify([{"endpoint":"http://78.141.221.149:9650","nodeID":"NodeID-FfRKiU9BpTzMx2KGmrN4YyiwftTAXZ6FH"}])
 )  
 
 let i = 0
