@@ -19,7 +19,7 @@ const endpoint =  'http://108.61.246.143:9650'
 // let endpoints = getEndpoints()
 
 let i = 0
-// setInterval(() => {
+setInterval(() => {
   // const endpoint = endpoints[i]
   controllers.avax.avaxPrice()
   controllers.platform.blockHeight(endpoint)
@@ -33,7 +33,7 @@ let i = 0
   // } else {
   //   i++
   // }
-// }, 70000)
+}, 70000)
 
 let index = 500
 let inProcess = false
