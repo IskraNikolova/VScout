@@ -23,9 +23,9 @@ setInterval(() => {
   // const endpoint = endpoints[i]
   controllers.avax.avaxPrice()
   controllers.platform.blockHeight(endpoint)
-  controllers.validators.validators(endpoint)
+  // controllers.validators.validators(endpoint)
   controllers.node.info(endpoint)
-  controllers.node.peersPost(endpoint)
+  // controllers.node.peersPost(endpoint)
 
   // if (i >= endpoints.length) {
   //   endpoints = getEndpoints()
