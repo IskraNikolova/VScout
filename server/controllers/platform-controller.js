@@ -25,6 +25,7 @@ module.exports = {
           // fs.writeFileSync('logs.json', data)
         } else {
           const data = res.data.result
+          console.log(data)
           const validators = JSON.stringify(data)
           fs.writeFileSync('height.json', validators)
         }
