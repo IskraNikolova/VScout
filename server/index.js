@@ -38,9 +38,9 @@ let i = 0
 let index = 500
 let inProcess = false
 
-let obs = getObserversArray()
-setObserervers(index, obs)
-controllers.validators.getUptimes(obs)
+// let obs = getObserversArray()
+// setObserervers(index, obs)
+// controllers.validators.getUptimes(obs)
 
 setInterval(() => {
   try {
@@ -63,4 +63,4 @@ setInterval(() => {
   } catch (err) {
     console.log(err)
   }
-}, 100000)
+}, 10000)
