@@ -29,7 +29,6 @@ module.exports = {
         // fs.writeFileSync('logs.json', data)
       }
       const apiValidators = resVal.data.result
-      console.log(apiValidators)
 
       const resPVal = await axios
         .post(endpoint + '/ext/P', body('platform.getPendingValidators'))

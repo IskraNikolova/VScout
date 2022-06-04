@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import { c } from './../utils/constants'
 const { network } = require('./config').default
-const server = 'https://vscout.io/v/' // 'http://localhost:5000/'
+const server = 'http://localhost:5810/' // 'https://vscout.io/v/' //
 
 let id = 1
 axios.defaults.headers[c.contentTypeHeader] = c.contentTypeValue

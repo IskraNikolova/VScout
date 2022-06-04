@@ -218,7 +218,7 @@ export const versionNum = {
   'avalanche/1.7.9': 16,
   'avalanche/1.7.10': 17,
   'avalanche/1.7.11': 18,
-  'avalanche/1.7.12': 12,
-  'avalanche/1.7.13': 13,
-  'avalanche/1.8.0': 14
+  'avalanche/1.7.12': 19,
+  'avalanche/1.7.13': 20,
+  'avalanche/1.8.0': 21
 }

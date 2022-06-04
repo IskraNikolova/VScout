@@ -18,15 +18,12 @@ module.exports = {
   blockHeight: (endpoint) => {
     axios.post(endpoint + '/ext/P', body())
       .then((res) => {
-        console.log(res)
         if (res.data.error) {
-          console.log(res)
           // const error = res.data.error
           // const data = JSON.stringify(error)
           // fs.writeFileSync('logs.json', data)
         } else {
           const data = res.data.result
-          console.log(data)
           const validators = JSON.stringify(data)
           fs.writeFileSync('height.json', validators)
         }
@@ -47,7 +44,6 @@ module.exports = {
       }
       try {
         const height = JSON.parse(data)
-        console.log(height)
         res.status(200).send(height)
         res.end()
       } catch (err) {
