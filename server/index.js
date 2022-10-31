@@ -14,19 +14,19 @@ require('./config/routes')(app)
 app.listen(config.port, () => console.log(`Server start on port ${config.port}`))
 
 // const endpoint = 'http://135.181.144.201:9650'
-const endpoints =  ['http://165.173.18.156:9650']
+const endpoint =  'http://165.173.18.156:9650'
 
 // let endpoints = getEndpoints()
 
-let i = 0
+// let i = 0
 setInterval(() => {
-  const endpoint = endpoints[i]
+  // const endpoint = endpoints[i]
   controllers.avax.avaxPrice()
   controllers.platform.blockHeight(endpoint)
   controllers.validators.validators(endpoint)
   controllers.node.info(endpoint)
   controllers.node.peersPost(endpoint)
-  i = (index++) % endpoints.length
+  // i = (index++) % endpoints.length
   // if (i >= endpoints.length) {
   //   endpoints = getEndpoints()
   //   i = 0
