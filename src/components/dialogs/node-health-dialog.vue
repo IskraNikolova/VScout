@@ -41,77 +41,137 @@
             </div>
           </q-item-section>
         </q-item>
+        <q-separator :dark="appTheme==='dark'" />
         <q-item :dark="appTheme==='dark'">
           <q-item-section>
-            <span class="q-mb-md">Network</span>
+            <span class="q-mb-md text-pur">Bootstrapped</span>
+            <small v-if="bootstrappedMessages.length > 0">Messages: </small>
+            <div v-for="msg in bootstrappedMessages" v-bind:key="msg">
+              <small class="text-panel">  - {{ msg }} </small>
+            </div>
+            <div>
+              <small>Timestamp: </small>
+              <small class="text-panel">{{ timestampBootstrapped }}</small>
+              <tooltip-style v-bind:text="'Timestamp is the timestamp of the last health check.'" />
+            </div>
             <div>
               <small>Duration: </small>
-              <span class="text-panel">{{ duration }}</span>
+              <small class="text-panel">{{ durationBootstrapped }} ns</small>
+              <tooltip-style v-bind:text="'Duration is the execution duration of the last health check in milliseconds.'" />
+            </div>
+          </q-item-section>
+        </q-item>
+        <q-separator :dark="appTheme==='dark'" />
+        <q-item :dark="appTheme==='dark'">
+          <q-item-section>
+            <span class="q-mb-md text-pur">Network</span>
+            <div>
+              <small>Timestamp: </small>
+              <small class="text-panel">{{ timestampNetwork }}</small>
+            </div>
+            <div>
+              <small>Duration: </small>
+              <span class="text-panel"><small>{{ duration }} ns</small></span>
               <tooltip-style v-bind:text="'Duration is the execution duration of the last health check in milliseconds.'" />
             </div>
             <div>
-              <small>Time Of First Failure: </small>
-              <span class="text-panel">{{ timeOfFirstFailure }}</span>
-              <tooltip-style v-bind:text="'Time of first failure is the time of the initial transitional failure.'" />
+              <small>Connected Peers: </small>
+              <span class="text-panel"><small>{{ connectedPeers }}</small></span>
             </div>
             <div>
-              <small>Contiguous Failures: </small>
-              <span class="text-panel">{{ contiguousFailures }}</span>
-              <tooltip-style v-bind:text="'Contiguous failures is the number of fails that occurred in a row.'" />
+              <small>Send Fail Rate: </small>
+              <small class="text-panel">{{ sendFailRate }}</small>
+            </div>
+            <div>
+              <small>Last Message Received: </small>
+              <small class="text-panel">{{ timeSinceLastMsgReceived }}</small>
+              <tooltip-style v-bind:text="'Time since last message received.'" />
+            </div>
+            <div>
+              <small>Last Message Sent: </small>
+              <small class="text-panel">{{ timeSinceLastMsgSent }}</small>
+              <tooltip-style v-bind:text="'Time since last message sent.'" />
             </div>
           </q-item-section>
           <q-separator vertical :dark="appTheme==='dark'" />
           <q-item-section class="q-pl-md">
-            <span class="q-mb-md">Router</span>
-             <div>
+            <span class="q-mb-md text-pur">Router</span>
+            <div>
+              <small>Timestamp: </small>
+              <small class="text-panel">{{ timeOfFirstFailure2 }}</small>
+            </div>
+            <div>
               <small>Duration: </small>
-              <span class="text-panel">{{ duration2 }}</span>
+              <small class="text-panel">{{ duration2 }} ns</small>
+              <tooltip-style v-bind:text="'Duration is the execution duration of the last health check, in nanoseconds.'" />
             </div>
             <div>
-              <small>Time Of First Failure: </small>
-              <span class="text-panel">{{ timeOfFirstFailure2 }}</span>
+              <small>Longest Running Request: </small>
+              <small class="text-panel">{{ longestRunningRequest }}</small>
             </div>
             <div>
-              <small>Contiguous Failures: </small>
-              <span class="text-panel">{{ contiguousFailures2 }}</span>
+              <small>Outstanding Requests: </small>
+              <small class="text-panel">{{ outstandingRequests }}</small>
+            </div>
+          </q-item-section>
+        </q-item>
+        <q-separator :dark="appTheme==='dark'" />
+        <q-item :dark="appTheme==='dark'">
+          <q-item-section>
+            <span class="q-mb-md text-pur">Diskspace</span>
+            <div>
+              <small>Timestamp: </small>
+              <small class="text-panel">{{ timestampDiskspace }}</small>
+            </div>
+            <div>
+              <small>Duration: </small>
+              <small class="text-panel">{{ durationDiskspace }} ns</small>
+              <tooltip-style v-bind:text="'Duration is the execution duration of the last health check in milliseconds.'" />
+            </div>
+            <div>
+              <small>Available Disk Bytes: </small>
+              <small class="text-panel">{{ availableDiskBytes }}</small>
+            </div>
+          </q-item-section>
+          <q-separator vertical :dark="appTheme==='dark'" />
+          <q-item-section class="q-pl-md">
+            <span class="q-mb-md text-pur">Database</span>
+            <div>
+              <small>Timestamp: </small>
+              <small class="text-panel">{{ timestampDatabase }}</small>
+            </div>
+            <div>
+              <small>Duration: </small>
+              <small class="text-panel">{{ durationDatabase }} ns</small>
+              <tooltip-style v-bind:text="'Duration is the execution duration of the last health check, in nanoseconds.'" />
             </div>
           </q-item-section>
         </q-item>
         <q-separator :dark="appTheme==='dark'" />
         <q-item v-if="c" :dark="appTheme==='dark'">
           <q-item-section>
-            <span>C-Chain</span>
+            <span class="q-mb-md text-green">C-Chain</span>
             <div v-if="c.error">
               <small>Error: </small>
               <span class="text-negative">{{ c.error.message }}</span>
             </div>
             <div class="q-pt-md">
               <small>Timestamp: </small>
-              <span class="text-panel">{{ getDateFormat(c.timestamp) }}</span>
+              <small class="text-panel">{{ getDateFormat(c.timestamp) }}</small>
               <tooltip-style v-bind:text="'Timestamp is the timestamp of the last health check.'" />
             </div>
             <div>
               <small>Duration: </small>
-              <span class="text-panel">{{ c.duration }}</span>
+              <small class="text-panel">{{ c.duration }} ns</small>
               <tooltip-style v-bind:text="'Duration is the execution duration of the last health check.'" />
-            </div>
-            <div>
-              <small>Time Of First Failure: </small>
-              <span class="text-panel">{{ c.timeOfFirstFailure }}</span>
-              <tooltip-style v-bind:text="'Time of first failure is the time of the initial transitional failure.'" />
-            </div>
-            <div>
-              <small>Contiguous Failures: </small>
-              <span class="text-panel">{{ c.contiguousFailures }}</span>
-              <tooltip-style v-bind:text="'Contiguous failures is the number of fails that occurred in a row.'" />
             </div>
           </q-item-section>
           <q-separator vertical :dark="appTheme==='dark'" />
           <q-item-section class="q-pl-md">
-            <span>X-Chain</span>
+            <span class="q-mb-md text-green">X-Chain</span>
             <div class="q-pt-md">
               <small>Timestamp: </small>
-              <span class="text-panel">{{ getDateFormat(x.timestamp) }}</span>
+              <small class="text-panel">{{ getDateFormat(x.timestamp) }}</small>
               <tooltip-style v-bind:text="'Timestamp is the timestamp of the last health check.'" />
             </div>
             <div v-if="x.error">
@@ -120,24 +180,16 @@
             </div>
              <div>
               <small>Duration: </small>
-              <span class="text-panel">{{ x.duration }}</span>
-            </div>
-            <div>
-              <small>Time Of First Failure: </small>
-              <span class="text-panel">{{ x.timeOfFirstFailure }}</span>
-            </div>
-            <div>
-              <small>Contiguous Failures: </small>
-              <span class="text-panel">{{ x.contiguousFailures }}</span>
+              <small class="text-panel">{{ x.duration }} ns</small>
             </div>
           </q-item-section>
         </q-item>
         <q-separator :dark="appTheme==='dark'" />
         <q-item v-if="p" :dark="appTheme==='dark'">
           <q-item-section>
-            <span>P-Chain</span>
+            <span class="q-mb-md text-green">P-Chain</span>
               <div>
-                <small>Percent Connected: </small> <span class="text-panel">{{ getPercent(p.message) }}</span> %
+                <small>Primary - percent Connected: </small> <span class="text-panel">{{ getPercent(p.message) }}</span> %
                 <q-linear-progress stripe size="15px" :value="getPercentL(p.message)" color="purple">
                 </q-linear-progress>
               </div>
@@ -147,23 +199,13 @@
             </div>
             <div class="q-pt-md">
               <small>Timestamp: </small>
-              <span class="text-panel">{{ getDateFormat(p.timestamp) }}</span>
+              <small class="text-panel">{{ getDateFormat(p.timestamp) }}</small>
               <tooltip-style v-bind:text="'Timestamp is the timestamp of the last health check.'" />
             </div>
             <div>
               <small>Duration: </small>
-              <span class="text-panel">{{ p.duration }}</span>
+              <small class="text-panel">{{ p.duration }} ns</small>
               <tooltip-style v-bind:text="'Duration is the execution duration of the last health check.'" />
-            </div>
-            <div>
-              <small>Time Of First Failure: </small>
-              <span class="text-panel">{{ p.timeOfFirstFailure }}</span>
-              <tooltip-style v-bind:text="'Time of first failure is the time of the initial transitional failure.'" />
-            </div>
-            <div>
-              <small>Contiguous Failures: </small>
-              <span class="text-panel">{{ p.contiguousFailures }}</span>
-              <tooltip-style v-bind:text="'Contiguous failures is the number of fails that occurred in a row.'" />
             </div>
           </q-item-section>
         </q-item>
@@ -249,6 +291,95 @@ export default {
         return ''
       }
     },
+    timestampDiskspace: function () {
+      try {
+        const timestampD = this.nodeHealthInfo
+          .checks
+          .diskspace
+          .timestamp
+        return datePickerFormat(timestampD)
+      } catch (err) {
+        return ''
+      }
+    },
+    durationDiskspace: function () {
+      try {
+        const durationD = this.nodeHealthInfo
+          .checks
+          .diskspace
+          .duration
+        return durationD
+      } catch (err) {
+        return ''
+      }
+    },
+    availableDiskBytes: function () {
+      try {
+        const diskBytes = this.nodeHealthInfo
+          .checks
+          .diskspace
+          .message
+          .availableDiskBytes
+        return diskBytes
+      } catch (err) {
+        return ''
+      }
+    },
+    timestampDatabase: function () {
+      try {
+        const timestampDb = this.nodeHealthInfo
+          .checks
+          .database
+          .timestamp
+        return datePickerFormat(timestampDb)
+      } catch (err) {
+        return ''
+      }
+    },
+    durationDatabase: function () {
+      try {
+        const durationDb = this.nodeHealthInfo
+          .checks
+          .database
+          .duration
+        return durationDb
+      } catch (err) {
+        return ''
+      }
+    },
+    durationBootstrapped: function () {
+      try {
+        const h = this.nodeHealthInfo
+          .checks
+          .bootstrapped
+          .duration
+        return h
+      } catch (err) {
+        return ''
+      }
+    },
+    timestampBootstrapped: function () {
+      try {
+        const timestampN = this.nodeHealthInfo
+          .checks
+          .bootstrapped
+          .timestamp
+        return datePickerFormat(timestampN)
+      } catch (err) {
+        return ''
+      }
+    },
+    bootstrappedMessages: function () {
+      try {
+        const msgs = this.nodeHealthInfo
+          .checks
+          .bootstrapped
+          .message
+        return msgs
+      } catch (err) {
+        return []
+      }
+    },
     duration: function () {
       try {
         const h = this.nodeHealthInfo
@@ -260,13 +391,61 @@ export default {
         return ''
       }
     },
-    timeOfFirstFailure: function () {
+    timestampNetwork: function () {
       try {
-        const h = this.nodeHealthInfo
+        const timestampN = this.nodeHealthInfo
           .checks
           .network
-          .timeOfFirstFailure
-        return datePickerFormat(h)
+          .timestamp
+        return datePickerFormat(timestampN)
+      } catch (err) {
+        return ''
+      }
+    },
+    connectedPeers: function () {
+      try {
+        const peers = this.nodeHealthInfo
+          .checks
+          .network
+          .message
+          .connectedPeers
+        return peers
+      } catch (err) {
+        return ''
+      }
+    },
+    sendFailRate: function () {
+      try {
+        const sfr = this.nodeHealthInfo
+          .checks
+          .network
+          .message
+          .sendFailRate
+        return sfr
+      } catch (err) {
+        return ''
+      }
+    },
+    timeSinceLastMsgReceived: function () {
+      try {
+        const tR = this.nodeHealthInfo
+          .checks
+          .network
+          .message
+          .timeSinceLastMsgReceived
+        return tR
+      } catch (err) {
+        return ''
+      }
+    },
+    timeSinceLastMsgSent: function () {
+      try {
+        const tS = this.nodeHealthInfo
+          .checks
+          .network
+          .message
+          .timeSinceLastMsgSent
+        return tS
       } catch (err) {
         return ''
       }
@@ -298,19 +477,32 @@ export default {
         const h = this.nodeHealthInfo
           .checks
           .router
-          .timeOfFirstFailure
+          .timestamp
         return datePickerFormat(h)
       } catch (err) {
         return ''
       }
     },
-    contiguousFailures2: function () {
+    longestRunningRequest: function () {
       try {
         const h = this.nodeHealthInfo
           .checks
           .router
-          .contiguousFailures
+          .message
+          .longestRunningRequest
         return h
+      } catch (err) {
+        return ''
+      }
+    },
+    outstandingRequests: function () {
+      try {
+        const request = this.nodeHealthInfo
+          .checks
+          .router
+          .message
+          .outstandingRequests
+        return request
       } catch (err) {
         return ''
       }
@@ -323,12 +515,12 @@ export default {
     }),
     getPercent (p) {
       if (!p || !p.vm) return
-      const percent = p.vm.percentConnected
+      const percent = p.vm['primary-percentConnected']
       return round(percent * 100, 1000)
     },
     getPercentL (p) {
       if (!p || !p.vm) return
-      return p.vm.percentConnected
+      return p.vm['primary-percentConnected']
     },
     getUpTime (val) {
       if (!val) return
