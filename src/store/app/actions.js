@@ -227,11 +227,20 @@ async function getValidators (
         isInit
       )
 
+      let rows = res.validators
+      const arr = []
+      arr.push(rows
+        .find(a => (a.nodeID.toLowerCase() ===
+         'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj'.toLowerCase())))
+      rows = rows
+        .filter(a => a.nodeID !== 'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj')
+      rows = arr.concat(rows)
+
       // Commit data
-      commit(SET_VALIDATORS, { validators: res.validators })
+      commit(SET_VALIDATORS, { validators: rows })
 
       commit(SET_DEFAULT_VALIDATORS, {
-        defaultValidators: res.validators
+        defaultValidators: rows
       })
 
       // Check for new notifications

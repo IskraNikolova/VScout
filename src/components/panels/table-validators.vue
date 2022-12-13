@@ -711,11 +711,6 @@ export default {
       return avax
     },
     customSort (rows, sortBy, descending) {
-      const arr = []
-      arr.push(rows
-        .find(a => (a.nodeID.toLowerCase() ===
-         'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj'.toLowerCase())))
-      rows = arr.concat(rows)
       const data = [...rows]
       if (!data) return
       if (sortBy) {
