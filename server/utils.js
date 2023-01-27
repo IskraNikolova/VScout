@@ -28,7 +28,8 @@ const filterList = [
   'NodeID-6FSSZuuLEZ4sHJZGfpY4Wuz8M3qnK6ec5',
   'NodeID-9dhM1zG3atcKhiwhjRHZEEsvYBNM9wj6',
   'NodeID-NbJexKdcMyN1E1GYH1ra58jP61dZpt1wu',
-  'NodeID-JSKsSxV74dyp94CvBKqEKUcEEKBXyNbge'
+  'NodeID-JSKsSxV74dyp94CvBKqEKUcEEKBXyNbge',
+  'NodeID-31GCz5ZHCGdKDpCeBRMPrmiBgoeAWnCz5'
 ]
 
 const fs = require('fs')
@@ -96,9 +97,9 @@ module.exports = {
         let all = up.reduce((a, b) => {
           return a + Number(b.uptime)
         }, 0.0)
-  
-        val.uptime = (all / up.length).toFixed(3)  
-      }
+
+        val.uptime = (all / up.length).toFixed(3) 
+      }   
       return {
         ...val,
         duration,
@@ -308,8 +309,7 @@ module.exports = {
       const peers = resultPeers
         .peers
         .filter(val => !ob.includes(val.nodeID))
-      // console.log(peers)
-      // console.log(index)
+
       let m = 0
       do {
         index++
@@ -344,8 +344,7 @@ module.exports = {
         }
       } while (m < 33)
     } catch (err) {
-      console.log('error')
-      // console.log(err)
+      console.log(err)
     }
   },
   getObserversArray: () => {
@@ -400,6 +399,7 @@ module.exports = {
           })
           // .filter(v => v.connected)
           .filter(v => Number(v.uptime) >= 0.8)
+          .filter(v => Number(v.uptime) <= 1)
   
       const v = currentValidators.map(a => a.nodeID)
       const o = observers
