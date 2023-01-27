@@ -63,4 +63,4 @@ setInterval(() => {
   } catch (err) {
     console.log(err)
   }
-}, 10000)
+}, 100000)
