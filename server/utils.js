@@ -97,9 +97,9 @@ module.exports = {
         let all = up.reduce((a, b) => {
           return a + Number(b.uptime)
         }, 0.0)
-
-        val.uptime = (all / up.length).toFixed(3) 
-      }   
+  
+        val.uptime = (all / up.length).toFixed(3)  
+      }
       return {
         ...val,
         duration,
@@ -309,7 +309,8 @@ module.exports = {
       const peers = resultPeers
         .peers
         .filter(val => !ob.includes(val.nodeID))
-
+      // console.log(peers)
+      // console.log(index)
       let m = 0
       do {
         index++
@@ -344,7 +345,8 @@ module.exports = {
         }
       } while (m < 33)
     } catch (err) {
-      console.log(err)
+      console.log('error')
+      // console.log(err)
     }
   },
   getObserversArray: () => {
@@ -399,7 +401,6 @@ module.exports = {
           })
           // .filter(v => v.connected)
           .filter(v => Number(v.uptime) >= 0.8)
-          .filter(v => Number(v.uptime) <= 1)
   
       const v = currentValidators.map(a => a.nodeID)
       const o = observers
