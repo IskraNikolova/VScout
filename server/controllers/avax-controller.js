@@ -10,7 +10,6 @@ module.exports = {
           throw new Error()
         }
         const data = req.data.market_data
-        console.log(data)
         const marketData = JSON.stringify(data)
         fs.writeFileSync('price.json', marketData)
       })

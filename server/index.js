@@ -5,7 +5,7 @@ const fs = require('fs')
 
 const config = require('./config/config')[env]
 
-let app = require('express')()
+const app = require('express')()
 
 require('./config/express')(app)
 
@@ -14,11 +14,11 @@ require('./config/routes')(app)
 app.listen(config.port, () => console.log(`Server start on port ${config.port}`))
 
 // const endpoint = 'http://135.181.144.201:9650'
-const endpoint =  'http://18.116.253.54:9650'
+const endpoint = 'http://18.116.253.54:9650'
 
 // let endpoints = getEndpoints()
 
-//let i = 0
+// let i = 0
 setInterval(() => {
   // const endpoint = endpoints[i]
   controllers.avax.avaxPrice()

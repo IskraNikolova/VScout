@@ -41,7 +41,6 @@ async function setValidator ({ commit }, { id }) {
       _getValidatorById(id),
       _getNodeUptime(id)
     ])
-
     const val = response[0].data
     const info = response[1]
     val.avatarUrl = info.avatarUrl ? info.avatarUrl : getAvatar(id).monster
