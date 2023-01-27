@@ -1,1 +1,16 @@
-{"observers":[{"endpoint":"http://3.134.188.22:9650","nodeID":"NodeID-KCX4L5dr83TbmBnE4UeFtzGeE2NSLskt8"},{"endpoint":"http://13.52.29.239:9650","nodeID":"NodeID-AHTFPmvMrQBt1hcoGS7HugNCuu15Q5gY6"},{"endpoint":"http://143.244.191.161:9650","nodeID":"NodeID-5gcdejFBQ3wMPFpo7qKUKBREJ8w3PRTM1"}]}
+{
+    "observers": [
+        {
+            "endpoint": "http://3.134.188.22:9650",
+            "nodeID": "NodeID-KCX4L5dr83TbmBnE4UeFtzGeE2NSLskt8"
+        },
+        {
+            "endpoint": "http://13.52.29.239:9650",
+            "nodeID": "NodeID-AHTFPmvMrQBt1hcoGS7HugNCuu15Q5gY6"
+        },
+        {
+            "endpoint": "http://143.244.191.161:9650",
+            "nodeID": "NodeID-5gcdejFBQ3wMPFpo7qKUKBREJ8w3PRTM1"
+        }
+    ]
+}
