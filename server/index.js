@@ -33,7 +33,7 @@ setInterval(() => {
   // } else {
   //   i++
   // }
-}, 70000)
+}, 7000)
 
 let index = 500
 let inProcess = false
@@ -63,4 +63,4 @@ setInterval(() => {
   } catch (err) {
     console.log(err)
   }
-}, 100000)
+}, 1000)
