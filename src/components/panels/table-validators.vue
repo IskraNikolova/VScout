@@ -394,13 +394,16 @@
 <script>
 import { mapGetters } from 'vuex'
 
+const humanizeDuration = require('humanize-duration')
+const {
+  network
+} = require('./../../modules/config')
+
 import {
   copyToClipboard,
   exportFile,
   openURL
 } from 'quasar'
-
-import { versionNum, labelColors } from './../../utils/constants.js'
 
 function wrapCsvValue (val, formatFn) {
   let formatted = formatFn !== undefined
@@ -418,11 +421,22 @@ function wrapCsvValue (val, formatFn) {
   // .split('\r').join('\\r')
   return `"${formatted}"`
 }
-const humanizeDuration = require('humanize-duration')
-import { dateFormat, fromNow, date } from './../../modules/time.js'
-import { getAvaFromnAva } from './../../utils/avax.js'
-import { round } from './../../utils/commons.js'
-const { network } = require('./../../modules/config').default
+
+import {
+  dateFormat,
+  fromNow,
+  date
+} from './../../modules/time.js'
+
+import {
+  getAvaFromnAva
+} from './../../utils/avax.js'
+
+import {
+  round,
+  extractNumber
+} from './../../utils/commons.js'
+
 import { UPDATE_UI } from './../../store/ui/types.js'
 
 import { SET_SUBNET_ID } from './../../store/app/types.js'
@@ -653,7 +667,8 @@ export default {
       'appTheme',
       'defaultValidators',
       'isDefaultSubnetID',
-      'pendingValidators'
+      'pendingValidators',
+      'nodesVersions'
     ]),
     isYourNode: function (id) {
       return id === this.nodeID
@@ -667,7 +682,7 @@ export default {
   methods: {
     getNumberFromVer (val) {
       if (!val) return 0
-      return versionNum[`${val}`]
+      return extractNumber`${val}` // versionNum[`${val}`]
     },
     filterMethod () {
       if (this.curentValidators && this.curentValidators.length > 0) {
@@ -692,7 +707,10 @@ export default {
       this.isGrid = true
     },
     getVersionColor (val) {
-      const version = labelColors[`avalanche/${val}`]
+      const color = this.nodesVersions
+        .filter(obj => obj.version === `avalanche/${val}`)
+        .map(obj => obj.color)
+      const version = color[0]
       return 'background-color:' + version + ';'
     },
     getFormatVersion (val) {

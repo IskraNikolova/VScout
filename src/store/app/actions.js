@@ -92,13 +92,10 @@ import {
 } from './../../modules/avalanche.js'
 
 import {
-  round
+  round,
+  stringToColor,
+  extractNumber
 } from './../../utils/commons.js'
-
-import {
-  labelColors,
-  versionNum
-} from './../../utils/constants.js'
 
 async function initApp (
   { dispatch, getters }) {
@@ -557,8 +554,7 @@ async function getNodeVersions (
       if (!info) return
       let { version, nodeCount, stakeAmount } = info
       stakeAmount = round(stakeAmount, 1000)
-      let color = labelColors[`${version}`]
-      if (!color) color = '#ffffff'
+      const color = stringToColor(version)
       allCount += Number(nodeCount)
       const stake = getAvaFromnAva(stakeAmount)
       nodesVersions.push({ version, count: nodeCount, stake, color })
@@ -571,8 +567,8 @@ async function getNodeVersions (
 }
 
 function compare (a, b) {
-  const aNum = versionNum[`${a.version}`]
-  const bNum = versionNum[`${b.version}`]
+  const aNum = extractNumber(a.version)
+  const bNum = extractNumber(b.version)
   return bNum - aNum
 }
 

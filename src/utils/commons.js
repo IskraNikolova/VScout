@@ -56,6 +56,51 @@ export function round (num, prec) {
   return Math.round((Number(num) + Number.EPSILON) * multiplier) / multiplier
 }
 
+export function stringToHex (str) {
+  let hash = 0
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  let color = '#'
+  for (let i = 0; i < 3; i++) {
+    const value = (hash >> (i * 8)) & 0xff
+    color += ('00' + value.toString(16)).substr(-2)
+  }
+  return color
+}
+
+export function stringToColor (str) {
+  let hash = 0
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  const colors = [
+    '#94F7B2',
+    '#c7f0e9',
+    '#31696b',
+    '#8BEEC9',
+    '#e3d8eb',
+    '#93E3D5',
+    '#a263c7',
+    '#ffffff',
+    '#eebf8a',
+    '#fafbff',
+    '#c9caca',
+    '#fde2e2',
+    '#56818b'
+  ]
+
+  return colors[Math.abs(hash) % colors.length]
+}
+
+export function extractNumber (str) {
+  const match = str.match(/\d+/g)
+  if (match) {
+    return match.join('')
+  }
+  return null
+}
+
 export function getChartLabel (interval, key) {
   if (typeof key === 'undefined' ||
       typeof interval === 'undefined') return
