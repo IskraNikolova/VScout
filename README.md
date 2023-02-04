@@ -5,12 +5,12 @@
 VScout.io is a powerful analytical tool for exploring subnetworks within the Avalanche Network. This DApp application provides a comprehensive view of the validators in the network and includes detailed information, network statistics, staking calculator, blockchain switcher, and configurable endpoints.
 
 ## Features
-. Detailed network validators information, including optional identification.
-. Network statistics.
-. Staking calculator.
-. Blockchain switcher.
-. Configurable endpoints.
-. FAQ section.
+ * Detailed network validators information, including optional identification.
+ * Network statistics.
+ * Staking calculator.
+ * Blockchain switcher.
+ * Configurable endpoints.
+ * FAQ section.
 ## Technology Stack
 VScout.io is written in Quasar, a Vue-based framework, and uses Node.js for the server. The codebase also makes use of Webpack and Jest for building and testing the application.
 
