@@ -96,7 +96,7 @@ module.exports = {
       if (up) {
         let all = up.reduce((a, b) => {
           return a + Number(b.uptime)
-        }, 0.0)
+        }, 0)
   
         val.uptime = (all / up.length).toFixed(3)  
       }
