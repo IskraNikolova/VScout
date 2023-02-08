@@ -28,8 +28,7 @@ const filterList = [
   'NodeID-6FSSZuuLEZ4sHJZGfpY4Wuz8M3qnK6ec5',
   'NodeID-9dhM1zG3atcKhiwhjRHZEEsvYBNM9wj6',
   'NodeID-NbJexKdcMyN1E1GYH1ra58jP61dZpt1wu',
-  'NodeID-JSKsSxV74dyp94CvBKqEKUcEEKBXyNbge',
-  'NodeID-31GCz5ZHCGdKDpCeBRMPrmiBgoeAWnCz5'
+  'NodeID-JSKsSxV74dyp94CvBKqEKUcEEKBXyNbge'
 ]
 
 const fs = require('fs')
@@ -41,11 +40,11 @@ module.exports = {
     let validatedStake = new BigNumber(0)
     let delegatedStake = new BigNumber(0)
     let potentialReward = new BigNumber(0)
-    let delegatorsMap = {}
+    const delegatorsMap = {}
     let uptimes = ''
     try {
       uptimes = fs.readFileSync('uptime.json').toString()
-      uptimes = JSON.parse(uptimes)  
+      uptimes = JSON.parse(uptimes)
     } catch (err) {
     }
 
@@ -55,10 +54,10 @@ module.exports = {
 
       potentialReward = BigNumber
         .sum(potentialReward, val.potentialReward)
-      
+
       const peer = peers
         .find(p => p.nodeID === val.nodeID)
-  
+
       if (peer) {
         val.country = peer.country
         val.isp = peer.isp
@@ -74,31 +73,33 @@ module.exports = {
       const delegateStake = props.delegateStake
       delegatedStake = BigNumber.sum(delegatedStake, delegateStake)
       const delegatePotentialReward = props.potentialReward
-  
+
       const countDownCounterRes = countDownCounter(val.endTime)
       const remainingTime = countDownCounterRes.countdown
-  
+
       const totalStakeAmount = BigNumber
         .sum(val.stakeAmount, delegateStake)
-  
+
       const remainingCapacity = getRemainingCapacity(
         val.stakeAmount,
         delegateStake
       )
-  
+
       const isMinimumAmountForStake = countDownCounterRes
         .isMinimumAmountForStake
-  
+
       const duration = diff(val.endTime, val.startTime)
 
-      let up = uptimes[val.nodeID]
+      const up = uptimes[val.nodeID]
 
       if (up) {
-        let all = up.reduce((a, b) => {
-          return a + Number(b.uptime)
-        }, 0)
-  
-        val.uptime = (all / up.length).toFixed(3)  
+        const all = up.reduce((a, b) => {
+          let upt = 0
+          if (Number(b.uptime) <= 1) upt = b.uptime * 100
+          return a + upt
+        }, 0.0)
+
+        val.uptime = (all / up.length).toFixed(3)
       }
       return {
         ...val,
@@ -299,11 +300,11 @@ module.exports = {
 
     try {
       if (obsArray.length >= 33) return
-      
+
       let peersInJson = fs.readFileSync('peers.json')
         .toString()
       if (!peersInJson) peersInJson = {}
-      let resultPeers = JSON.parse(peersInJson)
+      const resultPeers = JSON.parse(peersInJson)
 
       const ob = obsArray.map(o => o.nodeID)
       const peers = resultPeers
@@ -352,14 +353,14 @@ module.exports = {
   getObserversArray: () => {
     try {
       const obs = fs
-      .readFileSync('observers.json')
-      .toString()
-  
+        .readFileSync('observers.json')
+        .toString()
+
       if (!obs) return []
 
-      let observers = JSON.parse(obs)
+      const observers = JSON.parse(obs)
         .observers
-      
+
       // for (let i = 0; i < observers.length; i++) {
       //   const endpoint = observers[i].endpoint
       //   const response = await axios
@@ -424,12 +425,12 @@ module.exports = {
       return []
     }
   },
-  getEndpoints: (() => {
+  getEndpoints: () => {
     try {
       const observers = fs.readFileSync('observers.json')
         .toString()
 
-      let obs = JSON.parse(observers)
+      const obs = JSON.parse(observers)
 
       const endpoints = obs
         .observers
@@ -438,12 +439,12 @@ module.exports = {
       return endpoints
     } catch {
       return [
-        "http://44.229.180.165:9650",
-        "http://18.116.253.54:9650",
-        "http://198.199.65.198:9650"
+        'http://44.229.180.165:9650',
+        'http://18.116.253.54:9650',
+        'http://198.199.65.198:9650'
       ]
     }
-  })
+  }
 }
 
 function process ({

@@ -12,7 +12,7 @@ const body = (method) => {
   return {
     jsonrpc: '2.0',
     method,
-    params : {},
+    params: {},
     id: id++
   }
 }
@@ -83,7 +83,7 @@ module.exports = {
 
       const data = JSON.stringify(response)
       fs.writeFileSync('validators.json', data)
-      
+
       const statResponse = utils.getStakingStats(apiValidators.validators, delegatorsMap)
       const stat = JSON.stringify(statResponse)
       fs.writeFileSync('stakeStat.json', stat)
@@ -98,9 +98,9 @@ module.exports = {
     try {
       const data = await fs.readFileSync('validators.json').toString()
       const validators = JSON.parse(data).validators
-      let validator = validators.find(v => v.nodeID === id)
+      const validator = validators.find(v => v.nodeID === id)
 
-      let delegations = await fs.readFileSync('delegators.json').toString()
+      const delegations = await fs.readFileSync('delegators.json').toString()
       validator['delegators'] = (JSON.parse(delegations))[`${id}`]
 
       res.status(200).send(validator)
@@ -142,49 +142,49 @@ module.exports = {
       validatorsJ = JSON.parse(validatorsJ)
         .validators
 
-      let uptimes = new Object()
+      const uptimes = new Object()
       for (let i = 0; i < length; i++) {
         try {
           const endpoint = observers[i]
             .endpoint
 
-          let cV = validatorsJ
+          const cV = validatorsJ
             .find(v => v.nodeID === observers[i].nodeID)
           if (cV) {
             const response = await axios
               .post(endpoint + '/ext/P', body('platform.getCurrentValidators'))
-  
+
             if (response.data.error) {
-              let obsArray = observers.filter(o => o.nodeID !== observers[i].nodeID)
+              const obsArray = observers.filter(o => o.nodeID !== observers[i].nodeID)
               fs.writeFileSync(
                 'observers.json',
                 JSON.stringify({ observers: obsArray })
               )
               continue
             }
-  
+
             const { validators } = response.data.result
 
             validators.forEach(v => {
-              let obj = {
+              const obj = {
                 endpoint,
                 uptime: v.uptime,
                 observer: observers[i].nodeID
               }
-              
+
               if (!uptimes[v.nodeID]) uptimes[v.nodeID] = []
               uptimes[v.nodeID].push(obj)
             })
           }
         } catch (err) {
-          let obsArray = observers.filter(o => o.nodeID !== observers[i].nodeID)
+          const obsArray = observers.filter(o => o.nodeID !== observers[i].nodeID)
           fs.writeFileSync(
             'observers.json',
             JSON.stringify({ observers: obsArray })
           )
         }
       }
-      
+
       if (Object.keys(uptimes).length === 0 && uptimes.constructor === Object) return
 
       const u = JSON.stringify(uptimes)

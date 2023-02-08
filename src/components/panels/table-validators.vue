@@ -223,7 +223,7 @@
             </div>
             <div v-else-if="col.name === 'uptime'">
               <q-badge :color="getColorUptime(col.value)" outline class="text-medium" style="min-width: 57px;">
-                <span style="margin: auto;">{{ getRound(col.value * 100) }} %</span>
+                <span style="margin: auto;">{{ getRound(col.value) }} %</span>
               </q-badge>
             </div>
             <div v-else-if="col.name === 'connected'">
@@ -256,7 +256,7 @@
             <span class="absolute absolute-top-right q-mt-xs q-mr-md">
               <small class="q-mr-xs">Uptime</small>
               <q-badge :color="getColorUptime(props.row.uptime)" >
-                {{ getRound(props.row.uptime * 100) }} %
+                {{ getRound(props.row.uptime) }} %
               </q-badge>
             </span>
             <q-item>
@@ -833,8 +833,8 @@ export default {
       return round(val, 1000)
     },
     getColorUptime (val) {
-      if (val > 0.9) return 'positive'
-      else if (val >= 0.8) return 'warning'
+      if (val > 90) return 'positive'
+      else if (val >= 80) return 'warning'
       return 'negative'
     },
     getFormatReward (val) {

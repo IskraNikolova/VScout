@@ -81,11 +81,12 @@ export default {
     },
     getUpTime (val) {
       if (!val) return 0
-      return round(val * 100, 1000)
+      if (val <= 1) val = val * 100
+      return round(val, 1000)
     },
     getColorUptime (val) {
-      if (val > 0.9) return 'positive'
-      else if (val >= 0.8) return 'warning'
+      if (val > 90) return 'positive'
+      else if (val >= 80) return 'warning'
       return 'negative'
     }
   }
