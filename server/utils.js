@@ -96,6 +96,7 @@ module.exports = {
         const all = up.reduce((a, b) => {
           let u = 0
           if (Number(b.uptime) < 1.1) u = Number(b.uptime) * 100
+          else u = Number(b.uptime)
           return a + Number(u)
         }, 0.0)
 
