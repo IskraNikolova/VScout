@@ -94,13 +94,14 @@ module.exports = {
 
       if (up) {
         const all = up.reduce((a, b) => {
-          let upt = 0
-          if (Number(b.uptime) <= 1) upt = b.uptime * 100
-          return a + upt
+          let u = 0
+          if (Number(b.uptime) < 1.1) u = Number(b.uptime) * 100
+          return a + Number(u)
         }, 0.0)
 
         val.uptime = (all / up.length).toFixed(3)
       }
+
       return {
         ...val,
         duration,
@@ -400,7 +401,7 @@ module.exports = {
         .filter(function (a) {
           return m.includes(a.nodeID)
         })
-        .filter(v => Number(v.uptime) >= 0.8)
+      // .filter(v => v.connected)
 
       const v = currentValidators.map(a => a.nodeID)
       const o = observers
@@ -506,7 +507,7 @@ function mapDelegators (delegators) {
   return result
 }
 
-function substract24Hours()  {
+function substract24Hours () {
   return moment().subtract(24, 'h').format('X')
 }
 
@@ -514,7 +515,7 @@ function add24Hours () {
   return moment().add(24, 'h').format('X')
 }
 
-function substract7Days()  {
+function substract7Days () {
   return moment().subtract(7, 'days').format('X')
 }
 
@@ -522,7 +523,7 @@ function add7Days () {
   return moment().add(7, 'days').format('X')
 }
 
-function substractMonth()  {
+function substractMonth () {
   return moment().subtract(1, 'months').format('X')
 }
 
@@ -590,7 +591,7 @@ function getRemainingCapacity (stakeAmount, delegateStakeAmount) {
 
   return remainingCapacity.toNumber()
 }
-  
+
 function maxStake (ownStake) {
   // 5 times the validator's stake
   const relativeMaxStake = ownStake.multipliedBy(CAPACITY)
