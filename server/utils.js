@@ -335,7 +335,7 @@ module.exports = {
                 endpoint,
                 nodeID: currentValidator.nodeID
               })
-            
+
               fs.writeFileSync(
                 'observers.json',
                 JSON.stringify({ observers: obsArray })
@@ -395,14 +395,13 @@ module.exports = {
 
       const m = observers.map(a => a.nodeID)
       const currentValidators = JSON.parse(validators)
-          .validators
-          .filter(v => v)
-          .filter(function (a) {
-            return m.includes(a.nodeID)
-          })
-          // .filter(v => v.connected)
-          .filter(v => Number(v.uptime) >= 0.8 && Number(v.uptime <= 1.1))
-  
+        .validators
+        .filter(v => v)
+        .filter(function (a) {
+          return m.includes(a.nodeID)
+        })
+        .filter(v => Number(v.uptime) >= 0.8)
+
       const v = currentValidators.map(a => a.nodeID)
       const o = observers
         .filter((v, i, a) => a.findIndex(t => (t.nodeID === v.nodeID)) === i)
@@ -418,7 +417,7 @@ module.exports = {
         fs.writeFileSync(
           'observers.json',
           JSON.stringify({ observers: o })
-        )  
+        )
       }
       return observers
     } catch (err) {
