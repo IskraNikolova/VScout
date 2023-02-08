@@ -85,7 +85,7 @@ export default {
       return round(val, 1000)
     },
     getColorUptime (val) {
-      if (val > 90) return 'positive'
+      if (val >= 90) return 'positive'
       else if (val >= 80) return 'warning'
       return 'negative'
     }
