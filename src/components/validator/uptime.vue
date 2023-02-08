@@ -85,10 +85,12 @@ export default {
       return round(val, 1000)
     },
     getColorUptime (val) {
+      if (!val) return 0
       if (val <= 1) val = val * 100
-      if (val >= 90) return 'positive'
-      else if (val >= 80) return 'warning'
-      return 'negative'
+      console.log(val)
+      if (Number(val) >= 90) return 'positive'
+      else if (Number(val) >= 80) return 'warning'
+      else if (Number(val) < 80) return 'negative'
     }
   }
 }
