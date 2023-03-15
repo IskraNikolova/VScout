@@ -53,7 +53,7 @@ module.exports = {
       console.log(err)
     }
     const validatorsMap = validators.map((val) => {
-      const currentValidator = valJs.filter(a => a.nodeID === val.nodeID)
+      const currentValidator = valJs.find(a => a.nodeID === val.nodeID)
       validatedStake = BigNumber
         .sum(validatedStake, val.stakeAmount)
 
