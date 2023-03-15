@@ -41,14 +41,19 @@ module.exports = {
     let delegatedStake = new BigNumber(0)
     let potentialReward = new BigNumber(0)
     const delegatorsMap = {}
-    let uptimes = ''
+    let uptimes, valJs = ''
     try {
-      uptimes = fs.readFileSync('uptime.json').toString()
+      uptimes = fs.readFileSync('uptime.json')
+        .toString()
       uptimes = JSON.parse(uptimes)
+      valJs = fs.readFileSync('validators.json')
+        .toString()
+      valJs = JSON.parse(valJs).validators
     } catch (err) {
+      console.log(err)
     }
-
     const validatorsMap = validators.map((val) => {
+      const currentValidator = valJs.filter(a => a.nodeID === val.nodeID)
       validatedStake = BigNumber
         .sum(validatedStake, val.stakeAmount)
 
@@ -72,7 +77,11 @@ module.exports = {
       val.delegators = val.delegators ? val.delegators.length : 0
       const delegateStake = props.delegateStake
       delegatedStake = BigNumber.sum(delegatedStake, delegateStake)
-      const delegatePotentialReward = props.potentialReward
+
+      const condition = currentValidator.delegatePotentialReward >= props.potentialReward
+      const cReward = currentValidator.delegatePotentialReward
+      const nReward = props.potentialReward
+      const delegatePotentialReward = condition ? cReward : nReward
 
       const countDownCounterRes = countDownCounter(val.endTime)
       const remainingTime = countDownCounterRes.countdown
@@ -140,25 +149,25 @@ module.exports = {
       days: { validators: 0, stake: new BigNumber(0) },
       month: { validators: 0, stake: new BigNumber(0) }
     }
-  
+
     const outcomingVal = {
       hours: { validators: 0, stake: new BigNumber(0) },
       days: { validators: 0, stake: new BigNumber(0) },
       month: { validators: 0, stake: new BigNumber(0) }
     }
-  
+
     const incomingDel = {
       hours: { delegations: 0, stake: new BigNumber(0) },
       days: { delegations: 0, stake: new BigNumber(0) },
       month: { delegations: 0, stake: new BigNumber(0) }
     }
-  
+
     const outcomingDel = {
       hours: { delegations: 0, stake: new BigNumber(0) },
       days: { delegations: 0, stake: new BigNumber(0) },
       month: { delegations: 0, stake: new BigNumber(0) }
     }
-    
+
     const temp = {
       hours: {
         incomeVal: {
@@ -264,7 +273,7 @@ module.exports = {
       }
     }
 
-    for (let i = 0; i < validators.length; i++){
+    for (let i = 0; i < validators.length; i++) {
       const val = validators[i]
       temp.hours.incomeVal[Number(val.startTime) >= Number(hours24Ago)](val)
       temp.hours.outcomeVal[Number(val.endTime) <= Number(next24Hours)](val)
@@ -280,13 +289,13 @@ module.exports = {
           const del = dels[j]
           temp.hours.incomeDel[Number(del.startTime) >= Number(hours24Ago)](del)
           temp.hours.outcomeDel[Number(del.endTime) <= Number(next24Hours)](del)
-  
+
           temp.days.incomeDel[Number(del.startTime) >= Number(days7Ago)](del)
           temp.days.outcomeDel[Number(del.endTime) <= Number(next7Days)](del)
-  
+
           temp.month.incomeDel[Number(del.startTime) >= Number(monthAgo)](del)
           temp.month.outcomeDel[Number(del.endTime) <= Number(nextMonth)](del)
-        } 
+        }
       }
     }
 
@@ -312,8 +321,7 @@ module.exports = {
       const peers = resultPeers
         .peers
         .filter(val => !ob.includes(val.nodeID))
-      // console.log(peers)
-      // console.log(index)
+
       let m = 0
       do {
         index++
@@ -377,7 +385,7 @@ module.exports = {
       //     observers[i].numPeers = numPeers
       //   }
       // }
- 
+
       // let peersInJson = fs.readFileSync('peers.json')
       //   .toString()
       // if (!peersInJson) peersInJson = {}
@@ -449,38 +457,37 @@ module.exports = {
 }
 
 function process ({
-    validatorsMap,
+  validatorsMap,
+  validatedStake,
+  delegatedStake
+}) {
+  // get all staked AVAX
+  const allStake = BigNumber
+    .sum(validatedStake, delegatedStake)
+
+  // get and set percent for total stake (own and delegated)
+  let validatorsResult = validatorsMap.map((v) => {
+    v.percent = getPercent(v.totalStakeAmount, allStake)
+    return v
+  })
+
+  // sort validators by total stake and duration
+  validatorsResult = validatorsResult.sort(compare)
+
+  // set rank of validators
+  const result = validatorsResult.map((v, i) => {
+    v.rank = i + 1
+    const currentValidators = validatorsResult.slice(0, i + 1)
+    v.cumulativeStake = cumulativeStake(currentValidators)
+    return v
+  })
+
+  return {
+    allStake,
     validatedStake,
-    delegatedStake
-    }) {
-
-    // get all staked AVAX
-    const allStake = BigNumber
-      .sum(validatedStake, delegatedStake)
-
-    // get and set percent for total stake (own and delegated)
-    let validatorsResult = validatorsMap.map((v) => {
-      v.percent = getPercent(v.totalStakeAmount, allStake)
-      return v
-    })
-
-    // sort validators by total stake and duration
-    validatorsResult = validatorsResult.sort(compare)
-
-    // set rank of validators
-    const result = validatorsResult.map((v, i) => {
-      v.rank = i + 1
-      const currentValidators = validatorsResult.slice(0, i + 1)
-      v.cumulativeStake = cumulativeStake(currentValidators)
-      return v
-    })
-
-    return {
-      allStake,
-      validatedStake,
-      delegatedStake,
-      validators: result
-    }
+    delegatedStake,
+    validators: result
+  }
 }
 
 function mapDelegators (delegators) {
@@ -557,27 +564,27 @@ function countDownCounter (e) {
 }
 
 function getDelegatorDetails (delegators) {
-    if (!delegators) {
-      return {
-        delegateStake: 0,
-        potentialReward: 0
-      }
-    }
-  
-    const delegateStake = delegators
-      .reduce((a, b) => {
-        return BigNumber.sum(a, b.stakeAmount)
-      }, 0.0)
-  
-    const potentialReward = delegators
-      .reduce((a, b) => {
-        return BigNumber.sum(a, b.potentialReward)
-      }, 0.0)
-  
+  if (!delegators) {
     return {
-      delegateStake,
-      potentialReward
+      delegateStake: 0,
+      potentialReward: 0
     }
+  }
+
+  const delegateStake = delegators
+    .reduce((a, b) => {
+      return BigNumber.sum(a, b.stakeAmount)
+    }, 0.0)
+
+  const potentialReward = delegators
+    .reduce((a, b) => {
+      return BigNumber.sum(a, b.potentialReward)
+    }, 0.0)
+
+  return {
+    delegateStake,
+    potentialReward
+  }
 }
 
 function getRemainingCapacity (stakeAmount, delegateStakeAmount) {

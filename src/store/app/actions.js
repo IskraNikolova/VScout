@@ -177,7 +177,6 @@ async function getValidators (
     ) {
       // GET validators from server
       const response = await _getDefValidators()
-
       // GET validators from node API when server response error
       if (response.error) {
         dispatch(GET_STAKING, {

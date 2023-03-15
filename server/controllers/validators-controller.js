@@ -142,7 +142,7 @@ module.exports = {
       validatorsJ = JSON.parse(validatorsJ)
         .validators
 
-      const uptimes = new Object()
+      const uptimes = new Object ()
       for (let i = 0; i < length; i++) {
         try {
           const endpoint = observers[i]
