@@ -89,6 +89,7 @@ export function inData (state) {
 }
 
 export function validatorById (state) {
+  if (!state.defaultValidators) return {}
   return (id) => state
     .defaultValidators
     .find(val => val.nodeID.includes(id))

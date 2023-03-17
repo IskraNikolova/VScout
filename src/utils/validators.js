@@ -162,7 +162,9 @@ export async function mapDefaultValidators (
   isInit) {
   const validatorsMap = await Promise.all(validators.map(async (val) => {
     if (!defaultValidators) defaultValidators = []
-    const currentValidator = defaultValidators
+    const clearDefaultValidators = defaultValidators.filter(x => !!x)
+    if (!defaultValidators[0]) defaultValidators = defaultValidators.shift()
+    const currentValidator = clearDefaultValidators
       .find(v => v.nodeID === val.nodeID)
 
     let info = {}
@@ -400,6 +402,7 @@ export function mapPendingValidators (
     let currentValidator = {}
     if (val.weight) {
       currentValidator = defaultValidators
+        .filter(v => !!v)
         .find(v => v.nodeID === val.nodeID)
       val.stakeAmount = currentValidator.stakeAmount
     }

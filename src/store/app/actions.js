@@ -225,12 +225,15 @@ async function getValidators (
 
       let rows = res.validators
       const arr = []
-      arr.push(rows
+      const vsNode = rows
         .find(a => (a.nodeID.toLowerCase() ===
-         'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj'.toLowerCase())))
-      rows = rows
-        .filter(a => a.nodeID !== 'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj')
-      rows = arr.concat(rows)
+          'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj'.toLowerCase()))
+      if (vsNode) {
+        arr.push(vsNode)
+        rows = rows
+          .filter(a => a.nodeID !== 'NodeID-2KfgS6P7vf9L55fMRTbHPgS4ugVSDW3nj')
+        rows = arr.concat(rows)
+      }
 
       // Commit data
       commit(SET_VALIDATORS, { validators: rows })
@@ -461,7 +464,6 @@ async function getSubnets (
 
 async function getNodeId (
   { getters, commit }) {
-  console.log(getters.networkEndpoint.url)
   const response = await _getNodeId({
     endpoint: getters.networkEndpoint.url
   })
@@ -475,7 +477,6 @@ async function getNodeId (
 
   commit(UPDATE_UI, { doesItConnect: false })
   const nodeID = response.data.result.nodeID
-  console.log(response.data.result.nodeID)
   commit(GET_NODE_ID, { nodeID })
 }
 
