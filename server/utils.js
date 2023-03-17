@@ -78,10 +78,12 @@ module.exports = {
       const delegateStake = props.delegateStake
       delegatedStake = BigNumber.sum(delegatedStake, delegateStake)
 
-      const condition = currentValidator.delegatePotentialReward >= props.potentialReward
-      const cReward = currentValidator.delegatePotentialReward
       const nReward = props.potentialReward
-      const delegatePotentialReward = condition ? cReward : nReward
+      let delegatePotentialReward = nReward
+      if (currentValidator && currentValidator.delegators > 0) {
+        const cReward = currentValidator.delegatePotentialReward
+        if (cReward >= nReward) delegatePotentialReward = cReward
+      }
 
       const countDownCounterRes = countDownCounter(val.endTime)
       const remainingTime = countDownCounterRes.countdown
