@@ -91,7 +91,7 @@
           </div>
           <div class="text-subtitle2">
             <small class="text-panel">DELEGATED </small>
-            <span> {{ getFormatReward(validator.delegateStake) }}</span>
+            <span> {{ getFormatReward(validator.delegatorWeight) }}</span>
             <span class="text-accent text-medium"><small> AVAX</small></span>
           </div>
         </q-card-section>
@@ -117,24 +117,26 @@
           <div class="text-subtitle2">
             <small class="text-panel">POTENTIAL REWARD </small>
             <span> {{ getFormatReward(validator.potentialReward) }}</span>
-            <span class="text-accent text-medium"><small> AVAX</small></span>
+            <span class="text-accent text-medium"><small> AVAX</small></span> /
+            <span>  {{ totalRewardUsd() }}</span>
+            <span class="text-accent text-medium"><small> {{ getISO(currentCurrency) }} </small></span>
           </div>
           <div class="text-subtitle2">
             <small class="text-panel">DELEGATION FEES REWARD</small>
-            <span> {{ potentialRewardFromDelegators() }}</span>
-            <span class="text-accent text-medium"><small> AVAX</small></span>
+            <!--<span> {{ potentialRewardFromDelegators() }}</span>
+            <span class="text-accent text-medium"><small> AVAX</small></span>-->
           </div>
         </q-card-section>
 
         <q-separator :dark="appTheme==='dark'" />
 
-        <q-card-actions>
+        <q-card-actions class="q-pl-md">
           <div class="text-subtitle2">
             <small class="text-panel">TOTAL </small>
-            <span> {{ totalReward() }}</span>
-            <span class="text-accent text-medium"><small> AVAX</small></span> /
+            <!--<span> {{ totalReward() }}</span>
+            <span class="text-accent text-medium"><small> AVAX</small></span>
             <span>  {{ totalRewardUsd() }}</span>
-            <span class="text-accent text-medium"><small> {{ getISO(currentCurrency) }} </small></span>
+            <span class="text-accent text-medium"><small> {{ getISO(currentCurrency) }} </small></span>-->
           </div>
         </q-card-actions>
       </q-card>
@@ -255,9 +257,7 @@ export default {
       'appTheme'
     ]),
     delegatorsCount: function () {
-      if (!this.validator.delegators) return 0
-      else if (Array.isArray(this.validator.delegators)) return this.validator.delegators.length
-      return this.validator.delegators
+      return this.validator.delegatorCount
     },
     startDate: function () {
       return date(this.validator.startTime)

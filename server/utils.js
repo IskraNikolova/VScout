@@ -138,7 +138,98 @@ module.exports = {
       potentialReward
     }
   },
-  getStakingStats: (validators, delegators) => { 
+  mapValidatorsUpdate: (validators, peers) => {
+    const delegatorsMap = {}
+    let validatedStake = new BigNumber(0)
+    let delegatedStake = new BigNumber(0)
+    let potentialReward = new BigNumber(0)
+    let uptimes = ''
+
+    try {
+      uptimes = fs.readFileSync('uptime.json')
+        .toString()
+      uptimes = JSON.parse(uptimes)
+    } catch (err) {
+      console.log(err)
+    }
+
+    const validatorsMap = validators.map((val) => {
+      delegatedStake = BigNumber.sum(delegatedStake, val.delegatorWeight)
+
+      validatedStake = BigNumber
+        .sum(validatedStake, val.stakeAmount)
+
+      potentialReward = BigNumber
+        .sum(potentialReward, val.potentialReward)
+
+      const peer = peers
+        .find(p => p.nodeID === val.nodeID)
+
+      if (peer) {
+        val.country = peer.country
+        val.isp = peer.isp
+        val.countryCode = peer.countryCode
+        val.version = peer.version
+        val.lastReceived = peer.lastReceived
+        val.lastSent = peer.lastSent
+      }
+
+      delegatorsMap[val.nodeID] = mapDelegatorsUpdate(
+        val.delegatorCount,
+        val.delegatorWeight)
+
+      const countDownCounterRes = countDownCounter(val.endTime)
+      const remainingTime = countDownCounterRes.countdown
+
+      const totalStakeAmount = BigNumber
+        .sum(val.stakeAmount, val.delegatorWeight)
+
+      const remainingCapacity = getRemainingCapacity(
+        val.stakeAmount,
+        val.delegatorWeight
+      )
+
+      const isMinimumAmountForStake = countDownCounterRes
+        .isMinimumAmountForStake
+
+      const duration = diff(val.endTime, val.startTime)
+
+      const up = uptimes[val.nodeID]
+
+      if (up) {
+        const all = up.reduce((a, b) => {
+          let u = 0
+          if (Number(b.uptime) < 1.1) u = Number(b.uptime) * 100
+          else u = Number(b.uptime)
+          return a + Number(u)
+        }, 0.0)
+
+        val.uptime = (all / up.length).toFixed(3)
+      }
+
+      return {
+        ...val,
+        duration,
+        remainingTime,
+        totalStakeAmount: totalStakeAmount.toString(),
+        remainingCapacity,
+        isMinimumAmountForStake
+      }
+    })
+
+    const result = process({
+      validatorsMap,
+      validatedStake,
+      delegatedStake
+    })
+
+    return {
+      ...result,
+      delegatorsMap,
+      potentialReward
+    }
+  },
+  getStakingStats: (validators, delegators) => {
     const hours24Ago = substract24Hours()
     const next24Hours = add24Hours()
     const days7Ago = substract7Days()
@@ -489,6 +580,13 @@ function process ({
     validatedStake,
     delegatedStake,
     validators: result
+  }
+}
+
+function mapDelegatorsUpdate (delegatorCount, delegatorWeight) {
+  return {
+    delegatorCount: delegatorCount,
+    delegatorStake: delegatorWeight
   }
 }
 

@@ -23,20 +23,12 @@ module.exports = {
     try {
       const resVal = await axios
         .post(endpoint + '/ext/P', body('platform.getCurrentValidators'))
-      if (resVal.data.error) {
-        // const error = resVal.data.error
-        // const data = JSON.stringify(error)
-        // fs.writeFileSync('logs.json', data)
-      }
+
       const apiValidators = resVal.data.result
 
       const resPVal = await axios
         .post(endpoint + '/ext/P', body('platform.getPendingValidators'))
-      if (resPVal.data.error) {
-        // const error = resPVal.data.error
-        // const data = JSON.stringify(error)
-        // fs.writeFileSync('logs.json', data)
-      }
+
       const pendingValidators = resPVal.data.result
 
       let peersInJson = fs.readFileSync('peers.json').toString()
@@ -51,7 +43,7 @@ module.exports = {
         potentialReward,
         delegatorsMap,
         delegatedStake
-      } = utils.mapValidators(apiValidators.validators, peers.peers)
+      } = utils.mapValidatorsUpdate(apiValidators.validators, peers.peers)
 
       const delegators = JSON.stringify(delegatorsMap)
       fs.writeFileSync('delegators.json', delegators)
@@ -83,10 +75,6 @@ module.exports = {
 
       const data = JSON.stringify(response)
       fs.writeFileSync('validators.json', data)
-
-      const statResponse = utils.getStakingStats(apiValidators.validators, delegatorsMap)
-      const stat = JSON.stringify(statResponse)
-      fs.writeFileSync('stakeStat.json', stat)
     } catch (err) {
       console.log(err)
       // const data = JSON.stringify(err)
@@ -99,12 +87,13 @@ module.exports = {
       const data = await fs.readFileSync('validators.json').toString()
       const validators = JSON.parse(data).validators
       const validator = validators.find(v => v.nodeID === id)
+      if (validator) {
+        const delegations = await fs.readFileSync('delegators.json').toString()
+        validator['delegators'] = (JSON.parse(delegations))[`${id}`]
 
-      const delegations = await fs.readFileSync('delegators.json').toString()
-      validator['delegators'] = (JSON.parse(delegations))[`${id}`]
-
-      res.status(200).send(validator)
-      res.end()
+        res.status(200).send(validator)
+        res.end()
+      }
     } catch (err) {
       console.log(err)
       res.status(400).send(err)
@@ -237,20 +226,29 @@ module.exports = {
     }
   },
   stats: (req, res) => {
-    fs.readFile('stakeStat.json', (err, data) => {
-      if (err) {
-        res.status(400).send(err)
-        res.end()
-      }
-      try {
-        const stats = JSON.parse(data)
-        res.status(200).send(stats)
-        res.end()
-      } catch (err) {
-        res.status(400).send(err)
-        res.end()
-      }
-    })
+    try {
+      let validatorsInJson = fs.readFileSync('validators.json').toString()
+      if (!validatorsInJson) validatorsInJson = {}
+      const validators = JSON.parse(validatorsInJson)
+
+      let delegatorsInJson = fs.readFileSync('delegators.json').toString()
+      if (!delegatorsInJson) delegatorsInJson = {}
+      const delegators = JSON.parse(validatorsInJson)
+
+      const statResponse = utils.getStakingStats(validators, delegators)
+      const stat = JSON.stringify(statResponse)
+      fs.writeFileSync('stakeStat.json', stat)
+
+      let stakeStatInJson = fs.readFileSync('stakeStat.json').toString()
+      if (!stakeStatInJson) stakeStatInJson = {}
+      const stakeStat = JSON.parse(stakeStatInJson)
+
+      res.status(200).send(stakeStat)
+      res.end()
+    } catch (err) {
+      res.status(400).send(err)
+      res.end()
+    }
   },
   baseUrl: () => {
     return '/api/validators'

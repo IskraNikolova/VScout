@@ -51,7 +51,14 @@
           <q-icon name="info"><tooltip-style v-bind:text="'Delegation fees is deducted'" /></q-icon>
           POTENTIAL YIELD
         </small></span>
+        <span class="text-subtitle2">
         <span class="on-right">{{ potentialYield }}</span>
+        <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
+          <br/>
+        <small style="opacity: 0.8;">
+          DELEGATIONS FEES REWARD
+        </small></span>
+        <span class="on-right">{{ potentialReward }}</span>
         <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
         <q-list dense class="q-mt-md  q-pt-sm q-pl-xs" style="max-width: 400px;">
           <q-item>
@@ -145,7 +152,8 @@ export default {
     return {
       time: 14,
       avax: 25,
-      potentialYield: 0
+      potentialYield: 0,
+      potentialReward: 0
     }
   },
   computed: {
@@ -233,6 +241,7 @@ export default {
 
       rewardNAvax = delegation.result
       this.potentialYield = this.getFormatAva(getAvaFromnAva(rewardNAvax))
+      this.potentialReward = this.getFormatAva(getAvaFromnAva(delegation.fee))
     }
   }
 }

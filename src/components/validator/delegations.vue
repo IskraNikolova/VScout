@@ -6,21 +6,15 @@
       <span style="font-size: 18px;">{{ delegatorsCount }} </span>
       DELEGATIONS
     </div>
-    <q-scroll-area style="height: 330px;">
-    <div class="row q-pl-sm">
-      <div class="col-6"><span class="text-subtitle2"><small style="opacity: 0.8;">OWNER</small></span></div>
-      <div class="col-3"><span class="text-subtitle2"><small style="opacity: 0.8;">STAKE AMOUNT</small></span></div>
-      <div class="col-3"><span class="text-subtitle2"><small style="opacity: 0.8;">DELEGATION FEE</small></span></div>
-    </div>
     <q-separator class="q-mb-sm q-pl-sm" dark style="width: 100%;"/>
-    <div v-for="(delegation, i) in delegators" :key="i" class="row q-pl-sm" style="min-width: 550px;">
-      <div class="col-6" @click="copyToClipboard(delegationRewardOwner(delegation.rewardOwner))">
-        {{ getFormatSubstr(delegationRewardOwner(delegation.rewardOwner)) }}
-      </div>
-      <div class="col-3">{{ getFormatAva(delegation.stakeAmount) }}<span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span></div>
-      <div class="col-3">{{ potentialRewardFromDelegator(delegation.potentialReward) }}<span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span></div>
+    <div class="row q-pl-sm">
+      <div class="col-6"><span class="text-subtitle2"><small style="opacity: 0.8;">STAKE AMOUNT</small></span></div>
+      <div class="col-6">{{ getFormatAva(weight) }}<span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span></div>
+      <!--<div class="col-6"><span class="text-subtitle2"><small style="opacity: 0.8;">DELEGATION FEE</small></span></div>-->
     </div>
-    </q-scroll-area>
+    <div class="row q-pl-sm">
+      <!--<div class="col-6">{{ potentialRewardFromDelegator(weight) }}<span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span></div>-->
+    </div>
   </div>
 </template>
 
@@ -36,8 +30,12 @@ import { getDelegationReward } from './../../modules/reward.js'
 export default {
   name: 'Delegations',
   props: {
-    delegators: {
-      type: Array,
+    weight: {
+      type: String,
+      required: true
+    },
+    count: {
+      type: String,
       required: true
     },
     fee: {
@@ -47,8 +45,7 @@ export default {
   },
   computed: {
     delegatorsCount: function () {
-      if (!this.delegators) return 0
-      return this.delegators.length
+      return this.count
     }
   },
   methods: {

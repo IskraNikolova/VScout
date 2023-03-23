@@ -399,8 +399,9 @@ export function mapPendingValidators (
   defaultValidators) {
   if (!validators) return []
   const pendingValidators = validators.map((val) => {
-    let currentValidator = {}
-    if (val.weight) {
+    let currentValidator
+
+    if (val.weight && currentValidator) {
       currentValidator = defaultValidators
         .filter(v => !!v)
         .find(v => v.nodeID === val.nodeID)

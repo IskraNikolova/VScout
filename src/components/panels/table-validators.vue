@@ -52,6 +52,7 @@
           size="xs"
           toggle-color="accent"
           @click.native="onGetValidators"
+          disable
           :options="[
             {label: 'Active', value: 'active'},
             {label: 'Pending', value: 'pending'}
@@ -63,6 +64,7 @@
           size="xs"
           toggle-color="info"
           @click.native="onSwitchAccounts"
+          disable
           :options="[
             {label: 'Validators', value: 'validators'},
             {label: 'Delegations', value: 'delegations'}
@@ -94,6 +96,7 @@
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="percent" label="Cumulative Stake" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="uptime" label="Uptime" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="connected" label="State" />
+          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="weight" label="Weight" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="version" label="Node Version" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="duration" label="Duration" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="startTime" label="Start Time" />
@@ -186,7 +189,7 @@
               <div>
                 <small>Own: </small>
                 <span class="text-panel text-medium">{{ col.value }}</span>
-                <small> D: {{ getFormatReward(props.row.delegateStake) }}</small>
+                <small> D: {{ getFormatReward(props.row.delegatorWeight) }}</small>
               </div>
             </div>
             <div v-else-if="col.name === 'percent'">
@@ -326,7 +329,7 @@
                 <small class="text-accent"> AVAX</small>
                 <div>
                   <small class="text-panel">Delegated</small>
-                  {{ getFormatReward(props.row.delegateStake) }}
+                  {{ getFormatReward(props.row.delegatorWeight) }}
                   <small class="text-accent"> AVAX</small>
                 </div>
                 <q-separator class="q-mt-xs q-mb-xs" :dark="appTheme==='dark'"/>
@@ -524,13 +527,14 @@ export default {
           field: row => row.weight,
           format: (val, row) => `${this.getWeight(val)}`,
           sortable: true,
-          headerClasses: 'text-medium'
+          headerClasses: 'text-medium',
+          style: 'font-size: 12px;'
         },
         {
           name: 'delegations',
           align: 'left',
           label: 'DELEGATIONS',
-          field: row => this.getDelators(row.delegators),
+          field: row => row.delegatorCount,
           format: (val, row) => `D: ${val}`,
           style: 'font-size: 12px;letter-spacing: 2px;'
         },

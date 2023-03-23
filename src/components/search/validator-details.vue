@@ -65,26 +65,6 @@
               v-bind:validator="val"
             />
           </div>
-          <div class="q-mt-md q-pa-md q-mr-md my-card dark-panel"
-              style="border-radius: 10px;">
-              <div class="q-mb-sm">Progress (%)</div>
-              <progress-bar-validate-session
-                v-bind:startTime="startTime"
-                v-bind:endTime="endTime"
-              />
-              <div class="row">
-                <div class="col-6">
-                  <small class="text-bold">Start Time</small>
-                  <br />
-                  <small>{{ formatDate(startTime) }}</small>
-                </div>
-                <div class="col-6" style="text-align: right;">
-                  <small class="text-bold">End Time</small>
-                  <br />
-                  <small>{{ formatDate(endTime) }}</small>
-                </div>
-              </div>
-          </div>
         </div>
         <!--<div v-else  class="col-6">
           <div class="q-mr-md">
@@ -126,9 +106,30 @@
           <delegations
             class="q-mt-md my-card dark-panel q-pa-md"
             style="border-radius: 10px;"
-            v-bind:delegators="delegatorsL"
+            v-bind:count="validator.delegatorCount"
+            v-bind:weight="validator.delegatorWeight"
             v-bind:fee="validator.delegationFee"
           />
+                    <div class="q-mt-md q-pa-md q-mr-md my-card dark-panel"
+              style="border-radius: 10px;">
+              <div class="q-mb-sm">Progress (%)</div>
+              <progress-bar-validate-session
+                v-bind:startTime="startTime"
+                v-bind:endTime="endTime"
+              />
+              <div class="row">
+                <div class="col-6">
+                  <small class="text-bold">Start Time</small>
+                  <br />
+                  <small>{{ formatDate(startTime) }}</small>
+                </div>
+                <div class="col-6" style="text-align: right;">
+                  <small class="text-bold">End Time</small>
+                  <br />
+                  <small>{{ formatDate(endTime) }}</small>
+                </div>
+              </div>
+          </div>
         </div>
       </div>
     </q-card>
@@ -213,7 +214,8 @@
       <q-separator />
       <div class="row q-pa-md">
         <delegations
-          v-bind:delegators="delegatorsL"
+          v-bind:count="validator.delegatorCount"
+          v-bind:weight="validator.delegatorWeight"
           v-bind:fee="validator.delegationFee"
           class="col-12"
         />
@@ -253,10 +255,24 @@ import {
   openURL
 } from 'quasar'
 
+// import {
+//   reward,
+//   substractDelegationFee
+// } from './../../modules/reward.js'
+
+// import {
+//   getAvaFromnAva
+// } from './../../utils/avax.js'
+
 import {
   date,
-  fromNow
+  fromNow,
+  getDuration
 } from './../../modules/time.js'
+
+import {
+  round
+} from './../../utils/commons.js'
 
 import {
   _getPastRatingEvents
@@ -293,7 +309,8 @@ export default {
     ...mapGetters([
       'validator',
       'validatorById',
-      'delegators'
+      'delegators',
+      'currentSupply'
     ]),
     delegatorsL: function () {
       if (!this.val.delegators) return []
@@ -301,9 +318,9 @@ export default {
       return this.delegators[this.val.nodeID]
     },
     delegateStake: function () {
-      if (!this.val.delegateStake) return ''
+      if (!this.val.delegatorWeight) return ''
       return this.val
-        .delegateStake
+        .delegatorWeight
     },
     startTime: function () {
       if (!this.val.startTime) return ''
@@ -314,6 +331,9 @@ export default {
       if (!this.val.endTime) return ''
       return this.val
         .endTime
+    },
+    duration: function () {
+      return getDuration(this.startTime, this.endTime)
     },
     txID: function () {
       if (!this.val.txID) return ''
@@ -347,6 +367,24 @@ export default {
     if (!this.val) this.$router.push('/search/' + this.$route.params.id)
   },
   methods: {
+    // calculateDel (duration, amount) {
+    //   let rewardNAvax = reward(
+    //     getAvaFromnAva(duration),
+    //     amount,
+    //     this.currentSupply
+    //   )
+
+    //   const delReward = substractDelegationFee(
+    //     rewardNAvax,
+    //     this.validator.delegationFee
+    //   )
+    //   rewardNAvax = delReward.result
+    //   this.feeAmountnAvax = this.getFormat(parseFloat(delReward.fee))
+    //   this.feeAmount = this.getFormat(getAvaFromnAva(delReward.fee))
+
+    //   this.reward = rewardNAvax
+    //   this.rewardAvax = getAvaFromnAva(rewardNAvax)
+    // },
     getValidator () {
       if (this.id) {
         const v = this.validatorById(this.id)
@@ -409,10 +447,17 @@ export default {
         openURL(link)
       } catch (err) {
       }
+    },
+    getFormat (val) {
+      return round(val, 100).toLocaleString()
     }
   },
   data () {
     return {
+      reward: 0,
+      rewardAvax: 0,
+      rewardUsd: 0,
+      percent: 0,
       more: false,
       val: {}
     }
