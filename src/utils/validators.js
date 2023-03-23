@@ -195,7 +195,7 @@ export async function mapDefaultValidators (
       }
     }
 
-    if (val.weight) {
+    if (val.weight && currentValidator) {
       val.stakeAmount = currentValidator.stakeAmount
       val.rewardOwner = currentValidator.rewardOwner
       val.delegationFee = currentValidator.delegationFee
@@ -313,7 +313,7 @@ export async function mapValidators (
       }
     }
 
-    if (val.weight) {
+    if (val.weight && currentValidator) {
       val.stakeAmount = currentValidator.stakeAmount
       val.rewardOwner = currentValidator.rewardOwner
       val.delegationFee = currentValidator.delegationFee
