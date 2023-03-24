@@ -70,7 +70,8 @@ module.exports = {
         validators,
         pendingValidators,
         validatedStake,
-        delegatedStake
+        delegatedStake,
+        delegatorsMap
       }
 
       const data = JSON.stringify(response)

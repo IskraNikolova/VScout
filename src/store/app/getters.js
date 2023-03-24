@@ -99,12 +99,12 @@ export function defaultValidators (state) {
   return state.defaultValidators
 }
 
-export function delegationsCount (state) {
-  if (!state.defaultValidators) return 0
-  const dC = state.defaultValidators
-    .reduce((a, b) => {
-      const count = Array.isArray(b.delegators) ? b.delegators.length : b.delegators
-      return a + count
-    }, 0)
-  return dC
-}
+// export function delegationsCount (state) {
+// if (!state.defaultValidators) return 0
+// const dC = state.defaultValidators
+//   .reduce((a, b) => {
+//     const count = Array.isArray(b.delegators) ? b.delegators.length : b.delegators
+//     return a + count
+//   }, 0)
+// return dC
+// }

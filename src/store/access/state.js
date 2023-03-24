@@ -15,7 +15,7 @@ export default function () {
     nodeHealth: {},
     assetsCount: 0,
     validators: [],
-    delegators: [],
+    delegators: {},
     validator: {},
     currenciesPriceList: {},
     high_24h: {},

@@ -77,8 +77,9 @@ const mutations = {
     state.assetsCount = assetsCount
   },
   [SET_DELEGATORS]: (state, { delegators }) => {
-    const delC = [].concat.apply([], Object.values(delegators))
-    state.delegatorsCount = delC
+    // const delC = [].concat.apply([], Object.values(delegators))
+    // state.delegatorsCount = delC
+    state.delegatorsCount = delegators.length
     state.delegators = delegators
   },
   [SET_VALIDATORS]: (state, { validators }) => {

@@ -79,3 +79,8 @@ export function change24h (state) {
 export function changePercentage24h (state) {
   return state.price_change_24h_percentage
 }
+
+export function delegationsCount (state) {
+  if (!state.delegators) return 0
+  return state.delegators.length
+}

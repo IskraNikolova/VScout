@@ -140,6 +140,7 @@ module.exports = {
   },
   mapValidatorsUpdate: (validators, peers) => {
     const delegatorsMap = {}
+    delegatorsMap['length'] = 0
     let validatedStake = new BigNumber(0)
     let delegatedStake = new BigNumber(0)
     let potentialReward = new BigNumber(0)
@@ -177,6 +178,7 @@ module.exports = {
       delegatorsMap[val.nodeID] = mapDelegatorsUpdate(
         val.delegatorCount,
         val.delegatorWeight)
+      delegatorsMap.length += parseFloat(val.delegatorCount)
 
       const countDownCounterRes = countDownCounter(val.endTime)
       const remainingTime = countDownCounterRes.countdown

@@ -16,6 +16,7 @@ import {
   GET_BLOCKCHAINS,
   GET_NODE_VERSIONS,
   SET_CURRENT_CURRENCY,
+  SET_DELEGATIONS_COUNT,
   SET_NOTIFICATION_NODE,
   ADD_TO_NOTIFICATIONS_LIST,
   CLEAR_NOTIFICATIONS_LIST
@@ -120,6 +121,9 @@ const mutations = {
   },
   [SET_DEFAULT_VALIDATORS]: (state, { defaultValidators }) => {
     state.defaultValidators = defaultValidators
+  },
+  [SET_DELEGATIONS_COUNT]: (state, { delegationsCount }) => {
+    state.delegationsCount = delegationsCount
   },
   [SET_CURRENT_CURRENCY]: (state, { currentCurrency }) => {
     state.currentCurrency = currentCurrency
