@@ -231,7 +231,7 @@ module.exports = {
       potentialReward
     }
   },
-  getStakingStats: (validators, delegators) => {
+  getStakingStats: (validators) => {
     const hours24Ago = substract24Hours()
     const next24Hours = add24Hours()
     const days7Ago = substract7Days()
@@ -251,17 +251,17 @@ module.exports = {
       month: { validators: 0, stake: new BigNumber(0) }
     }
 
-    const incomingDel = {
-      hours: { delegations: 0, stake: new BigNumber(0) },
-      days: { delegations: 0, stake: new BigNumber(0) },
-      month: { delegations: 0, stake: new BigNumber(0) }
-    }
+    // const incomingDel = {
+    //   hours: { delegations: 0, stake: new BigNumber(0) },
+    //   days: { delegations: 0, stake: new BigNumber(0) },
+    //   month: { delegations: 0, stake: new BigNumber(0) }
+    // }
 
-    const outcomingDel = {
-      hours: { delegations: 0, stake: new BigNumber(0) },
-      days: { delegations: 0, stake: new BigNumber(0) },
-      month: { delegations: 0, stake: new BigNumber(0) }
-    }
+    // const outcomingDel = {
+    //   hours: { delegations: 0, stake: new BigNumber(0) },
+    //   days: { delegations: 0, stake: new BigNumber(0) },
+    //   month: { delegations: 0, stake: new BigNumber(0) }
+    // }
 
     const temp = {
       hours: {
@@ -280,23 +280,23 @@ module.exports = {
               .sum(val.stakeAmount, outcomingVal.hours.stake)
           },
           false: () => {}
-        },
-        incomeDel: {
-          true: (del) => {
-            incomingDel.hours.delegations++
-            incomingDel.hours.stake = BigNumber
-              .sum(del.stakeAmount, incomingDel.hours.stake)
-          },
-          false: () => {}
-        },
-        outcomeDel: {
-          true: (del) => {
-            outcomingDel.hours.delegations++
-            outcomingDel.hours.stake = BigNumber
-              .sum(del.stakeAmount, outcomingDel.hours.stake)
-          },
-          false: () => {}
         }
+        // incomeDel: {
+        //   true: (del) => {
+        //     incomingDel.hours.delegations++
+        //     incomingDel.hours.stake = BigNumber
+        //       .sum(del.delegatorStake, incomingDel.hours.stake)
+        //   },
+        //   false: () => {}
+        // },
+        // outcomeDel: {
+        //   true: (del) => {
+        //     outcomingDel.hours.delegations++
+        //     outcomingDel.hours.stake = BigNumber
+        //       .sum(del.delegatorStake, outcomingDel.hours.stake)
+        //   },
+        //   false: () => {}
+        // }
       },
       days: {
         incomeVal: {
@@ -314,22 +314,22 @@ module.exports = {
               .sum(val.stakeAmount, outcomingVal.days.stake)
           },
           false: () => {}
-        },
-        incomeDel: {
-          true: (del) => {
-            incomingDel.days.delegations++
-            incomingDel.days.stake = BigNumber
-              .sum(del.stakeAmount, incomingDel.days.stake)
-          },
-          false: () => {}
-        },
-        outcomeDel: {
-          true: (del) => {
-            outcomingDel.days.delegations++
-            outcomingDel.days.stake = BigNumber
-              .sum(del.stakeAmount, outcomingDel.days.stake)
-          },
-          false: () => {}
+        // },
+        // incomeDel: {
+        //   true: (del) => {
+        //     incomingDel.days.delegations++
+        //     incomingDel.days.stake = BigNumber
+        //       .sum(del.delegatorStake, incomingDel.days.stake)
+        //   },
+        //   false: () => {}
+        // },
+        // outcomeDel: {
+        //   true: (del) => {
+        //     outcomingDel.days.delegations++
+        //     outcomingDel.days.stake = BigNumber
+        //       .sum(del.delegatorStake, outcomingDel.days.stake)
+        //   },
+        //  false: () => {}
         }
       },
       month: {
@@ -348,22 +348,22 @@ module.exports = {
               .sum(val.stakeAmount, outcomingVal.month.stake)
           },
           false: () => {}
-        },
-        incomeDel: {
-          true: (del) => {
-            incomingDel.month.delegations++
-            incomingDel.month.stake = BigNumber
-              .sum(del.stakeAmount, incomingDel.month.stake)
-          },
-          false: () => {}
-        },
-        outcomeDel: {
-          true: (del) => {
-            outcomingDel.month.delegations++
-            outcomingDel.month.stake = BigNumber
-              .sum(del.stakeAmount, outcomingDel.month.stake)
-          },
-          false: () => {}
+        // },
+        // incomeDel: {
+        //   true: (del) => {
+        //     incomingDel.month.delegations++
+        //     incomingDel.month.stake = BigNumber
+        //       .sum(del.delegatorStake, incomingDel.month.stake)
+        //   },
+        //   false: () => {}
+        // },
+        // outcomeDel: {
+        //   true: (del) => {
+        //     outcomingDel.month.delegations++
+        //     outcomingDel.month.stake = BigNumber
+        //       .sum(del.delegatorStake, outcomingDel.month.stake)
+        //   },
+        //   false: () => {}
         }
       }
     }
@@ -378,27 +378,27 @@ module.exports = {
 
       temp.month.incomeVal[Number(val.startTime) >= Number(monthAgo)](val)
       temp.month.outcomeVal[Number(val.endTime) <= Number(nextMonth)](val)
-      const dels = delegators[val.nodeID]
-      if (dels) {
-        for (let j = 0; j < dels.length; j++) {
-          const del = dels[j]
-          temp.hours.incomeDel[Number(del.startTime) >= Number(hours24Ago)](del)
-          temp.hours.outcomeDel[Number(del.endTime) <= Number(next24Hours)](del)
+      // const dels = delegators[val.nodeID]
+      // if (dels) {
+      //   for (let j = 0; j < dels.length; j++) {
+      //     const del = dels[j]
+      //     temp.hours.incomeDel[Number(del.startTime) >= Number(hours24Ago)](del)
+      //     temp.hours.outcomeDel[Number(del.endTime) <= Number(next24Hours)](del)
 
-          temp.days.incomeDel[Number(del.startTime) >= Number(days7Ago)](del)
-          temp.days.outcomeDel[Number(del.endTime) <= Number(next7Days)](del)
+      //     temp.days.incomeDel[Number(del.startTime) >= Number(days7Ago)](del)
+      //     temp.days.outcomeDel[Number(del.endTime) <= Number(next7Days)](del)
 
-          temp.month.incomeDel[Number(del.startTime) >= Number(monthAgo)](del)
-          temp.month.outcomeDel[Number(del.endTime) <= Number(nextMonth)](del)
-        }
-      }
+      //     temp.month.incomeDel[Number(del.startTime) >= Number(monthAgo)](del)
+      //     temp.month.outcomeDel[Number(del.endTime) <= Number(nextMonth)](del)
+      //   }
+      // }
     }
 
     return {
       incomingVal,
-      outcomingVal,
-      incomingDel,
-      outcomingDel
+      outcomingVal
+      // incomingDel,
+      // outcomingDel
     }
   },
   setObserervers: async (i, obsArray) => {

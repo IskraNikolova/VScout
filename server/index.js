@@ -21,11 +21,15 @@ const endpoint = 'http://142.132.197.144:9650' // 'http://18.116.253.54:9650'
 // let i = 0
 setInterval(() => {
   // const endpoint = endpoints[i]
-  controllers.avax.avaxPrice()
-  controllers.platform.blockHeight(endpoint)
-  controllers.validators.validators(endpoint)
-  controllers.node.info(endpoint)
-  controllers.node.peersPost(endpoint)
+  try {
+    controllers.avax.avaxPrice()
+    controllers.platform.blockHeight(endpoint)
+    controllers.validators.validators(endpoint)
+    controllers.node.info(endpoint)
+    controllers.node.peersPost(endpoint)
+  } catch (err) {
+    console.log(err)
+  }
   // i = (index++) % endpoints.length
   // if (i >= endpoints.length) {
   //   endpoints = getEndpoints()

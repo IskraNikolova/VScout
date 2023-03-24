@@ -317,7 +317,8 @@ export async function mapValidators (
       val.stakeAmount = currentValidator.stakeAmount
       val.rewardOwner = currentValidator.rewardOwner
       val.delegationFee = currentValidator.delegationFee
-      val.delegators = currentValidator.delegators
+      val.delegatorCount = currentValidator.delegatorCount
+      val.delegatorWeight = currentValidator.delegatorWeight
       val.potentialReward = currentValidator.potentialReward
     }
 
@@ -467,7 +468,7 @@ export function getDelegatorDetails (delegators) {
 
   const delegateStake = delegators
     .reduce((a, b) => {
-      return BigNumber.sum(a, b.stakeAmount)
+      return BigNumber.sum(a, b.delegatorWeight)
     }, 0.0)
 
   return {

@@ -65,6 +65,9 @@ module.exports = {
       })
       fs.writeFileSync('supply.json', supply)
 
+      const statResponse = utils.getStakingStats(validators)
+      const stat = JSON.stringify(statResponse)
+      fs.writeFileSync('stakeStat.json', stat)
       const response = {
         allStake,
         validators,
@@ -228,27 +231,16 @@ module.exports = {
   },
   stats: (req, res) => {
     try {
-      let validatorsInJson = fs.readFileSync('validators.json').toString()
-      if (!validatorsInJson) validatorsInJson = {}
-      const validators = JSON.parse(validatorsInJson)
-
-      let delegatorsInJson = fs.readFileSync('delegators.json').toString()
-      if (!delegatorsInJson) delegatorsInJson = {}
-      const delegators = JSON.parse(validatorsInJson)
-
-      const statResponse = utils.getStakingStats(validators, delegators)
-      const stat = JSON.stringify(statResponse)
-      fs.writeFileSync('stakeStat.json', stat)
-
-      let stakeStatInJson = fs.readFileSync('stakeStat.json').toString()
-      if (!stakeStatInJson) stakeStatInJson = {}
-      const stakeStat = JSON.parse(stakeStatInJson)
-
-      res.status(200).send(stakeStat)
-      res.end()
+      fs.readFile('stakeStat.json', (err, data) => {
+        if (err) {
+          res.status(400).send(err)
+        } else {
+          const stakeStat = JSON.parse(data.toString())
+          res.status(200).send(stakeStat)
+        }
+      })
     } catch (err) {
       res.status(400).send(err)
-      res.end()
     }
   },
   baseUrl: () => {

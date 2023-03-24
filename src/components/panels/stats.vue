@@ -52,18 +52,17 @@
       <div class="col-md-3 col-xs-10">
         <div class="q-pb-md text-medium label-title">NEW STAKING LAST {{ statsMode }}</div>
         <div>
-          <span class="text-panel text-title1">{{ incomingValidators }}</span><span class="label-title2"> VALIDATORS</span>
-          <span class="text-panel text-title1"> {{ incomingDelegations }}</span><span class="label-title2"> DELEGATIONS</span>
-        </div>
-        <div>
-          <span class="label-title2"><small>STAKE </small></span>
           <animated-number
-            class="text-purple label-title"
+            class="text-purple text-title1"
             :value="incomingStake"
             :formatValue="format"
             :duration="3000"
           />
           <span class="label-title2"><small> AVAX</small></span>
+        </div>
+        <div>
+          <span class="text-panel text-title6">{{ incomingValidators }}</span><small class="text-title6"> VALIDATORS</small>
+          <!--<span class="text-panel text-title1"> {{ incomingDelegations }}</span><span class="label-title2"> DELEGATIONS</span>-->
         </div>
       </div>
       <div class="col-1 q-pt-md icon">
@@ -72,18 +71,17 @@
       <div class="col-md-3 col-xs-10">
         <div class="q-pb-md text-medium label-title">ENDING NEXT {{ statsMode }}</div>
         <div>
-          <span class="text-panel text-title1">{{ outcomingValidators }}</span><span class="label-title2"> VALIDATORS</span>
-          <span class="text-panel text-title1"> {{ outcomingDelegations }}</span><span class="label-title2"> DELEGATIONS</span>
-        </div>
-        <div>
-          <span class="label-title2"><small>STAKE </small></span>
           <animated-number
-            class="text-purple label-title"
+            class="text-purple text-title1"
             :value="outcomingStake"
             :formatValue="format"
             :duration="3000"
           />
           <span class="label-title2"><small> AVAX</small></span>
+        </div>
+        <div>
+          <span class="text-panel">{{ outcomingValidators }}</span><span class="label-title2"> VALIDATORS</span>
+          <!--<span class="text-panel text-title1"> {{ outcomingDelegations }}</span><span class="label-title2"> DELEGATIONS</span>-->
         </div>
       </div>
     </div>
@@ -129,14 +127,14 @@ export default {
       if (!this.inData) return 0
       return this.inData.outcomingValidatorsHours
     },
-    incomingDelegationsHours: function () {
-      if (!this.inData) return 0
-      return this.inData.incomingDelegationsHours
-    },
-    outcomingDelegationsHours: function () {
-      if (!this.inData) return 0
-      return this.inData.outcomingDelegationsHours
-    },
+    // incomingDelegationsHours: function () {
+    //   if (!this.inData) return 0
+    //   return this.inData.incomingDelegationsHours
+    // },
+    // outcomingDelegationsHours: function () {
+    //   if (!this.inData) return 0
+    //   return this.inData.outcomingDelegationsHours
+    // },
     incomingStakeHours: function () {
       if (!this.inData) return 0
       return getAvaFromnAva(this.inData.incomingStakeHours)
@@ -153,14 +151,14 @@ export default {
       if (!this.inData) return 0
       return this.inData.outcomingValidatorsDays
     },
-    incomingDelegationsDays: function () {
-      if (!this.inData) return 0
-      return this.inData.incomingDelegationsDays
-    },
-    outcomingDelegationsDays: function () {
-      if (!this.inData) return 0
-      return this.inData.outcomingDelegationsDays
-    },
+    // incomingDelegationsDays: function () {
+    //   if (!this.inData) return 0
+    //   return this.inData.incomingDelegationsDays
+    // },
+    // outcomingDelegationsDays: function () {
+    //   if (!this.inData) return 0
+    //   return this.inData.outcomingDelegationsDays
+    // },
     incomingStakeDays: function () {
       if (!this.inData) return 0
       return getAvaFromnAva(this.inData.incomingStakeDays)
@@ -177,14 +175,14 @@ export default {
       if (!this.inData) return 0
       return this.inData.outcomingValidatorsMonth
     },
-    incomingDelegationsMonth: function () {
-      if (!this.inData) return 0
-      return this.inData.incomingDelegationsMonth
-    },
-    outcomingDelegationsMonth: function () {
-      if (!this.inData) return 0
-      return this.inData.outcomingDelegationsMonth
-    },
+    // incomingDelegationsMonth: function () {
+    //   if (!this.inData) return 0
+    //   return this.inData.incomingDelegationsMonth
+    // },
+    // outcomingDelegationsMonth: function () {
+    //   if (!this.inData) return 0
+    //   return this.inData.outcomingDelegationsMonth
+    // },
     incomingStakeMonth: function () {
       if (!this.inData) return 0
       return getAvaFromnAva(this.inData.incomingStakeMonth)
@@ -245,22 +243,22 @@ export default {
       if (val === HOURS) {
         this.incomingValidators = this.incomingValidatorsHours
         this.outcomingValidators = this.outcomingValidatorsHours
-        this.incomingDelegations = this.incomingDelegationsHours
-        this.outcomingDelegations = this.outcomingDelegationsHours
+        // this.incomingDelegations = this.incomingDelegationsHours
+        // this.outcomingDelegations = this.outcomingDelegationsHours
         this.incomingStake = this.incomingStakeHours
         this.outcomingStake = this.outcomingStakeHours
       } else if (val === WEEK) {
         this.incomingValidators = this.incomingValidatorsDays
         this.outcomingValidators = this.outcomingValidatorsDays
-        this.incomingDelegations = this.incomingDelegationsDays
-        this.outcomingDelegations = this.outcomingDelegationsDays
+        // this.incomingDelegations = this.incomingDelegationsDays
+        // this.outcomingDelegations = this.outcomingDelegationsDays
         this.incomingStake = this.incomingStakeDays
         this.outcomingStake = this.outcomingStakeDays
       } else if (val === MONTH) {
         this.incomingValidators = this.incomingValidatorsMonth
         this.outcomingValidators = this.outcomingValidatorsMonth
-        this.incomingDelegations = this.incomingDelegationsMonth
-        this.outcomingDelegations = this.outcomingDelegationsMonth
+        // this.incomingDelegations = this.incomingDelegationsMonth
+        // this.outcomingDelegations = this.outcomingDelegationsMonth
         this.incomingStake = this.incomingStakeMonth
         this.outcomingStake = this.outcomingStakeMonth
       }
@@ -282,6 +280,9 @@ export default {
  }
  .text-title1 {
     font-size: max(0.8vw, 16px);
+  }
+  .text-title6 {
+    font-size: max(0.4vw, 12px);
   }
   .label-title2 {
     font-size: max(0.55vw, 12px);
