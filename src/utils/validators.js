@@ -111,8 +111,8 @@ export function compareNotificationNode (oldN, newN) {
       })
     }
   }
-  const oldUptime = round(oldN.uptime * 100, 1000)
-  const newUptime = round(newN.uptime * 100, 1000)
+  const oldUptime = oldN.uptime
+  const newUptime = newN.uptime
   if (oldUptime - newUptime >= 0.1) {
     msgs.push({
       date: Date.now(),

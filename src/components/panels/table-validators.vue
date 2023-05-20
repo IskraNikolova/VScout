@@ -52,7 +52,6 @@
           size="xs"
           toggle-color="accent"
           @click.native="onGetValidators"
-          disable
           :options="[
             {label: 'Active', value: 'active'},
             {label: 'Pending', value: 'pending'}
@@ -534,7 +533,7 @@ export default {
           name: 'delegations',
           align: 'left',
           label: 'DELEGATIONS',
-          field: row => row.delegatorCount,
+          field: row => row.delegatorCount ? row.delegatorCount : 0,
           format: (val, row) => `D: ${val}`,
           style: 'font-size: 12px;letter-spacing: 2px;'
         },
