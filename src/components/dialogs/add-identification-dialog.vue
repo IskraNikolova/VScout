@@ -211,9 +211,9 @@ import {
 
 import DOMPurify from 'dompurify'
 
-import {
-  getDurationByMinutesCount
-} from './../../modules/time.js'
+// import {
+//   getDurationByMinutesCount
+// } from './../../modules/time.js'
 
 import {
   errorNodeID,
@@ -324,17 +324,17 @@ export default {
     async check () {
       try {
         await this.getTxAVM({ txID: this.txID.trim() })
-        const { outputs, timestamp } = this.txAVM
+        const { outputs } = this.txAVM
         if (!outputs) {
           this.onFailed('Something Wrong! Try again.')
           return
         }
-        const minutes = getDurationByMinutesCount(timestamp)
+        // const minutes = getDurationByMinutesCount(timestamp)
 
-        if (minutes > 60) {
-          this.onFailed('Verification Transaction Failed! Expired Transaction. ')
-          return
-        }
+        // if (minutes > 60) {
+        //   this.onFailed('Verification Transaction Failed! Expired Transaction. ')
+        //   return
+        // }
 
         const isReceiveFunds = _verifyReceiveFundsTx(
           { admin: this.admin, outputs }

@@ -12,7 +12,8 @@ import {
   _getTxApi,
   _getValidator,
   // _getValidators,
-  _getNodeUptime
+  _getNodeUptime,
+  _getAvmTx
 } from './../../modules/network.js'
 
 // const {
@@ -106,9 +107,14 @@ async function setValidator ({ commit }, { id }) {
 async function getTxAvm ({ commit },
   { txID }) {
   try {
-    const txAVM = await _getTxApi(txID.trim())
-
-    commit(GET_TX_AVM, { txAVM })
+    // const txAVM = await _getTxApi(txID.trim())
+    const endpoint = 'https://api.avax.network:443/' // todo
+    const txAVM = await _getAvmTx({ endpoint, txID })
+    const tx = {
+      outputs: txAVM.data.result.tx.unsignedTx.outputs,
+      id: txAVM.data.result.tx.id
+    }
+    commit(GET_TX_AVM, { txAVM: tx })
   } catch (err) {
     throw new Error(err.message)
   }

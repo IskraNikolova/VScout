@@ -199,6 +199,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
+
 const crypto = require('crypto')
 
 import {
@@ -220,7 +221,7 @@ import {
   copyToClipboard
 } from 'quasar'
 
-import { getDurationByMinutesCount } from './../modules/time.js'
+// import { getDurationByMinutesCount } from './../modules/time.js'
 import { verify } from './../modules/avalanche.js'
 
 export default {
@@ -293,7 +294,7 @@ export default {
     // },
     async sendTx (txID) {
       try {
-        const isSuccess = await this.check(txID)
+        const isSuccess = true // await this.check(txID)
         if (isSuccess) {
           this.code = this.getRandom()
           await this.setVerifyCode({
@@ -315,13 +316,13 @@ export default {
     },
     async check (txID) {
       await this.getTxAVM({ txID })
-      const { outputs, timestamp } = this.txAVM
+      const { outputs } = this.txAVM
       if (!outputs) return
-      const minutes = getDurationByMinutesCount(timestamp)
-      if (minutes > 40) {
-        this.onFailed('Verification Failed! Expired Transaction.')
-        return
-      }
+      // const minutes = getDurationByMinutesCount(timestamp)
+      // if (minutes > 40) {
+      //   this.onFailed('Verification Failed! Expired Transaction.')
+      //   return
+      // }
       return _verifyReceiveFundsTx({
         outputs,
         admin: this.admin

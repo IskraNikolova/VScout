@@ -1,6 +1,7 @@
 export const c = {
   // enpoints
   cChainWs: 'ext/C/ws',
+  xChain: '/ext/bc/X',
   listAssests: 'x/assets',
   nodeVersions: 'validators',
   getTxApi: (id) => `x/transactions/${id}`,
@@ -24,6 +25,9 @@ export const c = {
   ethBlockNumber: 'eth_blockNumber',
   ethChainID: 'eth_chainId',
   ethNetVersion: 'net_version',
+
+  // AVM
+  getAvmTx: 'avm.getTx',
 
   // PLATFORM API
   platform: 'ext/P',

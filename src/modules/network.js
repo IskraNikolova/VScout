@@ -188,6 +188,11 @@ export const _getHeight = async ({ endpoint }) => {
   return response
 }
 
+export const _getAvmTx = async ({ endpoint, txID }) => {
+  const response = await request(endpoint + c.xChain, body(c.getAvmTx, { txID, encoding: 'json' }))
+  return response
+}
+
 export const _getDefHeight = async () => {
   try {
     const req = await axios
