@@ -8,9 +8,10 @@ export const _verifyReceiveFundsTx = ({ outputs, admin }) => {
   let amount = 0
   for (let i = 0; i < outputs.length; i++) {
     const output = outputs[i].output
-    const isIncl = output
-      .addresses
+    const addresses = output.addresses
+    const isIncl = addresses[0]
       .includes(admin.substr(2))
+
     if (isIncl) {
       result = isIncl
       amount = Number(output.amount)
