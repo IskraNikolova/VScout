@@ -7,7 +7,7 @@ export const _verifyReceiveFundsTx = ({ outputs, admin }) => {
   let result = false
   let amount = 0
   for (let i = 0; i < outputs.length; i++) {
-    const output = outputs[i]
+    const output = outputs[i].output
     const isIncl = output
       .addresses
       .includes(admin.substr(2))

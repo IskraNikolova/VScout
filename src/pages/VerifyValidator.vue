@@ -119,8 +119,7 @@
           </q-card-section>
           <q-card-section style="min-height: 125px;" v-if="!isSearchSuccess">
             <div class="text-subtitle2">
-              <p id="label">
-                <p>Sign Message from <a style="color: #634875;font-size: 14px;" href="https://wallet.avax.network/">Avalanche Wallet/Advanced</a> and prove ownership of validator.</p>
+                <p id="label">Sign Message from <a style="color: #634875;font-size: 14px;" href="https://wallet.avax.network/">Avalanche Wallet/Advanced</a> and prove ownership of validator.</p>
                 <img style="width: 350vw;max-width: 350px;margin-left: 10%;" src="~assets/instruction2.png"/>
                 <p>
                   Sign from address:
@@ -187,7 +186,7 @@
             </q-card-actions>
           </div>
           <q-card-section v-else>
-            <p>Your ID Verification Code: <span @click="copyToClipboard(code)" class="text-secondary text-medium" style="cursor: pointer;">{{ code }}</span>
+            <p>Your ID Verification Code: <span @click="copyToClipboard(code)" class="text-secondary text-medium" style="cursor: pointer;">{{ code }}</span></p>
             <p><q-icon name="info" color="secondary" /> Backup your verification code, you will need it to Add and Update your node's identification info!</p>
           </q-card-section>
         </q-card>
