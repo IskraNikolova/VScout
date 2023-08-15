@@ -76,9 +76,9 @@
         </div>
       </div>
     </q-card-section>
-    <div class="row items-start q-gutter-md q-pl-md">
+    <div class="q-gutter-md q-pl-md parent-container">
       <!-- STAKE PANEL-->
-      <q-card class="my-card dark-panel col-3">
+      <q-card class="my-card dark-panel">
         <q-card-section>
           <div class="text-h6">Stake</div>
         </q-card-section>
@@ -108,7 +108,7 @@
       </q-card>
 
       <!-- REWARD PANEL-->
-      <q-card class="my-card dark-panel col-3">
+      <q-card class="my-card dark-panel">
         <q-card-section>
           <div class="text-h6">Reward</div>
         </q-card-section>
@@ -142,7 +142,7 @@
       </q-card>
 
       <!-- DELEGATE PANEL-->
-      <q-card class="my-card dark-panel col-3">
+      <q-card class="my-card dark-panel">
         <q-card-section>
            <div class="row items-center no-wrap">
               <div class="text-h6 col">Delegate</div>
@@ -191,7 +191,7 @@
       </q-card>
 
       <!-- DELEGATIONS PANEL-->
-      <q-card class="my-card dark-panel col-3">
+      <q-card class="my-card dark-panel">
         <q-card-section>
           <div class="text-h6">
             <span class="text-panel">{{ delegatorsCount }}</span>
@@ -381,10 +381,17 @@ export default {
   #identity {
     color: grey;
   }
-  .my-card {
-    width: 100%;
-    max-width: 300px;
+  .parent-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.my-card {
+   flex: 1 1 250px;
+    max-width: 450px;
   }
+
   #nodeID {
     cursor: pointer;
     font-size: 14px;
