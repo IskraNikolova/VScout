@@ -22,11 +22,11 @@ const endpoint = 'http://62.210.89.225:9650' // 'http://18.116.253.54:9650' // '
 setInterval(() => {
   // const endpoint = endpoints[i]
   try {
-    controllers.avax.avaxPrice()
+    // controllers.avax.avaxPrice()
     controllers.platform.blockHeight(endpoint)
     controllers.validators.validators(endpoint)
     controllers.node.info(endpoint)
-    controllers.node.peersPost(endpoint)
+    // controllers.node.peersPost(endpoint)
   } catch (err) {
     console.log(err)
   }
