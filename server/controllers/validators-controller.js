@@ -1,9 +1,10 @@
+const fs = require('fs')
 const axios = require('axios')
   .default
-const fs = require('fs')
+const utils = require('../utils.js')
 const BigNumber = require('bignumber.js')
 
-const utils = require('../utils.js')
+const P_CHAIN_ENDPOINT = '/ext/bc/P'
 
 let id = 1
 axios.defaults.headers['Content-Type'] = 'application/json'
@@ -22,16 +23,15 @@ module.exports = {
   validators: async (endpoint) => {
     try {
       const resVal = await axios
-        .post(endpoint + '/ext/P', body('platform.getCurrentValidators'))
-
+        .post(endpoint + P_CHAIN_ENDPOINT, body('platform.getCurrentValidators'))
       const apiValidators = resVal.data.result
 
       const resPVal = await axios
-        .post(endpoint + '/ext/P', body('platform.getPendingValidators'))
-
+        .post(endpoint + P_CHAIN_ENDPOINT, body('platform.getPendingValidators'))
       const pendingValidators = resPVal.data.result
 
-      let peersInJson = fs.readFileSync('peers.json').toString()
+      let peersInJson = fs.readFileSync('peers.json')
+        .toString()
 
       if (!peersInJson) peersInJson = {}
       const peers = JSON.parse(peersInJson)
@@ -50,7 +50,7 @@ module.exports = {
 
       let currentSupply = new BigNumber(0)
       const resCSupply = await axios
-        .post(endpoint + '/ext/P', body('platform.getCurrentSupply'))
+        .post(endpoint + P_CHAIN_ENDPOINT, body('platform.getCurrentSupply'))
 
       if (!resCSupply.data.error) {
         const s = resCSupply.data.result.supply ? resCSupply.data.result.supply : 0
@@ -145,7 +145,7 @@ module.exports = {
             .find(v => v.nodeID === observers[i].nodeID)
           if (cV) {
             const response = await axios
-              .post(endpoint + '/ext/P', body('platform.getCurrentValidators'))
+              .post(endpoint + P_CHAIN_ENDPOINT, body('platform.getCurrentValidators'))
 
             if (response.data.error) {
               const obsArray = observers.filter(o => o.nodeID !== observers[i].nodeID)

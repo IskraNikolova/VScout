@@ -1,6 +1,8 @@
 const axios = require('axios').default
 const fs = require('fs')
 
+const P_CHAIN_ENDPOINT = '/ext/bc/P'
+
 let id = 1
 axios.defaults.headers['Content-Type'] = 'application/json'
 
@@ -16,7 +18,7 @@ const body = () => {
 module.exports = {
   // POST
   blockHeight: (endpoint) => {
-    axios.post(endpoint + '/ext/P', body())
+    axios.post(endpoint + P_CHAIN_ENDPOINT, body())
       .then((res) => {
         if (res.data.error) {
           // const error = res.data.error
@@ -24,8 +26,8 @@ module.exports = {
           // fs.writeFileSync('logs.json', data)
         } else {
           const data = res.data.result
-          const validators = JSON.stringify(data)
-          fs.writeFileSync('height.json', validators)
+          const height = JSON.stringify(data)
+          fs.writeFileSync('height.json', height)
         }
       })
       .catch((err) => {

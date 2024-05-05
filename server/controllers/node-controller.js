@@ -1,6 +1,6 @@
 const axios = require('axios').default
 require('dotenv').config()
-const KEY = process.env.KEY
+const KEY = '16e87a6244024746ad256bde70f3c841' // process.env.KEY
 const fs = require('fs')
 
 let id = 1
@@ -88,6 +88,7 @@ module.exports = {
               response = await axios
                 .get(`https://api.ipgeolocation.io/ipgeo?apiKey=${KEY}&ip=${ip}`)
               const info = response.data
+              console.log(response)
               if (!info) info = {
                 'country_code2': '',
                 'continent_name': '',
@@ -111,6 +112,7 @@ module.exports = {
               })
             }
             catch (err) {
+              console.log(err)
               newPeers.push({
                 ...p[i],
                 countryCode: '',

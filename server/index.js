@@ -22,11 +22,11 @@ const endpoint = 'http://62.210.89.225:9650' // 'http://18.116.253.54:9650' // '
 setInterval(() => {
   // const endpoint = endpoints[i]
   try {
-    // controllers.avax.avaxPrice()
+    controllers.avax.avaxPrice()
     controllers.platform.blockHeight(endpoint)
     controllers.validators.validators(endpoint)
     controllers.node.info(endpoint)
-    // controllers.node.peersPost(endpoint)
+    controllers.node.peersPost(endpoint)
   } catch (err) {
     console.log(err)
   }
@@ -39,32 +39,33 @@ setInterval(() => {
   // }
 }, 70000)
 
-let index = 500
+let index = 1
 let inProcess = false
 
 let obs = getObserversArray()
 // setObserervers(index, obs)
 controllers.validators.getUptimes(obs)
+let peers = fs
+  .readFileSync('peers.json')
+  .toString()
 
-setInterval(() => {
-  try {
-    let validators = fs
-      .readFileSync('validators.json')
-      .toString()
+peers = JSON.parse(peers)
+  .peers
 
-    validators = JSON.parse(validators)
-      .validators
+setInterval(async () => {
+  obs = getObserversArray()
 
-    obs = getObserversArray()
-    controllers.validators.getUptimes(obs)
+  if (obs.length < 33) {
+    try {
+      if (!inProcess) {
+        inProcess = true
 
-    if (!inProcess) {
-      inProcess = true
-      setObserervers(index, obs)
-      index = (index + 10) % validators.length
-      inProcess = false
+        index = (index + 1) % peers.length
+        await setObserervers(index, obs)
+        inProcess = false
+      }
+    } catch (err) {
+      console.log(err)
     }
-  } catch (err) {
-    console.log(err)
   }
-}, 100000)
+}, 8000)

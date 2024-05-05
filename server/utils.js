@@ -3,7 +3,7 @@ const BigNumber = require('bignumber.js')
 const { getAvatar } = require('./commons.js')
 const axios = require('axios')
   .default
-
+const controllers = require('./controllers')
 let id = 0
 const body = (method, params = {}) => {
   return {
@@ -404,11 +404,7 @@ module.exports = {
     }
   },
   setObserervers: async (i, obsArray) => {
-    let index = 0 + i
-
     try {
-      if (obsArray.length >= 33) return
-
       let peersInJson = fs.readFileSync('peers.json')
         .toString()
       if (!peersInJson) peersInJson = {}
@@ -419,42 +415,38 @@ module.exports = {
         .peers
         .filter(val => !ob.includes(val.nodeID))
 
-      let m = 0
-      do {
-        index++
-        if (peers[index]) {
-          const endpoint = 'http://' + peers[index].ip.split(':')[0] + ':9650'
+      if (peers[i]) {
+        const endpoint = 'http://' + peers[i].ip.split(':')[0] + ':9650'
 
-          const response = await axios
-            .post(endpoint + '/ext/P', body('platform.getHeight'))
+        const response = await axios
+          .post(endpoint + '/ext/bc/P', body('platform.getHeight'))
 
-          if (response.data.result) {
-            let currentValidator = fs
-              .readFileSync('validators.json')
-              .toString()
+        if (response.data.result) {
+          let currentValidator = fs
+            .readFileSync('validators.json')
+            .toString()
 
-            currentValidator = JSON.parse(currentValidator)
-              .validators
-              .find(v => v.nodeID === peers[index].nodeID)
+          currentValidator = JSON.parse(currentValidator)
+            .validators
+            .find(v => v.nodeID === peers[i].nodeID)
 
-            if (currentValidator && currentValidator.connected) {
-              obsArray.push({
-                endpoint,
-                nodeID: currentValidator.nodeID
-              })
+          if (currentValidator && currentValidator.connected) {
+            obsArray.push({
+              endpoint,
+              nodeID: currentValidator.nodeID
+            })
 
-              fs.writeFileSync(
-                'observers.json',
-                JSON.stringify({ observers: obsArray })
-              )
-              m++
-            }
+            fs.writeFileSync(
+              'observers.json',
+              JSON.stringify({ observers: obsArray })
+            )
+            await controllers.validators.getUptimes(obsArray)
+            return
           }
         }
-      } while (m < 33)
+      }
     } catch (err) {
-      console.log('error')
-      // console.log(err)
+      console.log('err')
     }
   },
   getObserversArray: () => {
@@ -528,6 +520,7 @@ module.exports = {
       }
       return observers
     } catch (err) {
+      console.log(err)
       return []
     }
   },
