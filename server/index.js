@@ -25,8 +25,8 @@ setInterval(() => {
     controllers.avax.avaxPrice()
     controllers.platform.blockHeight(endpoint)
     controllers.validators.validators(endpoint)
-    controllers.node.info(endpoint)
     controllers.node.peersPost(endpoint)
+    controllers.node.info(endpoint)
   } catch (err) {
     console.log(err)
   }
