@@ -16,7 +16,7 @@ import {
 let web3
 let contract
 abiDecoder.addABI(contractAbi)
-const admin = config.network.address
+const admin = process.env.ADMIN_ADDRESS
 const ADD_RATING_EVENT = 'SetValidatorInfoEvent'
 
 export const _initializeNetwork = async () => {

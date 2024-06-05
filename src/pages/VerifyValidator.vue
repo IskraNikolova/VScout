@@ -45,7 +45,7 @@
               <div class="text-subtitle2 q-pb-md">
                 <small>Sign Message with text: <span style="font-size: 13px;cursor: pointer;" @click="copyToClipboard(validator.nodeID)" class="text-secondary text-bold">{{ validator.nodeID }}</span>.
                 <br /><span class="text-medium">Note:</span> For this option you need to use
-                Avalanche Wallet.</small>
+                Avalanche Wallet (core.app/tools/signing-tools/sign/).</small>
               </div>
               <div class="text-subtitle2">
                 <small id="label"> Send 0.1 AVAX to <span style="cursor: pointer;font-size: 13px;" class="text-secondary text-bold" @click="copyToClipboard(admin)">{{ admin }}</span> for smart contract writing fees!</small>
