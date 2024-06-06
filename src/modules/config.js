@@ -9,7 +9,6 @@ export default {
     explorerApiBaseUrl: 'https://explorerapi.avax.network/',
     contract: '0x95042281AF6566Fc6748f28263CeEecaEfB4D2B4',
     endpointCChain: 'vscout.io/ws',
-    address: '0x4aBeF613822Fb2031D897E792f89C896dDaFC466',
     admin: 'X-avax18u9njlrvx76ap6rpdxsf27v7cawu278rw83yyf',
     defaultSubnetID: '11111111111111111111111111111111LpoYY',
     coinApiBase: 'https://rest.coinapi.io/v1/assets/',

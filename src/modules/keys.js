@@ -13,3 +13,4 @@ export const initializeKeys = () => {
 
 export const isWalletInitialized = () => Boolean(walletAccount)
 export const getPrivateKeyBuffer = () => walletAccount.getPrivateKey()
+export const getAddress = () => walletAccount.getAddressString()

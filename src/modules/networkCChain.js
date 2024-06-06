@@ -7,7 +7,7 @@ import contractAbi from './../../builds/contract.json'
 
 import { _generateHashedCode } from './crypto.js'
 
-import { getPrivateKeyBuffer, initializeKeys } from './keys.js'
+import { getPrivateKeyBuffer, initializeKeys, getAddress } from './keys.js'
 
 import {
   hexStringToAsciiString
@@ -16,7 +16,7 @@ import {
 let web3
 let contract
 abiDecoder.addABI(contractAbi)
-const admin = process.env.ADMIN_ADDRESS
+
 const ADD_RATING_EVENT = 'SetValidatorInfoEvent'
 
 export const _initializeNetwork = async () => {
@@ -55,12 +55,15 @@ const getEstimatedGas = async ({ data, from }) => {
       })
     return gas
   } catch (err) {
+    // console.log(err)
     return 500000
   }
 }
 
-const prepareTransaction = async (method, from) => {
+const prepareTransaction = async (method) => {
   try {
+    initializeKeys()
+    const from = await getAddress()
     const data = method.encodeABI()
     const estimatedGas = await getEstimatedGas({ data, from })
     const gasPrice = await web3.eth.getGasPrice()
@@ -70,15 +73,15 @@ const prepareTransaction = async (method, from) => {
     const rawTx = {
       from,
       chainId: config.network.cChainId,
-      nonce: parseInt(transactionCount),
+      nonce: transactionCount,
       gasPrice: parseInt(gasPrice),
       gasLimit: parseInt(estimatedGas),
       to: config.network.contract,
       value: 0,
       data
     }
+    console.log(rawTx)
 
-    initializeKeys()
     const tx = new Tx(rawTx)
     tx.sign(getPrivateKeyBuffer())
 
@@ -96,8 +99,8 @@ const prepareTransaction = async (method, from) => {
  * @param {Object} method contract method
  * @returns {Promise<string>} transaction hash
  */
-const executeMethod = async (method, from) => {
-  const response = await prepareTransaction(method, from)
+const executeMethod = async (method) => {
+  const response = await prepareTransaction(method)
   if (!response) return
   const { serializedTransaction, transactionHash } = response
   return new Promise((resolve, reject) => {
@@ -233,7 +236,7 @@ export const _setValidatorInfo = async ({ nodeID, name, website, avatar, bio, li
         byteLink
       )
 
-    return executeMethod(method, admin)
+    return executeMethod(method)
   } catch (err) {
     throw new Error(err.message)
   }
@@ -254,7 +257,7 @@ export const _setVerifyCode = async ({ code, nodeID }) => {
       .methods
       .setPermissionCode(data)
 
-    return executeMethod(method, admin)
+    return executeMethod(method)
   } catch (err) {
     throw new Error(err.message)
   }

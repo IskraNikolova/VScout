@@ -293,7 +293,7 @@ export default {
     // },
     async sendTx (txID) {
       try {
-        const isSuccess = true // await this.check(txID)
+        const isSuccess = await this.check(txID)
         if (isSuccess) {
           this.code = this.getRandom()
           await this.setVerifyCode({

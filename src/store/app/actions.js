@@ -389,6 +389,7 @@ async function getPValidators (
     if (response.data.error) return null
   }
 
+  if (!response.data.result) return
   let { validators, delegators } = response.data.result
 
   if (typeof validators === 'undefined' ||
