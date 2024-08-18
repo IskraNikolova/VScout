@@ -4,15 +4,15 @@ const { getAvatar } = require('./commons.js')
 const axios = require('axios')
   .default
 const controllers = require('./controllers')
-let id = 0
-const body = (method, params = {}) => {
-  return {
-    jsonrpc: '2.0',
-    method,
-    params,
-    id: id++
-  }
-}
+// let id = 0
+// const body = (method, params = {}) => {
+//   return {
+//     jsonrpc: '2.0',
+//     method,
+//     params,
+//     id: id++
+//   }
+// }
 
 const filterList = [
   'NodeID-GhyESkMqmZgpRqaYe2s4k2DJ7ZkpK34YJ',
@@ -417,31 +417,32 @@ module.exports = {
 
       if (peers[i]) {
         const endpoint = 'http://' + peers[i].ip.split(':')[0] + ':9650'
+        try {
+          await axios.head(endpoint + '/ext/bc/P', {
+            timeout: 2000
+          })
+        } catch (err) {
+          if (err.response) {
+            const cValidators = fs
+              .readFileSync('validators.json')
+              .toString()
 
-        const response = await axios
-          .post(endpoint + '/ext/bc/P', body('platform.getHeight'))
+            const currentValidator = JSON.parse(cValidators)
+              .validators
+              .find(v => v.nodeID === peers[i].nodeID)
 
-        if (response.data.result) {
-          let currentValidator = fs
-            .readFileSync('validators.json')
-            .toString()
+            if (currentValidator && currentValidator.connected) {
+              obsArray.push({
+                endpoint,
+                nodeID: currentValidator.nodeID
+              })
 
-          currentValidator = JSON.parse(currentValidator)
-            .validators
-            .find(v => v.nodeID === peers[i].nodeID)
+              const obs = JSON.stringify({ observers: obsArray })
 
-          if (currentValidator && currentValidator.connected) {
-            obsArray.push({
-              endpoint,
-              nodeID: currentValidator.nodeID
-            })
-
-            fs.writeFileSync(
-              'observers.json',
-              JSON.stringify({ observers: obsArray })
-            )
-            await controllers.validators.getUptimes(obsArray)
-            return
+              fs.writeFileSync('observers.json', obs)
+              await controllers.validators.getUptimes(obsArray)
+              return
+            }
           }
         }
       }

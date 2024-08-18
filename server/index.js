@@ -39,7 +39,7 @@ setInterval(() => {
   // }
 }, 70000)
 
-let index = 1
+let index = 246
 let inProcess = false
 
 let obs = getObserversArray()
@@ -50,17 +50,19 @@ let peers = fs
   .toString()
 
 peers = JSON.parse(peers)
-  .peers
+  .numPeers
 
 setInterval(async () => {
   obs = getObserversArray()
 
   if (obs.length < 33) {
     try {
+      peers = Number(peers)
       if (!inProcess) {
         inProcess = true
 
-        index = (index + 1) % peers.length
+        index = (++index) % peers
+        console.log(peers, index)
         await setObserervers(index, obs)
         inProcess = false
       }
@@ -68,4 +70,4 @@ setInterval(async () => {
       console.log(err)
     }
   }
-}, 8000)
+}, 1000)
