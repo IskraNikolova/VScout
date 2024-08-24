@@ -1,7 +1,7 @@
 import {
   SET_CODE,
   GET_TX_AVM,
-  VERIFY_OWNER,
+  // VERIFY_OWNER,
   SET_TX_HASH_EVM,
   SET_VERIFY_CODE,
   SET_VALIDATOR,
@@ -9,7 +9,6 @@ import {
 } from './types.js'
 
 import {
-  _getTxApi,
   _getValidator,
   // _getValidators,
   _getNodeUptime,
@@ -32,7 +31,7 @@ import {
 } from './../../modules/networkCChain.js'
 
 import {
-  _outputSearch
+// _outputSearch
 } from './../../modules/transactions.js'
 
 async function setValidator ({ commit }, { id }) {
@@ -107,7 +106,6 @@ async function setValidator ({ commit }, { id }) {
 async function getTxAvm ({ commit },
   { txID }) {
   try {
-    // const txAVM = await _getTxApi(txID.trim())
     const endpoint = 'https://api.avax.network:443/' // todo
     const txAVM = await _getAvmTx({ endpoint, txID })
     const tx = {
@@ -120,46 +118,56 @@ async function getTxAvm ({ commit },
   }
 }
 
-let isSearchSuccess = false
-async function verifyOwner ({ dispatch },
-  { txID, index, rewardOwner }) {
-  try {
-    const txAVM = await _getTxApi(txID.trim())
-    const inputs = txAVM.inputs
-    if (!inputs) {
-      if (isSearchSuccess) return true
-      const searchResult = _outputSearch(
-        txAVM,
-        rewardOwner
-      )
-      isSearchSuccess = searchResult
-      return searchResult
-    } else {
-      for (let i = 0; i < inputs.length; i++) {
-        const output = inputs[i].output
-        const addresses = output.addresses
-        for (let i = 0; i < addresses.length; i++) {
-          const address = addresses[i]
-          if (address === rewardOwner.substr(2)) {
-            return true
-          }
-        }
-        if (index > 100) {
-          throw new Error('Verification Failed!Invalid Sender!')
-        }
+// let isSearchSuccess = false
+// async function verifyOwner ({ dispatch },
+//   { txID, index, rewardOwner }) {
+//   try {
+//     // const txAVM = await _getTxApi(txID.trim())
 
-        index++
-        await dispatch(VERIFY_OWNER, {
-          txID: output.transactionID,
-          index,
-          rewardOwner
-        })
-      }
-    }
-  } catch (err) {
-    throw new Error('Verification Failed! ' + err.message)
-  }
-}
+//     const endpoint = 'https://api.avax.network:443/'
+//     const txAVM = await _getAvmTx({ endpoint, txID })
+//     const tx = {
+//       inputs: txAVM.data.result.tx.unsignedTx.inputs,
+//       outputs: txAVM.data.result.tx.unsignedTx.outputs
+//     }
+
+//     const { inputs, outputs } = tx
+//     console.log(inputs)
+//     console.log(outputs)
+//     // if (!inputs) {
+//     //   if (isSearchSuccess) return true
+//     //   const searchResult = _outputSearch(
+//     //     txAVM,
+//     //     rewardOwner
+//     //   )
+//     //   isSearchSuccess = searchResult
+//     //   return searchResult
+//     // } else {
+//     //   for (let i = 0; i < inputs.length; i++) {
+//     //     const output = inputs[i].output
+//     //     const addresses = output.addresses
+//     //     for (let i = 0; i < addresses.length; i++) {
+//     //       const address = addresses[i]
+//     //       if (address === rewardOwner.substr(2)) {
+//     //         return true
+//     //       }
+//     //     }
+//     //     if (index > 100) {
+//     //       throw new Error('Verification Failed!Invalid Sender!')
+//     //     }
+
+//     //     index++
+//     //     await dispatch(VERIFY_OWNER, {
+//     //       txID: output.transactionID,
+//     //       index,
+//     //       rewardOwner
+//     //     })
+//     //   }
+//     // }
+//   } catch (err) {
+//     throw new Error('Verification Failed! ' + err.message)
+//   }
+// }
 
 async function setVerifyCode ({ commit },
   { code, nodeID }) {
@@ -186,7 +194,7 @@ async function setValidatorInfo (
 
 export default {
   [GET_TX_AVM]: getTxAvm,
-  [VERIFY_OWNER]: verifyOwner,
+  // [VERIFY_OWNER]: verifyOwner,
   [SET_VALIDATOR]: setValidator,
   [SET_VERIFY_CODE]: setVerifyCode,
   [SET_VALIDATOR_INFO]: setValidatorInfo

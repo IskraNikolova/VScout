@@ -39,7 +39,7 @@ setInterval(() => {
   // }
 }, 70000)
 
-let index = 246
+let index = 1
 let inProcess = false
 
 let obs = getObserversArray()
@@ -62,7 +62,6 @@ setInterval(async () => {
         inProcess = true
 
         index = (++index) % peers
-        console.log(peers, index)
         await setObserervers(index, obs)
         inProcess = false
       }
@@ -70,4 +69,4 @@ setInterval(async () => {
       console.log(err)
     }
   }
-}, 1000)
+}, 5000)

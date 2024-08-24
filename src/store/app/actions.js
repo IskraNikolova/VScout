@@ -1,7 +1,6 @@
 import {
   INIT_APP,
   SET_THEME,
-  SET_ASSETS,
   GET_IN_OUT,
   GET_NODE_ID,
   GET_SUBNETS,
@@ -23,15 +22,13 @@ import {
 import {
   GET_HEIGHT,
   GET_SUPPLY,
-  SET_ASSETS_COUNT,
   SET_VALIDATORS,
   SET_DELEGATORS,
   SET_PENDING_VALIDATORS,
   SET_PENDING_DELEGATORS,
   GET_NODE_HEALTH,
   UPDATE_VALIDATOR,
-  GET_AVAX_PRICE,
-  GET_ASSETS_BY_BLOCKCHAINS
+  GET_AVAX_PRICE
 } from './../access/types'
 
 import {
@@ -63,7 +60,6 @@ import {
   _getNodeVersion,
   _getBlockchains,
   _getNodeVersions,
-  _getAssets,
   _getBlockchainStatus,
   _getPendingValidators
 } from './../../modules/network.js'
@@ -109,7 +105,6 @@ async function initApp (
       dispatch(GET_NODE_INFO, {}),
       dispatch(GET_BLOCKCHAINS, {}),
       dispatch(GET_SUBNETS, {}),
-      dispatch(GET_ASSETS_BY_BLOCKCHAINS),
       dispatch(GET_HEIGHT, {}),
       dispatch(GET_SUPPLY),
       _initializeNetwork(),
@@ -642,13 +637,6 @@ async function getBlockchains (
   }
 }
 
-async function getAssetsCount (
-  { commit }) {
-  const { count, assets } = await _getAssets()
-  commit(SET_ASSETS_COUNT, { assetsCount: count })
-  commit(SET_ASSETS, { assets })
-}
-
 async function getSupply (
   { commit, getters }) {
   try {
@@ -723,6 +711,5 @@ export default {
   [GET_BLOCKCHAINS]: getBlockchains,
   [GET_SUPPLY]: getSupply,
   [GET_PENDING_STAKING]: getPValidators,
-  [SUBSCRIBE_TO_EVENT]: subscribeToEvents,
-  [GET_ASSETS_BY_BLOCKCHAINS]: getAssetsCount
+  [SUBSCRIBE_TO_EVENT]: subscribeToEvents
 }

@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 import { c } from './../utils/constants'
-const { network } = require('./config').default
 const server = 'https://vscout.io/v/' // 'http://localhost:5810/'
 let id = 1
 axios.defaults.headers[c.contentTypeHeader] = c.contentTypeValue
@@ -12,19 +11,6 @@ const body = (method, params = {}) => {
     method,
     params,
     id: id++
-  }
-}
-
-export const _getAssets = async () => {
-  try {
-    const req = await axios
-      .get(network.explorerApiBaseUrl + c.listAssests)
-
-    if (!req.data) return
-
-    return req.data
-  } catch (err) {
-    return 0
   }
 }
 
@@ -51,19 +37,6 @@ export const _getSupply = async () => {
     return req.data
   } catch (err) {
     return 0
-  }
-}
-
-export const _getTxApi = async (id) => {
-  try {
-    const req = await axios
-      .get(network.explorerApiBaseUrl + c.getTxApi(id))
-
-    if (!req.data) return ''
-
-    return req.data
-  } catch (err) {
-    throw new Error(err.message)
   }
 }
 
@@ -115,32 +88,6 @@ export const _getValidator = async ({ id }) => {
       throw new Error()
     }
     return req
-  } catch (err) {
-    return null
-  }
-}
-
-export const _getAssetById = async (id) => {
-  try {
-    const req = await axios
-      .get(network.explorerApiBaseUrl + c.assestById(id))
-
-    if (!req.data) return
-
-    return req.data
-  } catch (err) {
-    return null
-  }
-}
-
-export const _getAssetsWithOffset = async (offset) => {
-  try {
-    const req = await axios
-      .get(network.explorerApiBaseUrl + c.assetsWithOffset(offset))
-
-    if (!req.data.assets) return
-
-    return req.data.assets
   } catch (err) {
     return null
   }

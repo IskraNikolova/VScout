@@ -207,7 +207,6 @@ import {
 
 import {
   GET_TX_AVM,
-  VERIFY_OWNER,
   SET_VERIFY_CODE
 } from './../store/access/types.js'
 
@@ -267,7 +266,6 @@ export default {
   methods: {
     ...mapActions({
       getTxAVM: GET_TX_AVM,
-      verifyOwner: VERIFY_OWNER,
       setVerifyCode: SET_VERIFY_CODE
     }),
     verifySign (msg, sign) {

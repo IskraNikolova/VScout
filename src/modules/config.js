@@ -6,7 +6,6 @@ export default {
     chainId: 'X',
     port: 443,
     cChainId: 43114,
-    explorerApiBaseUrl: 'https://explorerapi.avax.network/',
     contract: '0x95042281AF6566Fc6748f28263CeEecaEfB4D2B4',
     endpointCChain: 'vscout.io/ws',
     admin: 'X-avax18u9njlrvx76ap6rpdxsf27v7cawu278rw83yyf',
@@ -22,7 +21,6 @@ export default {
 
 // PROD
 // cChainId: 43114,
-// explorerApiBaseUrl: 'https://explorerapi.avax-dev.network/',
 // contract: '0x95042281AF6566Fc6748f28263CeEecaEfB4D2B4',
 // // endpointCChain: 'vscout.io/vscout-api/ext/bc/C/rpc',
 // // endpointCChain: 'api.avax.network/ext/bc/C/ws',
@@ -32,7 +30,6 @@ export default {
 
 // DEV
 // cChainId: 43113,
-// explorerApiBaseUrl: 'https://explorerapi.avax-test.network/',
 // contract: '0x8087A3b850Bd391315FefEC7a754e6024517beAE',
 // endpointCChain: '127.0.0.1:9650/ext/bc/C/ws',
 // address: '0x4aBeF613822Fb2031D897E792f89C896dDaFC466',

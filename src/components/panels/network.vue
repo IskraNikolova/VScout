@@ -5,7 +5,7 @@
     style="min-height: 160px;"
   >
     <div class="row">
-      <div v-if="isBlockchainView" class="col-md-3 col-xs-10">
+      <div v-if="isBlockchainView" class="col-md-5 col-xs-10">
         <div class="q-pb-md text-medium label-title">
           BLOCKCHAIN
         </div>
@@ -34,7 +34,7 @@
         <img src="~assets/blockchain-grey.svg" id="logo">
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
-      <div v-if="isBlockchainView" class="col-md-3 col-xs-10">
+      <div v-if="isBlockchainView" class="col-md-5 col-xs-10">
         <div class="q-pb-md text-medium label-title">
           SUBNET ID
         </div>
@@ -70,41 +70,7 @@
       </div>
       <q-separator class="q-mt-md q-mb-md lt-md"/>
       <div class="col-md-3 col-xs-10">
-        <div v-if="isBlockchainView">
-          <!--<EVM-info v-bind:bcID="currentBlockchain.id" v-if="currentBlockchain.vmName === 'evm'"/>-->
-          <div class="q-pb-md text-medium label-title">ASSETS</div>
-            <div class="q-pb-md q-pr-md ">
-              <span class="text-h6 text-panel">
-                <animated-number
-                  :value="assetsCount"
-                  :formatValue="format"
-                  :duration="3000"
-                />
-              </span><span> on X-Chain</span>
-            </div>
-          <div class="q-pt-xs" v-if="items.length > 0">
-            <q-btn-dropdown
-              outline
-              size="sm"
-              no-caps
-              label="Smart Digital Assets"
-            >
-              <div class="q-pa-md panel">
-                <q-input :dark="appTheme==='dark'" v-model="search" label="Search..." @input="filterfn"/>
-              </div>
-              <div v-for="(asset, index) in items" :key="index" class="caption panel">
-                <q-item clickable v-close-popup style="max-width: 350px;" @click="onOpenAssetInfo(asset)">
-                  <q-item-section avatar>
-                    <q-badge color="accent">{{ asset.symbol }}</q-badge>
-                  </q-item-section>
-                  <q-item-section>{{ asset.name }}</q-item-section>
-                </q-item>
-              </div>
-            </q-btn-dropdown>
-            <asset-info-dialog ref="assetDialog"/>
-          </div>
-        </div>
-        <div v-else>
+        <div v-if="!isBlockchainView">
           <div class="q-pb-md text-medium label-title">CONTROL KEYS</div>
           <div >
             <div class="col-4 q-mt-xs" id="f-size12">
@@ -130,8 +96,7 @@
         </div>
       </div>
       <div class="col-1 q-pt-md icon">
-        <img src="~assets/coins.svg" style=" width:40vw;max-width:40px;" v-if="isBlockchainView">
-        <img src="~assets/key-digital.svg" style=" width:40vw;max-width:40px;" v-else>
+        <img src="~assets/key-digital.svg" style=" width:40vw;max-width:40px;" v-if="!isBlockchainView">
       </div>
     </div>
   </q-card>
@@ -139,12 +104,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import AnimatedNumber from 'animated-number-vue'
-
-import {
-  // _getAssetById,
-  _getAssetsWithOffset
-} from './../../modules/network'
 
 import {
   openURL
@@ -167,34 +126,13 @@ import SubnetBlockchains from './../items/subnet-blockchains'
 export default {
   name: 'Network',
   components: {
-    AnimatedNumber,
     SubnetBlockchains,
-    // EVMInfo: () => import('components/evm-info.vue'), not work with new instance on EVM
-    TooltipStyle: () => import('components/tooltip-style.vue'),
-    AssetInfoDialog: () => import('components/dialogs/asset-info-dialog.vue')
-  },
-  data () {
-    return {
-      items: [],
-      search: '',
-      assetSearch: null
-    }
-  },
-  watch: {
-    assets: function (val) {
-      this.items = this.assets.slice(0, 500)
-    }
-  },
-  created () {
-    if (!this.assetsCount) return
-    this.items = this.assets.slice(0, 500)
+    TooltipStyle: () => import('components/tooltip-style.vue')
   },
   computed: {
     ...mapGetters([
       'height',
-      'assets',
       'appTheme',
-      'assetsCount',
       'currentSubnet',
       'isBlockchainView',
       'currentBlockchain',
@@ -202,20 +140,8 @@ export default {
     ])
   },
   methods: {
-    filterfn () {
-      const filter = this.search.toLowerCase()
-      const result = this.assets.filter(
-        a => a.name.toLowerCase().includes(filter) ||
-        a.alias.toLowerCase().includes(filter) ||
-        a.symbol.toLowerCase().includes(filter)
-      )
-      this.items = result
-    },
     format (value) {
       return `${Math.round(value)}`
-    },
-    onOpenAssetInfo (asset) {
-      this.$refs.assetDialog.open({ asset })
     },
     getColor (status) {
       return colors[status]
@@ -226,18 +152,6 @@ export default {
     },
     goToDoc (url) {
       openURL(url)
-    },
-    async onLoad (index, done) {
-      if (this.items.length < 99) done()
-
-      const assets = await _getAssetsWithOffset(index * 100)
-      if (!assets) return
-      const filter = this.search.toLowerCase()
-      if (this.items) {
-        this.items = this.items.concat(assets)
-        if (filter) this.filter(filter)
-        done()
-      }
     }
   }
 }
