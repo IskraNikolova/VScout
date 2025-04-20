@@ -14,7 +14,7 @@ require('./config/routes')(app)
 app.listen(config.port, () => console.log(`Server start on port ${config.port}`))
 
 // const endpoint = 'http://135.181.144.201:9650'
-const endpoint = 'http://34.88.102.57:9650' // 'http://142.132.197.144:9650' 'http://18.141.218.134:9650'
+const endpoint = 'http://146.59.149.91:9650' // 'http://34.88.102.57:9650' // 'http://142.132.197.144:9650' 'http://18.141.218.134:9650'
 
 // let endpoints = getEndpoints()
 
