@@ -324,7 +324,7 @@
               <q-card-section>
                 <div class="text-panel q-mb-md">Stake (AVAX)</div>
                 <small class="text-panel">Own</small>
-                {{ getFormatReward(props.row.stakeAmount)}}
+                {{ getFormatReward(props.row.weight)}}
                 <small class="text-accent"> AVAX</small>
                 <div>
                   <small class="text-panel">Delegated</small>
@@ -514,20 +514,10 @@ export default {
           name: 'stakeAmount',
           align: 'left',
           label: 'STAKE (AVAX)',
-          field: row => Number(row.stakeAmount),
+          field: row => Number(row.weight),
           format: (val, row) => `${this.getFormatReward(val)}`,
           sortable: true,
           headerClasses: 'text-medium'
-        },
-        {
-          name: 'weight',
-          align: 'left',
-          label: 'WEIGHT',
-          field: row => row.weight,
-          format: (val, row) => `${this.getWeight(val)}`,
-          sortable: true,
-          headerClasses: 'text-medium',
-          style: 'font-size: 12px;'
         },
         {
           name: 'delegations',

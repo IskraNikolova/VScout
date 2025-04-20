@@ -57,7 +57,7 @@ module.exports = {
     const validatorsMap = validators.map((val) => {
       const currentValidator = valJs.find(a => a.nodeID === val.nodeID)
       validatedStake = BigNumber
-        .sum(validatedStake, val.stakeAmount)
+        .sum(validatedStake, val.weight)
 
       potentialReward = BigNumber
         .sum(potentialReward, val.potentialReward)
@@ -77,8 +77,6 @@ module.exports = {
       const props = getDelegatorDetails(val.delegators)
       delegatorsMap[val.nodeID] = mapDelegators(val.delegators)
       val.delegators = val.delegators ? val.delegators.length : 0
-      const delegateStake = props.delegateStake
-      delegatedStake = BigNumber.sum(delegatedStake, delegateStake)
 
       const nReward = props.potentialReward
       let delegatePotentialReward = nReward
@@ -91,11 +89,11 @@ module.exports = {
       const remainingTime = countDownCounterRes.countdown
 
       const totalStakeAmount = BigNumber
-        .sum(val.stakeAmount, delegateStake)
-
+        .sum(val.weight, val.delegatorWeight)
+      console.log(totalStakeAmount)
       const remainingCapacity = getRemainingCapacity(
-        val.stakeAmount,
-        delegateStake
+        val.weight,
+        val.delegatorWeight
       )
 
       const isMinimumAmountForStake = countDownCounterRes
@@ -160,7 +158,7 @@ module.exports = {
       delegatedStake = BigNumber.sum(delegatedStake, val.delegatorWeight)
 
       validatedStake = BigNumber
-        .sum(validatedStake, val.stakeAmount)
+        .sum(validatedStake, val.weight)
 
       potentialReward = BigNumber
         .sum(potentialReward, val.potentialReward)
@@ -186,10 +184,10 @@ module.exports = {
       const remainingTime = countDownCounterRes.countdown
 
       const totalStakeAmount = BigNumber
-        .sum(val.stakeAmount, val.delegatorWeight)
+        .sum(val.weight, val.delegatorWeight)
 
       const remainingCapacity = getRemainingCapacity(
-        val.stakeAmount,
+        val.weight,
         val.delegatorWeight
       )
 
@@ -271,7 +269,7 @@ module.exports = {
           true: (val) => {
             incomingVal.hours.validators++
             incomingVal.hours.stake = BigNumber
-              .sum(val.stakeAmount, incomingVal.hours.stake)
+              .sum(val.weight, incomingVal.hours.stake)
           },
           false: () => {}
         },
@@ -279,7 +277,7 @@ module.exports = {
           true: (val) => {
             outcomingVal.hours.validators++
             outcomingVal.hours.stake = BigNumber
-              .sum(val.stakeAmount, outcomingVal.hours.stake)
+              .sum(val.weight, outcomingVal.hours.stake)
           },
           false: () => {}
         }
@@ -305,7 +303,7 @@ module.exports = {
           true: (val) => {
             incomingVal.days.validators++
             incomingVal.days.stake = BigNumber
-              .sum(val.stakeAmount, incomingVal.days.stake)
+              .sum(val.weight, incomingVal.days.stake)
           },
           false: () => {}
         },
@@ -313,7 +311,7 @@ module.exports = {
           true: (val) => {
             outcomingVal.days.validators++
             outcomingVal.days.stake = BigNumber
-              .sum(val.stakeAmount, outcomingVal.days.stake)
+              .sum(val.weight, outcomingVal.days.stake)
           },
           false: () => {}
         // },
@@ -339,7 +337,7 @@ module.exports = {
           true: (val) => {
             incomingVal.month.validators++
             incomingVal.month.stake = BigNumber
-              .sum(val.stakeAmount, incomingVal.month.stake)
+              .sum(val.weight, incomingVal.month.stake)
           },
           false: () => {}
         },
@@ -347,7 +345,7 @@ module.exports = {
           true: (val) => {
             outcomingVal.month.validators++
             outcomingVal.month.stake = BigNumber
-              .sum(val.stakeAmount, outcomingVal.month.stake)
+              .sum(val.weight, outcomingVal.month.stake)
           },
           false: () => {}
         // },
@@ -671,7 +669,7 @@ function getDelegatorDetails (delegators) {
 
   const delegateStake = delegators
     .reduce((a, b) => {
-      return BigNumber.sum(a, b.stakeAmount)
+      return BigNumber.sum(a, b.weight)
     }, 0.0)
 
   const potentialReward = delegators
