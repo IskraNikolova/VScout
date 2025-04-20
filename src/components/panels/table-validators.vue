@@ -96,7 +96,7 @@
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="uptime" label="Uptime" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" v-if="isDefaultSubnetID(subnetID)" val="connected" label="State" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="weight" label="Weight" />
-          <q-toggle size="xs" color="accent" v-model="visibleColumns" val="version" label="Node Version" />
+          <!--<q-toggle size="xs" color="accent" v-model="visibleColumns" val="version" label="Node Version" />-->
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="duration" label="Duration" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="startTime" label="Start Time" />
           <q-toggle size="xs" color="accent" v-model="visibleColumns" val="endTime" label="End Time" />
@@ -232,10 +232,10 @@
               <small v-if="col.value" class="text-positive">CONNECTED</small>
               <small v-else class="text-negative">DISCONNECTED</small>
             </div>
-            <div v-else-if="col.name === 'version'">
+            <!--<div v-else-if="col.name === 'version'">
               <q-badge v-if="col.value !== 'undefined'" :style="getVersionColor(col.value)"><span style="color: #000000">{{ col.value }}</span></q-badge>
               <span v-else class="text-panel"> - </span>
-            </div>
+            </div>-->
             <countdown
               class="row"
               v-bind:countdown="col.value"
@@ -527,14 +527,14 @@ export default {
           format: (val, row) => `D: ${val}`,
           style: 'font-size: 12px;letter-spacing: 2px;'
         },
-        {
-          name: 'version',
-          align: 'left',
-          label: 'VERSION',
-          field: row => row.version,
-          format: (val, row) => `${this.getFormatVersion(val)}`,
-          style: 'font-size: 15px;letter-spacing: 2px;'
-        },
+        // {
+        //   name: 'version',
+        //   align: 'left',
+        //   label: 'VERSION',
+        //   field: row => row.version,
+        //   format: (val, row) => `${this.getFormatVersion(val)}`,
+        //   style: 'font-size: 15px;letter-spacing: 2px;'
+        // },
         {
           name: 'networkShare',
           align: 'left',
