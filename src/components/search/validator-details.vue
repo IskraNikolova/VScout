@@ -54,7 +54,7 @@
             <stake
               class="q-mt-md my-card dark-panel"
               style="border-radius: 10px;"
-              v-bind:stakeAmount="stakeAmount"
+              v-bind:weight="weight"
               v-bind:delegateStake="delegateStake"
               v-bind:txID="txID"
               v-bind:totalStakeAmount="totalStakeAmount"
@@ -195,7 +195,7 @@
       <div class="row">
         <stake
           flat class="col-12"
-          v-bind:stakeAmount="stakeAmount"
+          v-bind:weight="weight"
           v-bind:delegateStake="delegateStake"
           v-bind:txID="txID"
           v-bind:totalStakeAmount="totalStakeAmount"
@@ -340,10 +340,10 @@ export default {
       return this.val
         .txID
     },
-    stakeAmount: function () {
-      if (!this.val.stakeAmount) return ''
+    weight: function () {
+      if (!this.val.weight) return ''
       return this.val
-        .stakeAmount
+        .weight
     },
     state: function () {
       if (!this.val.connected) return false

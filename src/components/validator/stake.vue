@@ -7,7 +7,7 @@
     <div class="q-mb-md text-medium text-purple">STAKE (AVAX)</div>
     <div class="q-pl-sm">
       <span class="text-subtitle2"><small style="opacity: 0.8;">OWN</small></span>
-      <span class="on-right text-medium text-h6">{{ getFormatAva(stakeAmount) }}</span>
+      <span class="on-right text-medium text-h6">{{ getFormatAva(weight) }}</span>
       <span class="text-accent text-medium q-pl-xs" style="font-size: 12px;">AVAX</span>
       <span style="cursor:pointer;text-decoration: underline;text-decoration-color: #aa7dc9;font-size: 9px;color:#aa7dc9;" class="text-medium q-pl-xs" @click="onClick('https://explorer.avax.network/tx/' + txID)">TX DETAILS</span>
     </div>
@@ -36,7 +36,7 @@ import {
 export default {
   name: 'Stake',
   props: {
-    stakeAmount: {
+    weight: {
       type: String,
       required: true
     },

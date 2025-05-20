@@ -86,7 +86,7 @@
         <q-card-section>
           <div class="text-subtitle2">
             <small class="text-panel">OWN </small>
-            <span> {{ getFormatReward(validator.stakeAmount) }}</span>
+            <span> {{ getFormatReward(validator.weight) }}</span>
             <span class="text-accent text-medium"><small> AVAX</small></span>
           </div>
           <div class="text-subtitle2">

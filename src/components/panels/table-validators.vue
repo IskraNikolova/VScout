@@ -181,7 +181,7 @@
                  <small> AVAX</small>
                </span>
             </div>
-            <div v-else-if="col.name === 'stakeAmount'">
+            <div v-else-if="col.name === 'weight'">
               <div>
                 <small>Total:</small> {{ getFormatReward(props.row.totalStakeAmount) }}
               </div>
@@ -511,7 +511,7 @@ export default {
           headerClasses: 'text-medium'
         },
         {
-          name: 'stakeAmount',
+          name: 'weight',
           align: 'left',
           label: 'STAKE (AVAX)',
           field: row => Number(row.weight),
